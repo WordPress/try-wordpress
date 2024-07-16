@@ -1,0 +1,20 @@
+{
+    "manifest_version": 2,
+    "name": "Try WordPress",
+    "description": "An extension that liberates your data into WordPress",
+    "version": "0.0.1",
+    "permissions":
+    [
+        "activeTab"
+    ],
+    "sidebar_action":
+    {
+        "default_panel": "sidebar/sidebar.html",
+        "default_icon": "icons/icon-128.png"
+    },
+    "icons":
+    {
+        "32": "icons/icon-32.png",
+        "128": "icons/icon-128.png"
+    }
+}
