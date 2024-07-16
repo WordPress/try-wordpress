@@ -1,20 +1,68 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Try WordPress",
     "description": "An extension that liberates your data into WordPress",
     "version": "0.0.1",
     "permissions":
     [
-        "activeTab"
+        "tabs",
+        "activeTab",
+        "storage",
+        "scripting",
+        "pageCapture",
+        "sidePanel",
+        "downloads"
     ],
+    "host_permissions":
+    [
+        "*://*/*"
+    ],
+    "background":
+    {
+        "scripts": ["background/index.js"]
+    },
     "sidebar_action":
     {
         "default_panel": "sidebar/sidebar.html",
         "default_icon": "icons/icon-128.png"
     },
+    "action": {
+      "default_icon": {
+        "32": "icons/icon-32.png",
+        "128": "icons/icon-128.png"
+    },
+    "default_title": "Try Firefox"
+},
     "icons":
     {
         "32": "icons/icon-32.png",
         "128": "icons/icon-128.png"
-    }
+    },
+    "content_scripts":
+    [
+        {
+            "js":
+            [
+                "content/index.js"
+            ],
+            "matches":
+            [
+                "<all_urls>"
+            ]
+        },
+        {
+            "js":
+            [
+                "wp-plugin/index.js"
+            ],
+            "matches":
+            [
+                "http://*/wp-admin/post.php?*",
+                "https://*/wp-admin/post.php?*",
+                "http://*/wp-admin/post-new.php*"
+            ],
+            "run_at": "document_end",
+            "world": "MAIN"
+        }
+    ]
 }
