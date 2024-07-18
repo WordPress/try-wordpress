@@ -45,11 +45,55 @@ function onMouseOut( event ) {
 	removeStyle( event.target );
 }
 
+const wpInsertPost = ( data ) => {
+	data.post_status = 'publish';
+	let code = "<?php require_once 'wordpress/wp-load.php';\n";
+	code += "echo wp_insert_post(\n";
+	code += "[\n";
+	for ( let key in data ) {
+		code += "'" + key + "'=>'" + data[key].replace(/'/g, "\\'" ) + "',\n";
+	}
+	code += "]);";
+
+	return code;
+};
+
+const isWordPress = () => {
+	const article = document.querySelector( 'article.post' );
+	if ( article ) {
+		// get the id from the css class post-<id>
+		const id = article.className.match( /post-(\d+)/ );
+		return id[1];
+	}
+	return false;
+};
+
+const insertViaWpRestApi = async ( id, sendResponse ) => {
+	const url = `/wp-json/wp/v2/posts/${id}`;
+	const response = await  fetch( url );
+	const data = await  response.json();
+	console.log(data);
+	const code = wpInsertPost( {
+		post_title: data.title.rendered,
+		post_content: data.content.rendered,
+		post_date: data.date,
+	} );
+	sendResponse( {code} );
+};
+
 /* global chrome */
 chrome.runtime.onMessage.addListener(
 	function ( message, sender, sendResponse ) {
 		if ( ! message.sender || message.sender !== MESSAGE_NAMESPACE ) {
+			// console.log(message);
 			return;
+		}
+
+		if ( message.import ) {
+			if ( isWordPress() ) {
+				insertViaWpRestApi( isWordPress(), sendResponse );
+			}
+			return true;
 		}
 
 		if ( message.isEnabled ) {
