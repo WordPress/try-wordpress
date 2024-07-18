@@ -6,8 +6,13 @@
 </head>
 <body>
     <div id="content">
-       <iframe src="https://playground.wordpress.net/#{%22landingPage%22:%22/wp-admin/%22,%22steps%22:[{%22step%22:%22login%22,%22username%22:%22admin%22,%22password%22:%22password%22},{%22step%22:%22mkdir%22,%22path%22:%22wordpress/wp-content/mu-plugins%22},{%22step%22:%22writeFile%22,%22path%22:%22wordpress/wp-content/mu-plugins/show-admin-notice-1.php%22,%22data%22:%22%3C?php\nadd_action(\n'admin_notices',\nfunction()%20{\necho%20'%3Cdiv%20class=\%22notice%20notice-success\%22%20id=\%22custom-admin-notice-1\%22%3E%3Cp%3E'%20.%20esc_html(%20'WordPress%20Playground%20in%20the%20sidebar!'%20)%20.%20'%3C/p%3E%3C/div%3E';\n}\n);%22}],%22login%22:true}" width="100%" height="100%"></iframe>
+        <div>
+            <a href="" id="import-current-site">Import current site</a>
+            <a href="https://playground.wordpress.net/?site-slug=try-wordpress&storage=browser" class="new-window"><svg height="20" width="15" viewBox="0 0 1024 768"><path d="M640 768H128V258L256 256V128H0v768h768V576H640V768zM384 128l128 128L320 448l128 128 192-192 128 128V128H384z"/></svg></a>
+        </div>
+
+       <iframe id="wp" width="100%" height="100%"></iframe>
     </div>
-    <script src="sidebar.js"></script>
+    <script src="sidebar.js" type="module"></script>
 </body>
 </html>

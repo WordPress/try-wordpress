@@ -8,7 +8,7 @@ import {
 import { copyElementAndContent, getContentsToCopy } from './utils/dom.js';
 
 // Constants
-const MESSAGE_NAMESPACE = 'PATTERNS_EVERYWHERE';
+const MESSAGE_NAMESPACE = 'TRY_WORDPRESS';
 
 /**
  * Handle the mouse over event.

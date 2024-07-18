@@ -1,7 +1,7 @@
 /* global chrome */
 
 export const TOGGLE_KEY = 'IS_ENABLED';
-export const MESSAGE_NAMESPACE = 'PATTERNS_EVERYWHERE';
+export const MESSAGE_NAMESPACE = 'TRY_WORDPRESS';
 
 /**
  * Set the toggle state in the session storage.
