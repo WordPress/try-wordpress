@@ -1,10 +1,42 @@
+import { startPlaygroundWeb } from './playground-client.js';
+const client = startPlaygroundWeb( {
+	iframe: document.getElementById("wp"),
+	remoteUrl: "https://playground.wordpress.net/remote.html",
+	landingPage: '/'
+
+// };
+// 	onBlueprintStepCompleted: function( step ) {
+// 		if ( typeof step === 'undefined' ) return;
+// 		if ( typeof step.bytes != 'undefined' ) console.log( new TextDecoder().decode( step.bytes ) );
+// 		console.log( step );
+// 	},
+// 	blueprint: {
+// 		"steps": [
+// 		{
+// 			"command": "installPlugin",
+// 			pluginZipFile: {
+// 				resource: 'wordpress.org/plugins',
+// 				slug: 'hello-dolly',
+// 			}
+// 		}
+// 		]
+// 	}
+}).then(
+	async function ( p ) {
+		window.playground = p;
+		console.log('playground',p);
+		console.log(await window.playground.run({code: "<?php include 'wordpress/wp-load.php'; print_r(wp_count_posts());"}).then(c => new TextDecoder().decode( c.bytes )));
+	}
+);
+console.log(client);
+
 const MESSAGE_NAMESPACE = 'TRY_WORDPRESS';
 document.getElementById('import-current-page').addEventListener('click', function( e ) {
 	e.preventDefault();
 	chrome.tabs.query(
 		{ active: true, currentWindow: true },
 		function ( tabs ) {
-			if ( ! tabs || ! tabs.length ) {
+			if ( ! tabs || ! tabs.length || ! window.playground ) {
 				return;
 			}
 
@@ -18,7 +50,7 @@ document.getElementById('import-current-page').addEventListener('click', functio
 			}, function( response ) {
 				// console.log( response, chrome.runtime.lastError );
 				if ( response && response.code ) {
-					document.getElementById('wp').contentWindow.postMessage( { type: 'php-request', code: response.code }, '*' );
+					console.log( playground.run( response.code ) );
 				}
 			} );
 		}
