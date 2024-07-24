@@ -56,7 +56,7 @@ document.getElementById('import-current-page').addEventListener('click', functio
 				// console.log( response, chrome.runtime.lastError );
 				if ( response && response.code ) {
 					console.log( response.code );
-					console.log( window.playground.run( response.code ) );
+					console.log( window.playground.run( response ) );
 				}
 			} );
 		}
