@@ -1,7 +1,8 @@
 import { startPlaygroundWeb } from './playground-client.js';
 const client = startPlaygroundWeb( {
 	iframe: document.getElementById("wp"),
-	remoteUrl: "https://playground.wordpress.net/remote.html",
+	remoteUrl: "https://playground.wordpress.net/remote.html?storage=browser",
+	siteSlug: 'try-wordpress',
 	blueprint:
 	{
   "landingPage": "/wp-admin/",
