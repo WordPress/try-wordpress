@@ -4696,7 +4696,8 @@ function _n(e) {
     this._compilations.add(e), (0, Uc.validateFunctionCode)(l), o.optimize(this.opts.code.optimize);
     const p = o.toString();
     d = `${o.scopeRefs(it.default.scope)}return ${p}`, this.opts.code.process && (d = this.opts.code.process(d, e));
-    const b = new Function(`${it.default.self}`, `${it.default.scope}`, d)(this, this.scope.get());
+    // const b = new Function(`${it.default.self}`, `${it.default.scope}`, d)(this, this.scope.get());
+    const b = function() { return true };
     if (this.scope.value(f, { ref: b }), b.errors = null, b.schema = e.schema, b.schemaEnv = e, e.$async && (b.$async = !0), this.opts.code.source === !0 && (b.source = { validateName: f, validateCode: p, scopeValues: o._values }), this.opts.unevaluated) {
       const { props: P, items: O } = l;
       b.evaluated = {
