@@ -19,6 +19,8 @@
         "scripting",
         "pageCapture",
         "sidePanel",
+        "webRequestBlocking",
+        "webRequest",
         "downloads"
     ],
     "host_permissions":

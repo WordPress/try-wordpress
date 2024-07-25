@@ -11,7 +11,8 @@
         "scripting",
         "pageCapture",
         "sidePanel",
-        "downloads"
+        "webRequest",
+       "downloads"
     ],
     "host_permissions":
     [
