@@ -59,17 +59,23 @@ const wpInsertPost = ( data ) => {
 };
 
 const isWordPress = () => {
-	const article = document.querySelector( 'article.post' );
-	if ( article ) {
+	const post = document.querySelector( 'article.post' );
+	if ( post ) {
 		// get the id from the css class post-<id>
-		const id = article.className.match( /post-(\d+)/ );
-		return id[1];
+		const id = post.className.match( /post-(\d+)/ );
+		return 'posts/' + id[1];
+	}
+	const page = document.querySelector( 'article.page' );
+	if ( page ) {
+		// get the id from the css class post-<id>
+		const id = page.className.match( /post-(\d+)/ );
+		return 'pages/' + id[1];
 	}
 	return false;
 };
 
 const insertViaWpRestApi = async ( id, sendResponse ) => {
-	const url = `/wp-json/wp/v2/posts/${id}`;
+	const url = `/wp-json/wp/v2/${id}`;
 	const response = await  fetch( url );
 	const data = await  response.json();
 	console.log(data);
@@ -77,6 +83,7 @@ const insertViaWpRestApi = async ( id, sendResponse ) => {
 		post_title: data.title.rendered,
 		post_content: data.content.rendered,
 		post_date: data.date,
+		post_type: data.type,
 	} );
 	sendResponse( {code} );
 };
@@ -85,7 +92,6 @@ const insertViaWpRestApi = async ( id, sendResponse ) => {
 chrome.runtime.onMessage.addListener(
 	function ( message, sender, sendResponse ) {
 		if ( ! message.sender || message.sender !== MESSAGE_NAMESPACE ) {
-			// console.log(message);
 			return;
 		}
 
