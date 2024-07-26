@@ -25,7 +25,9 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 
 			if ( typeof data.percent !== 'undefined' ) {
 				const percent = data.percent;
-
+				if ( data.percent < parseInt( progressBar.style.width ) ) {
+					return;
+				}
 				// Update progress bar and text
 				progressBar.style.width = percent + '%';
 				progressText.textContent = percent + '%';
