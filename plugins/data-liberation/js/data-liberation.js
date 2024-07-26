@@ -17,13 +17,15 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 			}, '*' );
 
 		window.addEventListener( 'message', function( event ) {
-			if ( ! event.data ) {
+			console.log( event );
+			if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
 				return;
 			}
+			const data = event.data;
 
-			if ( typeof event.data.total !== 'undefined' && typeof event.data.percent !== 'undefined' ) {
-				const total = event.data.total;
-				const percent = event.data.percent;
+			if ( typeof data.total !== 'undefined' && typeof data.percent !== 'undefined' ) {
+				const total = data.total;
+				const percent = data.percent;
 
 				// Update progress bar and text
 				progressBar.style.width = percent + '%';
@@ -39,33 +41,34 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 
 	window.addEventListener( 'message', function( event ) {
 		console.log( event );
-		if ( ! event.data ) {
+		if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
 			return;
 		}
+		const data = event.data;
 
-		if ( typeof event.data.stepId !== 'undefined' ) {
-			let stepElement = document.getElementById( 'step-' + event.data.stepId );
+		if ( typeof data.stepId !== 'undefined' ) {
+			let stepElement = document.getElementById( 'step-' + data.stepId );
 			if ( ! stepElement ) {
 				stepElement = document.createElement( 'li' );
-				stepElement.id = 'step-' + event.data.stepId;
+				stepElement.id = 'step-' + data.stepId;
 				document.getElementById( 'todo-list' ).appendChild( stepElement );
 			}
-			if ( typeof event.data.stepText !== 'undefined' ) {
-				stepElement.textContent = event.data.stepText;
+			if ( typeof data.stepText !== 'undefined' ) {
+				stepElement.textContent = data.stepText;
 			}
-			if ( typeof event.data.stepCssClass !== 'undefined' ) {
-				stepElement.className = event.data.stepCssClass;
+			if ( typeof data.stepCssClass !== 'undefined' ) {
+				stepElement.className = data.stepCssClass;
 			}
 		}
 
-		if ( typeof event.data.removeStepId !== 'undefined' ) {
-			let stepElement = document.getElementById( 'step-' + event.data.removeStepId );
+		if ( typeof data.removeStepId !== 'undefined' ) {
+			let stepElement = document.getElementById( 'step-' + data.removeStepId );
 			if ( stepElement ) {
 				stepElement.parentNode.removeChild( stepElement );
 			}
 		}
 
-		if ( typeof event.data.siteTitle !== 'undefined' ) {
+		if ( typeof data.siteTitle !== 'undefined' ) {
 			document.getElementById( 'site-title' ).value = event.data.siteTitle;
 		}
 	});
