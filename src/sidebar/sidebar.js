@@ -5,7 +5,7 @@ const client = startPlaygroundWeb( {
 	siteSlug: 'try-wordpress',
 	blueprint:
 	{
-  "landingPage": "/wp-admin/",
+  "landingPage": "/wp-admin/admin.php?page=data-liberation",
   "steps": [
     {
       "step": "login",
@@ -17,13 +17,17 @@ const client = startPlaygroundWeb( {
       "code": "<?php require_once 'wordpress/wp-load.php'; $posts = get_posts(array('numberposts' => -1)); foreach ($posts as $post) { wp_delete_post($post->ID, true); } ?>"
     },
     {
-      "step": "mkdir",
-      "path": "wordpress/wp-content/mu-plugins"
+        "step": "unzip",
+        "zipFile": {
+            "resource": "url",
+            "url": "https://github-proxy.com/proxy/?repo=akirk/try-wordpress&branch=trunk&directory=plugins/data-liberation"
+        },
+        "extractToPath": "/wordpress/wp-content"
     },
     {
-      "step": "writeFile",
-      "path": "wordpress/wp-content/mu-plugins/show-admin-notice-2.php",
-      "data": "<?php\nadd_action(\n'admin_notices',\nfunction() {\necho '<div class=\"notice notice-success\" id=\"custom-admin-notice-2\"><p>' . esc_html( 'Welcome to Data Liberation!' ) . '</p></div>';\n}\n);"
+        "step": "activatePlugin",
+        "pluginName": "Data Liberation",
+        "pluginPath": "/wordpress/wp-content/plugins/data-liberation"
     }
   ],
   "login": true

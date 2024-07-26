@@ -10,12 +10,12 @@ document.getElementById('start-import').addEventListener('click', function() {
 	window.parent.postMessage( 'start-import', window.location.origin );
 
 	window.addEventListener('message', function(event) {
-		if (event.origin !== window.location.origin) return; // Ignore messages from different origins
-
-		if (event.data && typeof event.data.siteTitle ) {
+		// if (event.origin !== window.location.origin) return; // Ignore messages from different origins
+		if ( ! event.data ) {
+			return;
 		}
 
-		if (event.data && typeof event.data.total !== 'undefined' && typeof event.data.percent !== 'undefined') {
+		if ( typeof event.data.total !== 'undefined' && typeof event.data.percent !== 'undefined') {
 			const total = event.data.total;
 			const percent = event.data.percent;
 
@@ -32,9 +32,34 @@ document.getElementById('start-import').addEventListener('click', function() {
 });
 
 window.addEventListener('message', function(event) {
-	if (event.origin !== window.location.origin) return; // Ignore messages from different origins
+	// if (event.origin !== window.location.origin) return; // Ignore messages from different origins
+	if ( ! event.data ) {
+		return;
+	}
 
-	if (event.data && typeof event.data.siteTitle ) {
+	if ( typeof event.data.stepId !== 'undefined' ) {
+		let stepElement = document.getElementById( 'step-' + event.data.stepId );
+		if ( ! stepElement ) {
+			stepElement = document.createElement('li');
+			stepElement.id = 'step-' + event.data.stepId;
+			document.getElementById( 'todo-list' ).appendChild( stepElement );
+		}
+		if ( typeof event.data.stepText !== 'undefined' ) {
+			stepElement.textContent = event.data.stepText;
+		}
+		if ( typeof event.data.stepCssClass !== 'undefined' ) {
+			stepElement.className = event.data.stepCssClass;
+		}
+	}
+
+	if ( typeof event.data.removeStepId !== 'undefined' ) {
+		let stepElement = document.getElementById( 'step-' + event.data.removeStepId );
+		if ( stepElement ) {
+			stepElement.parentNode.removeChild( stepElement );
+		}
+	}
+
+	if ( typeof event.data.siteTitle !== 'undefined' ) {
 		document.getElementById('site-title').value = event.data.siteTitle;
 	}
 });

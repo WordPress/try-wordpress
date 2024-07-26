@@ -9,7 +9,7 @@ h2 {
 #todo-list li {
 	list-style-type: none;
 }
-#todo-list li.done {
+#todo-list li.completed {
 	text-decoration: line-through;
 	color: #777;
 }
@@ -20,7 +20,7 @@ h2 {
 	color: #ccc;
 }
 
-#todo-list li.done:before {
+#todo-list li.completed:before {
 	content: "✓ ";
 	font-size: 1.2em;
 	color: #0c0;
