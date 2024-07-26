@@ -9,9 +9,12 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 		progressText.textContent = 'Progress: 0%';
 
 		window.parent.postMessage({
-				type: 'data-liberation-message',
+				type: 'relay',
 				data: {
-					'action': 'start-import'
+					type: 'data-liberation-message',
+					data: {
+						'action': 'start-import'
+					}
 				}
 			}, '*' );
 

@@ -16,4 +16,6 @@
         </div>
 		<p id="progress-text">0%</p>
 	</div>
+
+    .
 </div>
