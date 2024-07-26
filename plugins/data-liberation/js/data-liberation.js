@@ -12,14 +12,11 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 				type: 'relay',
 				data: {
 					type: 'data-liberation-message',
-					data: {
-						'action': 'start-import'
-					}
+					action: 'start-import'
 				}
 			}, '*' );
 
 		window.addEventListener( 'message', function( event ) {
-			// if (event.origin !== window.location.origin) return; // Ignore messages from different origins
 			if ( ! event.data ) {
 				return;
 			}
@@ -41,7 +38,7 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 	} );
 
 	window.addEventListener( 'message', function( event ) {
-		// if (event.origin !== window.location.origin) return; // Ignore messages from different origins
+		console.log( event );
 		if ( ! event.data ) {
 			return;
 		}
