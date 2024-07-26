@@ -8,7 +8,12 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 		progressBar.style.width = '0%';
 		progressText.textContent = 'Progress: 0%';
 
-		window.parent.postMessage( 'start-import', '*' );
+		window.parent.postMessage({
+				type: 'data-liberation-message',
+				data: {
+					'action': 'start-import'
+				}
+			}, '*' );
 
 		window.addEventListener( 'message', function( event ) {
 			// if (event.origin !== window.location.origin) return; // Ignore messages from different origins

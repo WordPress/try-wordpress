@@ -10,7 +10,7 @@
     </ul>
 
 
-	<div id="progress-container" style="display:block;">
+	<div id="progress-container" style="display:none;">
 		<div id="progress-bar-container">
          <div id="progress-bar"></div>
         </div>
