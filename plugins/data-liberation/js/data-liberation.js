@@ -7,7 +7,7 @@ document.getElementById('start-import').addEventListener('click', function() {
 	progressBar.style.width = '0%';
 	progressText.textContent = 'Progress: 0%';
 
-	window.parent.postMessage( 'start-import', window.location.origin );
+	window.parent.postMessage( 'start-import', '*' );
 
 	window.addEventListener('message', function(event) {
 		// if (event.origin !== window.location.origin) return; // Ignore messages from different origins
