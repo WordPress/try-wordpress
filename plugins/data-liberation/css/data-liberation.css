@@ -5,12 +5,13 @@ h2 {
 
 #todo-list {
 	margin-left: 1em;
+	height: 20em;
+	overflow: auto;
 }
 #todo-list li {
 	list-style-type: none;
 }
 #todo-list li.completed {
-	text-decoration: line-through;
 	color: #777;
 }
 

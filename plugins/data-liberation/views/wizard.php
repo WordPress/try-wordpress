@@ -6,10 +6,6 @@
 
     <h2><?php esc_html_e( 'Progress', 'data-liberation' ); ?></h2>
 
-    <ul id="todo-list">
-    </ul>
-
-
 	<div id="progress-container" style="display:none;">
 		<div id="progress-bar-container">
          <div id="progress-bar"></div>
@@ -17,5 +13,7 @@
 		<p id="progress-text">0%</p>
 	</div>
 
-    ...
+    <ul id="todo-list">
+    </ul>
+
 </div>

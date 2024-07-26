@@ -39,14 +39,55 @@ const client = startPlaygroundWeb( {
 	}
 );
 
+const relayToPlayground = function( response ) {
+	console.log( response, chrome.runtime.lastError );
+	if ( response && response.stepId ) {
+		document.getElementById('wp').contentWindow.postMessage( {
+			type: 'relay',
+			data: response
+		}, '*' );
+	}
+	if ( response && response.code && window.playground ) {
+		console.log( response.code );
+		console.log( window.playground.run( response ) );
+	}
+};
+
+window.addEventListener('message', function( event ) {
+	if ( 'relay' !== event.data.type ) {
+		return;
+	}
+	const data = event.data.data;
+	if ( 'data-liberation-message' !== data.type ) {
+		return;
+	}
+	if ( 'start-import' === data.action ) {
+		document.getElementById('wp').contentWindow.postMessage( {
+			type: 'relay',
+			data: {
+				stepId: 'detecting',
+				stepText: 'Detecting CMS...',
+			}
+		}, '*' );
+		startImport();
+	}
+});
+
 const MESSAGE_NAMESPACE = 'TRY_WORDPRESS';
-document.getElementById('import-current-page').addEventListener('click', function( e ) {
-	e.preventDefault();
+
+chrome.runtime.onMessage.addListener(
+	function ( message, sender, sendResponse ) {
+		if ( ! message.sender || message.sender !== MESSAGE_NAMESPACE ) {
+			return;
+		}
+		relayToPlayground( message );
+	}
+);
+const startImport = function() {
 	chrome.tabs.query(
 		{ active: true, currentWindow: true },
 		function ( tabs ) {
-			if ( ! tabs || ! tabs.length || ! window.playground ) {
-				console.log( window.playground );
+			if ( ! tabs || ! tabs.length ) {
 				return;
 			}
 
@@ -57,14 +98,8 @@ document.getElementById('import-current-page').addEventListener('click', functio
 			chrome.tabs.sendMessage( currentTab.id, {
 				sender: MESSAGE_NAMESPACE,
 				import: true
-			}, function( response ) {
-				// console.log( response, chrome.runtime.lastError );
-				if ( response && response.code ) {
-					console.log( response.code );
-					console.log( window.playground.run( response ) );
-				}
-			} );
+			}, relayToPlayground );
 		}
 	);
 	return false;
-});
+};

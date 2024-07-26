@@ -5,8 +5,8 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 
 		const progressBar = document.getElementById( 'progress-bar' );
 		const progressText = document.getElementById( 'progress-text' );
-		progressBar.style.width = '0%';
-		progressText.textContent = 'Progress: 0%';
+		progressBar.style.width = '1%';
+		progressText.textContent = '1%';
 
 		window.parent.postMessage({
 				type: 'relay',
@@ -23,16 +23,16 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 			}
 			const data = event.data.data;
 
-			if ( typeof data.total !== 'undefined' && typeof data.percent !== 'undefined' ) {
-				const total = data.total;
+			if ( typeof data.percent !== 'undefined' ) {
 				const percent = data.percent;
 
 				// Update progress bar and text
 				progressBar.style.width = percent + '%';
-				progressText.textContent = 'Progress: ' + percent + '% out of ' + total + '%';
+				progressText.textContent = percent + '%';
 
 				// Optionally hide progress when complete
 				if ( percent >= 100 ) {
+					progressBar.className = 'done';
 					progressText.textContent = 'Import Complete!';
 				}
 			}
@@ -45,13 +45,21 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 			return;
 		}
 		const data = event.data.data;
+		const todoList = document.getElementById( 'todo-list' );
+		if ( ! todoList ) {
+			return;
+		}
 
 		if ( typeof data.stepId !== 'undefined' ) {
 			let stepElement = document.getElementById( 'step-' + data.stepId );
 			if ( ! stepElement ) {
 				stepElement = document.createElement( 'li' );
 				stepElement.id = 'step-' + data.stepId;
-				document.getElementById( 'todo-list' ).appendChild( stepElement );
+				if ( todoList.firstChild ) {
+					todoList.insertBefore( stepElement, todoList.firstChild );
+				} else {
+					todoList.appendChild( stepElement );
+				}
 			}
 			if ( typeof data.stepText !== 'undefined' ) {
 				stepElement.textContent = data.stepText;

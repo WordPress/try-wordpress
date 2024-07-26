@@ -6,3 +6,6 @@ iframe {
 	flex-direction: row;
 	justify-content: space-between;
 }
+.new-window {
+	float: right;
+}

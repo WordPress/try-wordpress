@@ -45,6 +45,8 @@ function onMouseOut( event ) {
 	removeStyle( event.target );
 }
 
+
+
 const wpInsertPost = ( data ) => {
 	data.post_status = 'publish';
 	let code = "<?php require_once 'wordpress/wp-load.php';\n";
@@ -57,6 +59,11 @@ const wpInsertPost = ( data ) => {
 
 	return code;
 };
+
+chrome.runtime.sendMessage( {
+	sender: MESSAGE_NAMESPACE,
+	siteTitle: document.title,
+} );
 
 const isWordPress = () => {
 	const post = document.querySelector( 'article.post' );
@@ -74,9 +81,35 @@ const isWordPress = () => {
 	return false;
 };
 
-const insertViaWpRestApi = async ( id, sendResponse ) => {
+const insertViaWpRestApi = async () => {
+	const post_types = {
+		'post' : '/wp-json/wp/v2/posts',
+		'page' : '/wp-json/wp/v2/pages',
+	};
+	for ( const post_type in post_types ) {
+		const response = await fetch( post_types[ post_type ] );
+		const items = await response.json();
+		for ( const data of items ) {
+			const code = wpInsertPost( {
+				post_title: data.title.rendered,
+				post_content: data.content.rendered,
+				post_date: data.date,
+				post_type: data.type,
+			} );
+			chrome.runtime.sendMessage( {
+				sender: MESSAGE_NAMESPACE,
+				stepId: 'imported-' + data.id,
+				stepText: 'Imported ' + data.title.rendered,
+				stepCssClass: 'completed',
+				code
+			} );
+		}
+	}
+}
+
+const insertSingleViaWpRestApi = async ( id ) => {
 	const url = `/wp-json/wp/v2/${id}`;
-	const response = await  fetch( url );
+	const response = await fetch( url );
 	const data = await  response.json();
 	console.log(data);
 	const code = wpInsertPost( {
@@ -85,7 +118,13 @@ const insertViaWpRestApi = async ( id, sendResponse ) => {
 		post_date: data.date,
 		post_type: data.type,
 	} );
-	sendResponse( {code} );
+	chrome.runtime.sendMessage( {
+		sender: MESSAGE_NAMESPACE,
+		stepId: 'imported-post',
+		stepText: 'Imported ' + data.title.rendered,
+		stepCssClass: 'completed',
+		code
+	} );
 };
 
 /* global chrome */
@@ -94,10 +133,24 @@ chrome.runtime.onMessage.addListener(
 		if ( ! message.sender || message.sender !== MESSAGE_NAMESPACE ) {
 			return;
 		}
+		console.log( 'Starting import' );
+
+		chrome.runtime.sendMessage( {
+			sender: MESSAGE_NAMESPACE,
+			siteTitle: document.title,
+		} );
+
 
 		if ( message.import ) {
 			if ( isWordPress() ) {
-				insertViaWpRestApi( isWordPress(), sendResponse );
+				chrome.runtime.sendMessage( {
+					sender: MESSAGE_NAMESPACE,
+					stepId: 'detecting',
+					stepText: 'Detected WordPress!',
+					stepCssClass: 'completed',
+				});
+				insertViaWpRestApi();
+				// insertSingleViaWpRestApi( isWordPress() );
 			}
 			return true;
 		}
