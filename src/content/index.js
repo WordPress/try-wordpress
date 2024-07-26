@@ -60,11 +60,6 @@ const wpInsertPost = ( data ) => {
 	return code;
 };
 
-chrome.runtime.sendMessage( {
-	sender: MESSAGE_NAMESPACE,
-	siteTitle: document.title,
-} );
-
 const isWordPress = () => {
 	const post = document.querySelector( 'article.post' );
 	if ( post ) {
@@ -84,38 +79,46 @@ const isWordPress = () => {
 const insertViaWpRestApi = async () => {
 	const post_types = {
 		'post': '/wp-json/wp/v2/posts',
-		'page': '/wp-json/wp/v2/pages',
+		// 'page': '/wp-json/wp/v2/pages',
 	};
 	for ( const post_type in post_types ) {
-		let page = 1;
-		const response = await fetch( post_types[ post_type ] + '?page=' + page );
-		const total = response.headers.get( 'X-WP-Total' );
+		console.log( post_types[ post_type ] );
+		let page = 1, total = 1;
 		do {
+			const response = await fetch( post_types[ post_type ] + '?page=' + page );
+			total = Math.min( 10, response.headers.get( 'X-WP-Totalpages' ) );
 			const items = await response.json();
-			for ( const data of items ) {
+			for ( const i in items ) {
+				const data = items[ i ];
 				const code = wpInsertPost( {
 					post_title: data.title.rendered,
 					post_content: data.content.rendered,
 					post_date: data.date,
 					post_type: data.type,
 				} );
+				importPercent += .4;
 				chrome.runtime.sendMessage( {
 					sender: MESSAGE_NAMESPACE,
 					stepId: 'imported-' + data.id,
-					stepText: 'Imported ' + data.title.rendered,
+					stepText: 'Imported ' + ( data.title.rendered || data.excerpt?.rendered.replace( /<[^>]+/g, '' ).substring( 0, 20 ) + '...' ),
 					stepCssClass: 'completed',
+					percent: Math.floor( importPercent ),
 					code
 				} );
 			}
-		} while ( page++ < Math.max( 5, total ) );
+		} while ( page++ < total );
 	}
+	chrome.runtime.sendMessage( {
+		sender: MESSAGE_NAMESPACE,
+		percent: 100
+	} );
 }
 let importPercent = 1;
 
 const insertSingleViaWpRestApi = async ( id ) => {
 	const url = `/wp-json/wp/v2/${id}`;
 	const response = await fetch( url );
-	const data = await  response.json();
+	const data = await response.json();
 
 	const code = wpInsertPost( {
 		ID: data.id,
@@ -134,6 +137,16 @@ const insertSingleViaWpRestApi = async ( id ) => {
 	} );
 };
 
+const setWpSiteInfo = async () => {
+	const response = await fetch( `/wp-json/` );
+	const data = await response.json();
+	chrome.runtime.sendMessage( {
+		sender: MESSAGE_NAMESPACE,
+		siteTitle: data.name,
+		code: "<?php require_once 'wordpress/wp-load.php'; update_option( 'blogname', '" + data.name.replace(/'/g, "\\'" ) + "' );"
+	} );
+};
+
 /* global chrome */
 chrome.runtime.onMessage.addListener(
 	function ( message, sender, sendResponse ) {
@@ -147,7 +160,6 @@ chrome.runtime.onMessage.addListener(
 			siteTitle: document.title,
 		} );
 
-
 		if ( message.import ) {
 			if ( isWordPress() ) {
 				chrome.runtime.sendMessage( {
@@ -157,6 +169,7 @@ chrome.runtime.onMessage.addListener(
 					stepCssClass: 'completed',
 					percent: ++importPercent,
 				});
+				setWpSiteInfo();
 				insertViaWpRestApi();
 				// insertSingleViaWpRestApi( isWordPress() );
 			}

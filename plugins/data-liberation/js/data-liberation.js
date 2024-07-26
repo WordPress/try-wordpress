@@ -46,6 +46,11 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 			return;
 		}
 		const data = event.data.data;
+		console.log( data );
+		if ( typeof data.siteTitle !== 'undefined' ) {
+			document.getElementById( 'site-title' ).value = data.siteTitle;
+		}
+
 		const todoList = document.getElementById( 'todo-list' );
 		if ( ! todoList ) {
 			return;
@@ -75,10 +80,6 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 			if ( stepElement ) {
 				stepElement.parentNode.removeChild( stepElement );
 			}
-		}
-
-		if ( typeof data.siteTitle !== 'undefined' ) {
-			document.getElementById( 'site-title' ).value = data.siteTitle;
 		}
 	});
 }
