@@ -28,11 +28,10 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 				if ( data.percent < parseInt( progressBar.style.width ) ) {
 					return;
 				}
-				// Update progress bar and text
+
 				progressBar.style.width = percent + '%';
 				progressText.textContent = percent + '%';
 
-				// Optionally hide progress when complete
 				if ( percent >= 100 ) {
 					progressBar.className = 'done';
 					progressText.textContent = 'Import Complete!';

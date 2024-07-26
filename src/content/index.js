@@ -83,27 +83,31 @@ const isWordPress = () => {
 
 const insertViaWpRestApi = async () => {
 	const post_types = {
-		'post' : '/wp-json/wp/v2/posts',
-		'page' : '/wp-json/wp/v2/pages',
+		'post': '/wp-json/wp/v2/posts',
+		'page': '/wp-json/wp/v2/pages',
 	};
 	for ( const post_type in post_types ) {
-		const response = await fetch( post_types[ post_type ] );
-		const items = await response.json();
-		for ( const data of items ) {
-			const code = wpInsertPost( {
-				post_title: data.title.rendered,
-				post_content: data.content.rendered,
-				post_date: data.date,
-				post_type: data.type,
-			} );
-			chrome.runtime.sendMessage( {
-				sender: MESSAGE_NAMESPACE,
-				stepId: 'imported-' + data.id,
-				stepText: 'Imported ' + data.title.rendered,
-				stepCssClass: 'completed',
-				code
-			} );
-		}
+		let page = 1;
+		const response = await fetch( post_types[ post_type ] + '?page=' + page );
+		const total = response.headers.get( 'X-WP-Total' );
+		do {
+			const items = await response.json();
+			for ( const data of items ) {
+				const code = wpInsertPost( {
+					post_title: data.title.rendered,
+					post_content: data.content.rendered,
+					post_date: data.date,
+					post_type: data.type,
+				} );
+				chrome.runtime.sendMessage( {
+					sender: MESSAGE_NAMESPACE,
+					stepId: 'imported-' + data.id,
+					stepText: 'Imported ' + data.title.rendered,
+					stepCssClass: 'completed',
+					code
+				} );
+			}
+		} while ( page++ < Math.max( 5, total ) );
 	}
 }
 let importPercent = 1;
@@ -112,7 +116,7 @@ const insertSingleViaWpRestApi = async ( id ) => {
 	const url = `/wp-json/wp/v2/${id}`;
 	const response = await fetch( url );
 	const data = await  response.json();
-	console.log(data);
+
 	const code = wpInsertPost( {
 		ID: data.id,
 		post_title: data.title.rendered,
@@ -123,7 +127,7 @@ const insertSingleViaWpRestApi = async ( id ) => {
 	chrome.runtime.sendMessage( {
 		sender: MESSAGE_NAMESPACE,
 		stepId: 'imported-post',
-		stepText: 'Imported ' + ( data.title.rendered || data.extract?.rendered.replace( /<[^>]+/g, '' ).substring( 0, 20 ) + '...' ),
+		stepText: 'Imported ' + ( data.title.rendered || data.excerpt?.rendered.replace( /<[^>]+/g, '' ).substring( 0, 20 ) + '...' ),
 		stepCssClass: 'completed',
 		percent: ++importPercent,
 		code
