@@ -21,7 +21,7 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 			if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
 				return;
 			}
-			const data = event.data;
+			const data = event.data.data;
 
 			if ( typeof data.total !== 'undefined' && typeof data.percent !== 'undefined' ) {
 				const total = data.total;
@@ -44,7 +44,7 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 		if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
 			return;
 		}
-		const data = event.data;
+		const data = event.data.data;
 
 		if ( typeof data.stepId !== 'undefined' ) {
 			let stepElement = document.getElementById( 'step-' + data.stepId );
