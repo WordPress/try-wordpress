@@ -106,6 +106,7 @@ const insertViaWpRestApi = async () => {
 		}
 	}
 }
+let importPercent = 1;
 
 const insertSingleViaWpRestApi = async ( id ) => {
 	const url = `/wp-json/wp/v2/${id}`;
@@ -124,6 +125,7 @@ const insertSingleViaWpRestApi = async ( id ) => {
 		stepId: 'imported-post',
 		stepText: 'Imported ' + ( data.title.rendered || data.extract?.rendered.replace( /<[^>]+/g, '' ).substring( 0, 20 ) + '...' ),
 		stepCssClass: 'completed',
+		percent: ++importPercent,
 		code
 	} );
 };
@@ -149,6 +151,7 @@ chrome.runtime.onMessage.addListener(
 					stepId: 'detecting',
 					stepText: 'Detected WordPress!',
 					stepCssClass: 'completed',
+					percent: ++importPercent,
 				});
 				insertViaWpRestApi();
 				// insertSingleViaWpRestApi( isWordPress() );

@@ -77,7 +77,7 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 		}
 
 		if ( typeof data.siteTitle !== 'undefined' ) {
-			document.getElementById( 'site-title' ).value = event.data.siteTitle;
+			document.getElementById( 'site-title' ).value = data.siteTitle;
 		}
 	});
 }
