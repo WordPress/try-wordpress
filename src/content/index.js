@@ -113,6 +113,7 @@ const insertSingleViaWpRestApi = async ( id ) => {
 	const data = await  response.json();
 	console.log(data);
 	const code = wpInsertPost( {
+		ID: data.id,
 		post_title: data.title.rendered,
 		post_content: data.content.rendered,
 		post_date: data.date,
@@ -121,7 +122,7 @@ const insertSingleViaWpRestApi = async ( id ) => {
 	chrome.runtime.sendMessage( {
 		sender: MESSAGE_NAMESPACE,
 		stepId: 'imported-post',
-		stepText: 'Imported ' + data.title.rendered,
+		stepText: 'Imported ' + ( data.title.rendered || data.extract?.rendered.replace( /<[^>]+/g, '' ).substring( 0, 20 ) + '...' ),
 		stepCssClass: 'completed',
 		code
 	} );
