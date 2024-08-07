@@ -19,6 +19,13 @@
         "32": "icons/icon-32.png",
         "128": "icons/icon-128.png"
     },
+    "action": {
+        "default_icon": {
+            "32": "icons/icon-32.png",
+            "128": "icons/icon-128.png"
+        },
+        "default_title": "Try Firefox"
+    },
     "background": {
         "scripts": [
             "background/index.js"
@@ -27,13 +34,6 @@
     "sidebar_action": {
         "default_panel": "sidebar/sidebar.html",
         "default_icon": "icons/icon-128.png"
-    },
-    "action": {
-        "default_icon": {
-            "32": "icons/icon-32.png",
-            "128": "icons/icon-128.png"
-        },
-        "default_title": "Try Firefox"
     },
     "content_scripts": [
         {
