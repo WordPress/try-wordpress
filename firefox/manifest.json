@@ -26,19 +26,6 @@
         },
         "default_title": "Try WordPress"
     },
-    "background": {
-        "scripts": [
-            "background/index.js"
-        ]
-    },
-    "sidebar_action": {
-        "default_title": "Try WordPress",
-        "default_icon": {
-            "32": "icons/icon-32.png",
-            "128": "icons/icon-128"
-        },
-        "default_panel": "sidebar/sidebar.html"
-    },
     "content_scripts": [
         {
             "js": [
@@ -60,5 +47,18 @@
             "run_at": "document_end",
             "world": "MAIN"
         }
-    ]
+    ],
+    "background": {
+        "scripts": [
+            "background/index.js"
+        ]
+    },
+    "sidebar_action": {
+        "default_title": "Try WordPress",
+        "default_icon": {
+            "32": "icons/icon-32.png",
+            "128": "icons/icon-128"
+        },
+        "default_panel": "sidebar/sidebar.html"
+    }
 }
