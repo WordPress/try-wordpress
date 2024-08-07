@@ -1,9 +1,5 @@
-# Patterns Everywhere
-
-
-![Demo GIF of patterns everywhre](https://github.com/StevenDufresne/patterns-everywhere/blob/trunk/assets/copy-paste-wordpress-example.gif)
-
-This is the repository for a chrome extension that allow users to copy HTML and paste it into Gutenberg. 
+# Try WordPress
+Data Liberation browser extension powered by WordPress Playground.
 
 It is composed of 3 main parts:
 - `/background` The service worker.
