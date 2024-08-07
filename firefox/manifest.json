@@ -15,6 +15,10 @@
     "host_permissions": [
         "*://*/*"
     ],
+    "icons": {
+        "32": "icons/icon-32.png",
+        "128": "icons/icon-128.png"
+    },
     "background": {
         "scripts": [
             "background/index.js"
@@ -30,10 +34,6 @@
             "128": "icons/icon-128.png"
         },
         "default_title": "Try Firefox"
-    },
-    "icons": {
-        "32": "icons/icon-32.png",
-        "128": "icons/icon-128.png"
     },
     "content_scripts": [
         {
