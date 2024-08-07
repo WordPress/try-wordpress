@@ -3,14 +3,6 @@
     "name": "Try WordPress",
     "description": "An extension that liberates your data into WordPress",
     "version": "0.0.1",
-    "icons":
-    {
-        "32": "icons/icon-32.png",
-        "128": "icons/icon-128.png"
-    },
-    "options_page": "settings/settings.html",
-    "action":
-    {},
     "permissions":
     [
         "tabs",
@@ -25,6 +17,13 @@
     [
         "*://*/*"
     ],
+    "icons":
+    {
+        "32": "icons/icon-32.png",
+        "128": "icons/icon-128.png"
+    },
+    "options_page": "settings/settings.html",
+    "action": {},
     "background":
     {
         "service_worker": "background/index.js"
