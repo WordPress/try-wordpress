@@ -30,12 +30,12 @@
         "service_worker": "background/index.js"
     },
     "side_panel": {
-        "default_path": "sidebar/sidebar.html",
+        "default_title": "Try WordPress",
         "default_icon": {
             "32": "icons/icon-32.png",
             "128": "icons/icon-128"
         },
-        "default_title": "My Sidebar"
+        "default_path": "sidebar/sidebar.html"
     },
     "content_scripts": [
         {
