@@ -3,8 +3,7 @@
     "name": "Try WordPress",
     "description": "An extension that liberates your data into WordPress",
     "version": "0.0.1",
-    "permissions":
-    [
+    "permissions": [
         "tabs",
         "activeTab",
         "storage",
@@ -13,50 +12,43 @@
         "sidePanel",
         "downloads"
     ],
-    "host_permissions":
-    [
+    "host_permissions": [
         "*://*/*"
     ],
-    "background":
-    {
-        "scripts": ["background/index.js"]
+    "background": {
+        "scripts": [
+            "background/index.js"
+        ]
     },
-    "sidebar_action":
-    {
+    "sidebar_action": {
         "default_panel": "sidebar/sidebar.html",
         "default_icon": "icons/icon-128.png"
     },
     "action": {
-      "default_icon": {
+        "default_icon": {
+            "32": "icons/icon-32.png",
+            "128": "icons/icon-128.png"
+        },
+        "default_title": "Try Firefox"
+    },
+    "icons": {
         "32": "icons/icon-32.png",
         "128": "icons/icon-128.png"
     },
-    "default_title": "Try Firefox"
-},
-    "icons":
-    {
-        "32": "icons/icon-32.png",
-        "128": "icons/icon-128.png"
-    },
-    "content_scripts":
-    [
+    "content_scripts": [
         {
-            "js":
-            [
+            "js": [
                 "content/index.js"
             ],
-            "matches":
-            [
+            "matches": [
                 "<all_urls>"
             ]
         },
         {
-            "js":
-            [
+            "js": [
                 "wp-plugin/index.js"
             ],
-            "matches":
-            [
+            "matches": [
                 "http://*/wp-admin/post.php?*",
                 "https://*/wp-admin/post.php?*",
                 "http://*/wp-admin/post-new.php*"
