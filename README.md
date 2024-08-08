@@ -10,8 +10,8 @@ It is composed of 3 main parts:
 ## Setup
 ### Scripts
 1. `npm install` Install dependencies.
-1. `npm build` Compiles JavaScript into `build` folder.
-1. `npm test` Run test suites.
+1. `npm run build` Compiles JavaScript into `build` folder.
+1. `npm run test` Run test suites.
 
 ## Project Structure
 ### `/background`
