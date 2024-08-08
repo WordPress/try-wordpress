@@ -15,6 +15,14 @@ module.exports = function (env) {
                     path: targetPath,
                     filename: path.join('background', 'index.js'),
                 },
+                plugins: [
+                    new CopyPlugin({
+                        patterns: [
+                            {from: `./src/manifest-${target}.json`, to: path.join(targetPath, 'manifest.json')},
+                            {from: './src/icons', to: path.join(targetPath, 'icons')},
+                        ],
+                    }),
+                ],
             },
             {
                 mode,
