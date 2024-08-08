@@ -34,18 +34,6 @@
             "matches": [
                 "<all_urls>"
             ]
-        },
-        {
-            "js": [
-                "wp-plugin/index.js"
-            ],
-            "matches": [
-                "http://*/wp-admin/post.php?*",
-                "https://*/wp-admin/post.php?*",
-                "http://*/wp-admin/post-new.php*"
-            ],
-            "run_at": "document_end",
-            "world": "MAIN"
         }
     ],
     "background": {
