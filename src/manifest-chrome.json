@@ -1,0 +1,50 @@
+{
+    "manifest_version": 3,
+    "name": "Try WordPress",
+    "description": "An extension that liberates your data into WordPress",
+    "version": "0.0.1",
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "storage",
+        "scripting",
+        "pageCapture",
+        "sidePanel",
+        "downloads"
+    ],
+    "host_permissions": [
+        "*://*/*"
+    ],
+    "icons": {
+        "32": "icons/icon-32.png",
+        "128": "icons/icon-128.png"
+    },
+    "action": {
+        "default_icon": {
+            "32": "icons/icon-32.png",
+            "128": "icons/icon-128.png"
+        },
+        "default_title": "Try WordPress"
+    },
+    "content_scripts": [
+        {
+            "js": [
+                "content/index.js"
+            ],
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "background": {
+        "service_worker": "background/index.js"
+    },
+    "side_panel": {
+        "default_title": "Try WordPress",
+        "default_icon": {
+            "32": "icons/icon-32.png",
+            "128": "icons/icon-128"
+        },
+        "default_path": "sidebar/sidebar.html"
+    }
+}

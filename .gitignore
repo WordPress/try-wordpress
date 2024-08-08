@@ -1,7 +1,5 @@
-.DS_Store
-
 chrome/
 firefox/
 node_modules/
-
-test-results
+test-results/
+build/
