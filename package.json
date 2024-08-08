@@ -1,7 +1,6 @@
 {
 	"scripts": {
 		"build": "webpack",
-		"build:production": "webpack --env env=production",
 		"watch": "webpack --watch",
 		"lint:js": "wp-scripts lint-js",
 		"format": "wp-scripts format",
