@@ -40,6 +40,7 @@
             "32": "icons/icon-32.png",
             "128": "icons/icon-128"
         },
-        "default_panel": "sidebar/sidebar.html"
+        "default_panel": "sidebar/sidebar.html",
+        "open_at_install": false
     }
 }
