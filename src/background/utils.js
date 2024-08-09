@@ -62,29 +62,3 @@ export const getToggleState = ( callback ) => {
 		callback( isEnabled );
 	} );
 };
-
-export const captureAndDownloadPageAsMHTML = () => {
-	// Query for the currently active tab
-	chrome.tabs.query(
-		{ active: true, currentWindow: true },
-		function ( tabs ) {
-			// Get the first tab from the query result (it should be the active tab)
-			const tab = tabs[ 0 ];
-
-			// Capture the page as MHTML
-			chrome.pageCapture.saveAsMHTML(
-				{ tabId: tab.id },
-				async ( mhtmlData ) => {
-					const content = await mhtmlData.text();
-					const url =
-						'data:application/x-mimearchive;base64,' +
-						btoa( content );
-					chrome.downloads.download( {
-						url,
-						filename: 'filename.mhtml',
-					} );
-				}
-			);
-		}
-	);
-};
