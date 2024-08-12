@@ -1,11 +1,11 @@
 iframe {
 	height: 100vh;
 }
-#content > div {
+#top-bar {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 }
-.new-window {
+#top-bar > a {
 	float: right;
 }
