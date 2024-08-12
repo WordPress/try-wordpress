@@ -1,26 +1,14 @@
-/* global chrome */
-
-import {
-	setToggleState,
-	setToggleView,
-	togglePlugin,
-	getToggleState,
-} from './utils.js';
-
-chrome.action.onClicked.addListener( () => {
-	getToggleState( ( currentState ) => {
-		setToggleView( ! currentState );
-		togglePlugin( ! currentState );
-
-		// Flip the state and save it
-		setToggleState( ! currentState );
-	} );
-} );
-
-chrome.tabs.onUpdated.addListener( function ( tabId, changeInfo ) {
-	if ( changeInfo.status === 'unloaded' ) {
-		// Turn off the plugin on page load
-		setToggleView( false );
-		setToggleState( false );
-	}
-} );
+// Open the sidebar when clicking on the extension icon.
+if (typeof chrome.sidePanel !== 'undefined') {
+    // Chrome.
+    chrome.sidePanel
+        .setPanelBehavior({ openPanelOnActionClick: true })
+        .catch((error) => console.error(error));
+} else if (typeof browser.sidebarAction !== 'undefined') {
+    // Firefox.
+    browser.action.onClicked.addListener(() => {
+        browser.sidebarAction.toggle();
+    });
+} else {
+    console.error('unsupported browser');
+}

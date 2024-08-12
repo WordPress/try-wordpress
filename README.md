@@ -1,103 +1,36 @@
 # Try WordPress
 Data Liberation browser extension powered by WordPress Playground.
 
-It is composed of 3 main parts:
-- `/background` The service worker.
-- `/content` The functionality that copies the HTML and formats it for pasting.
-- `/wp-plugin` Some modifications that run when using the block editor to make copy/pasting possible.
+## Development environment
+This repo provides a development environment that facilitates developing the browser extension, using the [`web-ext`](https://extensionworkshop.com/documentation/develop/getting-started-with-web-ext/) tool.
 
+First install required dependencies:
 
-## Setup
-### Scripts
-1. `npm install` Install dependencies.
-1. `npm run build` Build extension into `build` folder.
-1. `npm run watch` Automatically build whenever source files change.
-1. `npm run test` Run test suites.
-
-## Project Structure
-### `/background`
-
-In Chrome extensions, the service worker, introduced with Manifest V3, acts as a background script that runs independently of the extension's UI. It handles various background tasks such as event handling, network request management, alarms, and inter-component communication, while being more efficient and secure than the previous background pages. Service workers are event-driven and activate only when needed, which conserves resources and improves performance. This shift enhances the reliability, efficiency, and security of Chrome extensions.
- 
-### `/content`
-
-This is the Interface for copying HTML and adding it to the clipboard.
-
-### `/wp-plugin`
-
-Ideally these modifications would ship with Gutenberg in the future but since this is still experimental, this plugin is loaded when viewing the block editor and we register a block so we can handle `raw` transforms. In the future, it would be more ideal to ship this in Gutenberg closer to the [source code](https://github.com/WordPress/gutenberg/tree/1240294d1c81bf50bd9383b7f1973cc16fa13a4a/packages/blocks/src/api/raw-handling).
-
-## How to install this extension on your computer
-### Open Chrome Extensions Page:
-Open Google Chrome and go to the extensions page by either:
-
-- Typing chrome://extensions/ in the address bar, or
-- Clicking the three-dot menu in the top-right corner, selecting "More tools," and then "Extensions."
-
-### Enable Developer Mode:
-
-On the extensions page, toggle the "Developer mode" switch in the top-right corner to enable developer mode. This will allow you to load unpacked extensions.
-
-### Load Unpacked Extension:
-
-Once developer mode is enabled, three new buttons will appear near the top of the page: "Load unpacked," "Pack extension," and "Update."
-
-- Click the "Load unpacked" button.
-- In the file dialog that opens, navigate to the directory where your extension files are located and select it.
-
-## Where to paste?
-
-You can visit the options page and it should load WordPress playground with a patched version of gutenberg that will handle the pasting.
-
-### How to view the option page
-- Right click on the extension icon
-- Select "options"
-
-## Known Issues:
-
-### We can't handle `<ul>/<ol>` with content in it
-
-This won't work:
-
-```html
-<ul>
-    <li><h2>Something</h2></li>
-</ul>    
-
+```shell
+npm install
 ```
 
-Potential Fix: Write our own transform
+You can then use the `start:firefox` or `start:chrome` scripts to start an instance of the browser separate from your main instance that has the extension automatically installed:
 
-### We can't handle `<a>` with content in it
-
-This won't work:
-
-```html
-    <a>
-        <h2>Something</h2>
-        <p>Content</p>
-    </a>    
-
+```shell
+npm run start:firefox
 ```
 
-Potential Fix: Write our own transform.
+The extension will also be automatically reloaded whenever you modify source files.
 
-### Font styles are not being applied
+> Please note that at the moment not all `web-ext` features work on chrome, so firefox is the recommended browser for developing this project, since it provides the best developer experience. One example of a `web-ext` feature that doesn't currently work on chrome is to have the developer tools and extension console automatically open when the extension loads.
 
-This is not working even though there is code that makes it seem like it is.
 
-### `<button>` is not converted to block
+## Building for production
+You can build both the firefox and chrome versions of the extension with the following command. The resulting files will be under the `build/firefox` and `build/chrome` directories, respectively.
 
-There isn't a transform for this yet.
+```shell
+npm run build
+```
 
-### It doesn't do well with responsive design
+## Running tests
+You can run tests with:
 
-True.
-
-### It doesn't support SVGs
-
-I think we'll need a block for this.
-
-### Copying can be slow
-
-If there are alot of DOM elements, it can be slow because it's processing everything all at once. Future problem to fix.
+```shell
+npm run test
+```

@@ -2,11 +2,16 @@
 	"scripts": {
 		"build": "webpack",
 		"watch": "webpack --watch",
+		"start:firefox": "concurrently \"npm:watch\" \"npm:web-ext:run:firefox\"",
+		"start:chrome": "concurrently \"npm:watch\" \"npm:web-ext:run:chrome\"",
+		"web-ext:run:firefox": "web-ext -s build/firefox run --target firefox-desktop --firefox-profile try-wordpress",
+		"web-ext:run:chrome": "web-ext -s build/chrome run --target chromium --chromium-profile try-wordpress --arg='--disable-search-engine-choice-screen'",
 		"lint:js": "wp-scripts lint-js",
 		"format": "wp-scripts format",
 		"test": "jest --config=jest.config.js",
 		"test:e2e:build": "wp-scripts build src/content/utils/dom.js --output-path=tests/e2e/build",
-		"test:e2e": "npx playwright test tests/e2e/index.spec.js"
+		"test:e2e": "npx playwright test tests/e2e/index.spec.js",
+		"web-ext": "web-ext"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.24.5",
@@ -16,12 +21,14 @@
 		"@wordpress/hooks": "^3.58.0",
 		"@wordpress/scripts": "^27.9.0",
 		"babel-jest": "^29.7.0",
+		"concurrently": "^8.2.2",
 		"copy-webpack-plugin": "^12.0.2",
 		"jest": "^29.7.0",
 		"jest-environment-jsdom": "^29.7.0",
 		"jsdom": "^24.1.0",
 		"linkedom": "^0.18.0",
 		"mhtml2html": "^3.0.0",
-		"playwright": "^1.44.1"
+		"playwright": "^1.44.1",
+		"web-ext": "^8.2.0"
 	}
 }

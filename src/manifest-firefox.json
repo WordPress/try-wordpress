@@ -4,13 +4,6 @@
     "description": "An extension that liberates your data into WordPress",
     "version": "0.0.1",
     "permissions": [
-        "tabs",
-        "activeTab",
-        "storage",
-        "scripting",
-        "pageCapture",
-        "sidePanel",
-        "downloads"
     ],
     "host_permissions": [
         "*://*/*"
@@ -47,6 +40,7 @@
             "32": "icons/icon-32.png",
             "128": "icons/icon-128"
         },
-        "default_panel": "sidebar/sidebar.html"
+        "default_panel": "sidebar/sidebar.html",
+        "open_at_install": false
     }
 }
