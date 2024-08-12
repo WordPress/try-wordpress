@@ -2,6 +2,8 @@
 	"scripts": {
 		"build": "webpack",
 		"watch": "webpack --watch",
+		"web-ext:run:firefox": "web-ext -s build/firefox run --target firefox-desktop --firefox-profile try-wordpress",
+		"web-ext:run:chrome": "web-ext -s build/chrome run --target chromium --chromium-profile try-wordpress --arg='--disable-search-engine-choice-screen'",
 		"lint:js": "wp-scripts lint-js",
 		"format": "wp-scripts format",
 		"test": "jest --config=jest.config.js",
