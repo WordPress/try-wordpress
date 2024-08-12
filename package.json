@@ -6,7 +6,8 @@
 		"format": "wp-scripts format",
 		"test": "jest --config=jest.config.js",
 		"test:e2e:build": "wp-scripts build src/content/utils/dom.js --output-path=tests/e2e/build",
-		"test:e2e": "npx playwright test tests/e2e/index.spec.js"
+		"test:e2e": "npx playwright test tests/e2e/index.spec.js",
+		"web-ext": "web-ext"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.24.5",
@@ -22,6 +23,7 @@
 		"jsdom": "^24.1.0",
 		"linkedom": "^0.18.0",
 		"mhtml2html": "^3.0.0",
-		"playwright": "^1.44.1"
+		"playwright": "^1.44.1",
+		"web-ext": "^8.2.0"
 	}
 }
