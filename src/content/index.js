@@ -124,6 +124,7 @@ const insertViaWpRestApi = async () => {
 };
 let importPercent = 1;
 
+/*
 const insertSingleViaWpRestApi = async ( id ) => {
 	const url = `/wp-json/wp/v2/${ id }`;
 	const response = await fetch( url );
@@ -150,6 +151,7 @@ const insertSingleViaWpRestApi = async ( id ) => {
 		code,
 	} );
 };
+*/
 
 const setWpSiteInfo = async () => {
 	const response = await fetch( `/wp-json/` );
