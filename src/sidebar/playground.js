@@ -1,15 +1,19 @@
+/* global HTMLIFrameElement */
+
 import { startPlaygroundWeb } from '@wp-playground/client';
 
 export async function initPlayground( iframeId ) {
-    const iframe = document.getElementById( iframeId );
-    if ( ! ( iframe instanceof HTMLIFrameElement ) ) {
-        throw Error( 'Playground container element must be an iframe' );
-    }
-    if ( iframe.src !== '' ) {
-        throw Error( 'Playground container iframe must not have the src attribute set' );
-    }
+	const iframe = document.getElementById( iframeId );
+	if ( ! ( iframe instanceof HTMLIFrameElement ) ) {
+		throw Error( 'Playground container element must be an iframe' );
+	}
+	if ( iframe.src !== '' ) {
+		throw Error(
+			'Playground container iframe must not have the src attribute set'
+		);
+	}
 
-    const options = {
+	const options = {
 		iframe,
 		remoteUrl:
 			'https://playground.wordpress.net/remote.html?storage=browser',
