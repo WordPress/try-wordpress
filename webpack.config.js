@@ -42,10 +42,10 @@ module.exports = function () {
 			},
 			{
 				mode,
-				entry: './src/sidebar/sidebar.js',
+				entry: './src/sidebar/index.js',
 				output: {
 					path: targetPath,
-					filename: path.join( 'sidebar', 'sidebar.js' ),
+					filename: path.join( 'sidebar', 'index.js' ),
 				},
 				plugins: [
 					new CopyPlugin( {

@@ -1,5 +1,7 @@
 {
-    "extends": [ "plugin:@wordpress/eslint-plugin/recommended" ],
+    "extends": [
+        "plugin:@wordpress/eslint-plugin/recommended"
+    ],
     "plugins": [
         "jest"
     ],
@@ -7,6 +9,8 @@
         "jest/globals": true
     },
     "rules": {
-        "no-console": ["off"]
+        "no-console": [
+            "off"
+        ]
     }
 }

@@ -28,7 +28,7 @@ body {
 	fill: #a4a4a4;
 }
 
-#wp {
+#playground {
 	flex-grow: 1;
 	border: none;
 	margin: 0;
