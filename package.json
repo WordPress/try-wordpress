@@ -30,5 +30,8 @@
 		"mhtml2html": "^3.0.0",
 		"playwright": "^1.44.1",
 		"web-ext": "^8.2.0"
+	},
+	"dependencies": {
+		"@wp-playground/client": "^0.9.29"
 	}
 }
