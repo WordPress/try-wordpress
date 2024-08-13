@@ -1,7 +1,4 @@
 import { test } from '@playwright/test';
-import { serialize } from '@wordpress/blocks';
-import { recurseDOM } from '../../src/wp-plugin/index';
-
 const { JSDOM } = require( 'jsdom' );
 
 const { window } = new JSDOM( `<!DOCTYPE html><p>Hello world</p>` );
@@ -42,7 +39,7 @@ test( 'has title', async ( { page } ) => {
 	await page.goto( 'https://wordpress.org' );
 
 	// Get the markup
-	const html = await page.evaluate( () => {
+	await page.evaluate( () => {
 		const firstChild = document.body;
 
 		return window.__PatternEverywhere.getContentsToCopy(
@@ -54,13 +51,4 @@ test( 'has title', async ( { page } ) => {
 	await page
 		.locator( 'body' )
 		.screenshot( { path: 'screenshot-initial.png' } );
-
-	// Get the pattern
-	const { window } = new JSDOM( html );
-	const result = recurseDOM( window.document.body.firstChild );
-	const pattern = serialize( result );
-
-	console.log( pattern );
-
-	// TO DO: Get a screenshot of the pattern
 } );

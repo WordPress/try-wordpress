@@ -1,46 +1,55 @@
 if ( document.getElementById( 'data-liberation-import' ) ) {
-	document.getElementById( 'data-liberation-import' ).addEventListener( 'click', function() {
-		const progressContainer = document.getElementById( 'progress-container' );
-		progressContainer.style.display = 'block';
+	document
+		.getElementById( 'data-liberation-import' )
+		.addEventListener( 'click', function () {
+			const progressContainer =
+				document.getElementById( 'progress-container' );
+			progressContainer.style.display = 'block';
 
-		const progressBar = document.getElementById( 'progress-bar' );
-		const progressText = document.getElementById( 'progress-text' );
-		progressBar.style.width = '1%';
-		progressText.textContent = '1%';
+			const progressBar = document.getElementById( 'progress-bar' );
+			const progressText = document.getElementById( 'progress-text' );
+			progressBar.style.width = '1%';
+			progressText.textContent = '1%';
 
-		window.parent.postMessage({
-				type: 'relay',
-				data: {
-					type: 'data-liberation-message',
-					action: 'start-import'
-				}
-			}, '*' );
+			window.parent.postMessage(
+				{
+					type: 'relay',
+					data: {
+						type: 'data-liberation-message',
+						action: 'start-import',
+					},
+				},
+				'*'
+			);
 
-		window.addEventListener( 'message', function( event ) {
-			console.log( event );
-			if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
-				return;
-			}
-			const data = event.data.data;
-
-			if ( typeof data.percent !== 'undefined' ) {
-				const percent = data.percent;
-				if ( data.percent < parseInt( progressBar.style.width ) ) {
+			window.addEventListener( 'message', function ( event ) {
+				console.log( event );
+				if (
+					typeof event.data !== 'object' ||
+					event.data.type !== 'relay'
+				) {
 					return;
 				}
+				const data = event.data.data;
 
-				progressBar.style.width = percent + '%';
-				progressText.textContent = percent + '%';
+				if ( typeof data.percent !== 'undefined' ) {
+					const percent = data.percent;
+					if ( data.percent < parseInt( progressBar.style.width ) ) {
+						return;
+					}
 
-				if ( percent >= 100 ) {
-					progressBar.className = 'done';
-					progressText.textContent = 'Import Complete!';
+					progressBar.style.width = percent + '%';
+					progressText.textContent = percent + '%';
+
+					if ( percent >= 100 ) {
+						progressBar.className = 'done';
+						progressText.textContent = 'Import Complete!';
+					}
 				}
-			}
-		});
-	} );
+			} );
+		} );
 
-	window.addEventListener( 'message', function( event ) {
+	window.addEventListener( 'message', function ( event ) {
 		console.log( event );
 		if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
 			return;
@@ -76,10 +85,12 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 		}
 
 		if ( typeof data.removeStepId !== 'undefined' ) {
-			let stepElement = document.getElementById( 'step-' + data.removeStepId );
+			const stepElement = document.getElementById(
+				'step-' + data.removeStepId
+			);
 			if ( stepElement ) {
 				stepElement.parentNode.removeChild( stepElement );
 			}
 		}
-	});
+	} );
 }

@@ -6,20 +6,22 @@ h2 {
 #todo-list {
 	margin-left: 1em;
 }
+
 #todo-list li {
 	list-style-type: none;
 }
+
 #todo-list li.completed {
 	color: #777;
 }
 
-#todo-list li:before {
+#todo-list li::before {
 	content: "☐ ";
 	font-size: 1.2em;
 	color: #ccc;
 }
 
-#todo-list li.completed:before {
+#todo-list li.completed::before {
 	content: "✓ ";
 	font-size: 1.2em;
 	color: #0c0;
@@ -39,6 +41,7 @@ h2 {
 	transition: width 0.3s;
 	width: 2px;
 }
+
 #progress-bar.done {
 	border-radius: 3px;
 	width: 100%;

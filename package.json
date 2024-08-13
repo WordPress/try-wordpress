@@ -6,12 +6,15 @@
 		"start:chrome": "concurrently \"npm:watch\" \"npm:web-ext:run:chrome\"",
 		"web-ext:run:firefox": "web-ext -s build/firefox run --target firefox-desktop --firefox-profile try-wordpress",
 		"web-ext:run:chrome": "web-ext -s build/chrome run --target chromium --chromium-profile try-wordpress --arg='--disable-search-engine-choice-screen'",
+		"lint": "npm run lint:js && npm run lint:style",
 		"lint:js": "wp-scripts lint-js",
+		"lint:style": "wp-scripts lint-style",
 		"format": "wp-scripts format",
 		"test": "jest --config=jest.config.js",
 		"test:e2e:build": "wp-scripts build src/content/utils/dom.js --output-path=tests/e2e/build",
 		"test:e2e": "npx playwright test tests/e2e/index.spec.js",
-		"web-ext": "web-ext"
+		"web-ext": "web-ext",
+		"wp-scripts": "wp-scripts"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.24.5",
