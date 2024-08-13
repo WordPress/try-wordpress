@@ -4,11 +4,14 @@ body {
 }
 #top-bar {
 	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
+	padding: 5px 10px 0;
+	background-color: rgb(29, 35, 39);
 }
 #top-bar > a {
-	float: right;
+	margin-left: auto;
+}
+#top-bar > a > svg {
+	fill: #a4a4a4;
 }
 iframe {
 	border: none;
