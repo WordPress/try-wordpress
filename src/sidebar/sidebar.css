@@ -1,11 +1,35 @@
-iframe {
-	height: 100vh;
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0
 }
-#content > div {
+
+#content {
 	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
-.new-window {
-	float: right;
+
+#top-bar {
+	display: flex;
+	padding: 5px 10px 0;
+	background-color: rgb(29, 35, 39);
+}
+
+#top-bar > a {
+	margin-left: auto;
+}
+
+#top-bar > a > svg {
+	fill: #a4a4a4;
+}
+
+#wp {
+	flex-grow: 1;
+	border: none;
+	margin: 0;
+	padding: 0;
 }
