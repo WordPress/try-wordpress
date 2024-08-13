@@ -2,7 +2,7 @@
 
 import { initPlayground } from './playground';
 
-const iframeId = 'wp';
+const iframeId = 'playground';
 window.playground = await initPlayground( iframeId );
 
 const relayToPlayground = function ( response ) {
