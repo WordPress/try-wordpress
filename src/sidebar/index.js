@@ -2,12 +2,13 @@
 
 import { initPlayground } from './playground';
 
-window.playground = await initPlayground( 'wp' );
+const iframeId = 'wp';
+window.playground = await initPlayground( iframeId );
 
 const relayToPlayground = function ( response ) {
 	console.log( response, chrome.runtime.lastError );
 	if ( response && response.stepId ) {
-		document.getElementById( 'wp' ).contentWindow.postMessage(
+		document.getElementById( iframeId ).contentWindow.postMessage(
 			{
 				type: 'relay',
 				data: response,
@@ -30,7 +31,7 @@ window.addEventListener( 'message', function ( event ) {
 		return;
 	}
 	if ( 'start-import' === data.action ) {
-		document.getElementById( 'wp' ).contentWindow.postMessage(
+		document.getElementById( iframeId ).contentWindow.postMessage(
 			{
 				type: 'relay',
 				data: {
