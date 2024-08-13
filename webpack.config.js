@@ -1,7 +1,7 @@
 const path = require( 'node:path' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
 
-module.exports = function ( env ) {
+module.exports = function () {
 	// We must always build for production because the development builds will have unsafe-eval in the code, which the
 	// browsers don't like.
 	const mode = 'production';
