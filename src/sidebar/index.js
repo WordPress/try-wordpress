@@ -2,8 +2,7 @@
 
 import { initPlayground } from './playground';
 
-const iframe = document.getElementById( 'wp' );
-window.playground = await initPlayground( iframe );
+window.playground = await initPlayground( 'wp' );
 
 const relayToPlayground = function ( response ) {
 	console.log( response, chrome.runtime.lastError );

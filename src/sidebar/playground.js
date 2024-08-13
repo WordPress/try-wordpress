@@ -1,7 +1,15 @@
 import { startPlaygroundWeb } from '@wp-playground/client';
 
-export async function initPlayground( iframe ) {
-	const options = {
+export async function initPlayground( iframeElementId ) {
+    const iframe = document.getElementById( iframeElementId );
+    if ( ! ( iframe instanceof HTMLIFrameElement ) ) {
+        throw Error( 'Playground container element must be an iframe' );
+    }
+    if ( iframe.src !== '' ) {
+        throw Error( 'Playground container iframe must not have the src attribute set' );
+    }
+
+    const options = {
 		iframe,
 		remoteUrl:
 			'https://playground.wordpress.net/remote.html?storage=browser',
