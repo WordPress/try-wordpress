@@ -1,0 +1,22 @@
+name: Linting
+
+on:
+  pull_request:
+    types: [ opened, synchronize ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Lint js
+        run: npm run lint:js
+
+      - name: Lint styles
+        run: npm run lint:style
