@@ -1,4 +1,4 @@
-import { startPlaygroundWeb } from './playground-client.js';
+import { startPlaygroundWeb } from '@wp-playground/client';
 
 const iframe = document.getElementById("wp");
 const settings = {
