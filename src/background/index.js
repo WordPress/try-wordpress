@@ -1,3 +1,6 @@
+/* global chrome */
+/* global browser */
+
 // Open the sidebar when clicking on the extension icon.
 if ( typeof chrome.sidePanel !== 'undefined' ) {
 	// Chrome.

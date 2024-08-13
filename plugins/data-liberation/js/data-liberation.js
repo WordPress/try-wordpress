@@ -85,7 +85,7 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 		}
 
 		if ( typeof data.removeStepId !== 'undefined' ) {
-			let stepElement = document.getElementById(
+			const stepElement = document.getElementById(
 				'step-' + data.removeStepId
 			);
 			if ( stepElement ) {

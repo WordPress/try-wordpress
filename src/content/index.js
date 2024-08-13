@@ -1,3 +1,5 @@
+/* global chrome */
+
 import {
 	addUserControls,
 	addStyle,
@@ -50,7 +52,7 @@ const wpInsertPost = ( data ) => {
 	let code = "<?php require_once 'wordpress/wp-load.php';\n";
 	code += 'echo wp_insert_post(\n';
 	code += '[\n';
-	for ( let key in data ) {
+	for ( const key in data ) {
 		code +=
 			"'" + key + "'=>'" + data[ key ].replace( /'/g, "\\'" ) + "',\n";
 	}
@@ -76,17 +78,17 @@ const isWordPress = () => {
 };
 
 const insertViaWpRestApi = async () => {
-	const post_types = {
+	const postTypes = {
 		post: '/wp-json/wp/v2/posts',
 		// 'page': '/wp-json/wp/v2/pages',
 	};
-	for ( const post_type in post_types ) {
-		console.log( post_types[ post_type ] );
+	for ( const postType in postTypes ) {
+		console.log( postTypes[ postType ] );
 		let page = 1,
 			total = 1;
 		do {
 			const response = await fetch(
-				post_types[ post_type ] + '?page=' + page
+				postTypes[ postType ] + '?page=' + page
 			);
 			total = Math.min( 10, response.headers.get( 'X-WP-Totalpages' ) );
 			const items = await response.json();
@@ -162,7 +164,6 @@ const setWpSiteInfo = async () => {
 	} );
 };
 
-/* global chrome */
 chrome.runtime.onMessage.addListener(
 	function ( message, sender, sendResponse ) {
 		if ( ! message.sender || message.sender !== MESSAGE_NAMESPACE ) {

@@ -1,3 +1,5 @@
+/* global chrome */
+
 import { startPlaygroundWeb } from '@wp-playground/client';
 
 const iframe = document.getElementById( 'wp' );
@@ -87,14 +89,12 @@ window.addEventListener( 'message', function ( event ) {
 
 const MESSAGE_NAMESPACE = 'TRY_WORDPRESS';
 
-chrome.runtime.onMessage.addListener(
-	function ( message, sender, sendResponse ) {
-		if ( ! message.sender || message.sender !== MESSAGE_NAMESPACE ) {
-			return;
-		}
-		relayToPlayground( message );
+chrome.runtime.onMessage.addListener( function ( message ) {
+	if ( ! message.sender || message.sender !== MESSAGE_NAMESPACE ) {
+		return;
 	}
-);
+	relayToPlayground( message );
+} );
 const startImport = function () {
 	chrome.tabs.query(
 		{ active: true, currentWindow: true },
