@@ -45,17 +45,16 @@ function onMouseOut( event ) {
 	removeStyle( event.target );
 }
 
-
-
 const wpInsertPost = ( data ) => {
 	data.post_status = 'publish';
 	let code = "<?php require_once 'wordpress/wp-load.php';\n";
-	code += "echo wp_insert_post(\n";
-	code += "[\n";
+	code += 'echo wp_insert_post(\n';
+	code += '[\n';
 	for ( let key in data ) {
-		code += "'" + key + "'=>'" + data[key].replace(/'/g, "\\'" ) + "',\n";
+		code +=
+			"'" + key + "'=>'" + data[ key ].replace( /'/g, "\\'" ) + "',\n";
 	}
-	code += "]);";
+	code += ']);';
 
 	return code;
 };
@@ -65,27 +64,30 @@ const isWordPress = () => {
 	if ( post ) {
 		// get the id from the css class post-<id>
 		const id = post.className.match( /post-(\d+)/ );
-		return 'posts/' + id[1];
+		return 'posts/' + id[ 1 ];
 	}
 	const page = document.querySelector( 'article.page' );
 	if ( page ) {
 		// get the id from the css class post-<id>
 		const id = page.className.match( /post-(\d+)/ );
-		return 'pages/' + id[1];
+		return 'pages/' + id[ 1 ];
 	}
 	return false;
 };
 
 const insertViaWpRestApi = async () => {
 	const post_types = {
-		'post': '/wp-json/wp/v2/posts',
+		post: '/wp-json/wp/v2/posts',
 		// 'page': '/wp-json/wp/v2/pages',
 	};
 	for ( const post_type in post_types ) {
 		console.log( post_types[ post_type ] );
-		let page = 1, total = 1;
+		let page = 1,
+			total = 1;
 		do {
-			const response = await fetch( post_types[ post_type ] + '?page=' + page );
+			const response = await fetch(
+				post_types[ post_type ] + '?page=' + page
+			);
 			total = Math.min( 10, response.headers.get( 'X-WP-Totalpages' ) );
 			const items = await response.json();
 			for ( const i in items ) {
@@ -96,27 +98,32 @@ const insertViaWpRestApi = async () => {
 					post_date: data.date,
 					post_type: data.type,
 				} );
-				importPercent += .4;
+				importPercent += 0.4;
 				chrome.runtime.sendMessage( {
 					sender: MESSAGE_NAMESPACE,
 					stepId: 'imported-' + data.id,
-					stepText: 'Imported ' + ( data.title.rendered || data.excerpt?.rendered.replace( /<[^>]+/g, '' ).substring( 0, 20 ) + '...' ),
+					stepText:
+						'Imported ' +
+						( data.title.rendered ||
+							data.excerpt?.rendered
+								.replace( /<[^>]+/g, '' )
+								.substring( 0, 20 ) + '...' ),
 					stepCssClass: 'completed',
 					percent: Math.floor( importPercent ),
-					code
+					code,
 				} );
 			}
 		} while ( page++ < total );
 	}
 	chrome.runtime.sendMessage( {
 		sender: MESSAGE_NAMESPACE,
-		percent: 100
+		percent: 100,
 	} );
-}
+};
 let importPercent = 1;
 
 const insertSingleViaWpRestApi = async ( id ) => {
-	const url = `/wp-json/wp/v2/${id}`;
+	const url = `/wp-json/wp/v2/${ id }`;
 	const response = await fetch( url );
 	const data = await response.json();
 
@@ -130,10 +137,15 @@ const insertSingleViaWpRestApi = async ( id ) => {
 	chrome.runtime.sendMessage( {
 		sender: MESSAGE_NAMESPACE,
 		stepId: 'imported-post',
-		stepText: 'Imported ' + ( data.title.rendered || data.excerpt?.rendered.replace( /<[^>]+/g, '' ).substring( 0, 20 ) + '...' ),
+		stepText:
+			'Imported ' +
+			( data.title.rendered ||
+				data.excerpt?.rendered
+					.replace( /<[^>]+/g, '' )
+					.substring( 0, 20 ) + '...' ),
 		stepCssClass: 'completed',
 		percent: ++importPercent,
-		code
+		code,
 	} );
 };
 
@@ -143,7 +155,10 @@ const setWpSiteInfo = async () => {
 	chrome.runtime.sendMessage( {
 		sender: MESSAGE_NAMESPACE,
 		siteTitle: data.name,
-		code: "<?php require_once 'wordpress/wp-load.php'; update_option( 'blogname', '" + data.name.replace(/'/g, "\\'" ) + "' );"
+		code:
+			"<?php require_once 'wordpress/wp-load.php'; update_option( 'blogname', '" +
+			data.name.replace( /'/g, "\\'" ) +
+			"' );",
 	} );
 };
 
@@ -168,7 +183,7 @@ chrome.runtime.onMessage.addListener(
 					stepText: 'Detected WordPress!',
 					stepCssClass: 'completed',
 					percent: ++importPercent,
-				});
+				} );
 				setWpSiteInfo();
 				insertViaWpRestApi();
 				// insertSingleViaWpRestApi( isWordPress() );
