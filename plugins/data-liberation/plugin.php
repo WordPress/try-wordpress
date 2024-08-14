@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class DataLiberation {
+class TryWordPress {
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $this, 'create_wizard_page' ) );
@@ -38,4 +38,4 @@ class DataLiberation {
 	}
 }
 
-new DataLiberation();
+new TryWordPress();
