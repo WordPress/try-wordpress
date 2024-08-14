@@ -18,7 +18,7 @@ class DataLiberation {
 
 	public function enqueue_scripts() {
         wp_enqueue_script( 'data-liberation', plugin_dir_url( __FILE__ ) . 'index.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'index.js' ), true );
-        wp_enqueue_style( 'data-liberation', plugin_dir_url( __FILE__ ) . 'css/data-liberation.css', array(), filemtime( plugin_dir_path( __FILE__ ) . 'css/data-liberation.css' ) );
+        wp_enqueue_style( 'data-liberation', plugin_dir_url( __FILE__ ) . 'style.css', array(), filemtime( plugin_dir_path( __FILE__ ) . 'style.css' ) );
 	}
 
 	public function create_wizard_page() {
