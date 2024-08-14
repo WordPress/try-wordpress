@@ -8,75 +8,75 @@ module.exports = function () {
 
 	let modules = [];
 	for ( const target of [ 'firefox', 'chrome' ] ) {
-		const targetPath = path.resolve(
-			__dirname,
-			'build',
-			'extension',
-			target
-		);
-		modules = modules.concat( [
-			{
-				mode,
-				entry: './src/extension/background/index.js',
-				output: {
-					path: targetPath,
-					filename: path.join( 'background', 'index.js' ),
-				},
-				plugins: [
-					new CopyPlugin( {
-						patterns: [
-							{
-								from: `./src/extension/manifest-${ target }.json`,
-								to: path.join( targetPath, 'manifest.json' ),
-							},
-							{
-								from: './src/extension/icons',
-								to: path.join( targetPath, 'icons' ),
-							},
-						],
-					} ),
-				],
-			},
-			{
-				mode,
-				entry: './src/extension/content/index.js',
-				output: {
-					path: targetPath,
-					filename: path.join( 'content', 'index.js' ),
-				},
-			},
-			{
-				mode,
-				entry: './src/extension/sidebar/index.js',
-				output: {
-					path: targetPath,
-					filename: path.join( 'sidebar', 'index.js' ),
-				},
-				plugins: [
-					new CopyPlugin( {
-						patterns: [
-							{
-								from: './src/extension/sidebar/sidebar.html',
-								to: path.join(
-									targetPath,
-									'sidebar',
-									'sidebar.html'
-								),
-							},
-							{
-								from: './src/extension/sidebar/sidebar.css',
-								to: path.join(
-									targetPath,
-									'sidebar',
-									'sidebar.css'
-								),
-							},
-						],
-					} ),
-				],
-			},
-		] );
+		modules = modules.concat( extensionModules( mode, target ) );
 	}
 
 	return modules;
 };
+
+function extensionModules( mode, target ) {
+	const targetPath = path.resolve( __dirname, 'build', 'extension', target );
+
+	return [
+		{
+			mode,
+			entry: './src/extension/background/index.js',
+			output: {
+				path: targetPath,
+				filename: path.join( 'background', 'index.js' ),
+			},
+			plugins: [
+				new CopyPlugin( {
+					patterns: [
+						{
+							from: `./src/extension/manifest-${ target }.json`,
+							to: path.join( targetPath, 'manifest.json' ),
+						},
+						{
+							from: './src/extension/icons',
+							to: path.join( targetPath, 'icons' ),
+						},
+					],
+				} ),
+			],
+		},
+		{
+			mode,
+			entry: './src/extension/content/index.js',
+			output: {
+				path: targetPath,
+				filename: path.join( 'content', 'index.js' ),
+			},
+		},
+		{
+			mode,
+			entry: './src/extension/sidebar/index.js',
+			output: {
+				path: targetPath,
+				filename: path.join( 'sidebar', 'index.js' ),
+			},
+			plugins: [
+				new CopyPlugin( {
+					patterns: [
+						{
+							from: './src/extension/sidebar/sidebar.html',
+							to: path.join(
+								targetPath,
+								'sidebar',
+								'sidebar.html'
+							),
+						},
+						{
+							from: './src/extension/sidebar/sidebar.css',
+							to: path.join(
+								targetPath,
+								'sidebar',
+								'sidebar.css'
+							),
+						},
+					],
+				} ),
+			],
+		},
+	];
+}
