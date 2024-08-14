@@ -50,7 +50,7 @@ function steps() {
 			step: 'unzip',
 			zipFile: {
 				resource: 'url',
-				url: 'https://github-proxy.com/proxy/?repo=akirk/try-wordpress&branch=rename-plugin&directory=src/plugin',
+				url: 'https://github-proxy.com/proxy/?repo=akirk/try-wordpress&branch=trunk&directory=src/plugin',
 			},
 			extractToPath: '/wordpress/wp-content/plugins',
 		},
