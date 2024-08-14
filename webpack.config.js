@@ -6,13 +6,41 @@ module.exports = function () {
 	// browsers don't like.
 	const mode = 'production';
 
-	let modules = [];
+	let modules = [].concat( pluginModules( mode ) );
 	for ( const target of [ 'firefox', 'chrome' ] ) {
 		modules = modules.concat( extensionModules( mode, target ) );
 	}
 
 	return modules;
 };
+
+function pluginModules( mode ) {
+	const targetPath = path.resolve( __dirname, 'build', 'plugin' );
+
+	return [
+		{
+			mode,
+			entry: './src/plugin/scripts/index.js',
+			output: {
+				path: targetPath,
+				filename: path.join( 'scripts', 'index.js' ),
+			},
+			plugins: [
+				new CopyPlugin( {
+					patterns: [
+						{
+							from: '**/*',
+							context: 'src/plugin/',
+							globOptions: {
+								ignore: [ '**/scripts/**' ],
+							},
+						},
+					],
+				} ),
+			],
+		},
+	];
+}
 
 function extensionModules( mode, target ) {
 	const targetPath = path.resolve( __dirname, 'build', 'extension', target );
@@ -73,6 +101,16 @@ function extensionModules( mode, target ) {
 								'sidebar',
 								'sidebar.css'
 							),
+						},
+					],
+				} ),
+				// Copy the plugin into the extension directory.
+				new CopyPlugin( {
+					patterns: [
+						{
+							from: '**/*',
+							context: 'build/plugin/',
+							to: 'sidebar/plugin/',
 						},
 					],
 				} ),
