@@ -1,4 +1,4 @@
-import { getStylesString } from '../../src/content/utils/dom';
+import { getStylesString } from '../../src/extension/content/utils/dom';
 
 describe( 'Style formatting', function () {
 	test( 'Convert styles object to a string', () => {

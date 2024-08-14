@@ -8,11 +8,16 @@ module.exports = function () {
 
 	let modules = [];
 	for ( const target of [ 'firefox', 'chrome' ] ) {
-		const targetPath = path.resolve( __dirname, 'build', target );
+		const targetPath = path.resolve(
+			__dirname,
+			'build',
+			'extension',
+			target
+		);
 		modules = modules.concat( [
 			{
 				mode,
-				entry: './src/background/index.js',
+				entry: './src/extension/background/index.js',
 				output: {
 					path: targetPath,
 					filename: path.join( 'background', 'index.js' ),
@@ -21,11 +26,11 @@ module.exports = function () {
 					new CopyPlugin( {
 						patterns: [
 							{
-								from: `./src/manifest-${ target }.json`,
+								from: `./src/extension/manifest-${ target }.json`,
 								to: path.join( targetPath, 'manifest.json' ),
 							},
 							{
-								from: './src/icons',
+								from: './src/extension/icons',
 								to: path.join( targetPath, 'icons' ),
 							},
 						],
@@ -34,7 +39,7 @@ module.exports = function () {
 			},
 			{
 				mode,
-				entry: './src/content/index.js',
+				entry: './src/extension/content/index.js',
 				output: {
 					path: targetPath,
 					filename: path.join( 'content', 'index.js' ),
@@ -42,7 +47,7 @@ module.exports = function () {
 			},
 			{
 				mode,
-				entry: './src/sidebar/index.js',
+				entry: './src/extension/sidebar/index.js',
 				output: {
 					path: targetPath,
 					filename: path.join( 'sidebar', 'index.js' ),
@@ -51,7 +56,7 @@ module.exports = function () {
 					new CopyPlugin( {
 						patterns: [
 							{
-								from: 'src/sidebar/sidebar.html',
+								from: './src/extension/sidebar/sidebar.html',
 								to: path.join(
 									targetPath,
 									'sidebar',
@@ -59,7 +64,7 @@ module.exports = function () {
 								),
 							},
 							{
-								from: 'src/sidebar/sidebar.css',
+								from: './src/extension/sidebar/sidebar.css',
 								to: path.join(
 									targetPath,
 									'sidebar',
