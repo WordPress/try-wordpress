@@ -1,5 +1,6 @@
 const path = require( 'node:path' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
+const FileManagerPlugin = require( 'filemanager-webpack-plugin' );
 
 module.exports = function () {
 	// We must always build for production because the development builds will have unsafe-eval in the code, which the
@@ -36,6 +37,18 @@ function pluginModules( mode ) {
 							},
 						},
 					],
+				} ),
+				new FileManagerPlugin( {
+					events: {
+						onEnd: {
+							archive: [
+								{
+									source: 'build/plugin',
+									destination: 'build/plugin/plugin.zip',
+								},
+							],
+						},
+					},
 				} ),
 			],
 		},
