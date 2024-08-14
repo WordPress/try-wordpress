@@ -56,7 +56,7 @@ function steps() {
 		},
 		{
 			step: 'activatePlugin',
-			pluginName: 'Data Liberation',
+			pluginName: 'Try WordPress',
 			pluginPath: '/wordpress/wp-content/plugins/data-liberation',
 		},
 	];

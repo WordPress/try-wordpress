@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Data Liberation
+ * Plugin Name: Try WordPress
  * Description: Import sites to WordPress.
  * Version: 1.1
  * Author: WordPress.org
