@@ -20,7 +20,7 @@ export async function initPlayground( iframeId ) {
 		siteSlug: 'try-wordpress',
 		blueprint: {
 			login: true,
-			landingPage: '/wp-admin/admin.php?page=data-liberation',
+			landingPage: '/wp-admin/admin.php?page=try-wordpress',
 			steps: steps(),
 		},
 	};

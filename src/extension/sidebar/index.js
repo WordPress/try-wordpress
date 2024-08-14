@@ -27,7 +27,7 @@ window.addEventListener( 'message', function ( event ) {
 		return;
 	}
 	const data = event.data.data;
-	if ( 'data-liberation-message' !== data.type ) {
+	if ( 'try-wordpress-message' !== data.type ) {
 		return;
 	}
 	if ( 'start-import' === data.action ) {

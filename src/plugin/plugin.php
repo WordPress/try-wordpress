@@ -17,16 +17,16 @@ class TryWordPress {
 	}
 
 	public function enqueue_scripts() {
-        wp_enqueue_script( 'data-liberation', plugin_dir_url( __FILE__ ) . 'index.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'index.js' ), true );
-        wp_enqueue_style( 'data-liberation', plugin_dir_url( __FILE__ ) . 'style.css', array(), filemtime( plugin_dir_path( __FILE__ ) . 'style.css' ) );
+        wp_enqueue_script( 'try-wordpress', plugin_dir_url( __FILE__ ) . 'index.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'index.js' ), true );
+        wp_enqueue_style( 'try-wordpress', plugin_dir_url( __FILE__ ) . 'style.css', array(), filemtime( plugin_dir_path( __FILE__ ) . 'style.css' ) );
 	}
 
 	public function create_wizard_page() {
 		add_menu_page(
-			'Data Liberation Wizard',
-			'Data Liberation',
+			'Try WordPress Wizard',
+			'Try WordPress',
 			'manage_options',
-			'data-liberation',
+			'try-wordpress',
 			array( $this, 'render_wizard_page' ),
 			'dashicons-admin-tools',
 			100
