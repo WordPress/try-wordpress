@@ -1,6 +1,6 @@
-if ( document.getElementById( 'data-liberation-import' ) ) {
+if ( document.getElementById( 'try-wordpress-import' ) ) {
 	document
-		.getElementById( 'data-liberation-import' )
+		.getElementById( 'try-wordpress-import' )
 		.addEventListener( 'click', function () {
 			const progressContainer =
 				document.getElementById( 'progress-container' );
@@ -15,7 +15,7 @@ if ( document.getElementById( 'data-liberation-import' ) ) {
 				{
 					type: 'relay',
 					data: {
-						type: 'data-liberation-message',
+						type: 'try-wordpress-message',
 						action: 'start-import',
 					},
 				},

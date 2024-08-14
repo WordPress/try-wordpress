@@ -20,7 +20,7 @@ export async function initPlayground( iframeId ) {
 		siteSlug: 'try-wordpress',
 		blueprint: {
 			login: true,
-			landingPage: '/wp-admin/admin.php?page=data-liberation',
+			landingPage: '/wp-admin/admin.php?page=try-wordpress',
 			steps: steps(),
 		},
 	};
@@ -50,14 +50,19 @@ function steps() {
 			step: 'unzip',
 			zipFile: {
 				resource: 'url',
-				url: 'https://github-proxy.com/proxy/?repo=akirk/try-wordpress&branch=trunk&directory=plugins/data-liberation',
+				url: 'https://github-proxy.com/proxy/?repo=akirk/try-wordpress&branch=trunk&directory=src/plugin',
 			},
-			extractToPath: '/wordpress/wp-content',
+			extractToPath: '/wordpress/wp-content/plugins',
+		},
+		{
+			step: 'mv',
+			fromPath: '/wordpress/wp-content/plugins/src/plugin',
+			toPath: '/wordpress/wp-content/plugins/try-wordpress',
 		},
 		{
 			step: 'activatePlugin',
-			pluginName: 'Data Liberation',
-			pluginPath: '/wordpress/wp-content/plugins/data-liberation',
+			pluginName: 'Try WordPress',
+			pluginPath: '/wordpress/wp-content/plugins/try-wordpress',
 		},
 	];
 }

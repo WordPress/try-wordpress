@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Data Liberation
+ * Plugin Name: Try WordPress
  * Description: Import sites to WordPress.
  * Version: 1.1
  * Author: WordPress.org
@@ -10,23 +10,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class DataLiberation {
+class TryWordPress {
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_menu', array( $this, 'create_wizard_page' ) );
 	}
 
 	public function enqueue_scripts() {
-        wp_enqueue_script( 'data-liberation', plugin_dir_url( __FILE__ ) . 'js/data-liberation.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/data-liberation.js' ), true );
-        wp_enqueue_style( 'data-liberation', plugin_dir_url( __FILE__ ) . 'css/data-liberation.css', array(), filemtime( plugin_dir_path( __FILE__ ) . 'css/data-liberation.css' ) );
+        wp_enqueue_script( 'try-wordpress', plugin_dir_url( __FILE__ ) . 'index.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'index.js' ), true );
+        wp_enqueue_style( 'try-wordpress', plugin_dir_url( __FILE__ ) . 'style.css', array(), filemtime( plugin_dir_path( __FILE__ ) . 'style.css' ) );
 	}
 
 	public function create_wizard_page() {
 		add_menu_page(
-			'Data Liberation Wizard',
-			'Data Liberation',
+			'Try WordPress Wizard',
+			'Try WordPress',
 			'manage_options',
-			'data-liberation',
+			'try-wordpress',
 			array( $this, 'render_wizard_page' ),
 			'dashicons-admin-tools',
 			100
@@ -38,4 +38,4 @@ class DataLiberation {
 	}
 }
 
-new DataLiberation();
+new TryWordPress();
