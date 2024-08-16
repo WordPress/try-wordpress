@@ -1,9 +1,15 @@
+import { EventBus } from '../../shared/event-bus';
+
 const progressContainer = document.getElementById( 'progress-container' );
 const progressBar = document.getElementById( 'progress-bar' );
 const progressText = document.getElementById( 'progress-text' );
 
 const startImportButton = document.getElementById( 'try-wordpress-import' );
 if ( startImportButton ) {
+	const eventBus = new EventBus( { targetWindow: window.parent } );
+	// TODO.
+	eventBus.addListener( 'foo', () => {} );
+
 	window.addEventListener( 'message', handleStartImportResponse );
 	window.addEventListener( 'message', handleMessage );
 	startImportButton.addEventListener( 'click', startImport );
