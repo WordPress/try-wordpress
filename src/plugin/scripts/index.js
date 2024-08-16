@@ -1,6 +1,7 @@
 const startImportButton = document.getElementById( 'try-wordpress-import' );
 if ( startImportButton ) {
 	window.addEventListener( 'message', handleStartImportResponse );
+	window.addEventListener( 'message', handleMessage );
 	startImportButton.addEventListener( 'click', startImport );
 }
 
@@ -23,29 +24,6 @@ function startImport() {
 		},
 		'*'
 	);
-
-	window.addEventListener( 'message', function ( event ) {
-		console.log( event );
-		if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
-			return;
-		}
-		const data = event.data.data;
-
-		if ( typeof data.percent !== 'undefined' ) {
-			const percent = data.percent;
-			if ( data.percent < parseInt( progressBar.style.width ) ) {
-				return;
-			}
-
-			progressBar.style.width = percent + '%';
-			progressText.textContent = percent + '%';
-
-			if ( percent >= 100 ) {
-				progressBar.className = 'done';
-				progressText.textContent = 'Import Complete!';
-			}
-		}
-	} );
 }
 
 function handleStartImportResponse( event ) {
@@ -89,6 +67,29 @@ function handleStartImportResponse( event ) {
 		);
 		if ( stepElement ) {
 			stepElement.parentNode.removeChild( stepElement );
+		}
+	}
+}
+
+function handleMessage( event ) {
+	console.log( event );
+	if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
+		return;
+	}
+	const data = event.data.data;
+
+	if ( typeof data.percent !== 'undefined' ) {
+		const percent = data.percent;
+		if ( data.percent < parseInt( progressBar.style.width ) ) {
+			return;
+		}
+
+		progressBar.style.width = percent + '%';
+		progressText.textContent = percent + '%';
+
+		if ( percent >= 100 ) {
+			progressBar.className = 'done';
+			progressText.textContent = 'Import Complete!';
 		}
 	}
 }
