@@ -134,6 +134,26 @@ function extensionModules( mode, target ) {
 						},
 					},
 				} ),
+				// Sadly, web-ext doesn't reload the extension when plugin.zip is modified.
+				// To work around that, we copy the plugin directory to the extension, and then immediately delete it.
+				new CopyPlugin( {
+					patterns: [
+						{
+							from: '**/*',
+							context: 'build/plugin/',
+							to: 'sidebar/plugin/',
+						},
+					],
+				} ),
+				new FileManagerPlugin( {
+					events: {
+						onEnd: {
+							delete: [
+								path.join( targetPath, 'sidebar', 'plugin' ),
+							],
+						},
+					},
+				} ),
 			],
 		},
 	];
