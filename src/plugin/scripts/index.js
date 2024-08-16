@@ -27,12 +27,10 @@ function startImport() {
 }
 
 function handleStartImportResponse( event ) {
-	console.log( event );
 	if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
 		return;
 	}
 	const data = event.data.data;
-	console.log( data );
 	if ( typeof data.siteTitle !== 'undefined' ) {
 		document.getElementById( 'site-title' ).value = data.siteTitle;
 	}
@@ -72,7 +70,6 @@ function handleStartImportResponse( event ) {
 }
 
 function handleMessage( event ) {
-	console.log( event );
 	if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
 		return;
 	}

@@ -6,7 +6,6 @@ const iframeId = 'playground';
 window.playground = await initPlayground( iframeId );
 
 const relayToPlayground = function ( response ) {
-	console.log( response, chrome.runtime.lastError );
 	if ( response && response.stepId ) {
 		document.getElementById( iframeId ).contentWindow.postMessage(
 			{
@@ -17,8 +16,7 @@ const relayToPlayground = function ( response ) {
 		);
 	}
 	if ( response && response.code && window.playground ) {
-		console.log( response.code );
-		console.log( window.playground.run( response ) );
+		window.playground.run( response );
 	}
 };
 

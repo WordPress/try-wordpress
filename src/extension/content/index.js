@@ -83,7 +83,6 @@ const insertViaWpRestApi = async () => {
 		// 'page': '/wp-json/wp/v2/pages',
 	};
 	for ( const postType in postTypes ) {
-		console.log( postTypes[ postType ] );
 		let page = 1,
 			total = 1;
 		do {
