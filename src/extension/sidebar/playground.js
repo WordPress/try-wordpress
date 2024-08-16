@@ -50,7 +50,7 @@ function steps() {
 			step: 'unzip',
 			zipFile: {
 				resource: 'url',
-				url: 'plugin/plugin.zip',
+				url: 'plugin.zip',
 			},
 			extractToPath: '/wordpress/wp-content/plugins/try-wordpress',
 		},

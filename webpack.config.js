@@ -15,9 +15,9 @@ module.exports = function () {
 	return modules;
 };
 
+// Build the WordPress plugin and create a zip file of the built plugin directory.
 function pluginModules( mode ) {
 	const targetPath = path.resolve( __dirname, 'build', 'plugin' );
-
 	return [
 		{
 			mode,
@@ -44,7 +44,7 @@ function pluginModules( mode ) {
 							archive: [
 								{
 									source: 'build/plugin',
-									destination: 'build/plugin/plugin.zip',
+									destination: 'build/plugin.zip',
 								},
 							],
 						},
@@ -55,9 +55,9 @@ function pluginModules( mode ) {
 	];
 }
 
+// Build the extension.
 function extensionModules( mode, target ) {
 	const targetPath = path.resolve( __dirname, 'build', 'extension', target );
-
 	return [
 		{
 			mode,
@@ -117,15 +117,22 @@ function extensionModules( mode, target ) {
 						},
 					],
 				} ),
-				// Copy the plugin into the extension directory.
-				new CopyPlugin( {
-					patterns: [
-						{
-							from: '**/*',
-							context: 'build/plugin/',
-							to: 'sidebar/plugin/',
+				// Copy plugin.zip into the extension directory.
+				new FileManagerPlugin( {
+					events: {
+						onEnd: {
+							copy: [
+								{
+									source: 'build/plugin.zip',
+									destination: path.join(
+										targetPath,
+										'sidebar',
+										'plugin.zip'
+									),
+								},
+							],
 						},
-					],
+					},
 				} ),
 			],
 		},
