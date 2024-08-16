@@ -1,54 +1,53 @@
+const startImportButton = document.getElementById( 'try-wordpress-import' );
+if ( startImportButton ) {
+	startImportButton.addEventListener( 'click', startImport );
+}
+
+function startImport() {
+	const progressContainer = document.getElementById( 'progress-container' );
+	progressContainer.style.display = 'block';
+
+	const progressBar = document.getElementById( 'progress-bar' );
+	const progressText = document.getElementById( 'progress-text' );
+	progressBar.style.width = '1%';
+	progressText.textContent = '1%';
+
+	window.parent.postMessage(
+		{
+			type: 'relay',
+			data: {
+				type: 'try-wordpress-message',
+				action: 'start-import',
+			},
+		},
+		'*'
+	);
+
+	window.addEventListener( 'message', function ( event ) {
+		console.log( event );
+		if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
+			return;
+		}
+		const data = event.data.data;
+
+		if ( typeof data.percent !== 'undefined' ) {
+			const percent = data.percent;
+			if ( data.percent < parseInt( progressBar.style.width ) ) {
+				return;
+			}
+
+			progressBar.style.width = percent + '%';
+			progressText.textContent = percent + '%';
+
+			if ( percent >= 100 ) {
+				progressBar.className = 'done';
+				progressText.textContent = 'Import Complete!';
+			}
+		}
+	} );
+}
+
 if ( document.getElementById( 'try-wordpress-import' ) ) {
-	document
-		.getElementById( 'try-wordpress-import' )
-		.addEventListener( 'click', function () {
-			const progressContainer =
-				document.getElementById( 'progress-container' );
-			progressContainer.style.display = 'block';
-
-			const progressBar = document.getElementById( 'progress-bar' );
-			const progressText = document.getElementById( 'progress-text' );
-			progressBar.style.width = '1%';
-			progressText.textContent = '1%';
-
-			window.parent.postMessage(
-				{
-					type: 'relay',
-					data: {
-						type: 'try-wordpress-message',
-						action: 'start-import',
-					},
-				},
-				'*'
-			);
-
-			window.addEventListener( 'message', function ( event ) {
-				console.log( event );
-				if (
-					typeof event.data !== 'object' ||
-					event.data.type !== 'relay'
-				) {
-					return;
-				}
-				const data = event.data.data;
-
-				if ( typeof data.percent !== 'undefined' ) {
-					const percent = data.percent;
-					if ( data.percent < parseInt( progressBar.style.width ) ) {
-						return;
-					}
-
-					progressBar.style.width = percent + '%';
-					progressText.textContent = percent + '%';
-
-					if ( percent >= 100 ) {
-						progressBar.className = 'done';
-						progressText.textContent = 'Import Complete!';
-					}
-				}
-			} );
-		} );
-
 	window.addEventListener( 'message', function ( event ) {
 		console.log( event );
 		if ( typeof event.data !== 'object' || event.data.type !== 'relay' ) {
