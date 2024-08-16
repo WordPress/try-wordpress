@@ -10,13 +10,19 @@ First install required dependencies:
 npm install
 ```
 
+Then build the extension:
+
+```shell
+npm run build
+```
+
 You can then use the `start:firefox` or `start:chrome` scripts to start an instance of the browser separate from your main instance that has the extension automatically installed:
 
 ```shell
 npm run start:firefox
 ```
 
-The extension will also be automatically reloaded whenever you modify source files.
+The extension will also automatically reload whenever you modify source files.
 
 > Please note that at the moment not all `web-ext` features work on chrome, so firefox is the recommended browser for developing this project, since it provides the best developer experience. One example of a `web-ext` feature that doesn't currently work on chrome is to have the developer tools and extension console automatically open when the extension loads.
 
