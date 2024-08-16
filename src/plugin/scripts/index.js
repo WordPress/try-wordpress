@@ -1,3 +1,7 @@
+const progressContainer = document.getElementById( 'progress-container' );
+const progressBar = document.getElementById( 'progress-bar' );
+const progressText = document.getElementById( 'progress-text' );
+
 const startImportButton = document.getElementById( 'try-wordpress-import' );
 if ( startImportButton ) {
 	window.addEventListener( 'message', handleStartImportResponse );
@@ -6,11 +10,7 @@ if ( startImportButton ) {
 }
 
 function startImport() {
-	const progressContainer = document.getElementById( 'progress-container' );
 	progressContainer.style.display = 'block';
-
-	const progressBar = document.getElementById( 'progress-bar' );
-	const progressText = document.getElementById( 'progress-text' );
 	progressBar.style.width = '1%';
 	progressText.textContent = '1%';
 
