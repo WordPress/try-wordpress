@@ -27,10 +27,13 @@ function extensionModules( mode, target ) {
 		// Extension background script.
 		{
 			mode,
-			entry: './src/extension/background/index.js',
+			entry: './src/extension/background/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'background', 'index.js' ),
+			},
+			resolve: {
+				extensions: [ '.ts', '.js' ],
 			},
 			plugins: [
 				new CopyPlugin( {
