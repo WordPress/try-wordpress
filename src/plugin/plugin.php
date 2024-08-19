@@ -17,7 +17,7 @@ class TryWordPress {
 	}
 
 	public function enqueue_scripts() {
-        wp_enqueue_script( 'try-wordpress', plugin_dir_url( __FILE__ ) . 'scripts/index.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'scripts/index.js' ), true );
+        wp_enqueue_script( 'try-wordpress', plugin_dir_url( __FILE__ ) . 'index.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'index.js' ), true );
         wp_enqueue_style( 'try-wordpress', plugin_dir_url( __FILE__ ) . 'style.css', array(), filemtime( plugin_dir_path( __FILE__ ) . 'style.css' ) );
 	}
 
