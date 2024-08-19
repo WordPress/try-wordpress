@@ -2,13 +2,18 @@ const path = require( 'node:path' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
 const FileManagerPlugin = require( 'filemanager-webpack-plugin' );
 
-module.exports = function () {
+module.exports = function ( env ) {
+	let targets = [ 'firefox', 'chrome' ];
+	if ( env.target ) {
+		targets = [ env.target ];
+	}
+
 	// We must always build for production because the development builds will have unsafe-eval in the code, which the
 	// browsers don't like.
 	const mode = 'production';
 
 	let modules = [];
-	for ( const target of [ 'firefox', 'chrome' ] ) {
+	for ( const target of targets ) {
 		modules = modules.concat( extensionModules( mode, target ) );
 	}
 

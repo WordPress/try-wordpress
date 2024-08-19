@@ -16,10 +16,10 @@ Then build the extension:
 npm run build
 ```
 
-You can then use the `start:firefox` or `start:chrome` scripts to start an instance of the browser separate from your main instance that has the extension automatically installed:
+You can then use the `start` script to start an instance of Firefox separate from your main instance that has the extension automatically installed:
 
 ```shell
-npm run start:firefox
+npm run start
 ```
 
 The extension will also automatically reload whenever you modify source files.
