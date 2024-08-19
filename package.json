@@ -38,6 +38,8 @@
 		"web-ext": "^8.2.0"
 	},
 	"dependencies": {
+		"@types/chrome": "^0.0.270",
+		"@types/firefox-webext-browser": "^120.0.4",
 		"@wp-playground/client": "^0.9.29"
 	}
 }
