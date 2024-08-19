@@ -33,6 +33,8 @@
 		"linkedom": "^0.18.0",
 		"mhtml2html": "^3.0.0",
 		"playwright": "^1.44.1",
+		"ts-loader": "^9.5.1",
+		"typescript": "^5.5.4",
 		"web-ext": "^8.2.0"
 	},
 	"dependencies": {
