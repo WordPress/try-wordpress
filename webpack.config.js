@@ -7,7 +7,7 @@ module.exports = function () {
 	// browsers don't like.
 	const mode = 'production';
 
-	let modules = [].concat( pluginModules( mode ) );
+	let modules = [];
 	for ( const target of [ 'firefox', 'chrome' ] ) {
 		modules = modules.concat( extensionModules( mode, target ) );
 	}
@@ -15,50 +15,11 @@ module.exports = function () {
 	return modules;
 };
 
-// Build the WordPress plugin and create a zip file of the built plugin directory.
-function pluginModules( mode ) {
-	const targetPath = path.resolve( __dirname, 'build', 'plugin' );
-	return [
-		{
-			mode,
-			entry: './src/plugin/scripts/index.js',
-			output: {
-				path: targetPath,
-				filename: path.join( 'scripts', 'index.js' ),
-			},
-			plugins: [
-				new CopyPlugin( {
-					patterns: [
-						{
-							from: '**/*',
-							context: 'src/plugin/',
-							globOptions: {
-								ignore: [ '**/scripts/**' ],
-							},
-						},
-					],
-				} ),
-				new FileManagerPlugin( {
-					events: {
-						onEnd: {
-							archive: [
-								{
-									source: 'build/plugin',
-									destination: 'build/plugin.zip',
-								},
-							],
-						},
-					},
-				} ),
-			],
-		},
-	];
-}
-
 // Build the extension.
 function extensionModules( mode, target ) {
 	const targetPath = path.resolve( __dirname, 'build', 'extension', target );
 	return [
+		// Extension background script.
 		{
 			mode,
 			entry: './src/extension/background/index.js',
@@ -81,6 +42,7 @@ function extensionModules( mode, target ) {
 				} ),
 			],
 		},
+		// Extension content script.
 		{
 			mode,
 			entry: './src/extension/content/index.js',
@@ -89,6 +51,7 @@ function extensionModules( mode, target ) {
 				filename: path.join( 'content', 'index.js' ),
 			},
 		},
+		// Extension sidebar.
 		{
 			mode,
 			entry: './src/extension/sidebar/index.js',
@@ -117,39 +80,46 @@ function extensionModules( mode, target ) {
 						},
 					],
 				} ),
-				// Copy plugin.zip into the extension directory.
+			],
+		},
+		// WordPress plugin.
+		{
+			mode,
+			entry: './src/plugin/scripts/index.js',
+			output: {
+				path: targetPath,
+				filename: path.join( 'sidebar', 'plugin', 'index.js' ),
+			},
+			plugins: [
+				new CopyPlugin( {
+					patterns: [
+						{
+							from: '**/*',
+							context: 'src/plugin/',
+							to: path.join( targetPath, 'sidebar', 'plugin' ),
+							globOptions: {
+								ignore: [ '**/scripts/**' ],
+							},
+						},
+					],
+				} ),
+				// Create plugin.zip.
 				new FileManagerPlugin( {
 					events: {
 						onEnd: {
-							copy: [
+							archive: [
 								{
-									source: 'build/plugin.zip',
+									source: path.join(
+										targetPath,
+										'sidebar',
+										'plugin'
+									),
 									destination: path.join(
 										targetPath,
 										'sidebar',
 										'plugin.zip'
 									),
 								},
-							],
-						},
-					},
-				} ),
-				// Sadly, web-ext doesn't reload the extension when plugin.zip is modified.
-				// To work around that, we copy the plugin directory to the extension, and then immediately delete it.
-				new CopyPlugin( {
-					patterns: [
-						{
-							from: '**/*',
-							context: 'build/plugin/',
-							to: 'sidebar/plugin/',
-						},
-					],
-				} ),
-				new FileManagerPlugin( {
-					events: {
-						onEnd: {
-							delete: [
-								path.join( targetPath, 'sidebar', 'plugin' ),
 							],
 						},
 					},
