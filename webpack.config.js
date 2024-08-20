@@ -40,10 +40,10 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/extension/background/index.ts',
+			entry: './src/background.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'background', 'index.js' ),
+				filename: path.join( 'background.js' ),
 			},
 			plugins: [
 				new CopyPlugin( {

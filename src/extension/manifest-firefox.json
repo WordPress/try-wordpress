@@ -23,7 +23,7 @@
 		}
 	],
 	"background": {
-		"scripts": [ "background/index.js" ]
+		"scripts": [ "background.js" ]
 	},
 	"sidebar_action": {
 		"default_title": "Try WordPress",

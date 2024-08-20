@@ -23,7 +23,7 @@
 		}
 	],
 	"background": {
-		"service_worker": "background/index.js"
+		"service_worker": "background.js"
 	},
 	"side_panel": {
 		"default_title": "Try WordPress",
