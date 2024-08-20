@@ -22,7 +22,7 @@ module.exports = function ( env ) {
 
 // Build the extension.
 function extensionModules( mode, target ) {
-	const targetPath = path.resolve( __dirname, 'build', 'extension', target );
+	const targetPath = path.resolve( __dirname, 'build', target );
 	const resolve = { extensions: [ '.ts', '.tsx', '.js' ] };
 	const module = {
 		rules: [
