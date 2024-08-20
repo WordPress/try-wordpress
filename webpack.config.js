@@ -104,7 +104,7 @@ function extensionModules( mode, target ) {
 			entry: './src/plugin/scripts/index.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'sidebar', 'plugin', 'index.js' ),
+				filename: path.join( 'plugin', 'index.js' ),
 			},
 			plugins: [
 				new CopyPlugin( {
@@ -112,7 +112,7 @@ function extensionModules( mode, target ) {
 						{
 							from: '**/*',
 							context: 'src/plugin/',
-							to: path.join( targetPath, 'sidebar', 'plugin' ),
+							to: path.join( targetPath, 'plugin' ),
 							globOptions: {
 								ignore: [ '**/scripts/**' ],
 							},
@@ -125,14 +125,9 @@ function extensionModules( mode, target ) {
 						onEnd: {
 							archive: [
 								{
-									source: path.join(
-										targetPath,
-										'sidebar',
-										'plugin'
-									),
+									source: path.join( targetPath, 'plugin' ),
 									destination: path.join(
 										targetPath,
-										'sidebar',
 										'plugin.zip'
 									),
 								},
