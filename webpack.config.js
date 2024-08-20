@@ -109,7 +109,7 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/plugin/scripts/index.js',
+			entry: './src/plugin/scripts/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'sidebar', 'plugin', 'index.js' ),

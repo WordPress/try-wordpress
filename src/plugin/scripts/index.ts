@@ -56,9 +56,9 @@ if ( document.getElementById( 'try-wordpress-import' ) ) {
 		}
 		const data = event.data.data;
 		console.log( data );
-		if ( typeof data.siteTitle !== 'undefined' ) {
-			document.getElementById( 'site-title' ).value = data.siteTitle;
-		}
+		// if ( typeof data.siteTitle !== 'undefined' ) {
+		// 	document.getElementById( 'site-title' ).value = data.siteTitle;
+		// }
 
 		const todoList = document.getElementById( 'todo-list' );
 		if ( ! todoList ) {
