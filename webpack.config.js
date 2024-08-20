@@ -23,17 +23,27 @@ module.exports = function ( env ) {
 // Build the extension.
 function extensionModules( mode, target ) {
 	const targetPath = path.resolve( __dirname, 'build', 'extension', target );
+	const resolve = { extensions: [ '.ts', '.tsx', '.js' ] };
+	const module = {
+		rules: [
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/,
+			},
+		],
+	};
+
 	return [
 		// Extension background script.
 		{
 			mode,
+			resolve,
+			module,
 			entry: './src/extension/background/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'background', 'index.js' ),
-			},
-			resolve: {
-				extensions: [ '.ts', '.js' ],
 			},
 			plugins: [
 				new CopyPlugin( {
@@ -53,6 +63,8 @@ function extensionModules( mode, target ) {
 		// Extension content script.
 		{
 			mode,
+			resolve,
+			module,
 			entry: './src/extension/content/index.js',
 			output: {
 				path: targetPath,
@@ -62,6 +74,8 @@ function extensionModules( mode, target ) {
 		// Extension sidebar.
 		{
 			mode,
+			resolve,
+			module,
 			entry: './src/extension/sidebar/index.js',
 			output: {
 				path: targetPath,
@@ -93,6 +107,8 @@ function extensionModules( mode, target ) {
 		// WordPress plugin.
 		{
 			mode,
+			resolve,
+			module,
 			entry: './src/plugin/scripts/index.js',
 			output: {
 				path: targetPath,
