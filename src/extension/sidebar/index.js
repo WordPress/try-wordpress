@@ -3,7 +3,11 @@
 import { initPlayground } from './playground';
 
 const iframeId = 'playground';
-window.playground = await initPlayground( iframeId );
+initPlayground( iframeId )
+	.then( ( playground ) => {
+		window.playground = playground;
+	} )
+	.catch( ( err ) => console.error( err ) );
 
 const relayToPlayground = function ( response ) {
 	console.log( response, chrome.runtime.lastError );
