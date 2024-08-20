@@ -76,7 +76,7 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/extension/sidebar/index.js',
+			entry: './src/extension/sidebar/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'sidebar', 'index.js' ),
