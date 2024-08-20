@@ -76,29 +76,21 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/extension/sidebar/index.ts',
+			entry: './src/app.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'sidebar', 'index.js' ),
+				filename: path.join( 'app.js' ),
 			},
 			plugins: [
 				new CopyPlugin( {
 					patterns: [
 						{
-							from: './src/extension/sidebar/sidebar.html',
-							to: path.join(
-								targetPath,
-								'sidebar',
-								'sidebar.html'
-							),
+							from: './src/app.html',
+							to: path.join( targetPath, 'app.html' ),
 						},
 						{
-							from: './src/extension/sidebar/sidebar.css',
-							to: path.join(
-								targetPath,
-								'sidebar',
-								'sidebar.css'
-							),
+							from: './src/app.css',
+							to: path.join( targetPath, 'app.css' ),
 						},
 					],
 				} ),
