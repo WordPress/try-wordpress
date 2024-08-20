@@ -49,7 +49,7 @@ function extensionModules( mode, target ) {
 				new CopyPlugin( {
 					patterns: [
 						{
-							from: `./src/extension/manifest-${ target }.json`,
+							from: `./src/assets/manifest-${ target }.json`,
 							to: path.join( targetPath, 'manifest.json' ),
 						},
 						{
