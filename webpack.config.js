@@ -65,7 +65,7 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/extension/content/index.js',
+			entry: './src/extension/content/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'content', 'index.js' ),
