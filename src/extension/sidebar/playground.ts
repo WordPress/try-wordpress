@@ -1,8 +1,6 @@
-/* global HTMLIFrameElement */
-
 import { startPlaygroundWeb } from '@wp-playground/client';
 
-export async function initPlayground( iframeId ) {
+export async function initPlayground( iframeId: string ) {
 	const iframe = document.getElementById( iframeId );
 	if ( ! ( iframe instanceof HTMLIFrameElement ) ) {
 		throw Error( 'Playground container element must be an iframe' );
