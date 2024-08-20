@@ -53,7 +53,7 @@ function extensionModules( mode, target ) {
 							to: path.join( targetPath, 'manifest.json' ),
 						},
 						{
-							from: './src/extension/icons',
+							from: './src/assets/icons',
 							to: path.join( targetPath, 'icons' ),
 						},
 					],
