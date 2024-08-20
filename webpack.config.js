@@ -65,10 +65,10 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/extension/content/index.ts',
+			entry: './src/content.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'content', 'index.js' ),
+				filename: path.join( 'content.js' ),
 			},
 		},
 		// Extension sidebar.
