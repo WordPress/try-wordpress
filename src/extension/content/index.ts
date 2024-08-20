@@ -1,9 +1,7 @@
-/* global chrome */
-
 // Constants
 const MESSAGE_NAMESPACE = 'TRY_WORDPRESS';
 
-const wpInsertPost = ( data ) => {
+const wpInsertPost = ( data: any ) => {
 	data.post_status = 'publish';
 	let code = "<?php require_once 'wordpress/wp-load.php';\n";
 	code += 'echo wp_insert_post(\n';
@@ -38,15 +36,20 @@ const insertViaWpRestApi = async () => {
 		post: '/wp-json/wp/v2/posts',
 		// 'page': '/wp-json/wp/v2/pages',
 	};
+	type key = keyof typeof postTypes;
+
 	for ( const postType in postTypes ) {
-		console.log( postTypes[ postType ] );
+		console.log( postTypes[ postType as key ] );
 		let page = 1,
 			total = 1;
 		do {
 			const response = await fetch(
-				postTypes[ postType ] + '?page=' + page
+				postTypes[ postType as key ] + '?page=' + page
 			);
-			total = Math.min( 10, response.headers.get( 'X-WP-Totalpages' ) );
+			total = Math.min(
+				10,
+				parseInt( response.headers.get( 'X-WP-Totalpages' ) )
+			);
 			const items = await response.json();
 			for ( const i in items ) {
 				const data = items[ i ];

@@ -1,14 +1,25 @@
-/* global chrome */
-
 import { initPlayground } from './playground';
+import { PlaygroundClient } from '@wp-playground/client';
+
+declare global {
+	interface Window {
+		playground: PlaygroundClient;
+	}
+}
 
 const iframeId = 'playground';
-window.playground = await initPlayground( iframeId );
+const iframe = document.getElementById( iframeId ) as HTMLIFrameElement;
 
-const relayToPlayground = function ( response ) {
+initPlayground( iframeId )
+	.then( ( playground ) => {
+		window.playground = playground;
+	} )
+	.catch( ( err ) => console.error( err ) );
+
+const relayToPlayground = function ( response: any ) {
 	console.log( response, chrome.runtime.lastError );
 	if ( response && response.stepId ) {
-		document.getElementById( iframeId ).contentWindow.postMessage(
+		iframe.contentWindow.postMessage(
 			{
 				type: 'relay',
 				data: response,
@@ -31,7 +42,7 @@ window.addEventListener( 'message', function ( event ) {
 		return;
 	}
 	if ( 'start-import' === data.action ) {
-		document.getElementById( iframeId ).contentWindow.postMessage(
+		iframe.contentWindow.postMessage(
 			{
 				type: 'relay',
 				data: {

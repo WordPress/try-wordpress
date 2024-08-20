@@ -23,11 +23,24 @@ module.exports = function ( env ) {
 // Build the extension.
 function extensionModules( mode, target ) {
 	const targetPath = path.resolve( __dirname, 'build', 'extension', target );
+	const resolve = { extensions: [ '.ts', '.tsx', '.js' ] };
+	const module = {
+		rules: [
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: /node_modules/,
+			},
+		],
+	};
+
 	return [
 		// Extension background script.
 		{
 			mode,
-			entry: './src/extension/background/index.js',
+			resolve,
+			module,
+			entry: './src/extension/background/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'background', 'index.js' ),
@@ -50,7 +63,9 @@ function extensionModules( mode, target ) {
 		// Extension content script.
 		{
 			mode,
-			entry: './src/extension/content/index.js',
+			resolve,
+			module,
+			entry: './src/extension/content/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'content', 'index.js' ),
@@ -59,7 +74,9 @@ function extensionModules( mode, target ) {
 		// Extension sidebar.
 		{
 			mode,
-			entry: './src/extension/sidebar/index.js',
+			resolve,
+			module,
+			entry: './src/extension/sidebar/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'sidebar', 'index.js' ),
@@ -90,7 +107,9 @@ function extensionModules( mode, target ) {
 		// WordPress plugin.
 		{
 			mode,
-			entry: './src/plugin/scripts/index.js',
+			resolve,
+			module,
+			entry: './src/plugin/scripts/index.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'sidebar', 'plugin', 'index.js' ),
