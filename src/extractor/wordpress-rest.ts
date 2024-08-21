@@ -13,16 +13,20 @@ export class WordPressRestExtractor implements Extractor {
 	handles( document: Document ): boolean {
 		const post = document.querySelector( 'article.post' );
 		if ( post ) {
-			// get the id from the css class post-<id>
-			const id = post.className.match( /post-(\d+)/ );
-			return true;
+			// Check if the CSS class matches `post-<id>`.
+			const matches = post.className.match( /post-(\d+)/ );
+			if ( matches !== null ) {
+				return true;
+			}
 		}
 
 		const page = document.querySelector( 'article.page' );
 		if ( page ) {
-			// get the id from the css class post-<id>
-			const id = page.className.match( /post-(\d+)/ );
-			return true;
+			// Check if the CSS class matches `post-<id>`.
+			const matches = page.className.match( /post-(\d+)/ );
+			if ( matches !== null ) {
+				return true;
+			}
 		}
 
 		return false;
