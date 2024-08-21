@@ -13,8 +13,12 @@ if ( extractors.length === 0 ) {
 const extractor = extractors[ 0 ];
 console.log( `Found extractor ${ extractor.meta().slug }` );
 
-const result = extractor.extract( document );
-console.log( result );
+extractor
+	.extract( document, ( entry ) => {
+		console.log( entry );
+	} )
+	.then( () => console.log( 'Extraction finished' ) )
+	.catch( ( err ) => console.log( err ) );
 
 const wpInsertPost = ( data: any ) => {
 	data.post_status = 'publish';

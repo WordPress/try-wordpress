@@ -41,5 +41,8 @@ export interface Extractor {
 	/**
 	 * Extracts Entries from a given Document.
 	 */
-	extract( document: Document ): Entry[];
+	extract(
+		document: Document,
+		callback: ( entry: Entry ) => void
+	): Promise< void >;
 }

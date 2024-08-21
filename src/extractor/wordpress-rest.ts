@@ -32,8 +32,10 @@ export class WordPressRestExtractor implements Extractor {
 		return false;
 	}
 
-	extract( document: Document ): Entry[] {
+	async extract(
+		document: Document,
+		callback: ( entry: Entry ) => void
+	): Promise< void > {
 		// TODO.
-		return [];
 	}
 }
