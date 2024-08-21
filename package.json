@@ -2,9 +2,11 @@
 	"scripts": {
 		"build": "webpack",
 		"watch": "webpack --watch --env target=firefox",
-		"start": "concurrently \"npm:watch\" \"npm:web-ext:run:firefox\"",
+		"start": "npm run start:firefox",
+		"start:firefox": "concurrently \"npm:watch\" \"npm:web-ext:run:firefox\"",
+		"start:chrome": "concurrently \"npm:watch\" \"npm:web-ext:run:chrome\"",
 		"start:noreload": "npm run web-ext:run:firefox -- --no-reload",
-		"web-ext:run:firefox": "web-ext -s build/firefox run --target firefox-desktop",
+		"web-ext:run:firefox": "web-ext -s build/firefox run --target firefox-desktop --pref toolkit.legacyUserProfileCustomizations.stylesheets=true",
 		"web-ext:run:chrome": "web-ext -s build/chrome run --target chromium --arg='--disable-search-engine-choice-screen'",
 		"lint": "npm run lint:js && npm run lint:style",
 		"lint:js": "wp-scripts lint-js",
