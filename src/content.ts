@@ -1,5 +1,20 @@
 // Constants
+import { findExtractors } from './extractor/registry';
+
 const MESSAGE_NAMESPACE = 'TRY_WORDPRESS';
+
+const extractors = findExtractors( document );
+if ( extractors.length === 0 ) {
+	throw new Error( 'No extractor was found' );
+} else if ( extractors.length > 1 ) {
+	throw new Error( 'Multiple extractors were found' );
+}
+
+const extractor = extractors[ 0 ];
+console.log( `Found extractor ${ extractor.meta().slug }` );
+
+const result = extractor.extract( document );
+console.log( result );
 
 const wpInsertPost = ( data: any ) => {
 	data.post_status = 'publish';
