@@ -11,7 +11,7 @@ if ( extractors.length === 0 ) {
 }
 
 const extractor = extractors[ 0 ];
-console.log( `Found extractor ${ extractor.meta().slug }` );
+console.log( `Found extractor ${ extractor.info().slug }` );
 
 extractor
 	.extract( document, ( entry ) => {

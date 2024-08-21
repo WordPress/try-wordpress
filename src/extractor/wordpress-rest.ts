@@ -1,7 +1,7 @@
-import { Entry, Extractor, ExtractorMeta } from './extractor';
+import { Entry, Extractor, ExtractorInfo } from './extractor';
 
 export class WordPressRestExtractor implements Extractor {
-	meta(): ExtractorMeta {
+	info(): ExtractorInfo {
 		return {
 			slug: 'wordpress-rest',
 			title: 'WordPress REST API',

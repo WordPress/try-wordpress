@@ -8,7 +8,7 @@ export interface Entry {
 	content: string;
 }
 
-export interface ExtractorMeta {
+export interface ExtractorInfo {
 	/**
 	 * Unique identifier of the Extractor, e.g. "wordpress-rest".
 	 * Must be a lower-case string.
@@ -31,7 +31,7 @@ export interface Extractor {
 	/**
 	 * Returns information about the Extractor.
 	 */
-	meta(): ExtractorMeta;
+	info(): ExtractorInfo;
 
 	/**
 	 * Tells whether the Extractor can handle a given Document.

@@ -22,7 +22,7 @@ export function findExtractors( document: Document ): Extractor[] {
  * Register an Extractor.
  */
 function registerExtractor( extractor: Extractor ) {
-	const slug = extractor.meta().slug;
+	const slug = extractor.info().slug;
 	if ( extractors.has( slug ) ) {
 		throw new Error(
 			`An Extractor with slug ${ slug } is already registered`
