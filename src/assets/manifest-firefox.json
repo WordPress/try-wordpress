@@ -18,12 +18,12 @@
 	},
 	"content_scripts": [
 		{
-			"js": [ "content/index.js" ],
+			"js": [ "content.js" ],
 			"matches": [ "<all_urls>" ]
 		}
 	],
 	"background": {
-		"scripts": [ "background/index.js" ]
+		"scripts": [ "background.js" ]
 	},
 	"sidebar_action": {
 		"default_title": "Try WordPress",
@@ -31,7 +31,7 @@
 			"32": "icons/icon-32.png",
 			"128": "icons/icon-128"
 		},
-		"default_panel": "sidebar/sidebar.html",
+		"default_panel": "app.html",
 		"open_at_install": true
 	}
 }

@@ -22,7 +22,7 @@ module.exports = function ( env ) {
 
 // Build the extension.
 function extensionModules( mode, target ) {
-	const targetPath = path.resolve( __dirname, 'build', 'extension', target );
+	const targetPath = path.resolve( __dirname, 'build', target );
 	const resolve = { extensions: [ '.ts', '.tsx', '.js' ] };
 	const module = {
 		rules: [
@@ -40,20 +40,20 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/extension/background/index.ts',
+			entry: './src/background.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'background', 'index.js' ),
+				filename: path.join( 'background.js' ),
 			},
 			plugins: [
 				new CopyPlugin( {
 					patterns: [
 						{
-							from: `./src/extension/manifest-${ target }.json`,
+							from: `./src/assets/manifest-${ target }.json`,
 							to: path.join( targetPath, 'manifest.json' ),
 						},
 						{
-							from: './src/extension/icons',
+							from: './src/assets/icons',
 							to: path.join( targetPath, 'icons' ),
 						},
 					],
@@ -65,10 +65,10 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/extension/content/index.ts',
+			entry: './src/content.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'content', 'index.js' ),
+				filename: path.join( 'content.js' ),
 			},
 		},
 		// Extension sidebar.
@@ -76,29 +76,21 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/extension/sidebar/index.ts',
+			entry: './src/app.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'sidebar', 'index.js' ),
+				filename: path.join( 'app.js' ),
 			},
 			plugins: [
 				new CopyPlugin( {
 					patterns: [
 						{
-							from: './src/extension/sidebar/sidebar.html',
-							to: path.join(
-								targetPath,
-								'sidebar',
-								'sidebar.html'
-							),
+							from: './src/app.html',
+							to: path.join( targetPath, 'app.html' ),
 						},
 						{
-							from: './src/extension/sidebar/sidebar.css',
-							to: path.join(
-								targetPath,
-								'sidebar',
-								'sidebar.css'
-							),
+							from: './src/app.css',
+							to: path.join( targetPath, 'app.css' ),
 						},
 					],
 				} ),
@@ -112,7 +104,7 @@ function extensionModules( mode, target ) {
 			entry: './src/plugin/scripts/index.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'sidebar', 'plugin', 'index.js' ),
+				filename: path.join( 'plugin', 'index.js' ),
 			},
 			plugins: [
 				new CopyPlugin( {
@@ -120,7 +112,7 @@ function extensionModules( mode, target ) {
 						{
 							from: '**/*',
 							context: 'src/plugin/',
-							to: path.join( targetPath, 'sidebar', 'plugin' ),
+							to: path.join( targetPath, 'plugin' ),
 							globOptions: {
 								ignore: [ '**/scripts/**' ],
 							},
@@ -133,14 +125,9 @@ function extensionModules( mode, target ) {
 						onEnd: {
 							archive: [
 								{
-									source: path.join(
-										targetPath,
-										'sidebar',
-										'plugin'
-									),
+									source: path.join( targetPath, 'plugin' ),
 									destination: path.join(
 										targetPath,
-										'sidebar',
 										'plugin.zip'
 									),
 								},
