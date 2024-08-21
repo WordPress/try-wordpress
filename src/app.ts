@@ -10,11 +10,11 @@ declare global {
 const iframeId = 'playground';
 const iframe = document.getElementById( iframeId ) as HTMLIFrameElement;
 
-initPlayground( iframeId )
-	.then( ( playground ) => {
-		window.playground = playground;
-	} )
-	.catch( ( err ) => console.error( err ) );
+// initPlayground( iframeId )
+// 	.then( ( playground ) => {
+// 		window.playground = playground;
+// 	} )
+// 	.catch( ( err ) => console.error( err ) );
 
 const relayToPlayground = function ( response: any ) {
 	console.log( response, chrome.runtime.lastError );
