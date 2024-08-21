@@ -18,6 +18,7 @@ console.log( `Found extractor ${ extractor.info().slug }` );
 
 extractor
 	.extractData( source, ( entry ) => {
+		// Do something with the entry.
 		console.log( entry );
 	} )
 	.then( () => console.log( 'Extraction finished' ) )

@@ -24,6 +24,12 @@ export function findExtractors( source: Source ): Extractor[] {
  */
 function registerExtractor( extractor: Extractor ) {
 	const slug = extractor.info().slug;
+	if ( slug.toLowerCase() !== slug ) {
+		throw new Error(
+			`The Extractor's slug must be a sequence of lower-case characters, got '${ slug }'`
+		);
+	}
+
 	if ( extractors.has( slug ) ) {
 		throw new Error(
 			`An Extractor with slug ${ slug } is already registered`
