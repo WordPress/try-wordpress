@@ -1,9 +1,9 @@
 /**
- * A piece of data in the site, like a post or a page.
+ * A piece of data in the site under extraction, like a post or a page.
  */
 export interface SiteData {
 	/**
-	 * Slug of the Extractor which extracted this entry.
+	 * Slug of the Extractor which extracted this data.
 	 * This is automatically set, the Extractor does not need to set it.
 	 */
 	extractor: string;
@@ -42,10 +42,10 @@ export interface Extractor {
 	handles( document: Document ): boolean;
 
 	/**
-	 * Extracts Entries from a given Document.
+	 * Extracts data from a given Document.
 	 */
-	extract(
+	extractData(
 		document: Document,
-		callback: ( entry: SiteData ) => void
+		callback: ( siteData: SiteData ) => void
 	): Promise< void >;
 }

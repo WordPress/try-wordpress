@@ -32,7 +32,7 @@ export class WordPressRestExtractor implements Extractor {
 		return false;
 	}
 
-	async extract(
+	async extractData(
 		document: Document,
 		callback: ( entry: SiteData ) => void
 	): Promise< void > {

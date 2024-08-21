@@ -14,7 +14,7 @@ const extractor = extractors[ 0 ];
 console.log( `Found extractor ${ extractor.info().slug }` );
 
 extractor
-	.extract( document, ( entry ) => {
+	.extractData( document, ( entry ) => {
 		console.log( entry );
 	} )
 	.then( () => console.log( 'Extraction finished' ) )
