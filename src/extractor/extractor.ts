@@ -1,4 +1,7 @@
-export interface Entry {
+/**
+ * A piece of data in the site, like a post or a page.
+ */
+export interface SiteData {
 	/**
 	 * Slug of the Extractor which extracted this entry.
 	 * This is automatically set, the Extractor does not need to set it.
@@ -43,6 +46,6 @@ export interface Extractor {
 	 */
 	extract(
 		document: Document,
-		callback: ( entry: Entry ) => void
+		callback: ( entry: SiteData ) => void
 	): Promise< void >;
 }
