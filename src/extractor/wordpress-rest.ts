@@ -1,4 +1,4 @@
-import { SiteData, Extractor, ExtractorInfo } from './extractor';
+import { SiteData, Extractor, ExtractorInfo, SiteInfo } from './extractor';
 
 export class WordPressRestExtractor implements Extractor {
 	info(): ExtractorInfo {
@@ -30,6 +30,11 @@ export class WordPressRestExtractor implements Extractor {
 		}
 
 		return false;
+	}
+
+	async extractInfo( document: Document ): Promise< SiteInfo > {
+		// TODO.
+		return { title: 'Foo' };
 	}
 
 	async extractData(

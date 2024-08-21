@@ -1,4 +1,14 @@
 /**
+ * Information about the site to be extracted.
+ */
+export interface SiteInfo {
+	/**
+	 * The site's title.
+	 */
+	title: string;
+}
+
+/**
  * A piece of data in the site under extraction, like a post or a page.
  */
 export interface SiteData {
@@ -11,6 +21,9 @@ export interface SiteData {
 	content: string;
 }
 
+/**
+ * Information about the Extractor.
+ */
 export interface ExtractorInfo {
 	/**
 	 * Unique identifier of the Extractor, e.g. "wordpress-rest".
@@ -40,6 +53,11 @@ export interface Extractor {
 	 * Tells whether the Extractor can handle a given Document.
 	 */
 	handles( document: Document ): boolean;
+
+	/**
+	 * Extracts information about the site, like its title.
+	 */
+	extractInfo( document: Document ): Promise< SiteInfo >;
 
 	/**
 	 * Extracts data from a given Document.
