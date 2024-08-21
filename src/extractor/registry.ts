@@ -7,12 +7,12 @@ const extractors = new Map< string, Extractor >();
 registerExtractor( new WordPressRestExtractor() );
 
 /**
- * Find Extractors that support a given document.
+ * Find Extractors that support a given Source.
  */
 export function findExtractors( source: Source ): Extractor[] {
 	let matches: Extractor[] = [];
 	for ( let [ slug, extractor ] of extractors ) {
-		if ( extractor.handles( source ) ) {
+		if ( extractor.supports( source ) ) {
 			matches.push( extractor );
 		}
 	}

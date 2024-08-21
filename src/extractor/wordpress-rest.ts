@@ -11,7 +11,7 @@ export class WordPressRestExtractor implements Extractor {
 		};
 	}
 
-	handles( source: Source ): boolean {
+	supports( source: Source ): boolean {
 		if ( ! ( source instanceof DOMSource ) ) {
 			return false;
 		}

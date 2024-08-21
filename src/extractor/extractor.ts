@@ -29,9 +29,9 @@ export interface Extractor {
 	info(): ExtractorInfo;
 
 	/**
-	 * Tells whether the Extractor can handle a given Source.
+	 * Tells whether the Extractor supports a given Source.
 	 */
-	handles( source: Source ): boolean;
+	supports( source: Source ): boolean;
 
 	/**
 	 * Extracts information about the Source, like its title, language, etc.
