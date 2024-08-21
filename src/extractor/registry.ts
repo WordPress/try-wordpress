@@ -1,5 +1,6 @@
 import { Extractor } from './extractor';
 import { WordPressRestExtractor } from './wordpress-rest';
+import { Source } from './source';
 
 const extractors = new Map< string, Extractor >();
 
@@ -8,10 +9,10 @@ registerExtractor( new WordPressRestExtractor() );
 /**
  * Find Extractors that support a given document.
  */
-export function findExtractors( document: Document ): Extractor[] {
+export function findExtractors( source: Source ): Extractor[] {
 	let matches: Extractor[] = [];
 	for ( let [ slug, extractor ] of extractors ) {
-		if ( extractor.handles( document ) ) {
+		if ( extractor.handles( source ) ) {
 			matches.push( extractor );
 		}
 	}

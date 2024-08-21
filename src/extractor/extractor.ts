@@ -1,25 +1,4 @@
-/**
- * Information about the site to be extracted.
- */
-export interface SiteInfo {
-	/**
-	 * The site's title.
-	 */
-	title: string;
-}
-
-/**
- * A piece of data in the site under extraction, like a post or a page.
- */
-export interface SiteData {
-	/**
-	 * Slug of the Extractor which extracted this data.
-	 * This is automatically set, the Extractor does not need to set it.
-	 */
-	extractor: string;
-	title: string;
-	content: string;
-}
+import { SourceData, SourceInfo, Source } from './source';
 
 /**
  * Information about the Extractor.
@@ -50,20 +29,20 @@ export interface Extractor {
 	info(): ExtractorInfo;
 
 	/**
-	 * Tells whether the Extractor can handle a given Document.
+	 * Tells whether the Extractor can handle a given Source.
 	 */
-	handles( document: Document ): boolean;
+	handles( source: Source ): boolean;
 
 	/**
-	 * Extracts information about the site, like its title.
+	 * Extracts information about the Source, like its title, language, etc.
 	 */
-	extractInfo( document: Document ): Promise< SiteInfo >;
+	extractInfo( source: Source ): Promise< SourceInfo >;
 
 	/**
 	 * Extracts data from a given Document.
 	 */
 	extractData(
-		document: Document,
-		callback: ( siteData: SiteData ) => void
+		source: Source,
+		callback: ( siteData: SourceData ) => void
 	): Promise< void >;
 }

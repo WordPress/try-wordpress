@@ -1,9 +1,12 @@
 // Constants
 import { findExtractors } from './extractor/registry';
+import { DOMSource } from './extractor/source';
 
 const MESSAGE_NAMESPACE = 'TRY_WORDPRESS';
 
-const extractors = findExtractors( document );
+const source = new DOMSource( document );
+
+const extractors = findExtractors( source );
 if ( extractors.length === 0 ) {
 	throw new Error( 'No extractor was found' );
 } else if ( extractors.length > 1 ) {
@@ -14,7 +17,7 @@ const extractor = extractors[ 0 ];
 console.log( `Found extractor ${ extractor.info().slug }` );
 
 extractor
-	.extractData( document, ( entry ) => {
+	.extractData( source, ( entry ) => {
 		console.log( entry );
 	} )
 	.then( () => console.log( 'Extraction finished' ) )

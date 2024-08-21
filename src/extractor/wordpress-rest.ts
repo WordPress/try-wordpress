@@ -1,4 +1,5 @@
-import { SiteData, Extractor, ExtractorInfo, SiteInfo } from './extractor';
+import { Extractor, ExtractorInfo } from './extractor';
+import { DOMSource, Source, SourceData, SourceInfo } from './source';
 
 export class WordPressRestExtractor implements Extractor {
 	info(): ExtractorInfo {
@@ -10,7 +11,12 @@ export class WordPressRestExtractor implements Extractor {
 		};
 	}
 
-	handles( document: Document ): boolean {
+	handles( source: Source ): boolean {
+		if ( ! ( source instanceof DOMSource ) ) {
+			return false;
+		}
+		const document = source.resource();
+
 		const post = document.querySelector( 'article.post' );
 		if ( post ) {
 			// Check if the CSS class matches `post-<id>`.
@@ -32,14 +38,14 @@ export class WordPressRestExtractor implements Extractor {
 		return false;
 	}
 
-	async extractInfo( document: Document ): Promise< SiteInfo > {
+	async extractInfo( source: Source ): Promise< SourceInfo > {
 		// TODO.
 		return { title: 'Foo' };
 	}
 
 	async extractData(
-		document: Document,
-		callback: ( entry: SiteData ) => void
+		source: Source,
+		callback: ( entry: SourceData ) => void
 	): Promise< void > {
 		// TODO.
 	}
