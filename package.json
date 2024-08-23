@@ -1,10 +1,12 @@
 {
 	"scripts": {
 		"build": "webpack",
-		"watch": "webpack --watch --env target=firefox",
+		"watch": "npm run watch:firefox",
+		"watch:firefox": "webpack --watch --env target=firefox",
+		"watch:chrome": "webpack --watch --env target=chrome",
 		"start": "npm run start:firefox",
-		"start:firefox": "concurrently \"npm:watch\" \"npm:web-ext:run:firefox\"",
-		"start:chrome": "concurrently \"npm:watch\" \"npm:web-ext:run:chrome\"",
+		"start:firefox": "concurrently \"npm:watch:firefox\" \"npm:web-ext:run:firefox\"",
+		"start:chrome": "concurrently \"npm:watch:chrome\" \"npm:web-ext:run:chrome\"",
 		"start:noreload": "npm run web-ext:run:firefox -- --no-reload",
 		"web-ext:run:firefox": "web-ext -s build/firefox run --target firefox-desktop --pref toolkit.legacyUserProfileCustomizations.stylesheets=true",
 		"web-ext:run:chrome": "web-ext -s build/chrome run --target chromium --arg='--disable-search-engine-choice-screen'",
