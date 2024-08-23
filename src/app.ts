@@ -10,6 +10,7 @@ declare global {
 const iframeId = 'playground';
 const iframe = document.getElementById( iframeId ) as HTMLIFrameElement;
 
+
 initPlayground( iframeId )
 	.then( ( playground ) => {
 		window.playground = playground;
