@@ -9,7 +9,6 @@ if ( typeof chrome.sidePanel !== 'undefined' ) {
 	browser.action.onClicked.addListener( () => {
 		browser.sidebarAction.toggle();
 	} );
-	console.log( 'test' );
 } else {
 	console.error( 'unsupported browser' );
 }
