@@ -1,6 +1,5 @@
 const path = require( 'node:path' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
-const FileManagerPlugin = require( 'filemanager-webpack-plugin' );
 
 module.exports = function ( env ) {
 	let targets = [ 'firefox', 'chrome' ];
@@ -71,69 +70,28 @@ function extensionModules( mode, target ) {
 				filename: path.join( 'content.js' ),
 			},
 		},
-		// Extension sidebar.
+		// The app.
 		{
 			mode,
 			resolve,
 			module,
-			entry: './src/app.ts',
+			entry: './src/main.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'app.js' ),
+				filename: path.join( 'main.js' ),
 			},
 			plugins: [
 				new CopyPlugin( {
 					patterns: [
 						{
-							from: './src/app.html',
-							to: path.join( targetPath, 'app.html' ),
+							from: './src/main.html',
+							to: path.join( targetPath, 'main.html' ),
 						},
 						{
-							from: './src/app.css',
-							to: path.join( targetPath, 'app.css' ),
+							from: './src/main.css',
+							to: path.join( targetPath, 'main.css' ),
 						},
 					],
-				} ),
-			],
-		},
-		// WordPress plugin.
-		{
-			mode,
-			resolve,
-			module,
-			entry: './src/plugin/scripts/index.ts',
-			output: {
-				path: targetPath,
-				filename: path.join( 'plugin', 'index.js' ),
-			},
-			plugins: [
-				new CopyPlugin( {
-					patterns: [
-						{
-							from: '**/*',
-							context: 'src/plugin/',
-							to: path.join( targetPath, 'plugin' ),
-							globOptions: {
-								ignore: [ '**/scripts/**' ],
-							},
-						},
-					],
-				} ),
-				// Create plugin.zip.
-				new FileManagerPlugin( {
-					events: {
-						onEnd: {
-							archive: [
-								{
-									source: path.join( targetPath, 'plugin' ),
-									destination: path.join(
-										targetPath,
-										'plugin.zip'
-									),
-								},
-							],
-						},
-					},
 				} ),
 			],
 		},
