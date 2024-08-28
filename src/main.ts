@@ -1,6 +1,6 @@
-import { createRoot } from 'react-dom/client';
+import { Container, createRoot } from 'react-dom/client';
 import { createElement } from 'react';
-import { App } from './ui/App';
+import { App } from '@/ui/App';
 
-const root = createRoot( document.getElementById( 'main' ) );
+const root = createRoot( document.getElementById( 'main' ) as Container );
 root.render( createElement( App, {}, null ) );

@@ -1,5 +1,6 @@
 const path = require( 'node:path' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
+const { TsconfigPathsPlugin } = require( 'tsconfig-paths-webpack-plugin' );
 
 module.exports = function ( env ) {
 	let targets = [ 'firefox', 'chrome' ];
@@ -22,7 +23,10 @@ module.exports = function ( env ) {
 // Build the extension.
 function extensionModules( mode, target ) {
 	const targetPath = path.resolve( __dirname, 'build', target );
-	const resolve = { extensions: [ '.ts', '.tsx', '.js' ] };
+	const resolve = {
+		extensions: [ '.ts', '.tsx', '.js' ],
+		plugins: [ new TsconfigPathsPlugin() ],
+	};
 	const module = {
 		rules: [
 			{

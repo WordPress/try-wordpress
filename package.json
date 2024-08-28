@@ -1,4 +1,5 @@
 {
+	"type": "module",
 	"scripts": {
 		"build": "webpack",
 		"watch": "npm run watch:firefox",
@@ -40,6 +41,7 @@
 		"mhtml2html": "^3.0.0",
 		"playwright": "^1.44.1",
 		"ts-loader": "^9.5.1",
+		"tsconfig-paths-webpack-plugin": "^4.1.0",
 		"typescript": "^5.5.4",
 		"web-ext": "^8.2.0"
 	},
