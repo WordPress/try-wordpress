@@ -1,5 +1,16 @@
-html,
-body {
+body, html {
 	margin: 0;
 	padding: 0;
+}
+
+.shell {
+	display: flex;
+	height: 100vh;
+}
+.shell > div {
+	width: 50%;
+	padding: 10px;
+}
+.shell > div:first-child {
+	border-right: 1px solid black;
 }
