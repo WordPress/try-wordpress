@@ -1,11 +1,16 @@
 import { Main } from '@/ui/Main';
 import { Preview } from '@/ui/Preview';
+import { createElement } from "react";
 
-export function App() {
+function App() {
 	return (
 		<div className="app">
 			<Main />
 			<Preview />
 		</div>
 	);
+}
+
+export function createApp() {
+	return createElement( App, {}, null );
 }
