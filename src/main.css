@@ -3,14 +3,14 @@ body, html {
 	padding: 0;
 }
 
-.shell {
+.app {
 	display: flex;
 	height: 100vh;
 }
-.shell > div {
+.app > div {
 	width: 50%;
 	padding: 10px;
 }
-.shell > div:first-child {
+.app > div:first-child {
 	border-right: 1px solid black;
 }

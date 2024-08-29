@@ -1,7 +1,11 @@
+import { Main } from '@/ui/Main';
+import { Preview } from '@/ui/Preview';
+
 export function App() {
 	return (
 		<div className="app">
-			<span>App</span>
+			<Main />
+			<Preview />
 		</div>
 	);
 }
