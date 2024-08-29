@@ -1,12 +1,12 @@
 import { Preview } from '@/ui/Preview';
 import {
 	createHashRouter,
-	createRoutesFromElements,
+	createRoutesFromElements, Link,
 	Navigate,
 	Outlet,
 	Route,
 	RouterProvider,
-	useLocation,
+	useLocation, useNavigate,
 } from "react-router-dom";
 import { StrictMode, useEffect } from "react";
 import { NewImport } from "@/ui/screens/NewImport";
@@ -15,12 +15,16 @@ import { Home } from "@/ui/screens/Home";
 import {AppData} from "@/storage/AppData";
 
 function createRouter() {
-	const savedPath = AppData.currentPath();
+	let initialScreen = AppData.currentPath() ?? 'home';
+	if (initialScreen === '/') {
+		initialScreen = 'home';
+	}
 
 	return createHashRouter(
 		createRoutesFromElements(
 			<Route path="/" element={<App/>}>
-				<Route index element={savedPath ? <Navigate to={savedPath} replace/> : <Home/>}/>
+				<Route index element={<Navigate to={initialScreen} replace/>}/>
+				<Route path="home" element={<Home/>}/>
 				<Route path="new-import" element={<NewImport/>}/>
 				<Route path="view-import" element={<ViewImport/>}/>
 			</Route>,
@@ -35,12 +39,30 @@ function App() {
 	}, [location]);
 
 	return (
-		<div className="app">
-			<div className="main">
-				<Outlet />
+		<>
+			<div className="app">
+				<Navbar className={"app-nav"} />
+				<div className="app-main">
+					<Outlet/>
+				</div>
 			</div>
-			<Preview />
-		</div>
+			<div className="preview">
+				<Preview/>
+			</div>
+		</>
+	);
+}
+
+function Navbar(props: { className: string }) {
+	const { className } = props;
+	const navigate = useNavigate();
+
+	return (
+		<nav className={className}>
+			<ul>
+				<button onClick={() => navigate('/home')}>Home</button>
+			</ul>
+		</nav>
 	);
 }
 

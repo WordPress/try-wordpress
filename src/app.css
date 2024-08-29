@@ -3,14 +3,33 @@ body, html {
 	padding: 0;
 }
 
-.app {
+/* Two-column layout */
+#app {
 	display: flex;
 	height: 100vh;
 }
-.app > div {
+#app > div {
 	width: 50%;
+}
+#app > div:first-child {
+	border-right: 1px solid black;
+}
+
+/* App Navbar */
+.app-nav {
+	border-bottom: 1px solid black;
+}
+.app-nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 5px;
+}
+
+/* App Main */
+.app-main {
 	padding: 10px;
 }
-.app > div:first-child {
-	border-right: 1px solid black;
+
+/* Preview */
+.preview {
 }
