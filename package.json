@@ -19,7 +19,8 @@
 		"test:e2e:build": "wp-scripts build src/content/utils/dom.js --output-path=tests/e2e/build",
 		"test:e2e": "npx playwright test tests/e2e/index.spec.js",
 		"web-ext": "web-ext",
-		"wp-scripts": "wp-scripts"
+		"wp-scripts": "wp-scripts",
+		"prettier": "prettier"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.24.5",
