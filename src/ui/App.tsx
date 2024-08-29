@@ -16,7 +16,7 @@ const router = createHashRouter(
 		<Route path="/" element={<App />}>
 			<Route path="" element={<Home/>}/>
 			<Route path="new-import" element={<NewImport/>}/>
-			<Route path="view-import:id" element={<ViewImport/>}/>
+			<Route path="view-import" element={<ViewImport/>}/>
 		</Route>,
 	),
 );
