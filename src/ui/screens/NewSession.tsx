@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Session } from "@/session/Session";
+import {Session, Sessions} from "@/storage/Sessions";
 
 export function NewSession() {
     const navigate = useNavigate();
@@ -28,19 +28,14 @@ async function createSession(): Promise<Session> {
         throw new Error('Failed to retrieve site info');
     }
 
-    const session: Session = {
-        id: Date.now().toString(16),
+    return Sessions.create({
         url: info.url,
-        title: info.title,
-    };
-
-    // TODO: Save in storage.
-
-    return session;
+        title: info.title ?? info.url.hostname,
+    });
 }
 
 async function getSiteInfo(): Promise<null|{
-    url: string;
+    url: URL;
     title?: string;
 }> {
     const tabs = await browser.tabs.query({currentWindow: true, active: true});
@@ -54,7 +49,7 @@ async function getSiteInfo(): Promise<null|{
     }
 
     return {
-        url: tab.url,
+        url: new URL(tab.url),
         title: tab.title,
     };
 }
