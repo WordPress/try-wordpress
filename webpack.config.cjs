@@ -79,21 +79,21 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/main.ts',
+			entry: './src/app.ts',
 			output: {
 				path: targetPath,
-				filename: path.join( 'main.js' ),
+				filename: path.join( 'app.js' ),
 			},
 			plugins: [
 				new CopyPlugin( {
 					patterns: [
 						{
-							from: './src/main.html',
-							to: path.join( targetPath, 'main.html' ),
+							from: './src/app.html',
+							to: path.join( targetPath, 'app.html' ),
 						},
 						{
-							from: './src/main.css',
-							to: path.join( targetPath, 'main.css' ),
+							from: './src/app.css',
+							to: path.join( targetPath, 'app.css' ),
 						},
 					],
 				} ),
