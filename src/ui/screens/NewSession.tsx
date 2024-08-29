@@ -1,15 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { Import } from "@/import/Import";
+import { Session } from "@/session/Session";
 
-export function NewImport() {
+export function NewSession() {
     const navigate = useNavigate();
     const handleClick = async () => {
         try {
-            const import_ = await createImport();
-            navigate(`/view-import:${import_.id}`);
+            const session = await createSession();
+            navigate(`/view-session:${session.id}`);
         } catch (error) {
             // TODO: Handle error.
-            console.error('Failed to create import', error);
+            console.error('Failed to create session', error);
             return;
         }
     };
@@ -22,13 +22,13 @@ export function NewImport() {
     );
 }
 
-async function createImport(): Promise<Import> {
+async function createSession(): Promise<Session> {
     const info = await getSiteInfo();
     if (!info) {
         throw new Error('Failed to retrieve site info');
     }
 
-    const import_: Import = {
+    const session: Session = {
         id: Date.now().toString(16),
         url: info.url,
         title: info.title,
@@ -36,7 +36,7 @@ async function createImport(): Promise<Import> {
 
     // TODO: Save in storage.
 
-    return import_;
+    return session;
 }
 
 async function getSiteInfo(): Promise<null|{

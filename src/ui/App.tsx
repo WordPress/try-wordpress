@@ -9,8 +9,8 @@ import {
 	useLocation, useNavigate,
 } from "react-router-dom";
 import { StrictMode, useEffect } from "react";
-import { NewImport } from "@/ui/screens/NewImport";
-import { ViewImport } from "@/ui/screens/ViewImport";
+import { NewSession } from "@/ui/screens/NewSession";
+import { ViewSession } from "@/ui/screens/ViewSession";
 import { Home } from "@/ui/screens/Home";
 import {AppData} from "@/storage/AppData";
 
@@ -25,8 +25,8 @@ function createRouter() {
 			<Route path="/" element={<App/>}>
 				<Route index element={<Navigate to={initialScreen} replace/>}/>
 				<Route path="home" element={<Home/>}/>
-				<Route path="new-import" element={<NewImport/>}/>
-				<Route path="view-import" element={<ViewImport/>}/>
+				<Route path="new-session" element={<NewSession/>}/>
+				<Route path="view-session" element={<ViewSession/>}/>
 			</Route>,
 		)
 	);

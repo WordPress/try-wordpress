@@ -6,7 +6,7 @@ export function Home() {
     return (
         <>
             <h1>Welcome to <br/>Try WordPress</h1>
-            <button onClick={() => navigate('/new-import')}>Start Import</button>
+            <button onClick={() => navigate('/new-session')}>Start Import</button>
         </>
     );
 }
