@@ -3,7 +3,7 @@
 	"name": "Try WordPress",
 	"description": "An extension that liberates your data into WordPress",
 	"version": "0.0.1",
-	"permissions": [],
+	"permissions": [ "storage" ],
 	"host_permissions": [ "*://*/*" ],
 	"icons": {
 		"32": "icons/icon-32.png",

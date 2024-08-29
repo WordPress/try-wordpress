@@ -1,23 +1,26 @@
 import { Preview } from '@/ui/Preview';
 import {
 	createHashRouter,
-	createRoutesFromElements, Navigate,
+	createRoutesFromElements,
+	Navigate,
 	Outlet,
 	Route,
 	RouterProvider,
+	useLocation,
 } from "react-router-dom";
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import { NewImport } from "@/ui/screens/NewImport";
 import { ViewImport } from "@/ui/screens/ViewImport";
 import { Home } from "@/ui/screens/Home";
+import {AppData} from "@/storage/AppData";
 
 function createRouter() {
-	const navigateTo = '/new-import';
+	const savedPath = AppData.currentPath();
 
 	return createHashRouter(
 		createRoutesFromElements(
 			<Route path="/" element={<App/>}>
-				<Route index element={navigateTo ? <Navigate to={navigateTo} replace/> : <Home/>}/>
+				<Route index element={savedPath ? <Navigate to={savedPath} replace/> : <Home/>}/>
 				<Route path="new-import" element={<NewImport/>}/>
 				<Route path="view-import" element={<ViewImport/>}/>
 			</Route>,
@@ -26,6 +29,11 @@ function createRouter() {
 }
 
 function App() {
+	const location = useLocation();
+	useEffect(() => {
+		AppData.setCurrentPath(location.pathname);
+	}, [location]);
+
 	return (
 		<div className="app">
 			<div className="main">
