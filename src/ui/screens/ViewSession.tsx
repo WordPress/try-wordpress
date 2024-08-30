@@ -1,5 +1,5 @@
 import { useLoaderData } from 'react-router-dom';
-import { Session } from '@/storage/Sessions';
+import { Session } from '@/storage/session';
 
 export function ViewSession() {
 	const session = useLoaderData() as Session;

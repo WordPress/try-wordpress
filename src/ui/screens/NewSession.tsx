@@ -1,12 +1,19 @@
 import { useNavigate } from 'react-router-dom';
-import { Session, Sessions } from '@/storage/Sessions';
 import { Screens } from '@/ui/App';
+import { createSession } from '@/storage/session';
 
 export function NewSession() {
 	const navigate = useNavigate();
-	const handleClick = async () => {
+	const handleContinue = async () => {
 		try {
-			const session = await createSession();
+			const info = await getSiteInfo();
+			if ( ! info ) {
+				throw new Error( 'Failed to retrieve site info' );
+			}
+			const session = await createSession( {
+				url: info.url,
+				title: info.title ?? new URL( info.url ).hostname,
+			} );
 			navigate( Screens.viewSession( session.id ) );
 		} catch ( error ) {
 			// TODO: Handle error.
@@ -21,21 +28,9 @@ export function NewSession() {
 				Start by navigating to the main page of your site, then click
 				Continue.
 			</p>
-			<button onClick={ handleClick }>Continue</button>
+			<button onClick={ handleContinue }>Continue</button>
 		</>
 	);
-}
-
-async function createSession(): Promise< Session > {
-	const info = await getSiteInfo();
-	if ( ! info ) {
-		throw new Error( 'Failed to retrieve site info' );
-	}
-
-	return Sessions.create( {
-		url: info.url,
-		title: info.title ?? new URL( info.url ).hostname,
-	} );
 }
 
 async function getSiteInfo(): Promise< null | {
