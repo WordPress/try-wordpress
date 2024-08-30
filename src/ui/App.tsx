@@ -2,6 +2,7 @@ import { Preview } from '@/ui/Preview';
 import {
 	createHashRouter,
 	createRoutesFromElements,
+	LoaderFunction,
 	Navigate,
 	Outlet,
 	Route,
@@ -13,12 +14,29 @@ import { StrictMode, useEffect } from 'react';
 import { NewSession } from '@/ui/screens/NewSession';
 import { ViewSession } from '@/ui/screens/ViewSession';
 import { Home } from '@/ui/screens/Home';
-import { LocalStorage } from '@/storage/LocalStorage';
+import { Settings } from '@/storage/Settings';
+import { Sessions } from '@/storage/Sessions';
 
 export const Screens = {
 	home: () => '/home',
 	newSession: () => '/sessions/new',
 	viewSession: ( id: string ) => `/sessions/${ id }`,
+};
+
+export const sessionLoader: LoaderFunction = async ( { params } ) => {
+	const sessionId = params.sessionId;
+	if ( ! sessionId ) {
+		throw new Response( 'sessionId param is required', { status: 404 } );
+	}
+
+	const session = await Sessions.get( sessionId );
+	if ( ! session ) {
+		throw new Response( `Session with id ${ sessionId } was not found`, {
+			status: 404,
+		} );
+	}
+
+	return session;
 };
 
 function Routes( props: { initialScreen: string } ) {
@@ -32,7 +50,11 @@ function Routes( props: { initialScreen: string } ) {
 			<Route path="home" element={ <Home /> } />
 			<Route path="sessions">
 				<Route path="new" element={ <NewSession /> } />
-				<Route path=":id" element={ <ViewSession /> } />
+				<Route
+					path=":sessionId"
+					element={ <ViewSession /> }
+					loader={ sessionLoader }
+				/>
 			</Route>
 		</Route>
 	);
@@ -41,7 +63,7 @@ function Routes( props: { initialScreen: string } ) {
 function App() {
 	const location = useLocation();
 	useEffect( () => {
-		LocalStorage.setCurrentPath( location.pathname ).catch( ( error ) =>
+		Settings.setCurrentPath( location.pathname ).catch( ( error ) =>
 			console.error( error )
 		);
 	}, [ location ] );
@@ -76,7 +98,7 @@ function Navbar( props: { className: string } ) {
 }
 
 export async function createApp() {
-	let initialScreen = await LocalStorage.currentPath();
+	let initialScreen = await Settings.currentPath();
 	if ( ! initialScreen || initialScreen === '/' ) {
 		initialScreen = Screens.home();
 	}

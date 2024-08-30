@@ -1,4 +1,4 @@
-export class LocalStorage {
+export class Settings {
 	static async setCurrentPath( path: string ): Promise< void > {
 		return browser.storage.local.set( { currentPath: path } );
 	}

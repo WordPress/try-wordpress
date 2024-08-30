@@ -34,12 +34,12 @@ async function createSession(): Promise< Session > {
 
 	return Sessions.create( {
 		url: info.url,
-		title: info.title ?? info.url.hostname,
+		title: info.title ?? new URL( info.url ).hostname,
 	} );
 }
 
 async function getSiteInfo(): Promise< null | {
-	url: URL;
+	url: string;
 	title?: string;
 } > {
 	const tabs = await browser.tabs.query( {
@@ -56,7 +56,7 @@ async function getSiteInfo(): Promise< null | {
 	}
 
 	return {
-		url: new URL( tab.url ),
+		url: tab.url,
 		title: tab.title,
 	};
 }
