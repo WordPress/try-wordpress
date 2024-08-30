@@ -2,7 +2,6 @@ import { Preview } from '@/ui/Preview';
 import {
 	createHashRouter,
 	createRoutesFromElements,
-	Link,
 	Navigate,
 	Outlet,
 	Route,
@@ -14,10 +13,10 @@ import { StrictMode, useEffect } from 'react';
 import { NewSession } from '@/ui/screens/NewSession';
 import { ViewSession } from '@/ui/screens/ViewSession';
 import { Home } from '@/ui/screens/Home';
-import { AppData } from '@/storage/AppData';
+import { LocalStorage } from '@/storage/LocalStorage';
 
-function createRouter() {
-	let initialScreen = AppData.currentPath() ?? 'home';
+async function createRouter() {
+	let initialScreen = ( await LocalStorage.currentPath() ) ?? 'home';
 	if ( initialScreen === '/' ) {
 		initialScreen = 'home';
 	}
@@ -40,7 +39,9 @@ function createRouter() {
 function App() {
 	const location = useLocation();
 	useEffect( () => {
-		AppData.setCurrentPath( location.pathname );
+		LocalStorage.setCurrentPath( location.pathname ).catch( ( error ) =>
+			console.error( error )
+		);
 	}, [ location ] );
 
 	return (
@@ -71,10 +72,10 @@ function Navbar( props: { className: string } ) {
 	);
 }
 
-export function createApp() {
+export async function createApp() {
 	return (
 		<StrictMode>
-			<RouterProvider router={ createRouter() } />
+			<RouterProvider router={ await createRouter() } />
 		</StrictMode>
 	);
 }
