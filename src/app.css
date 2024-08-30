@@ -3,6 +3,12 @@ body, html {
 	padding: 0;
 }
 
+ul, ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
 /* Two-column layout */
 #app {
 	display: flex;
@@ -20,8 +26,6 @@ body, html {
 	border-bottom: 1px solid black;
 }
 .app-nav ul {
-	list-style: none;
-	margin: 0;
 	padding: 5px;
 }
 

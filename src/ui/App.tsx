@@ -15,7 +15,7 @@ import { NewSession } from '@/ui/screens/NewSession';
 import { ViewSession } from '@/ui/screens/ViewSession';
 import { Home } from '@/ui/screens/Home';
 import { getConfig, setConfig } from '@/storage/config';
-import { getSession } from '@/storage/session';
+import { getSession, listSessions } from '@/storage/session';
 
 export const Screens = {
 	home: () => '/home',
@@ -23,7 +23,11 @@ export const Screens = {
 	viewSession: ( id: string ) => `/sessions/${ id }`,
 };
 
-export const sessionLoader: LoaderFunction = async ( { params } ) => {
+const homeLoader: LoaderFunction = async () => {
+	return await listSessions();
+};
+
+const sessionLoader: LoaderFunction = async ( { params } ) => {
 	const sessionId = params.sessionId;
 	if ( ! sessionId ) {
 		throw new Response( 'sessionId param is required', { status: 404 } );
@@ -45,7 +49,7 @@ function Routes( props: { initialScreen: string } ) {
 				index
 				element={ <Navigate to={ initialScreen } replace /> }
 			/>
-			<Route path="home" element={ <Home /> } />
+			<Route path="home" element={ <Home /> } loader={ homeLoader } />
 			<Route path="sessions">
 				<Route path="new" element={ <NewSession /> } />
 				<Route
