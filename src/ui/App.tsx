@@ -1,4 +1,4 @@
-import { Preview } from '@/ui/Preview';
+import { Preview } from '@/ui/preview/Preview';
 import {
 	createHashRouter,
 	createRoutesFromElements,
@@ -9,18 +9,20 @@ import {
 	RouterProvider,
 	useLocation,
 	useNavigate,
+	useRouteLoaderData,
 } from 'react-router-dom';
 import { StrictMode, useEffect } from 'react';
-import { NewSession } from '@/ui/screens/NewSession';
-import { ViewSession } from '@/ui/screens/ViewSession';
-import { Home } from '@/ui/screens/Home';
+import { NewSession } from '@/ui/start/NewSession';
+import { ViewSession } from '@/ui/session/ViewSession';
+import { Home } from '@/ui/start/Home';
 import { getConfig, setConfig } from '@/storage/config';
-import { getSession, listSessions } from '@/storage/session';
+import { getSession, listSessions, Session } from '@/storage/session';
+import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
 
 export const Screens = {
-	home: () => '/home',
-	newSession: () => '/sessions/new',
-	viewSession: ( id: string ) => `/sessions/${ id }`,
+	home: () => '/start/home',
+	newSession: () => '/start/new-session',
+	viewSession: ( id: string ) => `/session/${ id }`,
 };
 
 const homeLoader: LoaderFunction = async () => {
@@ -49,14 +51,16 @@ function Routes( props: { initialScreen: string } ) {
 				index
 				element={ <Navigate to={ initialScreen } replace /> }
 			/>
-			<Route path="home" element={ <Home /> } loader={ homeLoader } />
-			<Route path="sessions">
-				<Route path="new" element={ <NewSession /> } />
-				<Route
-					path=":sessionId"
-					element={ <ViewSession /> }
-					loader={ sessionLoader }
-				/>
+			<Route path="start">
+				<Route path="home" element={ <Home /> } loader={ homeLoader } />
+				<Route path="new-session" element={ <NewSession /> } />
+			</Route>
+			<Route
+				id="session"
+				path="session/:sessionId"
+				loader={ sessionLoader }
+			>
+				<Route path="" element={ <ViewSession /> } />
 			</Route>
 		</Route>
 	);
@@ -70,17 +74,23 @@ function App() {
 		);
 	}, [ location ] );
 
+	const session = useRouteLoaderData( 'session' ) as Session;
+
+	const preview = ! session ? (
+		<PlaceholderPreview />
+	) : (
+		<Preview session={ session } />
+	);
+
 	return (
 		<>
 			<div className="app">
 				<Navbar className={ 'app-nav' } />
 				<div className="app-main">
-					<Outlet />
+					<Outlet context={ session } />
 				</div>
 			</div>
-			<div className="preview">
-				<Preview />
-			</div>
+			<div className="preview">{ preview }</div>
 		</>
 	);
 }
