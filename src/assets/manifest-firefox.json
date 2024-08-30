@@ -31,7 +31,7 @@
 			"32": "icons/icon-32.png",
 			"128": "icons/icon-128"
 		},
-		"default_panel": "app.html",
+		"default_panel": "main.html",
 		"open_at_install": true
 	}
 }

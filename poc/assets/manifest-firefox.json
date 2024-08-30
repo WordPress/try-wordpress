@@ -3,7 +3,7 @@
 	"name": "Try WordPress",
 	"description": "An extension that liberates your data into WordPress",
 	"version": "0.0.1",
-	"permissions": [ "sidePanel" ],
+	"permissions": [],
 	"host_permissions": [ "*://*/*" ],
 	"icons": {
 		"32": "icons/icon-32.png",
@@ -23,14 +23,15 @@
 		}
 	],
 	"background": {
-		"service_worker": "background.js"
+		"scripts": [ "background.js" ]
 	},
-	"side_panel": {
+	"sidebar_action": {
 		"default_title": "Try WordPress",
 		"default_icon": {
 			"32": "icons/icon-32.png",
 			"128": "icons/icon-128"
 		},
-		"default_path": "main.html"
+		"default_panel": "app.html",
+		"open_at_install": true
 	}
 }

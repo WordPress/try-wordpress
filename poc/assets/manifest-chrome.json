@@ -31,6 +31,6 @@
 			"32": "icons/icon-32.png",
 			"128": "icons/icon-128"
 		},
-		"default_path": "main.html"
+		"default_path": "app.html"
 	}
 }
