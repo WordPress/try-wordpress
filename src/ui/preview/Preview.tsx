@@ -4,7 +4,7 @@ export function Preview( props: { session: Session } ) {
 	const { session } = props;
 	return (
 		<>
-			<span>Preview { `${ session.id }` }</span>
+			<iframe id="playground" src="https://playground.wordpress.net" />
 		</>
 	);
 }
