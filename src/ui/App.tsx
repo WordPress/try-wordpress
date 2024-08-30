@@ -21,26 +21,20 @@ export const Screens = {
 	viewSession: ( id: string ) => `/sessions/${ id }`,
 };
 
-async function createRouter() {
-	let initialScreen = ( await LocalStorage.currentPath() ) ?? Screens.home();
-	if ( initialScreen === '/' ) {
-		initialScreen = Screens.home();
-	}
-
-	return createHashRouter(
-		createRoutesFromElements(
-			<Route path="/" element={ <App /> }>
-				<Route
-					index
-					element={ <Navigate to={ initialScreen } replace /> }
-				/>
-				<Route path="home" element={ <Home /> } />
-				<Route path="sessions">
-					<Route path="new" element={ <NewSession /> } />
-					<Route path=":id" element={ <ViewSession /> } />
-				</Route>
+function Routes( props: { initialScreen: string } ) {
+	const { initialScreen } = props;
+	return (
+		<Route path="/" element={ <App /> }>
+			<Route
+				index
+				element={ <Navigate to={ initialScreen } replace /> }
+			/>
+			<Route path="home" element={ <Home /> } />
+			<Route path="sessions">
+				<Route path="new" element={ <NewSession /> } />
+				<Route path=":id" element={ <ViewSession /> } />
 			</Route>
-		)
+		</Route>
 	);
 }
 
@@ -70,7 +64,6 @@ function App() {
 function Navbar( props: { className: string } ) {
 	const { className } = props;
 	const navigate = useNavigate();
-
 	return (
 		<nav className={ className }>
 			<ul>
@@ -83,9 +76,18 @@ function Navbar( props: { className: string } ) {
 }
 
 export async function createApp() {
+	let initialScreen = await LocalStorage.currentPath();
+	if ( ! initialScreen || initialScreen === '/' ) {
+		initialScreen = Screens.home();
+	}
+
+	const router = createHashRouter(
+		createRoutesFromElements( Routes( { initialScreen } ) )
+	);
+
 	return (
 		<StrictMode>
-			<RouterProvider router={ await createRouter() } />
+			<RouterProvider router={ router } />
 		</StrictMode>
 	);
 }
