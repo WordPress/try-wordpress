@@ -15,10 +15,16 @@ import { ViewSession } from '@/ui/screens/ViewSession';
 import { Home } from '@/ui/screens/Home';
 import { LocalStorage } from '@/storage/LocalStorage';
 
+export const Screens = {
+	home: () => '/home',
+	newSession: () => '/sessions/new',
+	viewSession: ( id: string ) => `/sessions/${ id }`,
+};
+
 async function createRouter() {
-	let initialScreen = ( await LocalStorage.currentPath() ) ?? 'home';
+	let initialScreen = ( await LocalStorage.currentPath() ) ?? Screens.home();
 	if ( initialScreen === '/' ) {
-		initialScreen = 'home';
+		initialScreen = Screens.home();
 	}
 
 	return createHashRouter(
@@ -29,8 +35,10 @@ async function createRouter() {
 					element={ <Navigate to={ initialScreen } replace /> }
 				/>
 				<Route path="home" element={ <Home /> } />
-				<Route path="new-session" element={ <NewSession /> } />
-				<Route path="view-session" element={ <ViewSession /> } />
+				<Route path="sessions">
+					<Route path="new" element={ <NewSession /> } />
+					<Route path=":id" element={ <ViewSession /> } />
+				</Route>
 			</Route>
 		)
 	);
@@ -66,7 +74,9 @@ function Navbar( props: { className: string } ) {
 	return (
 		<nav className={ className }>
 			<ul>
-				<button onClick={ () => navigate( '/home' ) }>Home</button>
+				<button onClick={ () => navigate( Screens.home() ) }>
+					Home
+				</button>
 			</ul>
 		</nav>
 	);

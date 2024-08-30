@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { Session, Sessions } from '@/storage/Sessions';
+import { Screens } from '@/ui/App';
 
 export function NewSession() {
 	const navigate = useNavigate();
 	const handleClick = async () => {
 		try {
 			const session = await createSession();
-			navigate( `/view-session:${ session.id }` );
+			navigate( Screens.viewSession( session.id ) );
 		} catch ( error ) {
 			// TODO: Handle error.
 			console.error( 'Failed to create session', error );
