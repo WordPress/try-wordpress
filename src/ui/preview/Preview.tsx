@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { startPlaygroundWeb } from '@wp-playground/client';
+import { PreviewTabBar } from '@/ui/preview/PreviewTabBar';
+
+const playgroundIframeId = 'playground';
 
 export function Preview( props: { slug: string } ) {
 	const { slug } = props;
-	const playgroundIframeId = 'playground';
+	const [ currentTab, setCurrentTab ] = useState< number >( 0 );
 
 	useEffect( () => {
 		initPlayground( playgroundIframeId, slug ).catch( ( error ) => {
@@ -13,6 +16,13 @@ export function Preview( props: { slug: string } ) {
 
 	return (
 		<>
+			<PreviewTabBar
+				entries={ [ 'Preview', 'Admin' ] }
+				value={ currentTab }
+				className={ 'preview-tabs' }
+				tabClassName={ 'preview-tabs-tab' }
+				onChange={ ( tab: number ) => setCurrentTab( tab ) }
+			/>
 			<iframe title={ slug } id="playground" />
 		</>
 	);

@@ -27,6 +27,7 @@ ol {
 
 /* App Navbar */
 .app-nav {
+	height: 40px;
 	border-bottom: 1px solid #000;
 }
 
@@ -37,6 +38,46 @@ ol {
 /* App Main */
 .app-main {
 	padding: 10px;
+}
+
+/* Preview tabs. */
+.preview-tabs {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 100%;
+	height: 40px;
+	border-bottom: 1px solid #000;
+}
+
+.preview-tabs-tab {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	background: slategrey;
+	color: white;
+}
+
+.preview-tabs-tab.selected {
+	background: white;
+	color: black;
+	font-weight: 700;
+}
+
+.preview-tabs-tab > * {
+	cursor: pointer;
+}
+
+.preview-tabs-tab:first-child {
+	border-right: 1px solid #000;
+}
+
+.preview-tabs-tab label {
+	padding: 10px;
+}
+
+.preview-tabs-tab input {
+	display: none;
 }
 
 /* Preview */
