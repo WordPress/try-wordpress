@@ -13,7 +13,7 @@ export function Preview( props: { slug: string } ) {
 
 	return (
 		<>
-			<iframe id="playground" />
+			<iframe title={ slug } id="playground" />
 		</>
 	);
 }

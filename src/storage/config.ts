@@ -8,7 +8,7 @@ export async function setConfig( value: Config ): Promise< void > {
 	for ( key in value ) {
 		config[ key ] = value[ key ];
 	}
-	return browser.storage.local.set( { config: config } );
+	return browser.storage.local.set( { config } );
 }
 
 export async function getConfig(): Promise< Config > {

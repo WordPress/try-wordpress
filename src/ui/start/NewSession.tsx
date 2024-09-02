@@ -16,9 +16,12 @@ export function NewSession() {
 			} );
 			navigate( Screens.viewSession( session.id ) );
 		} catch ( error ) {
-			// TODO: Handle error.
 			console.error( 'Failed to create session', error );
-			return;
+			return (
+				<span>
+					Failed to create session: { ( error as Error ).message }
+				</span>
+			);
 		}
 	};
 
