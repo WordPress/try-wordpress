@@ -1,0 +1,50 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+}
+
+ul,
+ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+/* Two-column layout */
+#app {
+	display: flex;
+	height: 100vh;
+}
+
+#app > div {
+	width: 50%;
+}
+
+#app > div:first-child {
+	border-right: 1px solid #000;
+}
+
+/* App Navbar */
+.app-nav {
+	border-bottom: 1px solid #000;
+}
+
+.app-nav ul {
+	padding: 5px;
+}
+
+/* App Main */
+.app-main {
+	padding: 10px;
+}
+
+/* Preview */
+.preview iframe {
+	flex-grow: 1;
+	border: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}

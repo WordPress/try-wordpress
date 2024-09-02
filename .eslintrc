@@ -8,7 +8,14 @@
     "env": {
         "jest/globals": true
     },
+    "settings": {
+        "import/resolver": {
+            "typescript": {}
+        }
+    },
     "rules": {
+        // Turn on errors for missing imports.
+        "import/no-unresolved": "error",
         "no-console": [
             "off"
         ]
