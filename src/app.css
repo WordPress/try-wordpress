@@ -54,13 +54,13 @@ ol {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
-	background: slategrey;
-	color: white;
+	background: #708090;
+	color: #fff;
 }
 
 .preview-tabs-tab.selected {
-	background: white;
-	color: black;
+	background: #fff;
+	color: #000;
 	font-weight: 700;
 }
 
