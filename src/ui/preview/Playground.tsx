@@ -7,39 +7,60 @@ import {
 
 const playgroundIframeId = 'playground';
 
-export function Playground( props: { slug: string } ) {
-	const { slug } = props;
-	const [ playgroundUrl, setPlaygroundUrl ] = useState< string | null >();
+export interface PlaygroundInfo {
+	url: string;
+}
+
+export function Playground( props: {
+	slug: string;
+	hideOnReady: boolean;
+	onReady: ( info: PlaygroundInfo ) => void;
+} ) {
+	const { slug, hideOnReady, onReady } = props;
+	const [ show, setShow ] = useState< boolean >( true );
 
 	useEffect( () => {
-		initPlayground( playgroundIframeId, slug )
+		const iframe = document.getElementById( playgroundIframeId );
+		if ( ! ( iframe instanceof HTMLIFrameElement ) ) {
+			throw Error( 'Playground container element must be an iframe' );
+		}
+		if ( iframe.src !== '' ) {
+			// Playground is already started.
+			return;
+		}
+
+		const ready = ( info: PlaygroundInfo ) => {
+			console.log( 'Playground communication established!', info );
+			if ( hideOnReady ) {
+				setShow( false );
+			}
+			onReady( info );
+		};
+
+		initPlayground( iframe, slug )
 			.then( async ( client: PlaygroundClient ) => {
 				const url = await client.absoluteUrl;
-				console.log( 'Playground communication established!', url );
-				setPlaygroundUrl( url );
+				ready( { url } );
 			} )
 			.catch( ( error ) => {
-				console.error( error );
+				throw error;
 			} );
-	}, [ slug ] );
+	}, [ slug, hideOnReady, onReady ] );
 
-	return <iframe title={ slug } id={ playgroundIframeId } />;
+	const classes = show ? [] : [ 'hidden' ];
+	return (
+		<iframe
+			title={ slug }
+			id={ playgroundIframeId }
+			className={ classes.join( ' ' ) }
+		/>
+	);
 }
 
 async function initPlayground(
-	iframeId: string,
+	iframe: HTMLIFrameElement,
 	slug: string
 ): Promise< PlaygroundClient > {
-	const iframe = document.getElementById( iframeId );
-	if ( ! ( iframe instanceof HTMLIFrameElement ) ) {
-		throw Error( 'Playground container element must be an iframe' );
-	}
-	if ( iframe.src !== '' ) {
-		throw Error(
-			'Playground container iframe must not have the src attribute set'
-		);
-	}
-
 	const options: StartPlaygroundOptions = {
 		iframe,
 		remoteUrl:
