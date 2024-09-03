@@ -79,7 +79,7 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/app.ts',
+			entry: './src/ui/main.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'app.js' ),
@@ -88,11 +88,11 @@ function extensionModules( mode, target ) {
 				new CopyPlugin( {
 					patterns: [
 						{
-							from: './src/app.html',
+							from: './src/ui/app.html',
 							to: path.join( targetPath, 'app.html' ),
 						},
 						{
-							from: './src/app.css',
+							from: './src/ui/app.css',
 							to: path.join( targetPath, 'app.css' ),
 						},
 					],
