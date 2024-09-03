@@ -1,6 +1,7 @@
 const path = require( 'node:path' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
 const { TsconfigPathsPlugin } = require( 'tsconfig-paths-webpack-plugin' );
+const FileManagerPlugin = require( 'filemanager-webpack-plugin' );
 
 module.exports = function ( env ) {
 	let targets = [ 'firefox', 'chrome' ];
@@ -96,6 +97,31 @@ function extensionModules( mode, target ) {
 							to: path.join( targetPath, 'app.css' ),
 						},
 					],
+				} ),
+				new CopyPlugin( {
+					patterns: [
+						{
+							from: '**/*',
+							context: 'src/plugin/',
+							to: path.join( targetPath, 'plugin' ),
+						},
+					],
+				} ),
+				// Create plugin.zip.
+				new FileManagerPlugin( {
+					events: {
+						onEnd: {
+							archive: [
+								{
+									source: path.join( targetPath, 'plugin' ),
+									destination: path.join(
+										targetPath,
+										'plugin.zip'
+									),
+								},
+							],
+						},
+					},
 				} ),
 			],
 		},

@@ -77,5 +77,18 @@ function steps() {
 			username: 'admin',
 			password: 'password',
 		},
+		{
+			step: 'unzip',
+			zipFile: {
+				resource: 'url',
+				url: 'plugin.zip',
+			},
+			extractToPath: '/wordpress/wp-content/plugins/try-wordpress',
+		},
+		{
+			step: 'activatePlugin',
+			pluginName: 'Try WordPress',
+			pluginPath: '/wordpress/wp-content/plugins/try-wordpress',
+		},
 	];
 }
