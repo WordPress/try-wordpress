@@ -43,7 +43,7 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/background.ts',
+			entry: './src/extension/background.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'background.js' ),
@@ -52,11 +52,11 @@ function extensionModules( mode, target ) {
 				new CopyPlugin( {
 					patterns: [
 						{
-							from: `./src/assets/manifest-${ target }.json`,
+							from: `./src/extension/manifest-${ target }.json`,
 							to: path.join( targetPath, 'manifest.json' ),
 						},
 						{
-							from: './src/assets/icons',
+							from: './src/extension/icons',
 							to: path.join( targetPath, 'icons' ),
 						},
 					],
@@ -68,7 +68,7 @@ function extensionModules( mode, target ) {
 			mode,
 			resolve,
 			module,
-			entry: './src/content.ts',
+			entry: './src/extension/content.ts',
 			output: {
 				path: targetPath,
 				filename: path.join( 'content.js' ),
