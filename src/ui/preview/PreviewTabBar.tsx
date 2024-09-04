@@ -3,6 +3,7 @@ export function PreviewTabBar( props: {
 	value: number;
 	className: string;
 	tabClassName: string;
+	hidden?: boolean;
 	onChange: ( newValue: number ) => void;
 } ) {
 	const { entries, value, className, tabClassName, onChange } = props;

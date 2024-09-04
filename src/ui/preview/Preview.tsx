@@ -4,60 +4,68 @@ import { Playground, PlaygroundInfo } from '@/ui/preview/Playground';
 
 const tabFront = 0;
 const tabAdmin = 1;
+const defaultTab = tabFront;
 
 export function Preview( props: { sessionId: string } ) {
 	const { sessionId } = props;
-	const [ currentTab, setCurrentTab ] = useState< number >( tabFront );
+	const [ currentTab, setCurrentTab ] = useState< number >( defaultTab );
 	const [ playgroundInfo, setPlaygroundInfo ] = useState< PlaygroundInfo >();
 
-	const isPlaygroundLoading = ! (
-		playgroundInfo?.url && playgroundInfo.url.length > 0
+	const previewAdminUrl =
+		playgroundInfo?.url && playgroundInfo.url?.length > 0
+			? `${ playgroundInfo.url }/wp-admin/`
+			: '';
+
+	const isPlaygroundLoading = previewAdminUrl === '';
+
+	const tabBar = (
+		<PreviewTabBar
+			entries={ [ 'Preview', 'Admin' ] }
+			value={ currentTab }
+			className="preview-tabs"
+			tabClassName={ 'preview-tabs-tab' }
+			onChange={ ( tab: number ) => setCurrentTab( tab ) }
+		/>
 	);
 
-	const playground = (
+	const previewFront = (
 		<Playground
 			slug={ sessionId }
-			hideOnReady={ true }
 			onReady={ ( info ) => {
 				setPlaygroundInfo( info );
 			} }
 		/>
 	);
 
-	const tabBar = isPlaygroundLoading ? null : (
-		<PreviewTabBar
-			entries={ [ 'Preview', 'Admin' ] }
-			value={ currentTab }
-			className={ 'preview-tabs' }
-			tabClassName={ 'preview-tabs-tab' }
-			onChange={ ( tab: number ) => setCurrentTab( tab ) }
-		/>
+	const previewAdmin = (
+		<iframe title={ `${ sessionId }-admin` } src={ previewAdminUrl } />
 	);
 
-	const previewFrontClasses = currentTab === tabFront ? [] : [ 'hidden' ];
-	const previewFront = isPlaygroundLoading ? null : (
-		<iframe
-			title={ `${ sessionId }-front` }
-			src={ playgroundInfo.url }
-			className={ previewFrontClasses.join( ' ' ) }
-		/>
-	);
-
-	const previewAdminClasses = currentTab === tabAdmin ? [] : [ 'hidden' ];
-	const previewAdmin = isPlaygroundLoading ? null : (
-		<iframe
-			title={ `${ sessionId }-admin` }
-			src={ `${ playgroundInfo.url }/wp-admin/` }
-			className={ previewAdminClasses.join( ' ' ) }
-		/>
-	);
+	const showTabBar = ! isPlaygroundLoading;
+	const showPreviewFront = currentTab === tabFront;
+	const showPreviewAdmin = currentTab === tabAdmin;
 
 	return (
 		<>
-			{ playground }
-			{ tabBar }
-			{ previewFront }
-			{ previewAdmin }
+			<div className={ showTabBar ? '' : 'hidden' }>{ tabBar }</div>
+			<div
+				className={
+					showPreviewFront
+						? 'preview-tab-panel'
+						: 'preview-tab-panel hidden'
+				}
+			>
+				{ previewFront }
+			</div>
+			<div
+				className={
+					showPreviewAdmin
+						? 'preview-tab-panel'
+						: 'preview-tab-panel hidden'
+				}
+			>
+				{ previewAdmin }
+			</div>
 		</>
 	);
 }

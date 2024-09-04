@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import {
 	PlaygroundClient,
 	StartPlaygroundOptions,
@@ -13,11 +13,10 @@ export interface PlaygroundInfo {
 
 export function Playground( props: {
 	slug: string;
-	hideOnReady: boolean;
+	className?: string;
 	onReady: ( info: PlaygroundInfo ) => void;
 } ) {
-	const { slug, hideOnReady, onReady } = props;
-	const [ show, setShow ] = useState< boolean >( true );
+	const { slug, className, onReady } = props;
 
 	useEffect( () => {
 		const iframe = document.getElementById( playgroundIframeId );
@@ -29,30 +28,24 @@ export function Playground( props: {
 			return;
 		}
 
-		const ready = ( info: PlaygroundInfo ) => {
-			console.log( 'Playground communication established!', info );
-			if ( hideOnReady ) {
-				setShow( false );
-			}
-			onReady( info );
-		};
-
 		initPlayground( iframe, slug )
 			.then( async ( client: PlaygroundClient ) => {
-				const url = await client.absoluteUrl;
-				ready( { url } );
+				const info = {
+					url: await client.absoluteUrl,
+				};
+				console.log( 'Playground communication established!', info );
+				onReady( info );
 			} )
 			.catch( ( error ) => {
 				throw error;
 			} );
-	}, [ slug, hideOnReady, onReady ] );
+	}, [ slug, onReady ] );
 
-	const classes = show ? [] : [ 'hidden' ];
 	return (
 		<iframe
 			title={ slug }
 			id={ playgroundIframeId }
-			className={ classes.join( ' ' ) }
+			className={ className }
 		/>
 	);
 }
