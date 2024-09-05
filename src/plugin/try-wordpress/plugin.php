@@ -6,6 +6,12 @@
  * Author: WordPress.org
  */
 
+namespace Wporg\TryWordPress;
+
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
+
+// composer autoload
+require 'vendor/autoload.php';
+
