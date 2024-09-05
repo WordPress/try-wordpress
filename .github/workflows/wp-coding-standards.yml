@@ -1,0 +1,32 @@
+name: WP Coding standards
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [ opened, synchronize ]
+
+jobs:
+  phpcs:
+    name: phpcs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: 'none'
+          tools: composer, cs2pr
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--no-progress --no-ansi --no-interaction"
+          working-directory: "src/plugin/try-wordpress"
+
+      - name: Run PHPCS
+        working-directory: "src/plugin/try-wordpress"
+        run: vendor/bin/phpcs --standard=phpcs.xml -q --report=checkstyle | cs2pr --notices-as-warnings
