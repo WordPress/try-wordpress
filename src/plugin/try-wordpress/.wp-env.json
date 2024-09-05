@@ -1,5 +1,10 @@
 {
   "core": "WordPress/WordPress",
   "phpVersion": "8.3",
+  "env": {
+    "tests": {
+      "phpVersion": "8.3"
+    }
+  },
   "plugins": [ "." ]
 }
