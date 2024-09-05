@@ -11,13 +11,14 @@ import {
 	useNavigate,
 	useRouteLoaderData,
 } from 'react-router-dom';
-import { StrictMode, useEffect } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import { NewSession } from '@/ui/start/NewSession';
 import { ViewSession } from '@/ui/session/ViewSession';
 import { Home } from '@/ui/start/Home';
 import { getConfig, setConfig } from '@/storage/config';
 import { getSession, listSessions, Session } from '@/storage/session';
 import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
+import { PlaygroundInfo } from '@/ui/preview/Playground';
 
 export const Screens = {
 	home: () => '/start/home',
@@ -75,11 +76,16 @@ function App() {
 	}, [ location ] );
 
 	const session = useRouteLoaderData( 'session' ) as Session;
+	const [ playgroundInfo, setPlaygroundInfo ] = useState< PlaygroundInfo >();
 
 	const preview = ! session ? (
 		<PlaceholderPreview />
 	) : (
-		<Preview sessionId={ session.id } />
+		<Preview
+			sessionId={ session.id }
+			playgroundInfo={ playgroundInfo }
+			onReady={ () => setPlaygroundInfo( playgroundInfo ) }
+		/>
 	);
 
 	return (

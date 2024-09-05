@@ -6,10 +6,13 @@ const tabFront = 0;
 const tabAdmin = 1;
 const defaultTab = tabFront;
 
-export function Preview( props: { sessionId: string } ) {
-	const { sessionId } = props;
+export function Preview( props: {
+	sessionId: string;
+	playgroundInfo?: PlaygroundInfo;
+	onReady: ( info: PlaygroundInfo ) => void;
+} ) {
+	const { sessionId, playgroundInfo, onReady } = props;
 	const [ currentTab, setCurrentTab ] = useState< number >( defaultTab );
-	const [ playgroundInfo, setPlaygroundInfo ] = useState< PlaygroundInfo >();
 
 	const previewAdminUrl =
 		playgroundInfo?.url && playgroundInfo.url?.length > 0
@@ -28,14 +31,7 @@ export function Preview( props: { sessionId: string } ) {
 		/>
 	);
 
-	const previewFront = (
-		<Playground
-			slug={ sessionId }
-			onReady={ ( info ) => {
-				setPlaygroundInfo( info );
-			} }
-		/>
-	);
+	const previewFront = <Playground slug={ sessionId } onReady={ onReady } />;
 
 	const previewAdmin = (
 		<iframe title={ `${ sessionId }-admin` } src={ previewAdminUrl } />
