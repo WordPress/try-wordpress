@@ -19,6 +19,7 @@ import { getConfig, setConfig } from '@/storage/config';
 import { getSession, listSessions, Session } from '@/storage/session';
 import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
 import { PlaygroundInfo } from '@/ui/preview/Playground';
+import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 
 export const Screens = {
 	home: () => '/start/home',
@@ -77,27 +78,24 @@ function App() {
 
 	const session = useRouteLoaderData( 'session' ) as Session;
 	const [ playgroundInfo, setPlaygroundInfo ] = useState< PlaygroundInfo >();
+	const sectionContext: SessionContext = { session, playgroundInfo };
 
 	const preview = ! session ? (
 		<PlaceholderPreview />
 	) : (
-		<Preview
-			sessionId={ session.id }
-			playgroundInfo={ playgroundInfo }
-			onReady={ () => setPlaygroundInfo( playgroundInfo ) }
-		/>
+		<Preview onReady={ setPlaygroundInfo } />
 	);
 
 	return (
-		<>
+		<SessionProvider value={ sectionContext }>
 			<div className="app">
 				<Navbar className={ 'app-nav' } />
 				<div className="app-main">
-					<Outlet context={ session } />
+					<Outlet />
 				</div>
 			</div>
 			<div className="preview">{ preview }</div>
-		</>
+		</SessionProvider>
 	);
 }
 

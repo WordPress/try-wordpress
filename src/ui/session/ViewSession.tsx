@@ -1,11 +1,14 @@
-import { useOutletContext } from 'react-router-dom';
-import { Session } from '@/storage/session';
+import { useSessionContext } from '@/ui/session/SessionProvider';
 
 export function ViewSession() {
-	const session = useOutletContext() as Session;
+	const { session, playgroundInfo } = useSessionContext();
+
 	return (
 		<>
-			<span>{ `view session: ${ session.id }` }</span>
+			<div>view session: { session.id }</div>
+			{ playgroundInfo?.url ? (
+				<div>url: { playgroundInfo.url }</div>
+			) : null }
 		</>
 	);
 }

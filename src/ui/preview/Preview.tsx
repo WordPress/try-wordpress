@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import { PreviewTabBar } from '@/ui/preview/PreviewTabBar';
 import { Playground, PlaygroundInfo } from '@/ui/preview/Playground';
+import { useSessionContext } from '@/ui/session/SessionProvider';
 
 const tabFront = 0;
 const tabAdmin = 1;
 const defaultTab = tabFront;
 
 export function Preview( props: {
-	sessionId: string;
-	playgroundInfo?: PlaygroundInfo;
 	onReady: ( info: PlaygroundInfo ) => void;
 } ) {
-	const { sessionId, playgroundInfo, onReady } = props;
+	const { onReady } = props;
 	const [ currentTab, setCurrentTab ] = useState< number >( defaultTab );
+	const { session, playgroundInfo } = useSessionContext();
 
 	const previewAdminUrl =
 		playgroundInfo?.url && playgroundInfo.url?.length > 0
@@ -31,10 +31,10 @@ export function Preview( props: {
 		/>
 	);
 
-	const previewFront = <Playground slug={ sessionId } onReady={ onReady } />;
+	const previewFront = <Playground slug={ session.id } onReady={ onReady } />;
 
 	const previewAdmin = (
-		<iframe title={ `${ sessionId }-admin` } src={ previewAdminUrl } />
+		<iframe title={ `${ session.id }-admin` } src={ previewAdminUrl } />
 	);
 
 	const showTabBar = ! isPlaygroundLoading;
