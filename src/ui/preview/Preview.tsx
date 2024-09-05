@@ -1,56 +1,71 @@
-import { useEffect } from 'react';
-import { startPlaygroundWeb } from '@wp-playground/client';
+import { useState } from 'react';
+import { PreviewTabBar } from '@/ui/preview/PreviewTabBar';
+import { Playground, PlaygroundInfo } from '@/ui/preview/Playground';
 
-export function Preview( props: { slug: string } ) {
-	const { slug } = props;
-	const playgroundIframeId = 'playground';
+const tabFront = 0;
+const tabAdmin = 1;
+const defaultTab = tabFront;
 
-	useEffect( () => {
-		initPlayground( playgroundIframeId, slug ).catch( ( error ) => {
-			console.error( error );
-		} );
-	}, [ slug ] );
+export function Preview( props: { sessionId: string } ) {
+	const { sessionId } = props;
+	const [ currentTab, setCurrentTab ] = useState< number >( defaultTab );
+	const [ playgroundInfo, setPlaygroundInfo ] = useState< PlaygroundInfo >();
+
+	const previewAdminUrl =
+		playgroundInfo?.url && playgroundInfo.url?.length > 0
+			? `${ playgroundInfo.url }/wp-admin/`
+			: '';
+
+	const isPlaygroundLoading = previewAdminUrl === '';
+
+	const tabBar = (
+		<PreviewTabBar
+			entries={ [ 'Preview', 'Admin' ] }
+			value={ currentTab }
+			className="preview-tabs"
+			tabClassName={ 'preview-tabs-tab' }
+			onChange={ ( tab: number ) => setCurrentTab( tab ) }
+		/>
+	);
+
+	const previewFront = (
+		<Playground
+			slug={ sessionId }
+			onReady={ ( info ) => {
+				setPlaygroundInfo( info );
+			} }
+		/>
+	);
+
+	const previewAdmin = (
+		<iframe title={ `${ sessionId }-admin` } src={ previewAdminUrl } />
+	);
+
+	const showTabBar = ! isPlaygroundLoading;
+	const showPreviewFront = currentTab === tabFront;
+	const showPreviewAdmin = currentTab === tabAdmin;
 
 	return (
 		<>
-			<iframe title={ slug } id="playground" />
+			<div className={ showTabBar ? '' : 'hidden' }>{ tabBar }</div>
+			<div
+				className={
+					showPreviewFront
+						? 'preview-tab-panel'
+						: 'preview-tab-panel hidden'
+				}
+			>
+				{ previewFront }
+			</div>
+			<div
+				className={
+					showPreviewAdmin
+						? 'preview-tab-panel'
+						: 'preview-tab-panel hidden'
+				}
+			>
+				{ previewAdmin }
+			</div>
 		</>
 	);
-}
-
-async function initPlayground( iframeId: string, slug: string ) {
-	const iframe = document.getElementById( iframeId );
-	if ( ! ( iframe instanceof HTMLIFrameElement ) ) {
-		throw Error( 'Playground container element must be an iframe' );
-	}
-	if ( iframe.src !== '' ) {
-		throw Error(
-			'Playground container iframe must not have the src attribute set'
-		);
-	}
-
-	const options = {
-		iframe,
-		remoteUrl:
-			'https://playground.wordpress.net/remote.html?storage=browser',
-		siteSlug: slug,
-		blueprint: {
-			login: true,
-			steps: steps(),
-		},
-	};
-
-	const client = await startPlaygroundWeb( options );
-	console.log( 'Playground communication established!', client );
-	return client;
-}
-
-function steps() {
-	return [
-		{
-			step: 'login',
-			username: 'admin',
-			password: 'password',
-		},
-	];
 }

@@ -79,7 +79,7 @@ function App() {
 	const preview = ! session ? (
 		<PlaceholderPreview />
 	) : (
-		<Preview slug={ session.id } />
+		<Preview sessionId={ session.id } />
 	);
 
 	return (
