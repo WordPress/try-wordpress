@@ -9,9 +9,8 @@
 namespace Wporg\TryWordPress;
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
-// composer autoload
+// composer autoload.
 require 'vendor/autoload.php';
-

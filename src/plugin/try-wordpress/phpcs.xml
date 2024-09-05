@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ruleset name="Coding standards">
+    <description>Coding standards</description>
+
+    <arg name="colors"/>
+    <arg name="extensions" value="php,css"/>
+
+    <file>./plugin.php</file>
+    <file>./tests/</file>
+
+    <rule ref="WordPress">
+        <exclude name="Squiz.Commenting.ClassComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.Missing"/>
+        <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
+        <exclude name="Squiz.Commenting.FunctionComment.Missing"/>
+    </rule>
+</ruleset>
