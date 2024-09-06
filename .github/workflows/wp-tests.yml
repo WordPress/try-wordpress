@@ -59,4 +59,6 @@ jobs:
       - name: Run tests
         env:
           WP_TESTS_DIR: /tmp/wordpress-tests-lib/
-        run: ./src/plugin/vendor/bin/phpunit
+        with:
+          working-directory: "src/plugin"
+        run: ./vendor/bin/phpunit
