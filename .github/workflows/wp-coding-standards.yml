@@ -28,5 +28,4 @@ jobs:
           working-directory: "src/plugin"
 
       - name: Run PHPCS
-        working-directory: "src/plugin"
-        run: vendor/bin/phpcs --standard=phpcs.xml -q --report=checkstyle | cs2pr --notices-as-warnings
+        run: src/plugin/vendor/bin/phpcs --standard=phpcs.xml -q --report=checkstyle | cs2pr --notices-as-warnings
