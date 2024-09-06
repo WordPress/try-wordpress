@@ -9,6 +9,6 @@
   "plugins": [ "./src/plugin" ],
   "mappings": {
     "wp-content/phpunit.xml.dist": "./phpunit.xml.dist",
-    "wp-content/tests": "./tests/plugin"
+    "wp-content/tests": "./tests"
   }
 }

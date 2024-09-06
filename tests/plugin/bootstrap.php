@@ -23,7 +23,14 @@ require_once "$_tests_dir/includes/functions.php";
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require_once dirname( __DIR__ ) . '/plugins/plugin/plugin.php';
+	$plugin_path_in_src = dirname( __DIR__, 2 ) . '/src/plugin/plugin.php';
+	$plugin_path_in_wp  = dirname( __DIR__, 2 ) . '/plugins/plugin/plugin.php';
+
+	if ( getenv( 'PHPUNIT_UNDER_GITHUB_ACTIONS' ) ) {
+		require_once $plugin_path_in_src;
+	} else {
+		require_once $plugin_path_in_wp;
+	}
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 

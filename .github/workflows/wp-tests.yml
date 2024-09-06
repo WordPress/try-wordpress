@@ -44,10 +44,9 @@ jobs:
         uses: ramsey/composer-install@v2
         with:
           composer-options: "--no-progress --no-ansi --no-interaction"
-          working-directory: "src/plugin"
 
       - name: Install WordPress test setup
-        run: bash bin/install-wp-tests.sh wordpress_test root password 127.0.0.1:${{ job.services.mysql.ports[3306] }} latest
+        run: bash tests/bin/install-wp-tests.sh wordpress_test root password 127.0.0.1:${{ job.services.mysql.ports[3306] }} latest
 
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
@@ -55,5 +54,5 @@ jobs:
       - name: Run tests
         env:
           WP_TESTS_DIR: /tmp/wordpress-tests-lib/
-        working-directory: "src/plugin"
-        run: vendor/bin/phpunit
+          PHPUNIT_UNDER_GITHUB_ACTIONS: true
+        run: src/plugin/vendor/bin/phpunit
