@@ -13,7 +13,7 @@
     "dev:start": "wp-env start && wp-env run cli wp rewrite structure '/%postname%/'",
     "dev:debug": "wp-env start --xdebug",
     "dev:stop": "wp-env stop",
-    "dev:test": "wp-env run tests-cli --env-cwd=wp-content/plugins/try-wordpress/ ./vendor/bin/phpunit"
+    "dev:test": "wp-env run tests-cli --env-cwd=wp-content/plugins/ ./vendor/bin/phpunit"
   },
   "config": {
     "allow-plugins": {

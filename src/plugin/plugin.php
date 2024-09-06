@@ -6,8 +6,6 @@
  * Author: WordPress.org
  */
 
-namespace Wporg\TryWordPress;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
