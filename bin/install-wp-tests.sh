@@ -176,11 +176,6 @@ install_db() {
 	fi
 }
 
-install_gp() {
-	git clone --branch develop --single-branch -q https://github.com/GlotPress/GlotPress.git "$WP_CORE_DIR/wp-content/plugins/glotpress"
-}
-
 install_wp
 install_test_suite
 install_db
-install_gp
