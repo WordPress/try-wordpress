@@ -5,8 +5,8 @@
     <arg name="colors"/>
     <arg name="extensions" value="php,css"/>
 
-    <file>./plugin.php</file>
-    <file>./tests/</file>
+    <file>./src/plugin/plugin.php</file>
+    <file>./tests/plugin/</file>
 
     <rule ref="WordPress">
         <exclude name="Squiz.Commenting.ClassComment.Missing"/>

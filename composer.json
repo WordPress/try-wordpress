@@ -7,15 +7,17 @@
     "yoast/phpunit-polyfills": "^2.0.0",
     "wp-coding-standards/wpcs": "^3.0"
   },
-  "scripts":{
+  "scripts": {
     "lint": "phpcs --standard=phpcs.xml -s",
     "lint:fix": "phpcbf --standard=phpcs.xml",
     "dev:start": "wp-env start && wp-env run cli wp rewrite structure '/%postname%/'",
     "dev:debug": "wp-env start --xdebug",
     "dev:stop": "wp-env stop",
-    "dev:test": "wp-env run tests-cli --env-cwd=wp-content/plugins/ ./vendor/bin/phpunit"
+    "dev:destroy": "yes | wp-env destroy",
+    "dev:test": "wp-env run tests-cli --env-cwd=wp-content/ plugins/plugin/vendor/bin/phpunit"
   },
   "config": {
+    "vendor-dir": "src/plugin/vendor",
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
