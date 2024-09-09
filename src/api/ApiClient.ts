@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 
 import { PlaygroundClient } from '@wp-playground/client';
-import type { WP_REST_API_Posts } from 'wp-types';
+import { WP_REST_API_Post } from 'wp-types';
 
 export interface Post {
 	id: number;
@@ -24,7 +24,7 @@ export class ApiClient {
 	async getPosts(): Promise< Post[] > {
 		const response = ( await this.get(
 			'/wp/v2/posts'
-		) ) as WP_REST_API_Posts;
+		) ) as WP_REST_API_Post[];
 
 		return response.map( ( post ) => {
 			return {
@@ -39,6 +39,9 @@ export class ApiClient {
 			url: `/index.php?rest_route=${ route }`,
 			method: 'GET',
 		} );
+		if ( response.httpStatusCode !== 200 ) {
+			throw Error( response.json.message );
+		}
 		return response.json;
 	}
 }
