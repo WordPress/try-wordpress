@@ -3,6 +3,7 @@ import {
 	PlaygroundClient,
 	StartPlaygroundOptions,
 	startPlaygroundWeb,
+	StepDefinition,
 } from '@wp-playground/client';
 import { ApiClient } from '@/api/ApiClient';
 
@@ -71,7 +72,7 @@ async function initPlayground(
 	return client;
 }
 
-function steps() {
+function steps(): StepDefinition[] {
 	return [
 		{
 			step: 'login',
