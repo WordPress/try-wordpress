@@ -11,13 +11,15 @@ import {
 	useNavigate,
 	useRouteLoaderData,
 } from 'react-router-dom';
-import { StrictMode, useEffect } from 'react';
+import { StrictMode, useEffect, useState } from 'react';
 import { NewSession } from '@/ui/start/NewSession';
 import { ViewSession } from '@/ui/session/ViewSession';
 import { Home } from '@/ui/start/Home';
 import { getConfig, setConfig } from '@/storage/config';
 import { getSession, listSessions, Session } from '@/storage/session';
 import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
+import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
+import { ApiClient } from '@/api/ApiClient';
 
 export const Screens = {
 	home: () => '/start/home',
@@ -75,23 +77,25 @@ function App() {
 	}, [ location ] );
 
 	const session = useRouteLoaderData( 'session' ) as Session;
+	const [ apiClient, setApiClient ] = useState< ApiClient >();
+	const sectionContext: SessionContext = { session, apiClient };
 
 	const preview = ! session ? (
 		<PlaceholderPreview />
 	) : (
-		<Preview sessionId={ session.id } />
+		<Preview onReady={ setApiClient } />
 	);
 
 	return (
-		<>
+		<SessionProvider value={ sectionContext }>
 			<div className="app">
 				<Navbar className={ 'app-nav' } />
 				<div className="app-main">
-					<Outlet context={ session } />
+					<Outlet />
 				</div>
 			</div>
 			<div className="preview">{ preview }</div>
-		</>
+		</SessionProvider>
 	);
 }
 

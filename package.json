@@ -45,7 +45,8 @@
 		"ts-loader": "^9.5.1",
 		"tsconfig-paths-webpack-plugin": "^4.1.0",
 		"typescript": "^5.5.4",
-		"web-ext": "^8.2.0"
+		"web-ext": "^8.2.0",
+		"wp-types": "^4.66.1"
 	},
 	"dependencies": {
 		"@wp-playground/client": "^0.9.31",
