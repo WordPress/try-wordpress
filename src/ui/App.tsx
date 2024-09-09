@@ -20,11 +20,14 @@ import { getSession, listSessions, Session } from '@/storage/session';
 import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
 import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 import { ApiClient } from '@/api/ApiClient';
+import { BlogPostFlow } from '@/ui/flows/blog-post/BlogPostFlow';
 
 export const Screens = {
 	home: () => '/start/home',
 	newSession: () => '/start/new-session',
-	viewSession: ( id: string ) => `/session/${ id }`,
+	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
+	flowBlogPost: ( sessionId: string ) =>
+		`/session/${ sessionId }/flow/blog-post`,
 };
 
 const homeLoader: LoaderFunction = async () => {
@@ -63,6 +66,9 @@ function Routes( props: { initialScreen: string } ) {
 				loader={ sessionLoader }
 			>
 				<Route path="" element={ <ViewSession /> } />
+				<Route path="flow">
+					<Route path="blog-post" element={ <BlogPostFlow /> } />
+				</Route>
 			</Route>
 		</Route>
 	);

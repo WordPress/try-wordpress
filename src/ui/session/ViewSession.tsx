@@ -1,6 +1,8 @@
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { Post } from '@/api/ApiClient';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Screens } from '@/ui/App';
 
 export function ViewSession() {
 	const { session, apiClient } = useSessionContext();
@@ -18,14 +20,15 @@ export function ViewSession() {
 
 	return (
 		<>
-			<div>view session: { session.id }</div>
-			{ apiClient?.siteUrl ? (
-				<div>url: { apiClient.siteUrl }</div>
-			) : null }
+			<h1>
+				{ session.title } ({ session.url })
+			</h1>
 			<ul>
-				{ posts.map( ( post ) => {
-					return <li key={ post.id }>{ post.title }</li>;
-				} ) }
+				<li>
+					<Link to={ Screens.flowBlogPost( session.id ) }>
+						Import Blog Post
+					</Link>
+				</li>
 			</ul>
 		</>
 	);
