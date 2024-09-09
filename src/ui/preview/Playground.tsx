@@ -79,6 +79,10 @@ function steps() {
 			password: 'password',
 		},
 		{
+			step: 'runPHP',
+			code: deleteDefaultContent(),
+		},
+		{
 			step: 'unzip',
 			zipFile: {
 				resource: 'url',
@@ -92,4 +96,24 @@ function steps() {
 			pluginPath: '/wordpress/wp-content/plugins/try-wordpress',
 		},
 	];
+}
+
+function deleteDefaultContent(): string {
+	return `<?php
+require_once 'wordpress/wp-load.php';
+$posts = get_posts( array( 'posts_per_page' => -1 ) );
+foreach ( $posts as $post ) {
+    wp_delete_post( $post->ID, true );
+}
+$pages = get_posts(
+    array(
+        'posts_per_page' => -1,
+        'post_type'      => 'page',
+        'post_status'    => array( 'publish', 'draft' ),
+    )
+);
+foreach ( $pages as $page ) {
+    wp_delete_post( $page->ID, true );
+}
+`;
 }
