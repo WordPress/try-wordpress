@@ -1,7 +1,6 @@
-name: WP Coding standards
+name: Linting (WP plugin)
 
 on:
-  workflow_dispatch:
   pull_request:
     types: [ opened, synchronize ]
 

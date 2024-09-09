@@ -1,7 +1,6 @@
-name: PHPUnit Tests
+name: Tests (WP plugin)
 
 on:
-  workflow_dispatch:
   pull_request:
     types: [ opened, synchronize ]
 
