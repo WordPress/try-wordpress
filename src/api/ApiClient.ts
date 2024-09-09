@@ -1,7 +1,11 @@
-import { PlaygroundClient } from '@wp-playground/client';
+/* eslint-disable camelcase */
 
-export interface Foo {
-	name: string;
+import { PlaygroundClient } from '@wp-playground/client';
+import type { WP_REST_API_Posts } from 'wp-types';
+
+export interface Post {
+	id: number;
+	title: string;
 }
 
 export class ApiClient {
@@ -17,14 +21,26 @@ export class ApiClient {
 		return this._siteUrl;
 	}
 
-	async getFoo(): Promise< Foo > {
-		return new Promise( ( resolve ) => {
-			try {
-				resolve( { name: 'foo' } );
-			} catch ( error ) {
-				console.log( error );
-				throw error;
-			}
+	async getPosts(): Promise< Post[] > {
+		const response = ( await this.get(
+			'/wp/v2/posts'
+		) ) as WP_REST_API_Posts;
+
+		return response.map( ( post ) => {
+			return {
+				id: post.id,
+				title: post.title.rendered,
+			};
 		} );
 	}
+
+	private async get( route: string ): Promise< object > {
+		const response = await this.playgroundClient.request( {
+			url: `/index.php?rest_route=${ route }`,
+			method: 'GET',
+		} );
+		return response.json;
+	}
 }
+
+/* eslint-enable camelcase */

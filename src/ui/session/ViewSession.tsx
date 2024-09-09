@@ -1,20 +1,19 @@
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { Foo } from '@/api/ApiClient';
+import { Post } from '@/api/ApiClient';
 import { useEffect, useState } from 'react';
 
 export function ViewSession() {
 	const { session, apiClient } = useSessionContext();
 
-	const [ foo, setFoo ] = useState< Foo >();
+	const [ posts, setPosts ] = useState< Post[] >( [] );
 	useEffect( () => {
 		if ( ! apiClient ) {
 			return;
 		}
-		const getFoo = async () => {
-			const result = await apiClient?.getFoo();
-			setFoo( result );
+		const getPosts = async () => {
+			setPosts( await apiClient.getPosts() );
 		};
-		void getFoo();
+		void getPosts();
 	}, [ apiClient?.siteUrl ] );
 
 	return (
@@ -23,7 +22,11 @@ export function ViewSession() {
 			{ apiClient?.siteUrl ? (
 				<div>url: { apiClient.siteUrl }</div>
 			) : null }
-			{ foo ? <div>{ foo.name }</div> : null }
+			<ul>
+				{ posts.map( ( post ) => {
+					return <li key={ post.id }>{ post.title }</li>;
+				} ) }
+			</ul>
 		</>
 	);
 }
