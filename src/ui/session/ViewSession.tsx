@@ -1,13 +1,9 @@
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { ApiClient, Foo } from '@/api/ApiClient';
+import { Foo } from '@/api/ApiClient';
 import { useEffect, useState } from 'react';
 
 export function ViewSession() {
-	const { session, playgroundInfo } = useSessionContext();
-
-	const apiClient = playgroundInfo?.url
-		? new ApiClient( { url: playgroundInfo?.url } )
-		: null;
+	const { session, apiClient } = useSessionContext();
 
 	const [ foo, setFoo ] = useState< Foo >();
 	useEffect( () => {
@@ -19,13 +15,13 @@ export function ViewSession() {
 			setFoo( result );
 		};
 		void getFoo();
-	}, [ playgroundInfo ] );
+	}, [ apiClient?.siteUrl ] );
 
 	return (
 		<>
 			<div>view session: { session.id }</div>
-			{ playgroundInfo?.url ? (
-				<div>url: { playgroundInfo.url }</div>
+			{ apiClient?.siteUrl ? (
+				<div>url: { apiClient.siteUrl }</div>
 			) : null }
 			{ foo ? <div>{ foo.name }</div> : null }
 		</>

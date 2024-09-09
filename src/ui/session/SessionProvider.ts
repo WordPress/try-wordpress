@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react';
 import { Session } from '@/storage/session';
-import { PlaygroundInfo } from '@/ui/preview/Playground';
+import { ApiClient } from '@/api/ApiClient';
 
 export interface SessionContext {
 	session: Session;
-	playgroundInfo?: PlaygroundInfo;
+	apiClient?: ApiClient;
 }
 
 const sessionContext = createContext< SessionContext >( {

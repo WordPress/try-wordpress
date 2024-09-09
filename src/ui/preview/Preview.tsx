@@ -1,22 +1,23 @@
 import { useState } from 'react';
 import { PreviewTabBar } from '@/ui/preview/PreviewTabBar';
-import { Playground, PlaygroundInfo } from '@/ui/preview/Playground';
+import { Playground } from '@/ui/preview/Playground';
 import { useSessionContext } from '@/ui/session/SessionProvider';
+import { ApiClient } from '@/api/ApiClient';
 
 const tabFront = 0;
 const tabAdmin = 1;
 const defaultTab = tabFront;
 
 export function Preview( props: {
-	onReady: ( info: PlaygroundInfo ) => void;
+	onReady: ( apiClient: ApiClient ) => void;
 } ) {
 	const { onReady } = props;
 	const [ currentTab, setCurrentTab ] = useState< number >( defaultTab );
-	const { session, playgroundInfo } = useSessionContext();
+	const { session, apiClient } = useSessionContext();
 
 	const previewAdminUrl =
-		playgroundInfo?.url && playgroundInfo.url?.length > 0
-			? `${ playgroundInfo.url }/wp-admin/`
+		apiClient?.siteUrl && apiClient.siteUrl?.length > 0
+			? `${ apiClient.siteUrl }/wp-admin/`
 			: '';
 
 	const isPlaygroundLoading = previewAdminUrl === '';

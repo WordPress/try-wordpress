@@ -18,8 +18,8 @@ import { Home } from '@/ui/start/Home';
 import { getConfig, setConfig } from '@/storage/config';
 import { getSession, listSessions, Session } from '@/storage/session';
 import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
-import { PlaygroundInfo } from '@/ui/preview/Playground';
 import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
+import { ApiClient } from '@/api/ApiClient';
 
 export const Screens = {
 	home: () => '/start/home',
@@ -77,13 +77,13 @@ function App() {
 	}, [ location ] );
 
 	const session = useRouteLoaderData( 'session' ) as Session;
-	const [ playgroundInfo, setPlaygroundInfo ] = useState< PlaygroundInfo >();
-	const sectionContext: SessionContext = { session, playgroundInfo };
+	const [ apiClient, setApiClient ] = useState< ApiClient >();
+	const sectionContext: SessionContext = { session, apiClient };
 
 	const preview = ! session ? (
 		<PlaceholderPreview />
 	) : (
-		<Preview onReady={ setPlaygroundInfo } />
+		<Preview onReady={ setApiClient } />
 	);
 
 	return (
