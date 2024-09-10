@@ -1,4 +1,6 @@
-import { Actions, Message, Namespace } from '@/api/ContentApi';
+import { Actions, ContentApi, Message, Namespace } from '@/api/ContentApi';
+
+const contentApi = new ContentApi();
 
 browser.runtime.onMessage.addListener(
 	( message: Message, sender, sendResponse ) => {
@@ -26,6 +28,7 @@ browser.runtime.onMessage.addListener(
 
 function onClick( event: MouseEvent ) {
 	event.preventDefault();
+	void contentApi.importPost();
 }
 
 function onMouseOver( event: MouseEvent ) {

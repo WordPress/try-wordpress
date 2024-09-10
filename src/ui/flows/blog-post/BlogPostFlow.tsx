@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ContentApi } from '@/api/ContentApi';
 
 enum Steps {
@@ -54,6 +54,17 @@ function Start( props: { onExit: () => void } ) {
 
 function SelectContent( props: { onExit: () => void } ) {
 	const { onExit } = props;
+
+	useEffect( () => {
+		const listener = ( message: any ) => {
+			console.log( message );
+		};
+		browser.runtime.onMessage.addListener( listener );
+		return () => {
+			browser.runtime.onMessage.removeListener( listener );
+		};
+	}, [] );
+
 	return (
 		<>
 			<div>Select the content of the post</div>

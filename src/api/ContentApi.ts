@@ -3,6 +3,7 @@ export const Namespace = 'TRY_WORDPRESS';
 export enum Actions {
 	EnableHighlighting = 1,
 	DisableHighlighting,
+	ImportPost,
 }
 
 export interface Message {
@@ -22,6 +23,21 @@ export class ContentApi {
 		return this.sendMessageToContent( {
 			action: Actions.DisableHighlighting,
 		} );
+	}
+
+	async importPost(): Promise< void > {
+		return this.sendMessageToApp( { action: Actions.ImportPost } );
+	}
+
+	private async sendMessageToApp(
+		message: Omit< Message, 'namespace' >
+	): Promise< void > {
+		const messageWithNamespace: Message = {
+			namespace: Namespace,
+			action: message.action,
+			payload: message.payload,
+		};
+		await browser.runtime.sendMessage( messageWithNamespace );
 	}
 
 	private async sendMessageToContent(
