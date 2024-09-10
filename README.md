@@ -40,6 +40,12 @@ First install required dependencies:
 composer install
 ```
 
+The development environment requires [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/), you can install it with:
+
+```shell
+npm install -g @wordpress/env
+```
+
 Start the development environment:
 ```shell
 composer run dev:start
