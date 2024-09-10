@@ -101,8 +101,12 @@ function steps(): StepDefinition[] {
 			pluginPath: '/wordpress/wp-content/plugins/try-wordpress',
 		},
 		{
+			step: 'mkdir',
+			path: '/wordpress/wp-content/mu-plugins',
+		},
+		{
 			step: 'writeFile',
-			path: 'wordpress/wp-content/mu-plugins/addFilter-1.php',
+			path: '/wordpress/wp-content/mu-plugins/addFilter-1.php',
 			data: '<?php add_filter( "determine_current_user", function() { return 1; }, 99999 );',
 		},
 	];
