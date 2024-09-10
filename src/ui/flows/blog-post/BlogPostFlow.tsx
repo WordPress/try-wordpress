@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ContentApi } from '@/api/ContentApi';
 
 enum Steps {
 	Start = 1,
@@ -6,6 +7,8 @@ enum Steps {
 	SelectContent,
 	Import,
 }
+
+const contentApi = new ContentApi();
 
 export function BlogPostFlow() {
 	const [ currentStep, setCurrentStep ] = useState( Steps.Start );
@@ -17,7 +20,8 @@ export function BlogPostFlow() {
 					Navigate to the page of the post you&apos;d like to import
 				</div>
 				<button
-					onClick={ () => {
+					onClick={ async () => {
+						await contentApi.enableHighlighting();
 						setCurrentStep( Steps.SelectTitle );
 					} }
 				>
@@ -45,7 +49,8 @@ export function BlogPostFlow() {
 			<>
 				<div>Select the content of the post</div>
 				<button
-					onClick={ () => {
+					onClick={ async () => {
+						await contentApi.disableHighlighting();
 						setCurrentStep( Steps.Import );
 					} }
 				>
