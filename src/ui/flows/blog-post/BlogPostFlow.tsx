@@ -56,7 +56,8 @@ function SelectContent( props: { onExit: () => void } ) {
 	const { onExit } = props;
 
 	useEffect( () => {
-		const listener = ( message: any ) => {
+		const listener = async ( message: any ) => {
+			await contentApi.disableHighlighting();
 			console.log( message );
 		};
 		browser.runtime.onMessage.addListener( listener );

@@ -1,6 +1,7 @@
 import { Actions, ContentApi, Message, Namespace } from '@/api/ContentApi';
 
 const contentApi = new ContentApi();
+let currentElement: HTMLElement | null = null;
 
 browser.runtime.onMessage.addListener(
 	( message: Message, sender, sendResponse ) => {
@@ -18,6 +19,7 @@ browser.runtime.onMessage.addListener(
 				document.body.removeEventListener( 'mouseover', onMouseOver );
 				document.body.removeEventListener( 'mouseout', onMouseOut );
 				document.body.removeEventListener( 'click', onClick );
+				removeStyle();
 				break;
 			default:
 				console.error( `Unknown action: ${ message.action }` );
@@ -36,7 +38,8 @@ function onMouseOver( event: MouseEvent ) {
 	if ( ! element ) {
 		return;
 	}
-	element.style.outline = '1px solid blue';
+	currentElement = element;
+	currentElement.style.outline = '1px solid blue';
 	toggleCursorStyle();
 }
 
@@ -45,7 +48,15 @@ function onMouseOut( event: MouseEvent ) {
 	if ( ! element ) {
 		return;
 	}
-	element.style.outline = '';
+	removeStyle();
+	currentElement = null;
+}
+
+function removeStyle() {
+	if ( ! currentElement ) {
+		return;
+	}
+	currentElement.style.outline = '';
 	toggleCursorStyle();
 }
 
