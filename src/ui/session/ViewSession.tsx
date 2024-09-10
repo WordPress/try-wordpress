@@ -27,6 +27,15 @@ export function ViewSession() {
 					return <li key={ post.id }>{ post.title }</li>;
 				} ) }
 			</ul>
+			{ apiClient ? (
+				<button
+					onClick={ async () => {
+						await apiClient?.createPost();
+					} }
+				>
+					Create post
+				</button>
+			) : null }
 		</>
 	);
 }
