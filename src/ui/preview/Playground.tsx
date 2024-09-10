@@ -100,6 +100,11 @@ function steps(): StepDefinition[] {
 			pluginName: 'Try WordPress',
 			pluginPath: '/wordpress/wp-content/plugins/try-wordpress',
 		},
+		{
+			step: 'writeFile',
+			path: 'wordpress/wp-content/mu-plugins/addFilter-1.php',
+			data: '<?php add_filter( "determine_current_user", function() { return 1; }, 99999 );',
+		},
 	];
 }
 
