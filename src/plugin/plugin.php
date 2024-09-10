@@ -12,3 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // composer autoload.
 require 'vendor/autoload.php';
+require 'class-liberation-engine.php';
+
+new LiberationEngine();
