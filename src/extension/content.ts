@@ -1,32 +1,27 @@
-import { Actions, ContentApi, Message, Namespace } from '@/api/ContentApi';
+import { Message } from '@/bus/Message';
+import { ContentBus } from '@/bus/ContentBus';
+import { AppBus } from '@/bus/AppBus';
 
-const contentApi = new ContentApi();
 let currentElement: HTMLElement | null = null;
 
-browser.runtime.onMessage.addListener(
-	( message: Message, sender, sendResponse ) => {
-		if ( message.namespace !== Namespace ) {
-			return;
-		}
-
-		switch ( message.action ) {
-			case Actions.EnableHighlighting:
-				document.body.addEventListener( 'mouseover', onMouseOver );
-				document.body.addEventListener( 'mouseout', onMouseOut );
-				document.body.addEventListener( 'click', onClick );
-				break;
-			case Actions.DisableHighlighting:
-				document.body.removeEventListener( 'mouseover', onMouseOver );
-				document.body.removeEventListener( 'mouseout', onMouseOut );
-				document.body.removeEventListener( 'click', onClick );
-				removeStyle();
-				break;
-			default:
-				console.error( `Unknown action: ${ message.action }` );
-				break;
-		}
+ContentBus.listen( ( message: Message ) => {
+	switch ( message.action ) {
+		case ContentBus.actions.EnableHighlighting:
+			document.body.addEventListener( 'mouseover', onMouseOver );
+			document.body.addEventListener( 'mouseout', onMouseOut );
+			document.body.addEventListener( 'click', onClick );
+			break;
+		case ContentBus.actions.DisableHighlighting:
+			document.body.removeEventListener( 'mouseover', onMouseOver );
+			document.body.removeEventListener( 'mouseout', onMouseOut );
+			document.body.removeEventListener( 'click', onClick );
+			removeStyle();
+			break;
+		default:
+			console.error( `Unknown action: ${ message.action }` );
+			break;
 	}
-);
+} );
 
 function onClick( event: MouseEvent ) {
 	event.preventDefault();
@@ -35,7 +30,7 @@ function onClick( event: MouseEvent ) {
 		return;
 	}
 	const content = element.outerHTML.trim();
-	void contentApi.importPost( content );
+	void AppBus.elementClicked( content );
 }
 
 function onMouseOver( event: MouseEvent ) {

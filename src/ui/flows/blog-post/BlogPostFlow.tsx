@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { ContentApi, Message } from '@/api/ContentApi';
+import { ContentBus } from '@/bus/ContentBus';
+import { Message } from '@/bus/Message';
+import { AppBus } from '@/bus/AppBus';
 
 enum Steps {
 	start = 1,
 	selectContent,
 	import,
 }
-
-const contentApi = new ContentApi();
 
 export function BlogPostFlow() {
 	const [ currentStep, setCurrentStep ] = useState( Steps.start );
@@ -42,7 +42,7 @@ function Start( props: { onExit: () => void } ) {
 			</div>
 			<button
 				onClick={ async () => {
-					await contentApi.enableHighlighting();
+					await ContentBus.enableHighlighting();
 					onExit();
 				} }
 			>
@@ -57,13 +57,16 @@ function SelectContent( props: { onExit: () => void } ) {
 	const [ content, setContent ] = useState< string >();
 
 	useEffect( () => {
-		const listener = async ( message: Message ) => {
-			await contentApi.disableHighlighting();
-			setContent( ( message.payload as any ).content );
-		};
-		browser.runtime.onMessage.addListener( listener );
+		AppBus.listen( async ( message: Message ) => {
+			switch ( message.action ) {
+				case AppBus.actions.ElementClicked:
+					await ContentBus.disableHighlighting();
+					setContent( ( message.payload as any ).content );
+					break;
+			}
+		} );
 		return () => {
-			browser.runtime.onMessage.removeListener( listener );
+			AppBus.stopListening();
 		};
 	}, [] );
 
@@ -72,7 +75,7 @@ function SelectContent( props: { onExit: () => void } ) {
 			<div>Select the content of the post</div>
 			<button
 				onClick={ async () => {
-					await contentApi.disableHighlighting();
+					await ContentBus.disableHighlighting();
 					onExit();
 				} }
 			>
