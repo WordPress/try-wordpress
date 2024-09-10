@@ -9,24 +9,29 @@ export enum Actions {
 export interface Message {
 	namespace: string;
 	action: number;
-	payload?: object;
+	payload: object;
 }
 
 export class ContentApi {
 	async enableHighlighting(): Promise< void > {
 		return this.sendMessageToContent( {
 			action: Actions.EnableHighlighting,
+			payload: {},
 		} );
 	}
 
 	async disableHighlighting(): Promise< void > {
 		return this.sendMessageToContent( {
 			action: Actions.DisableHighlighting,
+			payload: {},
 		} );
 	}
 
-	async importPost(): Promise< void > {
-		return this.sendMessageToApp( { action: Actions.ImportPost } );
+	async importPost( content: string ): Promise< void > {
+		return this.sendMessageToApp( {
+			action: Actions.ImportPost,
+			payload: { content },
+		} );
 	}
 
 	private async sendMessageToApp(

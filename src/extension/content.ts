@@ -30,7 +30,12 @@ browser.runtime.onMessage.addListener(
 
 function onClick( event: MouseEvent ) {
 	event.preventDefault();
-	void contentApi.importPost();
+	const element = event.target as HTMLElement;
+	if ( ! element ) {
+		return;
+	}
+	const content = element.outerHTML.trim();
+	void contentApi.importPost( content );
 }
 
 function onMouseOver( event: MouseEvent ) {

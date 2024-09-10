@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ContentApi } from '@/api/ContentApi';
+import { ContentApi, Message } from '@/api/ContentApi';
 
 enum Steps {
 	start = 1,
@@ -54,11 +54,12 @@ function Start( props: { onExit: () => void } ) {
 
 function SelectContent( props: { onExit: () => void } ) {
 	const { onExit } = props;
+	const [ content, setContent ] = useState< string >();
 
 	useEffect( () => {
-		const listener = async ( message: any ) => {
+		const listener = async ( message: Message ) => {
 			await contentApi.disableHighlighting();
-			console.log( message );
+			setContent( ( message.payload as any ).content );
 		};
 		browser.runtime.onMessage.addListener( listener );
 		return () => {
@@ -77,6 +78,7 @@ function SelectContent( props: { onExit: () => void } ) {
 			>
 				Continue
 			</button>
+			{ ! content ? null : <div>{ content }</div> }
 		</>
 	);
 }
