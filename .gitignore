@@ -3,3 +3,6 @@ firefox/
 node_modules/
 test-results/
 build/
+vendor/
+
+.phpunit.result.cache

@@ -1,4 +1,4 @@
-name: Linting
+name: Linting (Browser extension)
 
 on:
   pull_request:

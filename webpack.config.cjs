@@ -33,7 +33,6 @@ function extensionModules( mode, target ) {
 			{
 				test: /\.tsx?$/,
 				use: 'ts-loader',
-				exclude: /node_modules/,
 			},
 		],
 	};
@@ -103,6 +102,9 @@ function extensionModules( mode, target ) {
 						{
 							from: '**/*',
 							context: 'src/plugin/',
+							globOptions: {
+								ignore: [ '**/plugin/vendor/**/*' ],
+							},
 							to: path.join( targetPath, 'plugin' ),
 						},
 					],
