@@ -15,23 +15,19 @@ enum Steps {
 export function BlogPostFlow() {
 	const [ currentStep, setCurrentStep ] = useState( Steps.start );
 
-	const startElement = (
-		<Start onExit={ () => setCurrentStep( Steps.selectContent ) } />
-	);
-
-	const selectContentElement = (
-		<SelectContent onExit={ () => setCurrentStep( Steps.import ) } />
-	);
-
-	const importElement = <Import onExit={ () => console.log( 'import' ) } />;
-
 	return (
 		<>
-			{ currentStep === Steps.start ? startElement : null }
-			{ currentStep === Steps.selectContent
-				? selectContentElement
-				: null }
-			{ currentStep === Steps.import ? importElement : null }
+			{ currentStep !== Steps.start ? null : (
+				<Start onExit={ () => setCurrentStep( Steps.selectContent ) } />
+			) }
+			{ currentStep !== Steps.selectContent ? null : (
+				<SelectContent
+					onExit={ () => setCurrentStep( Steps.import ) }
+				/>
+			) }
+			{ currentStep !== Steps.import ? null : (
+				<Import onExit={ () => console.log( 'import' ) } />
+			) }
 		</>
 	);
 }
