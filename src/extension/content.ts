@@ -29,7 +29,9 @@ function onClick( event: MouseEvent ) {
 	if ( ! element ) {
 		return;
 	}
-	const content = element.outerHTML.trim();
+	const clone = element.cloneNode( true ) as HTMLElement;
+	clone.style.outline = '';
+	const content = clone.outerHTML.trim();
 	void AppBus.elementClicked( content );
 }
 
