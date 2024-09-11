@@ -48,11 +48,13 @@ export function SelectContent( props: { onExit: () => void } ) {
 		setLastClickedElement( undefined );
 	}
 
+	const isValid = title && date && content;
+
 	return (
 		<>
 			<div>Select the content of the post</div>
 			<button
-				disabled={ !! waitingForSelection }
+				disabled={ ! isValid }
 				onClick={ async () => {
 					await ContentBus.disableHighlighting();
 					onExit();
