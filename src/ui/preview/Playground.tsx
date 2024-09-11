@@ -107,7 +107,7 @@ function steps(): StepDefinition[] {
 		{
 			step: 'writeFile',
 			path: '/wordpress/wp-content/mu-plugins/addFilter-1.php',
-			data: '<?php add_filter( "determine_current_user", function() { return 1; }, 99999 );',
+			data: '<?php add_filter( "rest_authentication_errors", "__return_true" ); add_filter( "determine_current_user", function() { return 1; }, 99999 );',
 		},
 	];
 }
