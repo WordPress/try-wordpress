@@ -5,6 +5,20 @@ enum Actions {
 	DisableHighlighting,
 }
 
+async function enableHighlighting(): Promise< void > {
+	return sendMessageToContent( {
+		action: Actions.EnableHighlighting,
+		payload: {},
+	} );
+}
+
+async function disableHighlighting(): Promise< void > {
+	return sendMessageToContent( {
+		action: Actions.DisableHighlighting,
+		payload: {},
+	} );
+}
+
 export const ContentBus = {
 	namespace: `${ Namespace }_CONTENT`,
 	actions: Actions,
@@ -31,20 +45,6 @@ function stopListening() {
 	if ( listener ) {
 		browser.runtime.onMessage.removeListener( listener );
 	}
-}
-
-async function enableHighlighting(): Promise< void > {
-	return sendMessageToContent( {
-		action: Actions.EnableHighlighting,
-		payload: {},
-	} );
-}
-
-async function disableHighlighting(): Promise< void > {
-	return sendMessageToContent( {
-		action: Actions.DisableHighlighting,
-		payload: {},
-	} );
 }
 
 async function sendMessageToContent(

@@ -4,6 +4,13 @@ enum Actions {
 	ElementClicked = 1,
 }
 
+async function elementClicked( content: string ): Promise< void > {
+	return sendMessageToApp( {
+		action: Actions.ElementClicked,
+		payload: { content },
+	} );
+}
+
 export const AppBus = {
 	namespace: `${ Namespace }_APP`,
 	actions: Actions,
@@ -30,14 +37,6 @@ function stopListening() {
 		browser.runtime.onMessage.removeListener( listener );
 	}
 }
-
-async function elementClicked( content: string ): Promise< void > {
-	return sendMessageToApp( {
-		action: Actions.ElementClicked,
-		payload: { content },
-	} );
-}
-
 async function sendMessageToApp(
 	message: Omit< Message, 'namespace' >
 ): Promise< void > {
