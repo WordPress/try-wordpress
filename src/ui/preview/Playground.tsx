@@ -106,7 +106,7 @@ function steps(): StepDefinition[] {
 		},
 		{
 			step: 'writeFile',
-			path: '/wordpress/wp-content/mu-plugins/addFilter-1.php',
+			path: '/wordpress/wp-content/mu-plugins/authenticate-rest-request.php',
 			data: authenticateRestRequest(),
 		},
 	];
