@@ -26,9 +26,11 @@ export class ApiClient {
 			url: `/index.php?rest_route=/wp/v2/posts`,
 			method: 'POST',
 			body: {
-				title: 'New Post from API Client - ' + (Math.random() + 1).toString(36).substring(7),
+				title:
+					'New Post from API Client - ' +
+					( Math.random() + 1 ).toString( 36 ).substring( 7 ),
 				content: 'This is a new post created via the API client.',
-				status: 'publish'
+				status: 'publish',
 			},
 		} );
 		console.log( response, response.json );
