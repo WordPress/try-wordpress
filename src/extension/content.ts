@@ -31,7 +31,8 @@ function onClick( event: MouseEvent ) {
 	}
 	const clone = element.cloneNode( true ) as HTMLElement;
 	clone.style.outline = '';
-	const content = clone.outerHTML.trim();
+	let content = clone.outerHTML.trim();
+	content = content.replaceAll( ' style=""', '' );
 	void AppBus.elementClicked( content );
 }
 
