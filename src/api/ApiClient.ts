@@ -21,6 +21,21 @@ export class ApiClient {
 		return this._siteUrl;
 	}
 
+	async createPost(): Promise< void > {
+		const response = await this.playgroundClient.request( {
+			url: `/index.php?rest_route=/wp/v2/posts`,
+			method: 'POST',
+			body: {
+				title:
+					'New Post from API Client - ' +
+					( Math.random() + 1 ).toString( 36 ).substring( 7 ),
+				content: 'This is a new post created via the API client.',
+				status: 'publish',
+			},
+		} );
+		console.log( response, response.json );
+	}
+
 	async getPosts(): Promise< Post[] > {
 		const response = ( await this.get(
 			'/wp/v2/posts'

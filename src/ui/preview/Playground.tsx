@@ -100,7 +100,23 @@ function steps(): StepDefinition[] {
 			pluginName: 'Try WordPress',
 			pluginPath: '/wordpress/wp-content/plugins/try-wordpress',
 		},
+		{
+			step: 'mkdir',
+			path: '/wordpress/wp-content/mu-plugins',
+		},
+		{
+			step: 'writeFile',
+			path: '/wordpress/wp-content/mu-plugins/authenticate-rest-request.php',
+			data: authenticateRestRequest(),
+		},
 	];
+}
+
+function authenticateRestRequest(): string {
+	return `<?php
+add_filter( "rest_authentication_errors", "__return_true" );
+add_filter( "determine_current_user", function() { return 1; }, 99999 );
+`;
 }
 
 function deleteDefaultContent(): string {
