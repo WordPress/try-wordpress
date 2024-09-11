@@ -120,29 +120,36 @@ function Section( props: {
 	} = props;
 
 	return (
-		<>
+		<div
+			style={ {
+				border: '1px solid black',
+				marginBottom: '1rem',
+				padding: '1rem',
+			} }
+		>
 			<div>
-				{ label }: { value ?? 'Not found' }
-			</div>
-			<button
-				disabled={ disabled }
-				onClick={ async () => {
-					onWaitingForSelection( true );
-					await ContentBus.enableHighlighting();
-				} }
-			>
-				Select
-			</button>
-			{ ! waitingForSelection ? null : (
+				{ label }{ ' ' }
 				<button
+					disabled={ disabled }
 					onClick={ async () => {
-						onWaitingForSelection( false );
-						await ContentBus.disableHighlighting();
+						onWaitingForSelection( true );
+						await ContentBus.enableHighlighting();
 					} }
 				>
-					Cancel
+					Select
 				</button>
-			) }
-		</>
+				{ ! waitingForSelection ? null : (
+					<button
+						onClick={ async () => {
+							onWaitingForSelection( false );
+							await ContentBus.disableHighlighting();
+						} }
+					>
+						Cancel
+					</button>
+				) }
+			</div>
+			<div style={ { paddingTop: '1rem' } }>{ value ?? 'Not found' }</div>
+		</div>
 	);
 }
