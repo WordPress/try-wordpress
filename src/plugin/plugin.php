@@ -10,8 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-// composer autoload.
-require 'vendor/autoload.php';
 require 'class-liberation-engine.php';
 
 new LiberationEngine();
