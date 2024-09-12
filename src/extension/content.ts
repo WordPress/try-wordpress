@@ -10,11 +10,13 @@ ContentBus.listen( ( message: Message ) => {
 			document.body.addEventListener( 'mouseover', onMouseOver );
 			document.body.addEventListener( 'mouseout', onMouseOut );
 			document.body.addEventListener( 'click', onClick );
+			enableHighlightingCursor();
 			break;
 		case ContentBus.actions.DisableHighlighting:
 			document.body.removeEventListener( 'mouseover', onMouseOver );
 			document.body.removeEventListener( 'mouseout', onMouseOut );
 			document.body.removeEventListener( 'click', onClick );
+			disableHighlightingCursor();
 			removeStyle();
 			break;
 		default:
@@ -43,7 +45,6 @@ function onMouseOver( event: MouseEvent ) {
 	}
 	currentElement = element;
 	currentElement.style.outline = '1px solid blue';
-	toggleCursorStyle();
 }
 
 function onMouseOut( event: MouseEvent ) {
@@ -60,24 +61,25 @@ function removeStyle() {
 		return;
 	}
 	currentElement.style.outline = '';
-	toggleCursorStyle();
 }
 
-function toggleCursorStyle() {
-	const styleId = 'hover-highlighter-style';
-	let style = document.getElementById( styleId );
+const cursorStyleId = 'hover-highlighter-style';
+
+function enableHighlightingCursor() {
+	let style = document.getElementById( cursorStyleId );
 	if ( style ) {
-		// If the style element exists, remove it
+		// The highlighting cursor is already enabled.
+		return;
+	}
+	style = document.createElement( 'style' );
+	style.id = cursorStyleId;
+	style.textContent = '* { cursor: crosshair !important; }';
+	document.head.append( style );
+}
+
+function disableHighlightingCursor() {
+	const style = document.getElementById( cursorStyleId );
+	if ( style ) {
 		style.remove();
-	} else {
-		// If the style element does not exist, create and inject it
-		style = document.createElement( 'style' );
-		style.id = styleId;
-		style.textContent = `
-		*:hover {
-			cursor: crosshair !important;
-		}
-	  `;
-		document.head.append( style );
 	}
 }
