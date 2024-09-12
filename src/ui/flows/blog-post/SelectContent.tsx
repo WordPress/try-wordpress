@@ -28,6 +28,7 @@ export function SelectContent( props: { onExit: () => void } ) {
 			}
 		} );
 		return () => {
+			void ContentBus.disableHighlighting();
 			AppBus.stopListening();
 		};
 	}, [] );
