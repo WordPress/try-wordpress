@@ -9,9 +9,14 @@ class LiberationEngine {
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_post_types' ) );
 		add_action( 'init', array( $this, 'register_meta_fields' ) );
+
+		// Intercept the REST API call for moving over 'guid' and 'raw_content' to posts table
+		add_filter( 'rest_pre_insert_post', array( $this, 'move_meta_fields' ), 10, 2 );
+		add_filter( 'rest_pre_insert_post_meta', array( $this, 'prevent_saving_moved_meta_fields' ), 10, 3 );
+		add_filter( 'rest_prepare_post', array( $this, 'remove_moved_meta_fields' ), 10, 3 );
 	}
 
-	public function register_post_types(): void {
+	public function register_post_types() : void {
 		register_post_type(
 			self::POST_TYPE_POST,
 			array(
@@ -58,6 +63,10 @@ class LiberationEngine {
 		);
 	}
 
+	public function is_debug_mode() : bool {
+		return defined( 'WP_DEBUG' ) && WP_DEBUG;
+	}
+
 	public function register_meta_fields() : void {
 		// @TODO: change to custom post types
 		register_post_meta(
@@ -93,7 +102,41 @@ class LiberationEngine {
 		);
 	}
 
-	public function is_debug_mode(): bool {
-		return defined( 'WP_DEBUG' ) && WP_DEBUG;
+	public function move_meta_fields( $prepared_post, $request ) {
+		$meta = $request->get_param( 'meta' );
+
+		if ( isset( $meta[ 'guid' ] ) ) {
+			$prepared_post->guid = $meta[ 'guid' ];
+			unset( $meta[ 'guid' ] );
+		}
+
+		if ( isset( $meta[ 'raw_content' ] ) ) {
+			$prepared_post->post_content_filtered = $meta[ 'raw_content' ];
+			unset( $meta[ 'raw_content' ] );
+		}
+
+		$request->set_param( 'meta', $meta );
+
+		return $prepared_post;
 	}
+
+
+	public function prevent_saving_moved_meta_fields( $meta, $post, $request ) {
+		unset( $meta[ 'guid' ] );
+		unset( $meta[ 'raw_content' ] );
+
+		return $meta;
+	}
+
+	public function remove_moved_meta_fields( $response, $post, $request ) {
+		$data = $response->get_data();
+
+		$data[ 'meta' ][ 'guid' ]        = $post->guid;
+		$data[ 'meta' ][ 'raw_content' ] = $post->post_content_filtered;
+
+		$response->set_data( $data );
+
+		return $response;
+	}
+
 }
