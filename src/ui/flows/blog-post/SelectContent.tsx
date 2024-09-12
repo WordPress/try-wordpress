@@ -57,10 +57,11 @@ export function SelectContent( props: { onExit: () => void } ) {
 				disabled={ ! isValid }
 				onClick={ async () => {
 					await ContentBus.disableHighlighting();
+					console.log( 'TODO: import' );
 					onExit();
 				} }
 			>
-				Continue
+				Import
 			</button>
 			<Section
 				label="Title"

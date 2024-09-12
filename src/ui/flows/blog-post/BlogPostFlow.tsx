@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
-import { ContentBus } from '@/bus/ContentBus';
-import { Message } from '@/bus/Message';
-import { AppBus } from '@/bus/AppBus';
+import { useState } from 'react';
 import { Start } from '@/ui/flows/blog-post/Start';
 import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
-import { Import } from '@/ui/flows/blog-post/Import';
+import { Finish } from '@/ui/flows/blog-post/Finish';
 
 enum Steps {
 	start = 1,
 	selectContent,
-	import,
+	finish,
 }
 
 export function BlogPostFlow() {
@@ -22,12 +19,10 @@ export function BlogPostFlow() {
 			) }
 			{ currentStep !== Steps.selectContent ? null : (
 				<SelectContent
-					onExit={ () => setCurrentStep( Steps.import ) }
+					onExit={ () => setCurrentStep( Steps.finish ) }
 				/>
 			) }
-			{ currentStep !== Steps.import ? null : (
-				<Import onExit={ () => console.log( 'import' ) } />
-			) }
+			{ currentStep !== Steps.finish ? null : <Finish /> }
 		</>
 	);
 }
