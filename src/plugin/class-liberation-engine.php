@@ -8,6 +8,7 @@ class LiberationEngine {
 
 	public function __construct() {
 		add_action( 'init', array( $this, 'register_post_types' ) );
+		add_action( 'init', array( $this, 'register_meta_fields' ) );
 	}
 
 	public function register_post_types(): void {
@@ -53,6 +54,41 @@ class LiberationEngine {
 				'rest_base'    => 'liberated_navigations',
 				'show_ui'      => self::is_debug_mode(),
 				'show_in_menu' => self::is_debug_mode(),
+			)
+		);
+	}
+
+	public function register_meta_fields() : void {
+		// @TODO: change to custom post types
+		register_post_meta(
+			'post', 'guid', array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+			)
+		);
+
+		register_post_meta(
+			'post', 'raw_title', array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+			)
+		);
+
+		register_post_meta(
+			'post', 'raw_date', array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
+			)
+		);
+
+		register_post_meta(
+			'post', 'raw_content', array(
+				'show_in_rest' => true,
+				'single'       => true,
+				'type'         => 'string',
 			)
 		);
 	}
