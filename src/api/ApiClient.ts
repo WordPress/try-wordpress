@@ -22,6 +22,7 @@ export class ApiClient {
 	}
 
 	async getPosts(): Promise< Post[] > {
+		// eslint-disable-next-line react/no-is-mounted
 		const response = ( await this.get(
 			'/wp/v2/posts'
 		) ) as WP_REST_API_Post[];
