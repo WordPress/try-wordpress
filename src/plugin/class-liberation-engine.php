@@ -1,14 +1,20 @@
 <?php
 
-class LiberationEngine {
+class Liberation_Engine {
 	const string POST_TYPE_POST       = 'liberated_post';
 	const string POST_TYPE_PAGE       = 'liberated_page';
 	const string POST_TYPE_PRODUCT    = 'liberated_product';
 	const string POST_TYPE_NAVIGATION = 'liberated_navigation';
 
-	private array $custom_post_types; // allows us to loop through constants defined above
+	/**
+	 * Allows us to loop through constants defined above
+	 *
+	 * @var array $custom_post_types
+	 */
+	private array $custom_post_types;
+
 	private array $custom_post_types_supports = array( 'title', 'editor', 'custom-fields' );
-	private array $post_meta_fields = [ 'guid', 'raw_title', 'raw_date', 'raw_content' ];
+	private array $post_meta_fields           = array( 'guid', 'raw_title', 'raw_date', 'raw_content' );
 
 	public function __construct() {
 		$this->custom_post_types = $this->get_post_type_constants();
@@ -29,16 +35,20 @@ class LiberationEngine {
 	 *
 	 * @return array
 	 */
-	private function get_post_type_constants() : array {
+	private function get_post_type_constants(): array {
 		$reflection = new ReflectionClass( $this );
 		$constants  = $reflection->getConstants();
 
-		return array_filter( $constants, function ( $key ) {
-			return str_starts_with( $key, 'POST_TYPE_' );
-		}, ARRAY_FILTER_USE_KEY );
+		return array_filter(
+			$constants,
+			function ( $key ) {
+				return str_starts_with( $key, 'POST_TYPE_' );
+			},
+			ARRAY_FILTER_USE_KEY
+		);
 	}
 
-	public function register_post_type_and_meta_fields() : void {
+	public function register_post_type_and_meta_fields(): void {
 		$this->register_post_types();
 		$this->register_meta_fields();
 	}
@@ -65,14 +75,18 @@ class LiberationEngine {
 		}
 	}
 
-	public function register_meta_fields() : void {
+	public function register_meta_fields(): void {
 		foreach ( $this->custom_post_types as $post_type ) {
 			foreach ( $this->post_meta_fields as $field ) {
-				register_post_meta( $post_type, $field, array(
-					'show_in_rest' => true,
-					'single'       => true,
-					'type'         => 'string',
-				) );
+				register_post_meta(
+					$post_type,
+					$field,
+					array(
+						'show_in_rest' => true,
+						'single'       => true,
+						'type'         => 'string',
+					)
+				);
 			}
 		}
 	}
@@ -80,14 +94,14 @@ class LiberationEngine {
 	public function move_meta_fields( $prepared_post, $request ) {
 		$meta = $request->get_param( 'meta' );
 
-		if ( isset( $meta[ 'guid' ] ) ) {
-			$prepared_post->guid = $meta[ 'guid' ];
-			unset( $meta[ 'guid' ] );
+		if ( isset( $meta['guid'] ) ) {
+			$prepared_post->guid = $meta['guid'];
+			unset( $meta['guid'] );
 		}
 
-		if ( isset( $meta[ 'raw_content' ] ) ) {
-			$prepared_post->post_content_filtered = $meta[ 'raw_content' ];
-			unset( $meta[ 'raw_content' ] );
+		if ( isset( $meta['raw_content'] ) ) {
+			$prepared_post->post_content_filtered = $meta['raw_content'];
+			unset( $meta['raw_content'] );
 		}
 
 		$request->set_param( 'meta', $meta );
@@ -98,8 +112,8 @@ class LiberationEngine {
 	public function prepare_meta_fields( $response, $post, $request ) {
 		$data = $response->get_data();
 
-		$data[ 'meta' ][ 'guid' ]        = $post->guid;
-		$data[ 'meta' ][ 'raw_content' ] = $post->post_content_filtered;
+		$data['meta']['guid']        = $post->guid;
+		$data['meta']['raw_content'] = $post->post_content_filtered;
 
 		$response->set_data( $data );
 

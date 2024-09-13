@@ -12,4 +12,4 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require 'class-liberation-engine.php';
 
-new LiberationEngine();
+new Liberation_Engine();
