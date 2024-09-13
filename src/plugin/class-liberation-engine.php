@@ -7,6 +7,7 @@ class LiberationEngine {
 	const string POST_TYPE_NAVIGATION = 'liberated_navigation';
 
 	private array $custom_post_types; // allows us to loop through constants defined above
+	private array $custom_post_types_supports = array( 'title', 'editor', 'custom-fields' );
 	private array $post_meta_fields = [ 'guid', 'raw_title', 'raw_date', 'raw_content' ];
 
 	public function __construct() {
@@ -52,7 +53,7 @@ class LiberationEngine {
 				'rest_base'    => 'liberated_posts',
 				'show_ui'      => self::is_debug_mode(),
 				'show_in_menu' => self::is_debug_mode(),
-				'supports'     => array( 'custom-fields' ),
+				'supports'     => $this->custom_post_types_supports,
 			)
 		);
 		register_post_type(
@@ -64,7 +65,7 @@ class LiberationEngine {
 				'rest_base'    => 'liberated_pages',
 				'show_ui'      => self::is_debug_mode(),
 				'show_in_menu' => self::is_debug_mode(),
-				'supports'     => array( 'custom-fields' ),
+				'supports'     => $this->custom_post_types_supports,
 			)
 		);
 		register_post_type(
@@ -76,7 +77,7 @@ class LiberationEngine {
 				'rest_base'    => 'liberated_products',
 				'show_ui'      => self::is_debug_mode(),
 				'show_in_menu' => self::is_debug_mode(),
-				'supports'     => array( 'custom-fields' ),
+				'supports'     => $this->custom_post_types_supports,
 			)
 		);
 		register_post_type(
@@ -88,7 +89,7 @@ class LiberationEngine {
 				'rest_base'    => 'liberated_navigations',
 				'show_ui'      => self::is_debug_mode(),
 				'show_in_menu' => self::is_debug_mode(),
-				'supports'     => array( 'custom-fields' ),
+				'supports'     => $this->custom_post_types_supports,
 			)
 		);
 	}
