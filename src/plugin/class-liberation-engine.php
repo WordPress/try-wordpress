@@ -129,7 +129,7 @@ class Liberation_Engine {
 			array(
 				'success' => true,
 				'message' => 'Post promoted successfully',
-				'post_id' => $post_id,
+				'post_id' => get_post_meta( $post_id, '_liberated_post', true ),
 			),
 			200
 		);
