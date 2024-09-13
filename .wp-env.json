@@ -9,6 +9,7 @@
   "plugins": [ "./src/plugin" ],
   "mappings": {
     "wp-content/phpunit.xml.dist": "./phpunit.xml.dist",
-    "wp-content/tests": "./tests"
+    "wp-content/tests": "./tests",
+    "wp-content/mu-plugins/mu-plugin-disable-rest-api.php": "./src/mu-plugin-disable-rest-api-auth/disable-rest-api-auth.php"
   }
 }
