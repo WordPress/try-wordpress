@@ -43,59 +43,26 @@ class LiberationEngine {
 		$this->register_meta_fields();
 	}
 
-	public function register_post_types() : void {
-		register_post_type(
-			self::POST_TYPE_POST,
-			array(
-				'public'       => false,
-				'label'        => 'Liberated Post',
-				'show_in_rest' => true,
-				'rest_base'    => 'liberated_posts',
-				'show_ui'      => self::is_debug_mode(),
-				'show_in_menu' => self::is_debug_mode(),
-				'supports'     => $this->custom_post_types_supports,
-			)
+	public function register_post_types(): void {
+		$args = array(
+			'public'              => false,
+			'exclude_from_search' => true,
+			'publicly_queryable'  => true, // we need preview links of draft posts to function
+			'show_in_rest'        => true,
+			'show_ui'             => false,
+			'show_in_menu'        => false,
+			'supports'            => $this->custom_post_types_supports,
 		);
-		register_post_type(
-			self::POST_TYPE_PAGE,
-			array(
-				'public'       => false,
-				'label'        => 'Liberated Page',
-				'show_in_rest' => true,
-				'rest_base'    => 'liberated_pages',
-				'show_ui'      => self::is_debug_mode(),
-				'show_in_menu' => self::is_debug_mode(),
-				'supports'     => $this->custom_post_types_supports,
-			)
-		);
-		register_post_type(
-			self::POST_TYPE_PRODUCT,
-			array(
-				'public'       => false,
-				'label'        => 'Liberated Product',
-				'show_in_rest' => true,
-				'rest_base'    => 'liberated_products',
-				'show_ui'      => self::is_debug_mode(),
-				'show_in_menu' => self::is_debug_mode(),
-				'supports'     => $this->custom_post_types_supports,
-			)
-		);
-		register_post_type(
-			self::POST_TYPE_NAVIGATION,
-			array(
-				'public'       => false,
-				'label'        => 'Liberated Navigation',
-				'show_in_rest' => true,
-				'rest_base'    => 'liberated_navigations',
-				'show_ui'      => self::is_debug_mode(),
-				'show_in_menu' => self::is_debug_mode(),
-				'supports'     => $this->custom_post_types_supports,
-			)
-		);
-	}
 
-	public function is_debug_mode() : bool {
-		return defined( 'WP_DEBUG' ) && WP_DEBUG;
+		foreach ( $this->custom_post_types as $post_type ) {
+			$label     = $post_type;
+			$rest_base = $post_type . 's'; // plural
+
+			$args['label']     = $label;
+			$args['rest_base'] = $rest_base;
+
+			register_post_type( $post_type, $args );
+		}
 	}
 
 	public function register_meta_fields() : void {
