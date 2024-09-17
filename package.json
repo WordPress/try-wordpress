@@ -1,13 +1,15 @@
 {
 	"type": "module",
 	"scripts": {
-		"build": "webpack",
+		"build:production": "rm -rf build/production && webpack --env mode=production",
+		"build:firefox": "rm -rf build/firefox && webpack --env target=firefox",
+		"build:chrome": "rm -rf build/chrome && webpack --env target=chrome",
 		"watch": "npm run watch:firefox",
 		"watch:firefox": "webpack --watch --env target=firefox",
 		"watch:chrome": "webpack --watch --env target=chrome",
 		"start": "npm run start:firefox",
-		"start:firefox": "concurrently \"npm:watch:firefox\" \"npm:web-ext:run:firefox\"",
-		"start:chrome": "concurrently \"npm:watch:chrome\" \"npm:web-ext:run:chrome\"",
+		"start:firefox": "npm run build:firefox && concurrently \"npm:watch:firefox\" \"npm:web-ext:run:firefox\"",
+		"start:chrome": "npm run build:chrome && concurrently \"npm:watch:chrome\" \"npm:web-ext:run:chrome\"",
 		"start:noreload": "npm run web-ext:run:firefox -- --no-reload",
 		"web-ext:run:firefox": "web-ext -s build/firefox run --target firefox-desktop",
 		"web-ext:run:chrome": "web-ext -s build/chrome run --target chromium --arg='--disable-search-engine-choice-screen'",
