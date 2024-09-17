@@ -5,13 +5,18 @@
     <arg name="colors"/>
     <arg name="extensions" value="php,css"/>
 
-    <file>./src/plugin/plugin.php</file>
+    <file>./src/plugin/</file>
     <file>./tests/plugin/</file>
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
 
     <rule ref="WordPress">
         <exclude name="Squiz.Commenting.ClassComment.Missing"/>
         <exclude name="Squiz.Commenting.FileComment.Missing"/>
         <exclude name="Squiz.Commenting.FileComment.MissingPackageTag"/>
         <exclude name="Squiz.Commenting.FunctionComment.Missing"/>
+        <exclude name="Squiz.Commenting.VariableComment.Missing"/>
+        <exclude name="Squiz.Commenting.InlineComment.InvalidEndChar"/>
+        <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed"/>
     </rule>
 </ruleset>
