@@ -24,6 +24,10 @@ class Post_Type_Manager {
 		add_action( 'init', array( $this, 'register_post_types' ) );
 	}
 
+	private function is_local_env(): bool {
+		return wp_get_environment_type() === 'local';
+	}
+
 	/**
 	 * This function collects values of all constants defined as POST_TYPE_ in an array.
 	 * Useful to declare multiple meta-fields on each one of them.
@@ -50,8 +54,8 @@ class Post_Type_Manager {
 			'exclude_from_search' => true,
 			'publicly_queryable'  => true,
 			'show_in_rest'        => true,
-			'show_ui'             => false,
-			'show_in_menu'        => false,
+			'show_ui'             => $this->is_local_env(),
+			'show_in_menu'        => $this->is_local_env(),
 			'supports'            => $this->custom_post_types_supports,
 		);
 
