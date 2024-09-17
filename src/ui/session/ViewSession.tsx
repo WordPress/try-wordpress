@@ -1,31 +1,26 @@
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { Post } from '@/api/ApiClient';
-import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Screens } from '@/ui/App';
 
 export function ViewSession() {
-	const { session, apiClient } = useSessionContext();
-
-	const [ posts, setPosts ] = useState< Post[] >( [] );
-	useEffect( () => {
-		if ( ! apiClient ) {
-			return;
-		}
-		const getPosts = async () => {
-			setPosts( await apiClient.getPosts() );
-		};
-		void getPosts();
-	}, [ apiClient?.siteUrl ] );
+	const { session } = useSessionContext();
+	const navigate = useNavigate();
 
 	return (
 		<>
-			<div>view session: { session.id }</div>
-			{ apiClient?.siteUrl ? (
-				<div>url: { apiClient.siteUrl }</div>
-			) : null }
+			<h1>
+				{ session.title } ({ session.url })
+			</h1>
 			<ul>
-				{ posts.map( ( post ) => {
-					return <li key={ post.id }>{ post.title }</li>;
-				} ) }
+				<li>
+					<button
+						onClick={ () =>
+							navigate( Screens.flowBlogPost( session.id ) )
+						}
+					>
+						Import Blog Post
+					</button>
+				</li>
 			</ul>
 		</>
 	);
