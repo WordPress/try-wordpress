@@ -6,4 +6,7 @@ export interface Message {
 	payload: object;
 }
 
-export type Listener = ( message: Message ) => void;
+export type Listener = (
+	message: Message,
+	sendResponse: ( response: any ) => void
+) => void;

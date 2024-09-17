@@ -4,7 +4,7 @@ import { AppBus } from '@/bus/AppBus';
 
 let currentElement: HTMLElement | null = null;
 
-ContentBus.listen( ( message: Message ) => {
+ContentBus.listen( ( message: Message, sendResponse: any ) => {
 	switch ( message.action ) {
 		case ContentBus.actions.EnableHighlighting:
 			document.body.addEventListener( 'mouseover', onMouseOver );
