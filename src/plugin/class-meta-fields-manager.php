@@ -39,7 +39,7 @@ class Meta_Fields_Manager {
 	 * @param WP_REST_Request $request REST API request object.
 	 * @return object
 	 */
-	public function move_meta_fields( $prepared_post, WP_REST_Request $request ) {
+	public function move_meta_fields( object $prepared_post, WP_REST_Request $request ): object {
 		$meta = $request->get_param( 'meta' );
 
 		if ( isset( $meta['guid'] ) ) {
@@ -57,7 +57,7 @@ class Meta_Fields_Manager {
 		return $prepared_post;
 	}
 
-	public function prepare_meta_fields( $response, $post, $request ) {
+	public function prepare_meta_fields( WP_REST_Response $response, object $post, WP_REST_Request $request ): WP_REST_Response {
 		$data = $response->get_data();
 
 		$data['meta']['guid']        = $post->guid;
