@@ -9,9 +9,7 @@ module.exports = function ( env ) {
 		targets = [ env.target ];
 	}
 
-	// We must always build for production because the development builds will have unsafe-eval in the code, which the
-	// browsers don't like.
-	const mode = 'production';
+	const mode = env.mode || 'development';
 
 	let modules = [];
 	for ( const target of targets ) {
@@ -23,7 +21,13 @@ module.exports = function ( env ) {
 
 // Build the extension.
 function extensionModules( mode, target ) {
-	const targetPath = path.resolve( __dirname, 'build', target );
+	let outputDir = path.resolve( __dirname, 'build' );
+	if ( mode === 'production' ) {
+		outputDir = path.resolve( outputDir, 'production' );
+	}
+	const targetPath = path.resolve( outputDir, target );
+
+	const devtool = mode === 'production' ? false : 'cheap-module-source-map';
 	const resolve = {
 		extensions: [ '.ts', '.tsx', '.js' ],
 		plugins: [ new TsconfigPathsPlugin() ],
@@ -41,6 +45,7 @@ function extensionModules( mode, target ) {
 		// Extension background script.
 		{
 			mode,
+			devtool,
 			resolve,
 			module,
 			entry: './src/extension/background.ts',
@@ -66,6 +71,7 @@ function extensionModules( mode, target ) {
 		// Extension content script.
 		{
 			mode,
+			devtool,
 			resolve,
 			module,
 			entry: './src/extension/content.ts',
@@ -77,6 +83,7 @@ function extensionModules( mode, target ) {
 		// The app.
 		{
 			mode,
+			devtool,
 			resolve,
 			module,
 			entry: './src/ui/main.ts',

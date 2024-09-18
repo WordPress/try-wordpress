@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
+import { cleanHtml } from '@/parser/cleanHtml';
 
 enum section {
 	title = 1,
@@ -9,11 +10,16 @@ enum section {
 	content,
 }
 
+interface SectionContent {
+	originalHtml: string;
+	cleanHtml: string;
+}
+
 export function SelectContent( props: { onExit: () => void } ) {
 	const { onExit } = props;
-	const [ title, setTitle ] = useState< string >();
-	const [ content, setContent ] = useState< string >();
-	const [ date, setDate ] = useState< string >();
+	const [ title, setTitle ] = useState< SectionContent >();
+	const [ content, setContent ] = useState< SectionContent >();
+	const [ date, setDate ] = useState< SectionContent >();
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
@@ -34,15 +40,27 @@ export function SelectContent( props: { onExit: () => void } ) {
 	}, [] );
 
 	if ( lastClickedElement ) {
+		const original = lastClickedElement;
+		const clean = cleanHtml( original );
+
 		switch ( waitingForSelection ) {
 			case section.title:
-				setTitle( lastClickedElement );
+				setTitle( {
+					originalHtml: original,
+					cleanHtml: clean,
+				} );
 				break;
 			case section.date:
-				setDate( lastClickedElement );
+				setDate( {
+					originalHtml: original,
+					cleanHtml: clean,
+				} );
 				break;
 			case section.content:
-				setContent( lastClickedElement );
+				setContent( {
+					originalHtml: original,
+					cleanHtml: clean,
+				} );
 				break;
 		}
 		setWaitingForSelection( false );
@@ -66,7 +84,7 @@ export function SelectContent( props: { onExit: () => void } ) {
 			</button>
 			<Section
 				label="Title"
-				value={ title }
+				content={ title }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -78,7 +96,7 @@ export function SelectContent( props: { onExit: () => void } ) {
 			/>
 			<Section
 				label="Date"
-				value={ date }
+				content={ date }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -90,7 +108,7 @@ export function SelectContent( props: { onExit: () => void } ) {
 			/>
 			<Section
 				label="Content"
-				value={ content }
+				content={ content }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -108,14 +126,14 @@ export function SelectContent( props: { onExit: () => void } ) {
 
 function Section( props: {
 	label: string;
-	value: string | undefined;
+	content: SectionContent | undefined;
 	disabled: boolean;
 	waitingForSelection: boolean;
 	onWaitingForSelection: ( isWaiting: boolean ) => void;
 } ) {
 	const {
 		label,
-		value,
+		content,
 		disabled,
 		waitingForSelection,
 		onWaitingForSelection,
@@ -151,7 +169,10 @@ function Section( props: {
 					</button>
 				) }
 			</div>
-			<div style={ { paddingTop: '1rem' } }>{ value ?? 'Not found' }</div>
+			<div style={ { paddingTop: '1rem' } }>
+				{ content?.originalHtml ?? 'Not found' }
+			</div>
+			<div style={ { paddingTop: '1rem' } }>{ content?.cleanHtml }</div>
 		</div>
 	);
 }

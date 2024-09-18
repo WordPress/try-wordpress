@@ -1,13 +1,15 @@
 {
 	"type": "module",
 	"scripts": {
-		"build": "webpack",
+		"build:production": "rm -rf build/production && webpack --env mode=production",
+		"build:firefox": "rm -rf build/firefox && webpack --env target=firefox",
+		"build:chrome": "rm -rf build/chrome && webpack --env target=chrome",
 		"watch": "npm run watch:firefox",
 		"watch:firefox": "webpack --watch --env target=firefox",
 		"watch:chrome": "webpack --watch --env target=chrome",
 		"start": "npm run start:firefox",
-		"start:firefox": "concurrently \"npm:watch:firefox\" \"npm:web-ext:run:firefox\"",
-		"start:chrome": "concurrently \"npm:watch:chrome\" \"npm:web-ext:run:chrome\"",
+		"start:firefox": "npm run build:firefox && concurrently \"npm:watch:firefox\" \"npm:web-ext:run:firefox\"",
+		"start:chrome": "npm run build:chrome && concurrently \"npm:watch:chrome\" \"npm:web-ext:run:chrome\"",
 		"start:noreload": "npm run web-ext:run:firefox -- --no-reload",
 		"web-ext:run:firefox": "web-ext -s build/firefox run --target firefox-desktop",
 		"web-ext:run:chrome": "web-ext -s build/chrome run --target chromium --arg='--disable-search-engine-choice-screen'",
@@ -25,6 +27,8 @@
 		"@types/firefox-webext-browser": "^120.0.4",
 		"@types/react": "^18.3.5",
 		"@types/react-dom": "^18.3.0",
+		"@types/wordpress__blocks": "^12.5.14",
+		"@types/wordpress__block-library": "^2.6.3",
 		"@wordpress/scripts": "^29.0.0",
 		"concurrently": "^9.0.1",
 		"copy-webpack-plugin": "^12.0.2",
@@ -37,6 +41,8 @@
 		"wp-types": "^4.66.1"
 	},
 	"dependencies": {
+		"@wordpress/block-library": "^9.7.0",
+		"@wordpress/blocks": "^13.7.0",
 		"@wp-playground/client": "^0.9.39",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",

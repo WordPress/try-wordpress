@@ -22,6 +22,7 @@ export function PreviewTabBar( props: {
 					type="radio"
 					onClick={ () => onChange( index ) }
 					checked={ value === index }
+					readOnly
 				/>
 				<label htmlFor={ key }>{ label }</label>
 			</div>
