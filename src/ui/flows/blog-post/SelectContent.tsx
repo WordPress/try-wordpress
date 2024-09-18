@@ -3,6 +3,7 @@ import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { cleanHtml } from '@/parser/cleanHtml';
+import { Post } from '@/api/Post';
 
 enum section {
 	title = 1,
@@ -15,7 +16,7 @@ interface SectionContent {
 	cleanHtml: string;
 }
 
-export function SelectContent( props: { onExit: () => void } ) {
+export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	const { onExit } = props;
 	const [ title, setTitle ] = useState< SectionContent >();
 	const [ content, setContent ] = useState< SectionContent >();

@@ -18,11 +18,6 @@ export function BlogPostFlow() {
 	const [ post, setPost ] = useState< Post >();
 	const { apiClient, playgroundClient } = useSessionContext();
 
-	// Proceed from loading screen once the apiClient is ready.
-	if ( currentStep === Steps.loading && sourcePostUrl && !! apiClient ) {
-		setCurrentStep( Steps.selectContent );
-	}
-
 	// Get existing post from the API, or create a new one.
 	// Once we have the post, make playground navigate to it.
 	useEffect( () => {
@@ -38,8 +33,9 @@ export function BlogPostFlow() {
 		};
 		getOrCreatePost()
 			.then( async ( p: Post ) => {
-				setPost( p );
 				void playgroundClient.goTo( p.link );
+				setPost( p );
+				setCurrentStep( Steps.selectContent );
 			} )
 			.catch( ( err ) => console.error( err ) );
 	}, [ sourcePostUrl, apiClient, playgroundClient ] );
@@ -50,15 +46,14 @@ export function BlogPostFlow() {
 				<Start
 					onExit={ ( url: string ) => {
 						setSourcePostUrl( url );
-						setCurrentStep(
-							! apiClient ? Steps.loading : Steps.selectContent
-						);
+						setCurrentStep( Steps.loading );
 					} }
 				/>
 			) }
 			{ currentStep !== Steps.loading ? null : <div>Loading...</div> }
-			{ currentStep !== Steps.selectContent ? null : (
+			{ currentStep !== Steps.selectContent || ! post ? null : (
 				<SelectContent
+					post={ post }
 					onExit={ () => setCurrentStep( Steps.finish ) }
 				/>
 			) }
