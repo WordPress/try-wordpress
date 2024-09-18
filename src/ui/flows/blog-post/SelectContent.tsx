@@ -4,6 +4,7 @@ import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { cleanHtml } from '@/parser/cleanHtml';
 import { Post } from '@/api/Post';
+import { useSessionContext } from '@/ui/session/SessionProvider';
 
 enum section {
 	title = 1,
@@ -17,7 +18,7 @@ interface SectionContent {
 }
 
 export function SelectContent( props: { post: Post; onExit: () => void } ) {
-	const { onExit } = props;
+	const { post, onExit } = props;
 	const [ title, setTitle ] = useState< SectionContent >();
 	const [ content, setContent ] = useState< SectionContent >();
 	const [ date, setDate ] = useState< SectionContent >();
@@ -25,6 +26,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
 	>( false );
+	const { apiClient, playgroundClient } = useSessionContext();
 
 	// Listen to click events coming from the content script.
 	useEffect( () => {
@@ -73,6 +75,18 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		setWaitingForSelection( false );
 		setLastClickedElement( undefined );
 	}, [ waitingForSelection, lastClickedElement ] );
+
+	// Save the post when selections happen.
+	useEffect( () => {
+		if ( ! title ) {
+			return;
+		}
+		apiClient
+			?.updatePost( post.id, {
+				title: title.cleanHtml ?? post.title.raw ?? '',
+			} )
+			.then( () => playgroundClient.goTo( post.link ) );
+	}, [ title ] );
 
 	const isValid = title && date && content;
 	return (
