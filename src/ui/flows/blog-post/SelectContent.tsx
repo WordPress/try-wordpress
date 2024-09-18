@@ -26,6 +26,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		section | false
 	>( false );
 
+	// Listen to click events coming from the content script.
 	useEffect( () => {
 		AppBus.listen( async ( message: Message ) => {
 			switch ( message.action ) {
@@ -40,7 +41,12 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		};
 	}, [] );
 
-	if ( lastClickedElement ) {
+	// Handle a click on an event in the content script,
+	// according to which section is currently waiting for selection.
+	useEffect( () => {
+		if ( ! lastClickedElement ) {
+			return;
+		}
 		const original = lastClickedElement;
 		const clean = cleanHtml( original );
 
@@ -66,10 +72,9 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		}
 		setWaitingForSelection( false );
 		setLastClickedElement( undefined );
-	}
+	}, [ waitingForSelection, lastClickedElement ] );
 
 	const isValid = title && date && content;
-
 	return (
 		<>
 			<div>Select the content of the post</div>
