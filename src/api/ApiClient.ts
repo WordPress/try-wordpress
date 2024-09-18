@@ -31,6 +31,7 @@ export class ApiClient {
 		} ) ) as Post;
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async getPostByGuid( guid: string ): Promise< Post | null > {
 		return null;
 	}
