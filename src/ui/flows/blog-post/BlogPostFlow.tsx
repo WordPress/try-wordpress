@@ -14,23 +14,23 @@ enum Steps {
 
 export function BlogPostFlow() {
 	const [ currentStep, setCurrentStep ] = useState( Steps.start );
-	const [ postUrl, setPostUrl ] = useState< string >();
+	const [ sourcePostUrl, setSourcePostUrl ] = useState< string >();
 	const { apiClient, playgroundClient } = useSessionContext();
 
 	// Proceed from loading screen once the apiClient is ready.
-	if ( currentStep === Steps.loading && postUrl && !! apiClient ) {
+	if ( currentStep === Steps.loading && sourcePostUrl && !! apiClient ) {
 		setCurrentStep( Steps.selectContent );
 	}
 
 	// Get existing post from the API, or create a new one.
 	useEffect( () => {
-		if ( ! postUrl || ! apiClient ) {
+		if ( ! sourcePostUrl || ! apiClient ) {
 			return;
 		}
 		const getOrCreatePost = async (): Promise< Post > => {
-			let post = await apiClient.getPostByGuid( postUrl );
+			let post = await apiClient.getPostByGuid( sourcePostUrl );
 			if ( ! post ) {
-				post = await apiClient.createPost( { guid: postUrl } );
+				post = await apiClient.createPost( { guid: sourcePostUrl } );
 			}
 			return post;
 		};
@@ -39,14 +39,14 @@ export function BlogPostFlow() {
 				await playgroundClient.goTo( post.link );
 			} )
 			.catch( ( err ) => console.error( err ) );
-	}, [ postUrl, apiClient ] );
+	}, [ sourcePostUrl, apiClient, playgroundClient ] );
 
 	return (
 		<>
 			{ currentStep !== Steps.start ? null : (
 				<Start
 					onExit={ ( url: string ) => {
-						setPostUrl( url );
+						setSourcePostUrl( url );
 						setCurrentStep(
 							! apiClient ? Steps.loading : Steps.selectContent
 						);
