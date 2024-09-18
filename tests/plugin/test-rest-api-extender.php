@@ -38,7 +38,8 @@ class Rest_API_Extender_Test extends TestCase {
 	}
 
 	public function testRegisterRoute(): void {
-		$this->rest_api_extender->register_route();
+		do_action( 'rest_api_init' ); // so that register_route() executes.
+
 		$routes = rest_get_server()->get_routes( 'wp/v2' );
 
 		$this->assertArrayHasKey( '/wp/v2/lib_xs/(?P<id>\d+)/promote', $routes );
