@@ -4,29 +4,31 @@ import { AppBus } from '@/bus/AppBus';
 
 let currentElement: HTMLElement | null = null;
 
-ContentBus.listen( ( message: Message, sendResponse: any ) => {
-	switch ( message.action ) {
-		case ContentBus.actions.EnableHighlighting:
-			document.body.addEventListener( 'mouseover', onMouseOver );
-			document.body.addEventListener( 'mouseout', onMouseOut );
-			document.body.addEventListener( 'click', onClick );
-			enableHighlightingCursor();
-			break;
-		case ContentBus.actions.DisableHighlighting:
-			document.body.removeEventListener( 'mouseover', onMouseOver );
-			document.body.removeEventListener( 'mouseout', onMouseOut );
-			document.body.removeEventListener( 'click', onClick );
-			disableHighlightingCursor();
-			removeStyle();
-			break;
-		case ContentBus.actions.GetCurrentUrl:
-			sendResponse( document.documentURI );
-			break;
-		default:
-			console.error( `Unknown action: ${ message.action }` );
-			break;
+ContentBus.listen(
+	( message: Message, sendResponse: ( response?: any ) => void ) => {
+		switch ( message.action ) {
+			case ContentBus.actions.EnableHighlighting:
+				document.body.addEventListener( 'mouseover', onMouseOver );
+				document.body.addEventListener( 'mouseout', onMouseOut );
+				document.body.addEventListener( 'click', onClick );
+				enableHighlightingCursor();
+				break;
+			case ContentBus.actions.DisableHighlighting:
+				document.body.removeEventListener( 'mouseover', onMouseOver );
+				document.body.removeEventListener( 'mouseout', onMouseOut );
+				document.body.removeEventListener( 'click', onClick );
+				disableHighlightingCursor();
+				removeStyle();
+				break;
+			case ContentBus.actions.GetCurrentUrl:
+				sendResponse( document.documentURI );
+				break;
+			default:
+				console.error( `Unknown action: ${ message.action }` );
+				break;
+		}
 	}
-} );
+);
 
 function onClick( event: MouseEvent ) {
 	event.preventDefault();
