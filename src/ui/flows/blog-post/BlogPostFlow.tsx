@@ -15,7 +15,12 @@ export function BlogPostFlow() {
 	return (
 		<>
 			{ currentStep !== Steps.start ? null : (
-				<Start onExit={ () => setCurrentStep( Steps.selectContent ) } />
+				<Start
+					onExit={ ( postUrl: string ) => {
+						console.log( postUrl );
+						setCurrentStep( Steps.selectContent );
+					} }
+				/>
 			) }
 			{ currentStep !== Steps.selectContent ? null : (
 				<SelectContent

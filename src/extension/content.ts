@@ -19,6 +19,9 @@ ContentBus.listen( ( message: Message, sendResponse: any ) => {
 			disableHighlightingCursor();
 			removeStyle();
 			break;
+		case ContentBus.actions.GetCurrentUrl:
+			sendResponse( document.documentURI );
+			break;
 		default:
 			console.error( `Unknown action: ${ message.action }` );
 			break;

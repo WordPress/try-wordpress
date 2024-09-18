@@ -4,6 +4,14 @@ import MessageSender = browser.runtime.MessageSender;
 enum Actions {
 	EnableHighlighting = 1,
 	DisableHighlighting,
+	GetCurrentUrl,
+}
+
+async function getCurrentUrl(): Promise< string > {
+	return sendMessageToContent( {
+		action: Actions.GetCurrentUrl,
+		payload: {},
+	} );
 }
 
 async function enableHighlighting(): Promise< void > {
@@ -27,6 +35,7 @@ export const ContentBus = {
 	stopListening,
 	enableHighlighting,
 	disableHighlighting,
+	getCurrentUrl,
 };
 
 let listener: (
