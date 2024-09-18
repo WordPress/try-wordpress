@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { PreviewTabBar } from '@/ui/preview/PreviewTabBar';
 import { Playground } from '@/ui/preview/Playground';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { ApiClient } from '@/api/ApiClient';
+import { PlaygroundClient } from '@wp-playground/client';
 
 const tabFront = 0;
 const tabAdmin = 1;
 const defaultTab = tabFront;
 
 export function Preview( props: {
-	onReady: ( apiClient: ApiClient ) => void;
+	onReady: ( playgroundClient: PlaygroundClient ) => void;
 } ) {
 	const { onReady } = props;
 	const [ currentTab, setCurrentTab ] = useState< number >( defaultTab );

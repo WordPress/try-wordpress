@@ -21,6 +21,7 @@ import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
 import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 import { ApiClient } from '@/api/ApiClient';
 import { BlogPostFlow } from '@/ui/flows/blog-post/BlogPostFlow';
+import { PlaygroundClient } from '@wp-playground/client';
 
 export const Screens = {
 	home: () => '/start/home',
@@ -89,7 +90,15 @@ function App() {
 	const preview = ! session ? (
 		<PlaceholderPreview />
 	) : (
-		<Preview onReady={ setApiClient } />
+		<Preview
+			onReady={ async ( playgroundClient: PlaygroundClient ) => {
+				const client = new ApiClient(
+					playgroundClient,
+					await playgroundClient.absoluteUrl
+				);
+				setApiClient( client );
+			} }
+		/>
 	);
 
 	return (
