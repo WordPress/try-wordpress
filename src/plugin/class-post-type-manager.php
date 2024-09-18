@@ -1,5 +1,7 @@
 <?php
 
+namespace DotOrg\TryWordPress;
+
 class Post_Type_Manager {
 	const string POST_TYPE_POST       = 'liberated_post';
 	const string POST_TYPE_PAGE       = 'liberated_page';
@@ -28,7 +30,7 @@ class Post_Type_Manager {
 	 * @return array
 	 */
 	private function get_post_type_constants(): array {
-		$reflection = new ReflectionClass( $this );
+		$reflection = new \ReflectionClass( $this );
 		$constants  = $reflection->getConstants();
 
 		return array_filter(

@@ -1,5 +1,7 @@
 <?php
 
+namespace DotOrg\TryWordPress;
+
 class Meta_Fields_Manager {
 	private array $custom_post_types;
 	private array $post_meta_fields = array( 'guid', 'raw_title', 'raw_date', 'raw_content' );
@@ -35,11 +37,11 @@ class Meta_Fields_Manager {
 	/**
 	 * This function moves some of the meta fields to the post object before saving
 	 *
-	 * @param object          $prepared_post Post object that is going to be saved.
-	 * @param WP_REST_Request $request REST API request object.
+	 * @param object           $prepared_post Post object that is going to be saved.
+	 * @param \WP_REST_Request $request REST API request object.
 	 * @return object
 	 */
-	public function move_meta_fields( object $prepared_post, WP_REST_Request $request ): object {
+	public function move_meta_fields( object $prepared_post, \WP_REST_Request $request ): object {
 		$meta = $request->get_param( 'meta' );
 
 		if ( isset( $meta['guid'] ) ) {
@@ -57,7 +59,7 @@ class Meta_Fields_Manager {
 		return $prepared_post;
 	}
 
-	public function prepare_meta_fields( WP_REST_Response $response, object $post, WP_REST_Request $request ): WP_REST_Response {
+	public function prepare_meta_fields( \WP_REST_Response $response, object $post, \WP_REST_Request $request ): \WP_REST_Response {
 		$data = $response->get_data();
 
 		$data['meta']['guid']        = $post->guid;
