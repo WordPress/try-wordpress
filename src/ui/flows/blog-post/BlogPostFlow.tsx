@@ -15,7 +15,7 @@ enum Steps {
 export function BlogPostFlow() {
 	const [ currentStep, setCurrentStep ] = useState( Steps.start );
 	const [ postUrl, setPostUrl ] = useState< string >();
-	const { apiClient } = useSessionContext();
+	const { apiClient, playgroundClient } = useSessionContext();
 
 	// Proceed from loading screen once the apiClient is ready.
 	if ( currentStep === Steps.loading && postUrl && !! apiClient ) {
@@ -35,8 +35,8 @@ export function BlogPostFlow() {
 			return post;
 		};
 		getOrCreatePost()
-			.then( ( post: Post ) => {
-				console.log( post );
+			.then( async ( post: Post ) => {
+				await playgroundClient.goTo( post.link );
 			} )
 			.catch( ( err ) => console.error( err ) );
 	}, [ postUrl, apiClient ] );
