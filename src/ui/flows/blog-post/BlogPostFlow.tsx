@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Start } from '@/ui/flows/blog-post/Start';
 import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Finish } from '@/ui/flows/blog-post/Finish';
 import { useSessionContext } from '@/ui/session/SessionProvider';
+import { Post } from '@/api/Post';
 
 enum Steps {
 	start = 1,
@@ -20,6 +21,25 @@ export function BlogPostFlow() {
 	if ( currentStep === Steps.loading && postUrl && !! apiClient ) {
 		setCurrentStep( Steps.selectContent );
 	}
+
+	// Get existing post from the API, or create a new one.
+	useEffect( () => {
+		if ( ! postUrl || ! apiClient ) {
+			return;
+		}
+		const getOrCreatePost = async (): Promise< Post > => {
+			let post = await apiClient.getPostByGuid( postUrl );
+			if ( ! post ) {
+				post = await apiClient.createPost( { guid: postUrl } );
+			}
+			return post;
+		};
+		getOrCreatePost()
+			.then( ( post: Post ) => {
+				console.log( post );
+			} )
+			.catch( ( err ) => console.error( err ) );
+	}, [ postUrl, apiClient ] );
 
 	return (
 		<>

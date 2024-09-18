@@ -25,6 +25,10 @@ export class ApiClient {
 		} ) ) as Post;
 	}
 
+	async getPostByGuid( guid: string ): Promise< Post | null > {
+		return null;
+	}
+
 	async getPosts(): Promise< Post[] > {
 		return ( await this.get( '/posts' ) ) as Post[];
 	}
