@@ -90,7 +90,8 @@ export function SelectContent( props: { onExit: () => void } ) {
 					!! waitingForSelection &&
 					waitingForSelection === section.title
 				}
-				onWaitingForSelection={ ( isWaiting ) => {
+				onWaitingForSelection={ async ( isWaiting ) => {
+					await ContentBus.enableHighlighting();
 					setWaitingForSelection( isWaiting ? section.title : false );
 				} }
 			/>
@@ -102,7 +103,8 @@ export function SelectContent( props: { onExit: () => void } ) {
 					!! waitingForSelection &&
 					waitingForSelection === section.date
 				}
-				onWaitingForSelection={ ( isWaiting ) => {
+				onWaitingForSelection={ async ( isWaiting ) => {
+					await ContentBus.enableHighlighting();
 					setWaitingForSelection( isWaiting ? section.date : false );
 				} }
 			/>
@@ -114,7 +116,8 @@ export function SelectContent( props: { onExit: () => void } ) {
 					!! waitingForSelection &&
 					waitingForSelection === section.content
 				}
-				onWaitingForSelection={ ( isWaiting ) => {
+				onWaitingForSelection={ async ( isWaiting ) => {
+					await ContentBus.enableHighlighting();
 					setWaitingForSelection(
 						isWaiting ? section.content : false
 					);

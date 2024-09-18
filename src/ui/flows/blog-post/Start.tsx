@@ -10,7 +10,6 @@ export function Start( props: { onExit: ( postUrl: string ) => void } ) {
 			<button
 				onClick={ async () => {
 					const postUrl = await ContentBus.getCurrentUrl();
-					await ContentBus.enableHighlighting();
 					onExit( postUrl );
 				} }
 			>
