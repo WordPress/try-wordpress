@@ -9,6 +9,17 @@ class Rest_API_Extender {
 		$this->custom_post_types = $custom_post_types;
 
 		add_action( 'rest_api_init', array( $this, 'register_route' ) );
+
+		foreach ( $this->custom_post_types as $post_type ) {
+			add_filter(
+				'rest_' . $post_type . '_query',
+				function ( $args, \WP_REST_Request $request ) use ( $post_type ) {
+					return $this->filter_posts_by_guid( $post_type, $args, $request );
+				},
+				10,
+				2
+			);
+		}
 	}
 
 	public function register_route(): void {
@@ -84,5 +95,29 @@ class Rest_API_Extender {
 
 		add_post_meta( $post->ID, '_liberated_post', $inserted_post_id );
 		return true;
+	}
+
+	public function filter_posts_by_guid( $post_type, $args, \WP_REST_Request $request ): array {
+		if ( ! $request->has_param( 'guid' ) ) {
+			return $args;
+		}
+
+		global $wpdb;
+		// @phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
+		$post_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND guid = %s AND post_status IN ('draft', 'publish') LIMIT 1",
+				$post_type,
+				$request->get_param( 'guid' )
+			)
+		);
+
+		if ( $post_id ) {
+			$args['p'] = (int) $post_id;
+		} else {
+			$args['post__in'] = array( 0 ); // This will ensure no posts are returned.
+		}
+
+		return $args;
 	}
 }
