@@ -1,13 +1,7 @@
-/* eslint-disable camelcase */
 /* eslint-disable react/no-is-mounted */
 
 import { PlaygroundClient } from '@wp-playground/client';
-import { WP_REST_API_Post } from 'wp-types';
-
-export interface Post {
-	id: number;
-	title: string;
-}
+import { Post } from '@/api/Post';
 
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
@@ -24,23 +18,15 @@ export class ApiClient {
 
 	async createPost( data: { guid: string } ): Promise< Post > {
 		const { guid } = data;
-		const post = ( await this.post( '/liberated_posts', {
+		return ( await this.post( '/liberated_posts', {
 			meta: {
 				guid,
 			},
-		} ) ) as WP_REST_API_Post;
-
-		return { id: post.id, title: post.title.raw ?? '' };
+		} ) ) as Post;
 	}
 
 	async getPosts(): Promise< Post[] > {
-		const response = ( await this.get( '/posts' ) ) as WP_REST_API_Post[];
-		return response.map( ( post ) => {
-			return {
-				id: post.id,
-				title: post.title.rendered,
-			};
-		} );
+		return ( await this.get( '/posts' ) ) as Post[];
 	}
 
 	private async get( route: string ): Promise< object > {
@@ -69,5 +55,4 @@ export class ApiClient {
 	}
 }
 
-/* eslint-enable camelcase */
 /* eslint-enable react/no-is-mounted */
