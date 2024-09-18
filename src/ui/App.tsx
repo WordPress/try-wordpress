@@ -84,19 +84,26 @@ function App() {
 	}, [ location ] );
 
 	const session = useRouteLoaderData( 'session' ) as Session;
+	const [ playgroundClient, setPlaygroundClient ] =
+		useState< PlaygroundClient >();
 	const [ apiClient, setApiClient ] = useState< ApiClient >();
-	const sectionContext: SessionContext = { session, apiClient };
+	const sectionContext: SessionContext = {
+		session,
+		apiClient,
+		playgroundClient,
+	};
 
 	const preview = ! session ? (
 		<PlaceholderPreview />
 	) : (
 		<Preview
-			onReady={ async ( playgroundClient: PlaygroundClient ) => {
-				const client = new ApiClient(
-					playgroundClient,
-					await playgroundClient.absoluteUrl
+			onReady={ async ( client: PlaygroundClient ) => {
+				// Because client is "function-y", we need to wrap it in a function so that React doesn't call it.
+				// See: https://react.dev/reference/react/useState#im-trying-to-set-state-to-a-function-but-it-gets-called-instead.
+				setPlaygroundClient( () => client );
+				setApiClient(
+					new ApiClient( client, await client.absoluteUrl )
 				);
-				setApiClient( client );
 			} }
 		/>
 	);
