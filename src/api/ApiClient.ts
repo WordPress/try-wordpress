@@ -25,6 +25,12 @@ export class ApiClient {
 		} ) ) as Post;
 	}
 
+	async updatePost( id: number, data: { title: string } ): Promise< Post > {
+		return ( await this.post( `/liberated_posts/${ id }`, {
+			title: data.title,
+		} ) ) as Post;
+	}
+
 	async getPostByGuid( guid: string ): Promise< Post | null > {
 		return null;
 	}
@@ -51,7 +57,7 @@ export class ApiClient {
 			method: 'POST',
 			body: JSON.stringify( body ),
 		} );
-		if ( response.httpStatusCode !== 201 ) {
+		if ( response.httpStatusCode < 200 || response.httpStatusCode >= 300 ) {
 			console.error( response );
 			throw Error( response.json.message );
 		}
