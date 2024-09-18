@@ -15,6 +15,7 @@ enum Steps {
 export function BlogPostFlow() {
 	const [ currentStep, setCurrentStep ] = useState( Steps.start );
 	const [ sourcePostUrl, setSourcePostUrl ] = useState< string >();
+	const [ post, setPost ] = useState< Post >();
 	const { apiClient, playgroundClient } = useSessionContext();
 
 	// Proceed from loading screen once the apiClient is ready.
@@ -23,20 +24,22 @@ export function BlogPostFlow() {
 	}
 
 	// Get existing post from the API, or create a new one.
+	// Once we have the post, make playground navigate to it.
 	useEffect( () => {
 		if ( ! sourcePostUrl || ! apiClient ) {
 			return;
 		}
 		const getOrCreatePost = async (): Promise< Post > => {
-			let post = await apiClient.getPostByGuid( sourcePostUrl );
-			if ( ! post ) {
-				post = await apiClient.createPost( { guid: sourcePostUrl } );
+			let p = await apiClient.getPostByGuid( sourcePostUrl );
+			if ( ! p ) {
+				p = await apiClient.createPost( { guid: sourcePostUrl } );
 			}
-			return post;
+			return p;
 		};
 		getOrCreatePost()
-			.then( async ( post: Post ) => {
-				await playgroundClient.goTo( post.link );
+			.then( async ( p: Post ) => {
+				setPost( p );
+				void playgroundClient.goTo( p.link );
 			} )
 			.catch( ( err ) => console.error( err ) );
 	}, [ sourcePostUrl, apiClient, playgroundClient ] );
