@@ -72,14 +72,14 @@ function steps(): StepDefinition[] {
 			username: 'admin',
 			password: 'password',
 		},
-		{
-			step: 'runPHP',
-			code: deleteDefaultContent(),
-		},
-		{
-			step: 'runPHP',
-			code: createHomePage(),
-		},
+		// {
+		// 	step: 'runPHP',
+		// 	code: deleteDefaultContent(),
+		// },
+		// {
+		// 	step: 'runPHP',
+		// 	code: createHomePage(),
+		// },
 		{
 			step: 'unzip',
 			zipFile: {
