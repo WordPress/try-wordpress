@@ -1,6 +1,6 @@
 import { ContentBus } from '@/bus/ContentBus';
 
-export function Start( props: { onExit: () => void } ) {
+export function Start( props: { onExit: ( postUrl: string ) => void } ) {
 	const { onExit } = props;
 	return (
 		<>
@@ -9,8 +9,8 @@ export function Start( props: { onExit: () => void } ) {
 			</div>
 			<button
 				onClick={ async () => {
-					await ContentBus.enableHighlighting();
-					onExit();
+					const postUrl = await ContentBus.getCurrentUrl();
+					onExit( postUrl );
 				} }
 			>
 				Continue

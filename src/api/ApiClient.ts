@@ -1,12 +1,7 @@
-/* eslint-disable camelcase */
+/* eslint-disable react/no-is-mounted */
 
 import { PlaygroundClient } from '@wp-playground/client';
-import { WP_REST_API_Post } from 'wp-types';
-
-export interface Post {
-	id: number;
-	title: string;
-}
+import { Post } from '@/api/Post';
 
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
@@ -21,45 +16,54 @@ export class ApiClient {
 		return this._siteUrl;
 	}
 
-	async createPost(): Promise< void > {
-		const response = await this.playgroundClient.request( {
-			url: `/index.php?rest_route=/wp/v2/posts`,
-			method: 'POST',
-			body: {
-				title:
-					'New Post from API Client - ' +
-					( Math.random() + 1 ).toString( 36 ).substring( 7 ),
-				content: 'This is a new post created via the API client.',
-				status: 'publish',
+	async createPost( data: { guid: string } ): Promise< Post > {
+		const { guid } = data;
+		return ( await this.post( '/liberated_posts', {
+			meta: {
+				guid,
 			},
-		} );
-		console.log( response, response.json );
+		} ) ) as Post;
+	}
+
+	async updatePost( id: number, data: { title: string } ): Promise< Post > {
+		return ( await this.post( `/liberated_posts/${ id }`, {
+			title: data.title,
+		} ) ) as Post;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async getPostByGuid( guid: string ): Promise< Post | null > {
+		return null;
 	}
 
 	async getPosts(): Promise< Post[] > {
-		// eslint-disable-next-line react/no-is-mounted
-		const response = ( await this.get(
-			'/wp/v2/posts'
-		) ) as WP_REST_API_Post[];
-
-		return response.map( ( post ) => {
-			return {
-				id: post.id,
-				title: post.title.rendered,
-			};
-		} );
+		return ( await this.get( '/posts' ) ) as Post[];
 	}
 
 	private async get( route: string ): Promise< object > {
 		const response = await this.playgroundClient.request( {
-			url: `/index.php?rest_route=${ route }`,
+			url: `/index.php?rest_route=/wp/v2${ route }`,
 			method: 'GET',
 		} );
 		if ( response.httpStatusCode !== 200 ) {
+			console.error( response );
+			throw Error( response.json.message );
+		}
+		return response.json;
+	}
+
+	private async post( route: string, body: object ): Promise< object > {
+		const response = await this.playgroundClient.request( {
+			url: `/index.php?rest_route=/wp/v2${ route }`,
+			method: 'POST',
+			body: JSON.stringify( body ),
+		} );
+		if ( response.httpStatusCode < 200 || response.httpStatusCode >= 300 ) {
+			console.error( response );
 			throw Error( response.json.message );
 		}
 		return response.json;
 	}
 }
 
-/* eslint-enable camelcase */
+/* eslint-enable react/no-is-mounted */

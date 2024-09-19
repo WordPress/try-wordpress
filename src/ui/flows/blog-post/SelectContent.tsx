@@ -3,6 +3,8 @@ import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { cleanHtml } from '@/parser/cleanHtml';
+import { Post } from '@/api/Post';
+import { useSessionContext } from '@/ui/session/SessionProvider';
 
 enum section {
 	title = 1,
@@ -15,8 +17,8 @@ interface SectionContent {
 	cleanHtml: string;
 }
 
-export function SelectContent( props: { onExit: () => void } ) {
-	const { onExit } = props;
+export function SelectContent( props: { post: Post; onExit: () => void } ) {
+	const { post, onExit } = props;
 	const [ title, setTitle ] = useState< SectionContent >();
 	const [ content, setContent ] = useState< SectionContent >();
 	const [ date, setDate ] = useState< SectionContent >();
@@ -24,7 +26,9 @@ export function SelectContent( props: { onExit: () => void } ) {
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
 	>( false );
+	const { apiClient, playgroundClient } = useSessionContext();
 
+	// Listen to click events coming from the content script.
 	useEffect( () => {
 		AppBus.listen( async ( message: Message ) => {
 			switch ( message.action ) {
@@ -39,7 +43,12 @@ export function SelectContent( props: { onExit: () => void } ) {
 		};
 	}, [] );
 
-	if ( lastClickedElement ) {
+	// Handle a click on an event in the content script,
+	// according to which section is currently waiting for selection.
+	useEffect( () => {
+		if ( ! lastClickedElement ) {
+			return;
+		}
 		const original = lastClickedElement;
 		const clean = cleanHtml( original );
 
@@ -65,10 +74,26 @@ export function SelectContent( props: { onExit: () => void } ) {
 		}
 		setWaitingForSelection( false );
 		setLastClickedElement( undefined );
-	}
+	}, [ waitingForSelection, lastClickedElement ] );
+
+	// Save the post when selections happen.
+	useEffect(
+		() => {
+			if ( ! title ) {
+				return;
+			}
+			apiClient
+				?.updatePost( post.id, {
+					title: title.cleanHtml ?? post.title.raw ?? '',
+				} )
+				.then( () => playgroundClient.goTo( post.link ) );
+		},
+		// The dependencies are correct, we only want to trigger it when the title changes.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ title ]
+	);
 
 	const isValid = title && date && content;
-
 	return (
 		<>
 			<div>Select the content of the post</div>
@@ -90,7 +115,8 @@ export function SelectContent( props: { onExit: () => void } ) {
 					!! waitingForSelection &&
 					waitingForSelection === section.title
 				}
-				onWaitingForSelection={ ( isWaiting ) => {
+				onWaitingForSelection={ async ( isWaiting ) => {
+					await ContentBus.enableHighlighting();
 					setWaitingForSelection( isWaiting ? section.title : false );
 				} }
 			/>
@@ -102,7 +128,8 @@ export function SelectContent( props: { onExit: () => void } ) {
 					!! waitingForSelection &&
 					waitingForSelection === section.date
 				}
-				onWaitingForSelection={ ( isWaiting ) => {
+				onWaitingForSelection={ async ( isWaiting ) => {
+					await ContentBus.enableHighlighting();
 					setWaitingForSelection( isWaiting ? section.date : false );
 				} }
 			/>
@@ -114,7 +141,8 @@ export function SelectContent( props: { onExit: () => void } ) {
 					!! waitingForSelection &&
 					waitingForSelection === section.content
 				}
-				onWaitingForSelection={ ( isWaiting ) => {
+				onWaitingForSelection={ async ( isWaiting ) => {
+					await ContentBus.enableHighlighting();
 					setWaitingForSelection(
 						isWaiting ? section.content : false
 					);

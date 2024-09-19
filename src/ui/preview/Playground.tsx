@@ -5,14 +5,13 @@ import {
 	startPlaygroundWeb,
 	StepDefinition,
 } from '@wp-playground/client';
-import { ApiClient } from '@/api/ApiClient';
 
 const playgroundIframeId = 'playground';
 
 export function Playground( props: {
 	slug: string;
 	className?: string;
-	onReady: ( apiClient: ApiClient ) => void;
+	onReady: ( client: PlaygroundClient ) => void;
 } ) {
 	const { slug, className, onReady } = props;
 
@@ -27,16 +26,10 @@ export function Playground( props: {
 		}
 
 		initPlayground( iframe, slug )
-			.then( async ( playgroundClient: PlaygroundClient ) => {
-				const apiClient = new ApiClient(
-					playgroundClient,
-					await playgroundClient.absoluteUrl
-				);
-				console.log(
-					'Playground communication established!',
-					apiClient.siteUrl
-				);
-				onReady( apiClient );
+			.then( async ( client: PlaygroundClient ) => {
+				const url = await client.absoluteUrl;
+				console.log( 'Playground communication established', url );
+				onReady( client );
 			} )
 			.catch( ( error ) => {
 				throw error;
