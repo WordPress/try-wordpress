@@ -2,6 +2,10 @@
 
 namespace DotOrg\TryWordPress;
 
+use WP_REST_Request;
+use WP_REST_Response;
+use WP_Error;
+
 class Rest_API_Extender {
 	private array $custom_post_types;
 
@@ -32,16 +36,16 @@ class Rest_API_Extender {
 		}
 	}
 
-	public function promote_post( \WP_REST_Request $request ): \WP_Error|\WP_REST_Response {
+	public function promote_post( WP_REST_Request $request ): WP_Error|WP_REST_Response {
 		$post_id = $request['id'];
 		$post    = get_post( $post_id );
 
 		if ( ! $post ) {
-			return new \WP_Error( 'no_post', 'Invalid post ID', array( 'status' => 404 ) );
+			return new WP_Error( 'no_post', 'Invalid post ID', array( 'status' => 404 ) );
 		}
 
 		if ( $this->promote_liberated_post_types( $post ) ) {
-			return new \WP_REST_Response(
+			return new WP_REST_Response(
 				array(
 					'success' => true,
 					'message' => 'Post promoted successfully',
@@ -50,7 +54,7 @@ class Rest_API_Extender {
 				200
 			);
 		} else {
-			return new \WP_Error( 'error', 'Could not promote post', array( 'status' => 500 ) );
+			return new WP_Error( 'error', 'Could not promote post', array( 'status' => 500 ) );
 		}
 	}
 
