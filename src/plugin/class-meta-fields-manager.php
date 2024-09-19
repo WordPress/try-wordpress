@@ -1,5 +1,10 @@
 <?php
 
+namespace DotOrg\TryWordPress;
+
+use WP_REST_Request;
+use WP_REST_Response;
+
 class Meta_Fields_Manager {
 	private array $custom_post_types;
 	private array $post_meta_fields = array( 'guid', 'raw_title', 'raw_date', 'raw_content' );

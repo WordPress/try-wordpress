@@ -1,5 +1,11 @@
 <?php
 
+namespace DotOrg\TryWordPress;
+
+use WP_REST_Request;
+use WP_REST_Response;
+use WP_Error;
+
 class Rest_API_Extender {
 	private array $custom_post_types;
 
@@ -30,7 +36,7 @@ class Rest_API_Extender {
 		}
 	}
 
-	public function promote_post( $request ): WP_Error|WP_REST_Response {
+	public function promote_post( WP_REST_Request $request ): WP_Error|WP_REST_Response {
 		$post_id = $request['id'];
 		$post    = get_post( $post_id );
 

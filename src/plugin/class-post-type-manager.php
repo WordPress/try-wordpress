@@ -1,5 +1,9 @@
 <?php
 
+namespace DotOrg\TryWordPress;
+
+use ReflectionClass;
+
 class Post_Type_Manager {
 	const string POST_TYPE_POST       = 'liberated_post';
 	const string POST_TYPE_PAGE       = 'liberated_page';
