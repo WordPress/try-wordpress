@@ -27,11 +27,9 @@ export class ApiClient {
 
 	async updatePost(
 		id: number,
-		data: { title?: string; content?: string }
+		body: { content?: string }
 	): Promise< Post > {
-		return ( await this.post( `/liberated_posts/${ id }`, {
-			content: data.content,
-		} ) ) as Post;
+		return ( await this.post( `/liberated_posts/${ id }`, body ) ) as Post;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
