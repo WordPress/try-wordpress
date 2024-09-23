@@ -8,8 +8,8 @@ export interface CreatePostBody {
 }
 
 export interface UpdatePostBody {
-	title?: { clean: string; raw: string };
-	content?: { clean: string; raw: string };
+	title?: string;
+	content?: { cleanHtml: string; originalHtml: string };
 }
 
 export class ApiClient {
@@ -34,16 +34,25 @@ export class ApiClient {
 	}
 
 	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
-		return ( await this.post( `/liberated_posts/${ id }`, body ) ) as Post;
+		const actualBody: any = {};
+		if ( body.title ) {
+			actualBody.title = body.title;
+		}
+		if ( body.content ) {
+			actualBody.content = body.content.cleanHtml;
+			actualBody.meta = {
+				raw_content: body.content.originalHtml,
+			};
+		}
+		return ( await this.post(
+			`/liberated_posts/${ id }`,
+			actualBody
+		) ) as Post;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async getPostByGuid( guid: string ): Promise< Post | null > {
 		return null;
-	}
-
-	async getPosts(): Promise< Post[] > {
-		return ( await this.get( '/posts' ) ) as Post[];
 	}
 
 	private async get( route: string ): Promise< object > {

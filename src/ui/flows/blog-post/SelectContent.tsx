@@ -5,7 +5,6 @@ import { ContentBus } from '@/bus/ContentBus';
 import { cleanHtml } from '@/parser/cleanHtml';
 import { Post } from '@/api/Post';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { UpdatePostBody } from '@/api/ApiClient';
 
 enum section {
 	title = 1,
@@ -77,39 +76,26 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		setLastClickedElement( undefined );
 	}, [ waitingForSelection, lastClickedElement ] );
 
-	const saveField = async (
-		field: string,
-		clean?: string,
-		original?: string
-	) => {
-		if ( ! clean || ! original || ! apiClient ) {
-			return;
-		}
-		const body: UpdatePostBody = {};
-		if ( field === 'content' ) {
-			body.content = { clean, raw: original };
-		}
-		if ( field === 'title' ) {
-			body.title = { clean, raw: original };
-		}
-		apiClient.updatePost( post.id, body ).then( () => {
-			playgroundClient.goTo( post.link );
-		} );
-	};
-
 	// Save the post when selections happen.
 	useEffect(
-		() => void saveField( 'title', title?.cleanHtml, title?.originalHtml ),
+		() => {
+			if ( apiClient && title ) {
+				apiClient
+					.updatePost( post.id, { title: title.cleanHtml } )
+					.then( () => playgroundClient.goTo( post.link ) );
+			}
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ title ]
 	);
 	useEffect(
-		() =>
-			void saveField(
-				'content',
-				content?.cleanHtml,
-				content?.originalHtml
-			),
+		() => {
+			if ( apiClient && content ) {
+				apiClient
+					.updatePost( post.id, { content } )
+					.then( () => playgroundClient.goTo( post.link ) );
+			}
+		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ content ]
 	);
