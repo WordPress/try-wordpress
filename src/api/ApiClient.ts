@@ -27,7 +27,7 @@ export class ApiClient {
 
 	async updatePost(
 		id: number,
-		body: { content?: string }
+		body: { content?: { clean: string; raw: string } }
 	): Promise< Post > {
 		return ( await this.post( `/liberated_posts/${ id }`, body ) ) as Post;
 	}

@@ -76,13 +76,17 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		setLastClickedElement( undefined );
 	}, [ waitingForSelection, lastClickedElement ] );
 
-	const saveField = async ( field: string, value: any ) => {
-		if ( ! value || ! apiClient ) {
+	const saveField = async (
+		field: string,
+		clean?: string,
+		original?: string
+	) => {
+		if ( ! clean || ! original || ! apiClient ) {
 			return;
 		}
-		const body: { content?: string } = {};
+		const body: { content?: { clean: string; raw: string } } = {};
 		if ( field === 'content' ) {
-			body.content = value;
+			body.content = { clean, raw: original };
 		}
 		apiClient.updatePost( post.id, body ).then( () => {
 			playgroundClient.goTo( post.link );
@@ -91,7 +95,12 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 
 	// Save the post when selections happen.
 	useEffect(
-		() => void saveField( 'content', content?.cleanHtml ),
+		() =>
+			void saveField(
+				'content',
+				content?.cleanHtml,
+				content?.originalHtml
+			),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ content ]
 	);
