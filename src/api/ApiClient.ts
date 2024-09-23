@@ -56,8 +56,12 @@ export class ApiClient {
 		const response = await this.playgroundClient.request( {
 			url: `/index.php?rest_route=/wp/v2${ route }`,
 			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
 			body: JSON.stringify( body ),
 		} );
+
 		if ( response.httpStatusCode < 200 || response.httpStatusCode >= 300 ) {
 			console.error( response );
 			throw Error( response.json.message );
