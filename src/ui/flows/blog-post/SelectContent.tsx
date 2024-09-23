@@ -79,18 +79,20 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	// Save the post when selections happen.
 	useEffect(
 		() => {
-			if ( ! title ) {
+			if ( ! content ) {
 				return;
 			}
 			apiClient
 				?.updatePost( post.id, {
-					title: title.cleanHtml ?? post.title.raw ?? '',
+					content: content.cleanHtml ?? post.content.raw ?? '',
 				} )
-				.then( () => playgroundClient.goTo( post.link ) );
+				.then( () => {
+					playgroundClient.goTo( post.link );
+				} );
 		},
 		// The dependencies are correct, we only want to trigger it when the title changes.
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ title ]
+		[ content ]
 	);
 
 	const isValid = title && date && content;

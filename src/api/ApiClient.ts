@@ -25,9 +25,12 @@ export class ApiClient {
 		} ) ) as Post;
 	}
 
-	async updatePost( id: number, data: { title: string } ): Promise< Post > {
+	async updatePost(
+		id: number,
+		data: { title?: string; content?: string }
+	): Promise< Post > {
 		return ( await this.post( `/liberated_posts/${ id }`, {
-			title: data.title,
+			content: data.content,
 		} ) ) as Post;
 	}
 
