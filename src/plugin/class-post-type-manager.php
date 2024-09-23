@@ -24,7 +24,7 @@ class Post_Type_Manager {
 		add_action( 'init', array( $this, 'register_post_types' ) );
 	}
 
-	private function is_local_env(): bool {
+	private function should_show_ui(): bool {
 		return wp_get_environment_type() === 'local';
 	}
 
@@ -54,8 +54,8 @@ class Post_Type_Manager {
 			'exclude_from_search' => true,
 			'publicly_queryable'  => true,
 			'show_in_rest'        => true,
-			'show_ui'             => $this->is_local_env(),
-			'show_in_menu'        => $this->is_local_env(),
+			'show_ui'             => $this->should_show_ui(),
+			'show_in_menu'        => $this->should_show_ui(),
 			'supports'            => $this->custom_post_types_supports,
 		);
 
