@@ -76,21 +76,22 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		setLastClickedElement( undefined );
 	}, [ waitingForSelection, lastClickedElement ] );
 
+	const saveField = async ( field: string, value: any ) => {
+		if ( ! value || ! apiClient ) {
+			return;
+		}
+		const body: { content?: string } = {};
+		if ( field === 'content' ) {
+			body.content = value;
+		}
+		apiClient.updatePost( post.id, body ).then( () => {
+			playgroundClient.goTo( post.link );
+		} );
+	};
+
 	// Save the post when selections happen.
 	useEffect(
-		() => {
-			if ( ! content ) {
-				return;
-			}
-			apiClient
-				?.updatePost( post.id, {
-					content: content.cleanHtml ?? post.content.raw ?? '',
-				} )
-				.then( () => {
-					playgroundClient.goTo( post.link );
-				} );
-		},
-		// The dependencies are correct, we only want to trigger it when the title changes.
+		() => void saveField( 'content', content?.cleanHtml ),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ content ]
 	);
