@@ -84,9 +84,15 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		if ( ! clean || ! original || ! apiClient ) {
 			return;
 		}
-		const body: { content?: { clean: string; raw: string } } = {};
+		const body: {
+			title?: { clean: string; raw: string };
+			content?: { clean: string; raw: string };
+		} = {};
 		if ( field === 'content' ) {
 			body.content = { clean, raw: original };
+		}
+		if ( field === 'title' ) {
+			body.title = { clean, raw: original };
 		}
 		apiClient.updatePost( post.id, body ).then( () => {
 			playgroundClient.goTo( post.link );
@@ -94,6 +100,11 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	};
 
 	// Save the post when selections happen.
+	useEffect(
+		() => void saveField( 'title', title?.cleanHtml, title?.originalHtml ),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ title ]
+	);
 	useEffect(
 		() =>
 			void saveField(
