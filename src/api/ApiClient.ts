@@ -3,6 +3,15 @@
 import { PlaygroundClient } from '@wp-playground/client';
 import { Post } from '@/api/Post';
 
+export interface CreatePostBody {
+	guid: string;
+}
+
+export interface UpdatePostBody {
+	title?: { clean: string; raw: string };
+	content?: { clean: string; raw: string };
+}
+
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
@@ -16,19 +25,15 @@ export class ApiClient {
 		return this._siteUrl;
 	}
 
-	async createPost( data: { guid: string } ): Promise< Post > {
-		const { guid } = data;
+	async createPost( body: CreatePostBody ): Promise< Post > {
 		return ( await this.post( '/liberated_posts', {
 			meta: {
-				guid,
+				guid: body.guid,
 			},
 		} ) ) as Post;
 	}
 
-	async updatePost(
-		id: number,
-		body: { content?: { clean: string; raw: string } }
-	): Promise< Post > {
+	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
 		return ( await this.post( `/liberated_posts/${ id }`, body ) ) as Post;
 	}
 

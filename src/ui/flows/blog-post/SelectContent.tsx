@@ -5,6 +5,7 @@ import { ContentBus } from '@/bus/ContentBus';
 import { cleanHtml } from '@/parser/cleanHtml';
 import { Post } from '@/api/Post';
 import { useSessionContext } from '@/ui/session/SessionProvider';
+import { UpdatePostBody } from '@/api/ApiClient';
 
 enum section {
 	title = 1,
@@ -84,10 +85,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		if ( ! clean || ! original || ! apiClient ) {
 			return;
 		}
-		const body: {
-			title?: { clean: string; raw: string };
-			content?: { clean: string; raw: string };
-		} = {};
+		const body: UpdatePostBody = {};
 		if ( field === 'content' ) {
 			body.content = { clean, raw: original };
 		}
