@@ -2,37 +2,37 @@ import { pasteHandler, serialize } from '@wordpress/blocks';
 
 export interface PostDate {
 	original: string;
-	blocks: string;
+	parsed: string;
 }
 
 export interface PostTitle {
 	original: string;
-	blocks: string;
+	parsed: string;
 }
 
 export interface PostContent {
 	original: string;
-	blocks: string;
+	parsed: string;
 }
 
 export function parsePostDate( html: string ): PostDate {
 	return {
 		original: html,
-		blocks: serializeBlocks( html ),
+		parsed: serializeBlocks( html ),
 	};
 }
 
 export function parsePostTitle( html: string ): PostTitle {
 	return {
 		original: html,
-		blocks: serializeBlocks( html ),
+		parsed: serializeBlocks( html ),
 	};
 }
 
 export function parsePostContent( html: string ): PostContent {
 	return {
 		original: html,
-		blocks: serializeBlocks( html ),
+		parsed: serializeBlocks( html ),
 	};
 }
 

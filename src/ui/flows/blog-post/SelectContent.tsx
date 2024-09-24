@@ -107,8 +107,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			</button>
 			<Section
 				label="Title"
-				htmlOriginal={ title?.original }
-				htmlBlocks={ title?.blocks }
+				originalValue={ title?.original }
+				parsedValue={ title?.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -121,8 +121,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			/>
 			<Section
 				label="Date"
-				htmlOriginal={ date?.original }
-				htmlBlocks={ date?.blocks }
+				originalValue={ date?.original }
+				parsedValue={ date?.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -135,8 +135,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			/>
 			<Section
 				label="Content"
-				htmlOriginal={ content?.original }
-				htmlBlocks={ content?.blocks }
+				originalValue={ content?.original }
+				parsedValue={ content?.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -156,16 +156,16 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 function Section( props: {
 	label: string;
 	disabled: boolean;
-	htmlOriginal: string | undefined;
-	htmlBlocks: string | undefined;
+	originalValue: string | undefined;
+	parsedValue: string | undefined;
 	waitingForSelection: boolean;
 	onWaitingForSelection: ( isWaiting: boolean ) => void;
 } ) {
 	const {
 		label,
 		disabled,
-		htmlOriginal,
-		htmlBlocks,
+		originalValue,
+		parsedValue,
 		waitingForSelection,
 		onWaitingForSelection,
 	} = props;
@@ -201,9 +201,9 @@ function Section( props: {
 				) }
 			</div>
 			<div style={ { paddingTop: '1rem' } }>
-				{ htmlOriginal ?? 'Not found' }
+				{ originalValue ?? 'Not found' }
 			</div>
-			<div style={ { paddingTop: '1rem' } }>{ htmlBlocks }</div>
+			<div style={ { paddingTop: '1rem' } }>{ parsedValue }</div>
 		</div>
 	);
 }

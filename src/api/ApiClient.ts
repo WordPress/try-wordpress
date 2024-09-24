@@ -37,10 +37,10 @@ export class ApiClient {
 	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
 		const actualBody: any = {};
 		if ( body.title ) {
-			actualBody.title = body.title.blocks;
+			actualBody.title = body.title.parsed;
 		}
 		if ( body.content ) {
-			actualBody.content = body.content.blocks;
+			actualBody.content = body.content.parsed;
 			actualBody.meta = {
 				raw_content: body.content.original,
 			};
