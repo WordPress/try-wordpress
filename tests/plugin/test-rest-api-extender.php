@@ -1,13 +1,14 @@
 <?php
 
 use DotOrg\TryWordPress\Rest_API_Extender;
+use DotOrg\TryWordPress\Promoter;
 use PHPUnit\Framework\TestCase;
 
 class Rest_API_Extender_Test extends TestCase {
 	private Rest_API_Extender $rest_api_extender;
+	private Promoter $promoter;
 	private array $custom_post_types = array( 'lib_x', 'lib_y' );
 	private int $post_id_in_db;
-	private int $another_post_id_in_db;
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -40,7 +41,11 @@ class Rest_API_Extender_Test extends TestCase {
 			)
 		);
 
-		$this->rest_api_extender = new Rest_API_Extender( $this->custom_post_types );
+		$this->promoter          = $this->createMock( Promoter::class );
+		$this->rest_api_extender = new Rest_API_Extender(
+			$this->custom_post_types,
+			$this->promoter
+		);
 	}
 
 	protected function tearDown(): void {
@@ -61,29 +66,27 @@ class Rest_API_Extender_Test extends TestCase {
 	}
 
 	public function testPromotePost(): void {
-		$request = $this->createMock( \WP_REST_Request::class );
+		$request = $this->createMock( WP_REST_Request::class );
 		$request->method( 'offsetGet' )->with( 'id' )->willReturn( $this->post_id_in_db );
+
+		$this->promoter->expects( $this->once() )
+			->method( 'promote' )
+			->willReturn( true );
 
 		$result = $this->rest_api_extender->promote_post( $request );
 
-		$this->assertInstanceOf( \WP_REST_Response::class, $result );
+		$this->assertInstanceOf( WP_REST_Response::class, $result );
 		$this->assertEquals( 200, $result->get_status() );
-		$this->assertEquals( $this->post_id_in_db + 2, $result->get_data()['post_id'] );
-	}
 
-	public function testPromoteLiberatedPostTypes(): void {
-		$result = $this->rest_api_extender->promote_liberated_post_types( get_post( $this->post_id_in_db ) );
-
-		$promoted_post_id = get_post_meta( $this->post_id_in_db, '_liberated_post', true );
-
-		$this->assertEquals( $this->post_id_in_db + 2, $promoted_post_id );
-		$this->assertTrue( $result );
+		$data = $result->get_data();
+		$this->assertTrue( $data['success'] );
+		$this->assertArrayHasKey( 'post_id', $data );
 	}
 
 	public function testFilterPostsByGuid(): void {
-		$request1 = $this->createMock( \WP_REST_Request::class ); // query with known guid
-		$request2 = $this->createMock( \WP_REST_Request::class ); // query with unknown guid
-		$request3 = $this->createMock( \WP_REST_Request::class ); // query without guid
+		$request1 = $this->createMock( WP_REST_Request::class ); // query with known guid
+		$request2 = $this->createMock( WP_REST_Request::class ); // query with unknown guid
+		$request3 = $this->createMock( WP_REST_Request::class ); // query without guid
 
 		// Set up the mock to return specific values when methods are called
 		$request1->method( 'has_param' )

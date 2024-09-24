@@ -1,0 +1,63 @@
+<?php
+
+use DotOrg\TryWordPress\Promoter;
+use PHPUnit\Framework\TestCase;
+
+class Promoter_Test extends TestCase {
+	private Promoter $promoter;
+	private int $post_id_in_db;
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		// insert liberated_post post
+		$this->post_id_in_db = wp_insert_post(
+			array(
+				'post_author'           => 1,
+				'post_date'             => '2024-09-12 14:30:00',
+				'post_date_gmt'         => '2024-09-12 14:30:00',
+				'post_content'          => 'This is a new post',
+				'post_title'            => 'Test post',
+				'post_status'           => 'draft',
+				'post_content_filtered' => '<div><p>Content 1</p><p>Content 2</p></div>',
+				'guid'                  => 'https://example.com/x',
+				'post_type'             => 'liberated_post',
+			)
+		);
+
+		$this->promoter = new Promoter();
+	}
+
+	protected function tearDown(): void {
+		parent::tearDown();
+
+		$promoted_post_id = $this->promoter->get_promoted_post( $this->post_id_in_db );
+		wp_delete_post( $promoted_post_id, true );
+		wp_delete_post( $this->post_id_in_db, true );
+	}
+
+	public function testGetPostTypeForPromotedPost() {
+		$reflection = new ReflectionClass( $this->promoter );
+		$method     = $reflection->getMethod( 'get_post_type_for_promoted_post' );
+
+		$result = $method->invokeArgs( $this->promoter, array( 'liberated_x' ) );
+		$this->assertEquals( 'x', $result );
+		$result = $method->invokeArgs( $this->promoter, array( 'liberated_y' ) );
+		$this->assertEquals( 'y', $result );
+	}
+
+	public function testGetPromotedPost() {
+		add_post_meta( 99, '_promoted_post', 999 );
+
+		$this->assertEquals( 999, $this->promoter->get_promoted_post( 99 ) );
+	}
+
+	public function testPromote(): void {
+		$result = $this->promoter->promote( get_post( $this->post_id_in_db ) );
+
+		$promoted_post_id = absint( get_post_meta( $this->post_id_in_db, '_promoted_post', true ) );
+
+		$this->assertEquals( $this->post_id_in_db + 1, $promoted_post_id );
+		$this->assertTrue( $result );
+	}
+}
