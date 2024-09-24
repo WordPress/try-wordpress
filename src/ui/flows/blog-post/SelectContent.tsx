@@ -2,7 +2,14 @@ import { useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { cleanHtml } from '@/parser/cleanHtml';
+import {
+	parsePostContent,
+	parsePostDate,
+	parsePostTitle,
+	PostContent,
+	PostDate,
+	PostTitle,
+} from '@/parser/post';
 import { Post } from '@/api/Post';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
@@ -12,16 +19,11 @@ enum section {
 	content,
 }
 
-interface SectionContent {
-	originalHtml: string;
-	cleanHtml: string;
-}
-
 export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	const { post, onExit } = props;
-	const [ title, setTitle ] = useState< SectionContent >();
-	const [ content, setContent ] = useState< SectionContent >();
-	const [ date, setDate ] = useState< SectionContent >();
+	const [ date, setDate ] = useState< PostDate >();
+	const [ title, setTitle ] = useState< PostTitle >();
+	const [ content, setContent ] = useState< PostContent >();
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
@@ -50,26 +52,15 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			return;
 		}
 		const original = lastClickedElement;
-		const clean = cleanHtml( original );
-
 		switch ( waitingForSelection ) {
 			case section.title:
-				setTitle( {
-					originalHtml: original,
-					cleanHtml: clean,
-				} );
+				setTitle( parsePostTitle( original ) );
 				break;
 			case section.date:
-				setDate( {
-					originalHtml: original,
-					cleanHtml: clean,
-				} );
+				setDate( parsePostDate( original ) );
 				break;
 			case section.content:
-				setContent( {
-					originalHtml: original,
-					cleanHtml: clean,
-				} );
+				setContent( parsePostContent( original ) );
 				break;
 		}
 		setWaitingForSelection( false );
@@ -81,7 +72,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		() => {
 			if ( apiClient && title ) {
 				apiClient
-					.updatePost( post.id, { title: title.cleanHtml } )
+					.updatePost( post.id, { title } )
 					.then( () => playgroundClient.goTo( post.link ) );
 			}
 		},
@@ -98,6 +89,17 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ content ]
+	);
+	useEffect(
+		() => {
+			if ( apiClient && date ) {
+				apiClient
+					.updatePost( post.id, { date } )
+					.then( () => playgroundClient.goTo( post.link ) );
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ date ]
 	);
 
 	const isValid = title && date && content;
@@ -116,7 +118,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			</button>
 			<Section
 				label="Title"
-				content={ title }
+				originalValue={ title?.original }
+				parsedValue={ title?.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -129,7 +132,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			/>
 			<Section
 				label="Date"
-				content={ date }
+				originalValue={ date?.original }
+				parsedValue={ date?.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -142,7 +146,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			/>
 			<Section
 				label="Content"
-				content={ content }
+				originalValue={ content?.original }
+				parsedValue={ content?.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -161,15 +166,17 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 
 function Section( props: {
 	label: string;
-	content: SectionContent | undefined;
 	disabled: boolean;
+	originalValue: string | undefined;
+	parsedValue: string | undefined;
 	waitingForSelection: boolean;
 	onWaitingForSelection: ( isWaiting: boolean ) => void;
 } ) {
 	const {
 		label,
-		content,
 		disabled,
+		originalValue,
+		parsedValue,
 		waitingForSelection,
 		onWaitingForSelection,
 	} = props;
@@ -205,9 +212,9 @@ function Section( props: {
 				) }
 			</div>
 			<div style={ { paddingTop: '1rem' } }>
-				{ content?.originalHtml ?? 'Not found' }
+				{ originalValue ?? 'Not found' }
 			</div>
-			<div style={ { paddingTop: '1rem' } }>{ content?.cleanHtml }</div>
+			<div style={ { paddingTop: '1rem' } }>{ parsedValue }</div>
 		</div>
 	);
 }
