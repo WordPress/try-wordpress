@@ -49,9 +49,9 @@ class Meta_Fields_Manager_Test extends TestCase {
 		);
 	}
 
-	public function testMoveMeteFields() {
-		$prepared_post = new \stdClass();
-		$request       = $this->createMock( \WP_REST_Request::class );
+	public function testMoveMetaFields() {
+		$prepared_post = new stdClass();
+		$request       = $this->createMock( WP_REST_Request::class );
 
 		$initial_meta = array(
 			'guid'        => 'test-guid',
@@ -84,10 +84,10 @@ class Meta_Fields_Manager_Test extends TestCase {
 	}
 
 	public function testPrepareMetaFields() {
-		$request  = $this->createMock( \WP_REST_Request::class );
-		$response = $this->createMock( \WP_REST_Response::class );
+		$request  = $this->createMock( WP_REST_Request::class );
+		$response = $this->createMock( WP_REST_Response::class );
 
-		$post                        = new \stdClass();
+		$post                        = new stdClass();
 		$post->guid                  = 'test-guid';
 		$post->post_content_filtered = 'test-content';
 
