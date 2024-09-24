@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { cleanHtml } from '@/parser/cleanHtml';
+import { parsePostContent } from '@/parser/post';
 import { Post } from '@/api/Post';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
@@ -50,7 +50,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			return;
 		}
 		const original = lastClickedElement;
-		const clean = cleanHtml( original );
+		const clean = parsePostContent( original );
 
 		switch ( waitingForSelection ) {
 			case section.title:
