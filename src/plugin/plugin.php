@@ -14,6 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require 'class-post-type-manager.php';
 require 'class-post-type-ui.php';
+require 'class-promoter.php';
 require 'class-meta-fields-manager.php';
 require 'class-rest-api-extender.php';
 
@@ -23,5 +24,6 @@ require 'class-rest-api-extender.php';
 
 	new Post_Type_UI( $custom_post_types );
 	new Meta_Fields_Manager( $custom_post_types );
-	new Rest_API_Extender( $custom_post_types );
+
+	new Rest_API_Extender( $custom_post_types, new Promoter() );
 } )();
