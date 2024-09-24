@@ -2,13 +2,14 @@
 
 import { PlaygroundClient } from '@wp-playground/client';
 import { Post } from '@/api/Post';
-import { PostContent, PostTitle } from '@/parser/post';
+import { PostContent, PostDate, PostTitle } from '@/parser/post';
 
 export interface CreatePostBody {
 	guid: string;
 }
 
 export interface UpdatePostBody {
+	date?: PostDate;
 	title?: PostTitle;
 	content?: PostContent;
 }
@@ -36,6 +37,9 @@ export class ApiClient {
 
 	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
 		const actualBody: any = {};
+		if ( body.date ) {
+			actualBody.date = body.date.parsed;
+		}
 		if ( body.title ) {
 			actualBody.title = body.title.parsed;
 		}

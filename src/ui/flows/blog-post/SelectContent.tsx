@@ -90,6 +90,17 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ content ]
 	);
+	useEffect(
+		() => {
+			if ( apiClient && date ) {
+				apiClient
+					.updatePost( post.id, { date } )
+					.then( () => playgroundClient.goTo( post.link ) );
+			}
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[ date ]
+	);
 
 	const isValid = title && date && content;
 	return (
