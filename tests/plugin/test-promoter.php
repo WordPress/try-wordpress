@@ -50,6 +50,7 @@ class Promoter_Test extends TestCase {
 		add_post_meta( 99, '_promoted_post', 999 );
 
 		$this->assertEquals( 999, $this->promoter->get_promoted_post_id( 99 ) );
+		$this->assertEquals( null, $this->promoter->get_promoted_post_id( 88 ) );
 	}
 
 	public function testPromote(): void {
