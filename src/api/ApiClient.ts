@@ -2,6 +2,7 @@
 
 import { PlaygroundClient } from '@wp-playground/client';
 import { Post } from '@/api/Post';
+import { Settings } from '@/api/Settings';
 import { PostContent, PostDate, PostTitle } from '@/parser/post';
 
 export interface CreatePostBody {
@@ -58,6 +59,12 @@ export class ApiClient {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async getPostByGuid( guid: string ): Promise< Post | null > {
 		return null;
+	}
+
+	async updateSiteTitle( title: string ): Promise< Settings > {
+		return ( await this.post( `/settings`, {
+			title,
+		} ) ) as Settings;
 	}
 
 	private async get( route: string ): Promise< object > {
