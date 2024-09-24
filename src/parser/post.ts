@@ -17,9 +17,13 @@ export interface PostContent {
 }
 
 export function parsePostDate( html: string ): PostDate {
+	const container = document.createElement( 'div' );
+	container.innerHTML = html.trim();
+	const element = container.querySelector( 'time' );
+
 	return {
 		original: html,
-		parsed: serializeBlocks( html ),
+		parsed: element ? element.dateTime : '',
 	};
 }
 
