@@ -93,6 +93,14 @@ function App() {
 		playgroundClient,
 	};
 
+	// Debugging tools.
+	useEffect( () => {
+		if ( ! apiClient || !! ( window as any ).trywp ) {
+			return;
+		}
+		( window as any ).trywp = { apiClient, playgroundClient };
+	}, [ apiClient, playgroundClient ] );
+
 	const preview = ! session ? (
 		<PlaceholderPreview />
 	) : (
