@@ -1,4 +1,5 @@
 import { pasteHandler, serialize } from '@wordpress/blocks';
+import { findDeepestChild } from '@/parser/util';
 
 export interface PostDate {
 	original: string;
@@ -23,9 +24,10 @@ export function parsePostDate( html: string ): PostDate {
 }
 
 export function parsePostTitle( html: string ): PostTitle {
+	const deepestChild = findDeepestChild( html );
 	return {
 		original: html,
-		parsed: serializeBlocks( html ),
+		parsed: deepestChild?.innerHTML ?? '',
 	};
 }
 
