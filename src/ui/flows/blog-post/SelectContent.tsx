@@ -2,7 +2,14 @@ import { useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { parsePostContent, parsePostDate, parsePostTitle } from '@/parser/post';
+import {
+	parsePostContent,
+	parsePostDate,
+	parsePostTitle,
+	PostContent,
+	PostDate,
+	PostTitle,
+} from '@/parser/post';
 import { Post } from '@/api/Post';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
@@ -12,16 +19,11 @@ enum section {
 	content,
 }
 
-interface SectionContent {
-	originalHtml: string;
-	cleanHtml: string;
-}
-
 export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	const { post, onExit } = props;
-	const [ title, setTitle ] = useState< SectionContent >();
-	const [ content, setContent ] = useState< SectionContent >();
-	const [ date, setDate ] = useState< SectionContent >();
+	const [ date, setDate ] = useState< PostDate >();
+	const [ title, setTitle ] = useState< PostTitle >();
+	const [ content, setContent ] = useState< PostContent >();
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
@@ -52,25 +54,13 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		const original = lastClickedElement;
 		switch ( waitingForSelection ) {
 			case section.title:
-				const parsedTitle = parsePostTitle( original );
-				setTitle( {
-					originalHtml: parsedTitle.original,
-					cleanHtml: parsedTitle.blocks,
-				} );
+				setTitle( parsePostTitle( original ) );
 				break;
 			case section.date:
-				const parsedDate = parsePostDate( original );
-				setDate( {
-					originalHtml: parsedDate.original,
-					cleanHtml: parsedDate.blocks,
-				} );
+				setDate( parsePostDate( original ) );
 				break;
 			case section.content:
-				const parsedContent = parsePostContent( original );
-				setContent( {
-					originalHtml: parsedContent.original,
-					cleanHtml: parsedContent.blocks,
-				} );
+				setContent( parsePostContent( original ) );
 				break;
 		}
 		setWaitingForSelection( false );
@@ -82,7 +72,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		() => {
 			if ( apiClient && title ) {
 				apiClient
-					.updatePost( post.id, { title: title.cleanHtml } )
+					.updatePost( post.id, { title } )
 					.then( () => playgroundClient.goTo( post.link ) );
 			}
 		},
@@ -117,7 +107,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			</button>
 			<Section
 				label="Title"
-				content={ title }
+				htmlOriginal={ title?.original }
+				htmlBlocks={ title?.blocks }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -130,7 +121,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			/>
 			<Section
 				label="Date"
-				content={ date }
+				htmlOriginal={ date?.original }
+				htmlBlocks={ date?.blocks }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -143,7 +135,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			/>
 			<Section
 				label="Content"
-				content={ content }
+				htmlOriginal={ content?.original }
+				htmlBlocks={ content?.blocks }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -162,15 +155,17 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 
 function Section( props: {
 	label: string;
-	content: SectionContent | undefined;
 	disabled: boolean;
+	htmlOriginal: string | undefined;
+	htmlBlocks: string | undefined;
 	waitingForSelection: boolean;
 	onWaitingForSelection: ( isWaiting: boolean ) => void;
 } ) {
 	const {
 		label,
-		content,
 		disabled,
+		htmlOriginal,
+		htmlBlocks,
 		waitingForSelection,
 		onWaitingForSelection,
 	} = props;
@@ -206,9 +201,9 @@ function Section( props: {
 				) }
 			</div>
 			<div style={ { paddingTop: '1rem' } }>
-				{ content?.originalHtml ?? 'Not found' }
+				{ htmlOriginal ?? 'Not found' }
 			</div>
-			<div style={ { paddingTop: '1rem' } }>{ content?.cleanHtml }</div>
+			<div style={ { paddingTop: '1rem' } }>{ htmlBlocks }</div>
 		</div>
 	);
 }
