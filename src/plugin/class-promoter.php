@@ -13,7 +13,7 @@ class Promoter {
 		return str_replace( 'liberated_', '', $post_type );
 	}
 
-	public function get_promoted_post( $liberated_post_id ): int {
+	public function get_promoted_post_id( $liberated_post_id ): int {
 		return absint( get_post_meta( $liberated_post_id, $this->meta_key_for_promoted_post, true ) );
 	}
 

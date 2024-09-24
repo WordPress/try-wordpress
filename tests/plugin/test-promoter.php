@@ -31,7 +31,7 @@ class Promoter_Test extends TestCase {
 	protected function tearDown(): void {
 		parent::tearDown();
 
-		$promoted_post_id = $this->promoter->get_promoted_post( $this->post_id_in_db );
+		$promoted_post_id = $this->promoter->get_promoted_post_id( $this->post_id_in_db );
 		wp_delete_post( $promoted_post_id, true );
 		wp_delete_post( $this->post_id_in_db, true );
 	}
@@ -49,7 +49,7 @@ class Promoter_Test extends TestCase {
 	public function testGetPromotedPost() {
 		add_post_meta( 99, '_promoted_post', 999 );
 
-		$this->assertEquals( 999, $this->promoter->get_promoted_post( 99 ) );
+		$this->assertEquals( 999, $this->promoter->get_promoted_post_id( 99 ) );
 	}
 
 	public function testPromote(): void {

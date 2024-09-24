@@ -99,7 +99,7 @@ class Post_Type_UI {
 							global $post;
 
 							$post_id          = $post->ID;
-							$promoted_post_id = $this->promoter->get_promoted_post( $post_id );
+							$promoted_post_id = $this->promoter->get_promoted_post_id( $post_id );
 
 							if ( $promoted_post_id ) {
 								echo '<pre>PostID: ' . esc_html( $promoted_post_id ) . '</pre>';

@@ -62,7 +62,7 @@ class Rest_API_Extender {
 				array(
 					'success' => true,
 					'message' => 'Post promoted successfully',
-					'post_id' => $this->promoter->get_promoted_post( $post_id ),
+					'post_id' => $this->promoter->get_promoted_post_id( $post_id ),
 				),
 				200
 			);
