@@ -76,13 +76,15 @@ class Rest_API_Extender {
 			return $args;
 		}
 
+		$guid = urldecode( $request->get_param( 'guid' ) );
+
 		global $wpdb;
 		// @phpcs:ignore WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.DirectQuery
 		$post_id = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT ID FROM {$wpdb->posts} WHERE post_type = %s AND guid = %s AND post_status IN ('draft', 'publish') LIMIT 1",
 				$post_type,
-				$request->get_param( 'guid' )
+				$guid
 			)
 		);
 
