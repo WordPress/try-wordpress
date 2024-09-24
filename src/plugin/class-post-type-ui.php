@@ -4,9 +4,11 @@ namespace DotOrg\TryWordPress;
 
 class Post_Type_UI {
 	private array $post_types;
+	private Promoter $promoter;
 
-	public function __construct( $post_types ) {
+	public function __construct( $post_types, Promoter $promoter ) {
 		$this->post_types = $post_types;
+		$this->promoter   = $promoter;
 
 		// Strip editor to be barebones.
 		add_filter(
@@ -24,7 +26,7 @@ class Post_Type_UI {
 			2
 		);
 
-		// Disable "Add media" button.
+		// CPT screen-specific filters
 		add_action(
 			'admin_head',
 			function () {
@@ -89,6 +91,34 @@ class Post_Type_UI {
 					// remove_meta_box( 'commentstatusdiv', $post_type, 'normal' );
 					// remove_meta_box( 'commentsdiv', $post_type, 'normal' );
 					// remove_meta_box( 'trackbacksdiv', $post_type, 'normal' );
+
+					add_meta_box(
+						'promotedpost',
+						'Promoted To',
+						function () {
+							global $post;
+
+							$post_id          = $post->ID;
+							$promoted_post_id = $this->promoter->get_promoted_post_id( $post_id );
+
+							if ( $promoted_post_id ) {
+								echo '<pre>PostID: ' . esc_html( $promoted_post_id ) . '</pre>';
+								$preview_link = get_permalink( $promoted_post_id );
+								$edit_link    = get_edit_post_link( $promoted_post_id );
+								?>
+								<p>
+									<a href="<?php echo esc_url( $preview_link ); ?>" target="_blank">Preview Post</a> |
+									<a href="<?php echo esc_url( $edit_link ); ?>">Edit Post</a>
+								</p>
+								<?php
+							} else {
+								echo "<p>This post hasn't been promoted yet.</p>";
+							}
+						},
+						$post_type,
+						'side',
+						'default'
+					);
 				}
 			},
 			999
