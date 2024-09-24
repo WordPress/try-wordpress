@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { parsePostContent } from '@/parser/post';
+import { parsePostContent, parsePostDate, parsePostTitle } from '@/parser/post';
 import { Post } from '@/api/Post';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
@@ -50,25 +50,26 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			return;
 		}
 		const original = lastClickedElement;
-		const clean = parsePostContent( original );
-
 		switch ( waitingForSelection ) {
 			case section.title:
+				const parsedTitle = parsePostTitle( original );
 				setTitle( {
-					originalHtml: original,
-					cleanHtml: clean,
+					originalHtml: parsedTitle.original,
+					cleanHtml: parsedTitle.blocks,
 				} );
 				break;
 			case section.date:
+				const parsedDate = parsePostDate( original );
 				setDate( {
-					originalHtml: original,
-					cleanHtml: clean,
+					originalHtml: parsedDate.original,
+					cleanHtml: parsedDate.blocks,
 				} );
 				break;
 			case section.content:
+				const parsedContent = parsePostContent( original );
 				setContent( {
-					originalHtml: original,
-					cleanHtml: clean,
+					originalHtml: parsedContent.original,
+					cleanHtml: parsedContent.blocks,
 				} );
 				break;
 		}
