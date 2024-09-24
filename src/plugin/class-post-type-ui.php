@@ -4,9 +4,11 @@ namespace DotOrg\TryWordPress;
 
 class Post_Type_UI {
 	private array $post_types;
+	private Promoter $promoter;
 
-	public function __construct( $post_types ) {
+	public function __construct( $post_types, Promoter $promoter ) {
 		$this->post_types = $post_types;
+		$this->promoter   = $promoter;
 
 		// Strip editor to be barebones.
 		add_filter(
@@ -97,7 +99,7 @@ class Post_Type_UI {
 							global $post;
 
 							$post_id          = $post->ID;
-							$promoted_post_id = get_post_meta( $post_id, '_promoted_post', true );
+							$promoted_post_id = $this->promoter->get_promoted_post( $post_id );
 
 							if ( $promoted_post_id ) {
 								echo '<pre>PostID: ' . esc_html( $promoted_post_id ) . '</pre>';
