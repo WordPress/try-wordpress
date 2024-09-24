@@ -8,7 +8,6 @@ import {
 	Route,
 	RouterProvider,
 	useLocation,
-	useNavigate,
 	useRouteLoaderData,
 } from 'react-router-dom';
 import { StrictMode, useEffect, useState } from 'react';
@@ -22,6 +21,7 @@ import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 import { ApiClient } from '@/api/ApiClient';
 import { BlogPostFlow } from '@/ui/flows/blog-post/BlogPostFlow';
 import { PlaygroundClient } from '@wp-playground/client';
+import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
 
 export const Screens = {
 	home: () => '/start/home',
@@ -119,27 +119,13 @@ function App() {
 	return (
 		<SessionProvider value={ sectionContext }>
 			<div className="app">
-				<Navbar className={ 'app-nav' } />
+				<Breadcrumbs className="breadcrumbs" />
 				<div className="app-main">
 					<Outlet />
 				</div>
 			</div>
 			<div className="preview">{ preview }</div>
 		</SessionProvider>
-	);
-}
-
-function Navbar( props: { className: string } ) {
-	const { className } = props;
-	const navigate = useNavigate();
-	return (
-		<nav className={ className }>
-			<ul>
-				<button onClick={ () => navigate( Screens.home() ) }>
-					Home
-				</button>
-			</ul>
-		</nav>
 	);
 }
 

@@ -30,13 +30,13 @@ ol {
 	border-right: 1px solid #000;
 }
 
-/* App Navbar */
-.app-nav {
+/* Breadcrumbs */
+.breadcrumbs {
 	height: 40px;
 	border-bottom: 1px solid #000;
 }
 
-.app-nav ul {
+.breadcrumbs ul {
 	padding: 5px;
 }
 
