@@ -60,9 +60,14 @@ export class PostsApi {
 		return makePostFromApiResponse( response );
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async getByGuid( guid: string ): Promise< Post | null > {
-		return null;
+		const posts = ( await this.client.get( `/liberated_posts`, {
+			status: 'draft',
+			guid,
+		} ) ) as ApiPost[];
+		return posts.length === 0
+			? null
+			: makePostFromApiResponse( posts[ 0 ] );
 	}
 }
 

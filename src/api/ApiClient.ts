@@ -35,9 +35,17 @@ export class ApiClient {
 		return this._users;
 	}
 
-	async get( route: string ): Promise< object > {
+	async get(
+		route: string,
+		params?: Record< string, string >
+	): Promise< object > {
+		let url = `/index.php?rest_route=/wp/v2${ route }`;
+		for ( const name in params ) {
+			const encoded = encodeURIComponent( params[ name ] );
+			url += `&${ name }=${ encoded }`;
+		}
 		const response = await this.playgroundClient.request( {
-			url: `/index.php?rest_route=/wp/v2${ route }`,
+			url,
 			method: 'GET',
 		} );
 		if ( response.httpStatusCode !== 200 ) {
