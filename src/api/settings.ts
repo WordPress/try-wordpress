@@ -1,24 +1,34 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_Settings } from 'wp-types';
 import { SiteSettings } from '@/model/SiteSettings';
+import { ApiClient } from '@/api/ApiClient';
 export interface ApiSettings extends WP_REST_API_Settings {}
 /* eslint-enable camelcase */
 
-export interface UpdateSettingsBody {
+interface UpdateBody {
 	title?: string;
 }
 
-export function apiResponseToSiteSettings(
-	response: ApiSettings
-): SiteSettings {
+export class SettingsApi {
+	// eslint-disable-next-line no-useless-constructor
+	constructor( private readonly client: ApiClient ) {}
+
+	async update( body: UpdateBody ): Promise< SiteSettings > {
+		const response = ( await this.client.post(
+			`/settings`,
+			siteSettingsUpdateToApiRequestBody( body )
+		) ) as ApiSettings;
+		return apiResponseToSiteSettings( response );
+	}
+}
+
+function apiResponseToSiteSettings( response: ApiSettings ): SiteSettings {
 	return {
 		title: response.title,
 	};
 }
 
-export function siteSettingsUpdateToApiRequestBody(
-	body: UpdateSettingsBody
-): object {
+function siteSettingsUpdateToApiRequestBody( body: UpdateBody ): object {
 	const actualBody: any = {};
 	if ( body.title ) {
 		actualBody.title = body.title;

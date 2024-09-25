@@ -1,14 +1,8 @@
 /* eslint-disable react/no-is-mounted */
 import { PlaygroundClient } from '@wp-playground/client';
 import { User } from '@/api/User';
-import {
-	apiResponseToSiteSettings,
-	ApiSettings,
-	siteSettingsUpdateToApiRequestBody,
-	UpdateSettingsBody,
-} from '@/api/settings';
 import { PostsApi } from '@/api/post';
-import { SiteSettings } from '@/model/SiteSettings';
+import { SettingsApi } from '@/api/settings';
 
 export interface CreateUserBody {
 	username: string;
@@ -23,11 +17,13 @@ export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
 	private readonly _posts: PostsApi;
+	private readonly _settings: SettingsApi;
 
 	constructor( playgroundClient: PlaygroundClient, siteUrl: string ) {
 		this.playgroundClient = playgroundClient;
 		this._siteUrl = siteUrl;
 		this._posts = new PostsApi( this );
+		this._settings = new SettingsApi( this );
 	}
 
 	get siteUrl(): string {
@@ -38,14 +34,8 @@ export class ApiClient {
 		return this._posts;
 	}
 
-	async updateSiteSettings(
-		body: UpdateSettingsBody
-	): Promise< SiteSettings > {
-		const response = ( await this.post(
-			`/settings`,
-			siteSettingsUpdateToApiRequestBody( body )
-		) ) as ApiSettings;
-		return apiResponseToSiteSettings( response );
+	get settings(): SettingsApi {
+		return this._settings;
 	}
 
 	async createUser( body: CreateUserBody ): Promise< User > {
