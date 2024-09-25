@@ -5,16 +5,18 @@ export interface ApiPost extends WP_REST_API_Post {}
 
 import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
 
-interface PostMeta {
+export interface CreatePostBody {
 	guid: string;
-	raw_title: string;
-	raw_date: string;
-	raw_content: string;
+}
+
+export interface UpdatePostBody {
+	date?: PostDate;
+	title?: PostTitle;
+	content?: PostContent;
 }
 
 export function apiResponseToPost( response: ApiPost ): Post {
 	const meta = response.meta as unknown as PostMeta;
-
 	const date = new PostDate( response.date_gmt, meta.raw_date );
 	const title = new PostTitle( response.title.raw ?? '', meta.raw_title );
 	const content = new PostContent(
@@ -30,4 +32,11 @@ export function apiResponseToPost( response: ApiPost ): Post {
 		content,
 		title,
 	};
+}
+
+interface PostMeta {
+	guid: string;
+	raw_title: string;
+	raw_date: string;
+	raw_content: string;
 }

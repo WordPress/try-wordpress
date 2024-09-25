@@ -2,12 +2,13 @@
 import { PlaygroundClient } from '@wp-playground/client';
 import { ApiSettings } from '@/api/ApiSettings';
 import { User } from '@/api/User';
-import { ApiPost, apiResponseToPost } from '@/api/post';
-import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
-
-export interface CreatePostBody {
-	guid: string;
-}
+import {
+	ApiPost,
+	apiResponseToPost,
+	CreatePostBody,
+	UpdatePostBody,
+} from '@/api/post';
+import { Post } from '@/model/Post';
 
 export interface CreateUserBody {
 	username: string;
@@ -16,12 +17,6 @@ export interface CreateUserBody {
 	role?: string; // default roles: administrator, editor, author, subscriber (default)
 	firstname?: string;
 	lastname?: string;
-}
-
-export interface UpdatePostBody {
-	date?: PostDate;
-	title?: PostTitle;
-	content?: PostContent;
 }
 
 export class ApiClient {
