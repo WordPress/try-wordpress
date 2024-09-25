@@ -1,29 +1,22 @@
 /* eslint-disable react/no-is-mounted */
 import { PlaygroundClient } from '@wp-playground/client';
-import { User } from '@/api/User';
 import { PostsApi } from '@/api/Posts';
 import { SettingsApi } from '@/api/Settings';
-
-export interface CreateUserBody {
-	username: string;
-	email: string;
-	password: string;
-	role?: string; // default roles: administrator, editor, author, subscriber (default)
-	firstname?: string;
-	lastname?: string;
-}
+import { UsersApi } from '@/api/Users';
 
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
 	private readonly _posts: PostsApi;
 	private readonly _settings: SettingsApi;
+	private readonly _users: UsersApi;
 
 	constructor( playgroundClient: PlaygroundClient, siteUrl: string ) {
 		this.playgroundClient = playgroundClient;
 		this._siteUrl = siteUrl;
 		this._posts = new PostsApi( this );
 		this._settings = new SettingsApi( this );
+		this._users = new UsersApi( this );
 	}
 
 	get siteUrl(): string {
@@ -38,22 +31,8 @@ export class ApiClient {
 		return this._settings;
 	}
 
-	async createUser( body: CreateUserBody ): Promise< User > {
-		const actualBody: any = {
-			username: body.username,
-			email: body.email,
-			password: body.password,
-		};
-		if ( body.role ) {
-			actualBody.roles = [ body.role ];
-		}
-		if ( body.firstname ) {
-			actualBody.first_name = body.firstname;
-		}
-		if ( body.lastname ) {
-			actualBody.last_name = body.lastname;
-		}
-		return ( await this.post( `/users`, actualBody ) ) as User;
+	get users(): UsersApi {
+		return this._users;
 	}
 
 	async get( route: string ): Promise< object > {
