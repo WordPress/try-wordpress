@@ -3,10 +3,20 @@
 import { PlaygroundClient } from '@wp-playground/client';
 import { Post } from '@/api/Post';
 import { Settings } from '@/api/Settings';
+import { User } from '@/api/User';
 import { PostContent, PostDate, PostTitle } from '@/parser/post';
 
 export interface CreatePostBody {
 	guid: string;
+}
+
+export interface CreateUserBody {
+	username: string;
+	email: string;
+	password: string;
+	role?: string; // default roles: administrator, editor, author, subscriber (default)
+	firstname?: string;
+	lastname?: string;
 }
 
 export interface UpdatePostBody {
@@ -65,6 +75,24 @@ export class ApiClient {
 		return ( await this.post( `/settings`, {
 			title,
 		} ) ) as Settings;
+	}
+
+	async createUser( body: CreateUserBody ): Promise< User > {
+		const actualBody: any = {
+			username: body.username,
+			email: body.email,
+			password: body.password,
+		};
+		if ( body.role ) {
+			actualBody.roles = [ body.role ];
+		}
+		if ( body.firstname ) {
+			actualBody.first_name = body.firstname;
+		}
+		if ( body.lastname ) {
+			actualBody.last_name = body.lastname;
+		}
+		return ( await this.post( `/users`, actualBody ) ) as User;
 	}
 
 	private async get( route: string ): Promise< object > {
