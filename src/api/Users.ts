@@ -4,6 +4,7 @@ interface ApiUser extends WP_REST_API_User {}
 /* eslint-enable camelcase */
 
 import { ApiClient } from '@/api/ApiClient';
+import { User } from '@/model/User';
 
 interface CreateBody {
 	username: string;
@@ -18,7 +19,7 @@ export class UsersApi {
 	// eslint-disable-next-line no-useless-constructor
 	constructor( private readonly client: ApiClient ) {}
 
-	async create( body: CreateBody ): Promise< ApiUser > {
+	async create( body: CreateBody ): Promise< User > {
 		const actualBody: any = {
 			username: body.username,
 			email: body.email,
@@ -33,6 +34,20 @@ export class UsersApi {
 		if ( body.lastName ) {
 			actualBody.last_name = body.lastName;
 		}
-		return ( await this.client.post( `/users`, actualBody ) ) as ApiUser;
+		const response = ( await this.client.post(
+			`/users`,
+			actualBody
+		) ) as ApiUser;
+		return makeUserFromApiResponse( response );
 	}
+}
+
+function makeUserFromApiResponse( response: ApiUser ): User {
+	return {
+		username: response.username ?? '',
+		email: response.email ?? '',
+		role: response.roles ? response.roles[ 0 ] : '',
+		firstName: response.first_name ?? '',
+		lastName: response.last_name ?? '',
+	};
 }
