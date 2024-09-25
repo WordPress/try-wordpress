@@ -25,9 +25,9 @@ export function BlogPostFlow() {
 			return;
 		}
 		const getOrCreatePost = async (): Promise< Post > => {
-			let p = await apiClient.getPostByGuid( sourcePostUrl );
+			let p = await apiClient.posts.getByGuid( sourcePostUrl );
 			if ( ! p ) {
-				p = await apiClient.createPost( { guid: sourcePostUrl } );
+				p = await apiClient.posts.create( { guid: sourcePostUrl } );
 			}
 			return p;
 		};

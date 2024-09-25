@@ -7,14 +7,7 @@ import {
 	siteSettingsUpdateToApiRequestBody,
 	UpdateSettingsBody,
 } from '@/api/settings';
-import {
-	ApiPost,
-	apiResponseToPost,
-	CreatePostBody,
-	postUpdateToApiRequestBody,
-	UpdatePostBody,
-} from '@/api/post';
-import { Post } from '@/model/Post';
+import { PostsApi } from '@/api/post';
 import { SiteSettings } from '@/model/SiteSettings';
 
 export interface CreateUserBody {
@@ -29,36 +22,20 @@ export interface CreateUserBody {
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
+	private readonly _posts: PostsApi;
 
 	constructor( playgroundClient: PlaygroundClient, siteUrl: string ) {
 		this.playgroundClient = playgroundClient;
 		this._siteUrl = siteUrl;
+		this._posts = new PostsApi( this );
 	}
 
 	get siteUrl(): string {
 		return this._siteUrl;
 	}
 
-	async createPost( body: CreatePostBody ): Promise< Post > {
-		const response = ( await this.post( '/liberated_posts', {
-			meta: {
-				guid: body.guid,
-			},
-		} ) ) as ApiPost;
-		return apiResponseToPost( response );
-	}
-
-	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
-		const response = ( await this.post(
-			`/liberated_posts/${ id }`,
-			postUpdateToApiRequestBody( body )
-		) ) as ApiPost;
-		return apiResponseToPost( response );
-	}
-
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async getPostByGuid( guid: string ): Promise< Post | null > {
-		return null;
+	get posts(): PostsApi {
+		return this._posts;
 	}
 
 	async updateSiteSettings(
@@ -89,7 +66,7 @@ export class ApiClient {
 		return ( await this.post( `/users`, actualBody ) ) as User;
 	}
 
-	private async get( route: string ): Promise< object > {
+	async get( route: string ): Promise< object > {
 		const response = await this.playgroundClient.request( {
 			url: `/index.php?rest_route=/wp/v2${ route }`,
 			method: 'GET',
@@ -101,7 +78,7 @@ export class ApiClient {
 		return response.json;
 	}
 
-	private async post( route: string, body: object ): Promise< object > {
+	async post( route: string, body: object ): Promise< object > {
 		const response = await this.playgroundClient.request( {
 			url: `/index.php?rest_route=/wp/v2${ route }`,
 			method: 'POST',

@@ -64,8 +64,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	useEffect(
 		() => {
 			if ( apiClient && title ) {
-				apiClient
-					.updatePost( post.id, { title } )
+				apiClient.posts
+					.update( post.id, { title } )
 					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},
@@ -75,8 +75,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	useEffect(
 		() => {
 			if ( apiClient && content ) {
-				apiClient
-					.updatePost( post.id, { content } )
+				apiClient.posts
+					.update( post.id, { content } )
 					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},
@@ -86,8 +86,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	useEffect(
 		() => {
 			if ( apiClient && date ) {
-				apiClient
-					.updatePost( post.id, { date } )
+				apiClient.posts
+					.update( post.id, { date } )
 					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},

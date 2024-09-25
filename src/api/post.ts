@@ -4,18 +4,53 @@ export interface ApiPost extends WP_REST_API_Post {}
 /* eslint-enable camelcase */
 
 import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
+import { ApiClient } from '@/api/ApiClient';
 
-export interface CreatePostBody {
+interface CreateBody {
 	guid: string;
 }
 
-export interface UpdatePostBody {
+interface UpdateBody {
 	date?: PostDate;
 	title?: PostTitle;
 	content?: PostContent;
 }
 
-export function apiResponseToPost( response: ApiPost ): Post {
+interface PostMeta {
+	guid: string;
+	raw_title: string;
+	raw_date: string;
+	raw_content: string;
+}
+
+export class PostsApi {
+	// eslint-disable-next-line no-useless-constructor
+	constructor( private readonly client: ApiClient ) {}
+
+	async create( body: CreateBody ): Promise< Post > {
+		const response = ( await this.client.post( '/liberated_posts', {
+			meta: {
+				guid: body.guid,
+			},
+		} ) ) as ApiPost;
+		return apiResponseToPost( response );
+	}
+
+	async update( id: number, body: UpdateBody ): Promise< Post > {
+		const response = ( await this.client.post(
+			`/liberated_posts/${ id }`,
+			postUpdateToApiRequestBody( body )
+		) ) as ApiPost;
+		return apiResponseToPost( response );
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	async getByGuid( guid: string ): Promise< Post | null > {
+		return null;
+	}
+}
+
+function apiResponseToPost( response: ApiPost ): Post {
 	const meta = response.meta as unknown as PostMeta;
 	const date = new PostDate( response.date_gmt, meta.raw_date );
 	const title = new PostTitle( response.title.raw ?? '', meta.raw_title );
@@ -34,7 +69,7 @@ export function apiResponseToPost( response: ApiPost ): Post {
 	};
 }
 
-export function postUpdateToApiRequestBody( body: UpdatePostBody ): object {
+function postUpdateToApiRequestBody( body: UpdateBody ): object {
 	const actualBody: any = {};
 	if ( body.date ) {
 		actualBody.date = body.date.parsed;
@@ -49,11 +84,4 @@ export function postUpdateToApiRequestBody( body: UpdatePostBody ): object {
 		};
 	}
 	return actualBody;
-}
-
-interface PostMeta {
-	guid: string;
-	raw_title: string;
-	raw_date: string;
-	raw_content: string;
 }
