@@ -14,9 +14,16 @@ export class SettingsApi {
 	constructor( private readonly client: ApiClient ) {}
 
 	async update( body: UpdateBody ): Promise< SiteSettings > {
+		const actualBody: any = {};
+		if ( body.title ) {
+			actualBody.title = body.title;
+		}
+		if ( Object.keys( actualBody ).length === 0 ) {
+			throw Error( 'attempting to update zero fields' );
+		}
 		const response = ( await this.client.post(
 			`/settings`,
-			makeUpdateRequestBody( body )
+			actualBody
 		) ) as ApiSettings;
 		return makeSiteSettingsFromApiResponse( response );
 	}
@@ -27,18 +34,5 @@ function makeSiteSettingsFromApiResponse(
 ): SiteSettings {
 	return {
 		title: response.title,
-	};
-}
-
-function makeUpdateRequestBody( body: UpdateBody ): object {
-	const actualBody: any = {};
-	if ( body.title ) {
-		actualBody.title = body.title;
-	}
-	if ( Object.keys( actualBody ).length === 0 ) {
-		throw Error( 'attempting to update zero fields' );
-	}
-	return {
-		title: body.title,
 	};
 }

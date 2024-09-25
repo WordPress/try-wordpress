@@ -37,9 +37,22 @@ export class PostsApi {
 	}
 
 	async update( id: number, body: UpdateBody ): Promise< Post > {
+		const actualBody: any = {};
+		if ( body.date ) {
+			actualBody.date = body.date.parsed;
+		}
+		if ( body.title ) {
+			actualBody.title = body.title.parsed;
+		}
+		if ( body.content ) {
+			actualBody.content = body.content.parsed;
+			actualBody.meta = {
+				raw_content: body.content.original,
+			};
+		}
 		const response = ( await this.client.post(
 			`/liberated_posts/${ id }`,
-			makeUpdateRequestBody( body )
+			actualBody
 		) ) as ApiPost;
 		return makePostFromApiResponse( response );
 	}
@@ -67,21 +80,4 @@ function makePostFromApiResponse( response: ApiPost ): Post {
 		content,
 		title,
 	};
-}
-
-function makeUpdateRequestBody( body: UpdateBody ): object {
-	const actualBody: any = {};
-	if ( body.date ) {
-		actualBody.date = body.date.parsed;
-	}
-	if ( body.title ) {
-		actualBody.title = body.title.parsed;
-	}
-	if ( body.content ) {
-		actualBody.content = body.content.parsed;
-		actualBody.meta = {
-			raw_content: body.content.original,
-		};
-	}
-	return actualBody;
 }
