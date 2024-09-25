@@ -1,8 +1,8 @@
 /* eslint-disable react/no-is-mounted */
 import { PlaygroundClient } from '@wp-playground/client';
 import { User } from '@/api/User';
-import { PostsApi } from '@/api/post';
-import { SettingsApi } from '@/api/settings';
+import { PostsApi } from '@/api/Posts';
+import { SettingsApi } from '@/api/Settings';
 
 export interface CreateUserBody {
 	username: string;
