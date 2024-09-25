@@ -3,7 +3,7 @@ import { Start } from '@/ui/flows/blog-post/Start';
 import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Finish } from '@/ui/flows/blog-post/Finish';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { Post } from '@/api/Post';
+import { ApiPost } from '@/api/ApiPost';
 
 enum Steps {
 	start = 1,
@@ -15,7 +15,7 @@ enum Steps {
 export function BlogPostFlow() {
 	const [ currentStep, setCurrentStep ] = useState( Steps.start );
 	const [ sourcePostUrl, setSourcePostUrl ] = useState< string >();
-	const [ post, setPost ] = useState< Post >();
+	const [ post, setPost ] = useState< ApiPost >();
 	const { apiClient, playgroundClient } = useSessionContext();
 
 	// Get existing post from the API, or create a new one.
@@ -24,7 +24,7 @@ export function BlogPostFlow() {
 		if ( ! sourcePostUrl || ! apiClient ) {
 			return;
 		}
-		const getOrCreatePost = async (): Promise< Post > => {
+		const getOrCreatePost = async (): Promise< ApiPost > => {
 			let p = await apiClient.getPostByGuid( sourcePostUrl );
 			if ( ! p ) {
 				p = await apiClient.createPost( { guid: sourcePostUrl } );
@@ -32,7 +32,7 @@ export function BlogPostFlow() {
 			return p;
 		};
 		getOrCreatePost()
-			.then( async ( p: Post ) => {
+			.then( async ( p: ApiPost ) => {
 				void playgroundClient.goTo( p.link );
 				setPost( p );
 				setCurrentStep( Steps.selectContent );

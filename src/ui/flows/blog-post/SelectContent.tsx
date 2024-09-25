@@ -10,7 +10,7 @@ import {
 	PostDate,
 	PostTitle,
 } from '@/parser/post';
-import { Post } from '@/api/Post';
+import { ApiPost } from '@/api/ApiPost';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
 enum section {
@@ -19,7 +19,7 @@ enum section {
 	content,
 }
 
-export function SelectContent( props: { post: Post; onExit: () => void } ) {
+export function SelectContent( props: { post: ApiPost; onExit: () => void } ) {
 	const { post, onExit } = props;
 	const [ date, setDate ] = useState< PostDate >();
 	const [ title, setTitle ] = useState< PostTitle >();

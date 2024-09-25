@@ -2,6 +2,6 @@
 
 import { WP_REST_API_Settings } from 'wp-types';
 
-export interface Settings extends WP_REST_API_Settings {}
+export interface ApiSettings extends WP_REST_API_Settings {}
 
 /* eslint-enable camelcase */

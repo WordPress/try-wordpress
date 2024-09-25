@@ -1,8 +1,8 @@
 /* eslint-disable react/no-is-mounted */
 
 import { PlaygroundClient } from '@wp-playground/client';
-import { Post } from '@/api/Post';
-import { Settings } from '@/api/Settings';
+import { ApiPost } from '@/api/ApiPost';
+import { ApiSettings } from '@/api/ApiSettings';
 import { User } from '@/api/User';
 import { PostContent, PostDate, PostTitle } from '@/parser/post';
 
@@ -38,15 +38,15 @@ export class ApiClient {
 		return this._siteUrl;
 	}
 
-	async createPost( body: CreatePostBody ): Promise< Post > {
+	async createPost( body: CreatePostBody ): Promise< ApiPost > {
 		return ( await this.post( '/liberated_posts', {
 			meta: {
 				guid: body.guid,
 			},
-		} ) ) as Post;
+		} ) ) as ApiPost;
 	}
 
-	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
+	async updatePost( id: number, body: UpdatePostBody ): Promise< ApiPost > {
 		const actualBody: any = {};
 		if ( body.date ) {
 			actualBody.date = body.date.parsed;
@@ -63,18 +63,18 @@ export class ApiClient {
 		return ( await this.post(
 			`/liberated_posts/${ id }`,
 			actualBody
-		) ) as Post;
+		) ) as ApiPost;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async getPostByGuid( guid: string ): Promise< Post | null > {
+	async getPostByGuid( guid: string ): Promise< ApiPost | null > {
 		return null;
 	}
 
-	async updateSiteTitle( title: string ): Promise< Settings > {
+	async updateSiteTitle( title: string ): Promise< ApiSettings > {
 		return ( await this.post( `/settings`, {
 			title,
-		} ) ) as Settings;
+		} ) ) as ApiSettings;
 	}
 
 	async createUser( body: CreateUserBody ): Promise< User > {

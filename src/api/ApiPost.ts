@@ -2,6 +2,6 @@
 
 import { WP_REST_API_Post } from 'wp-types';
 
-export interface Post extends WP_REST_API_Post {}
+export interface ApiPost extends WP_REST_API_Post {}
 
 /* eslint-enable camelcase */
