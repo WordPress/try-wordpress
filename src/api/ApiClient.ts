@@ -1,7 +1,7 @@
 /* eslint-disable react/no-is-mounted */
 import { PlaygroundClient } from '@wp-playground/client';
-import { ApiSettings } from '@/api/ApiSettings';
 import { User } from '@/api/User';
+import { ApiSettings } from '@/api/settings';
 import {
 	ApiPost,
 	apiResponseToPost,
