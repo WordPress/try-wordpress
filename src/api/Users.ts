@@ -1,11 +1,11 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_User } from 'wp-types';
-export interface User extends WP_REST_API_User {}
+export interface ApiUser extends WP_REST_API_User {}
 /* eslint-enable camelcase */
 
 import { ApiClient } from '@/api/ApiClient';
 
-export interface CreateBody {
+interface CreateBody {
 	username: string;
 	email: string;
 	password: string;
@@ -18,7 +18,7 @@ export class UsersApi {
 	// eslint-disable-next-line no-useless-constructor
 	constructor( private readonly client: ApiClient ) {}
 
-	async create( body: CreateBody ): Promise< User > {
+	async create( body: CreateBody ): Promise< ApiUser > {
 		const actualBody: any = {
 			username: body.username,
 			email: body.email,
@@ -33,6 +33,6 @@ export class UsersApi {
 		if ( body.lastname ) {
 			actualBody.last_name = body.lastname;
 		}
-		return ( await this.client.post( `/users`, actualBody ) ) as User;
+		return ( await this.client.post( `/users`, actualBody ) ) as ApiUser;
 	}
 }
