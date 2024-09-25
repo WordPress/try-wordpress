@@ -14,9 +14,9 @@ enum section {
 
 export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	const { post, onExit } = props;
-	const [ date, setDate ] = useState< PostDate >();
-	const [ title, setTitle ] = useState< PostTitle >();
-	const [ content, setContent ] = useState< PostContent >();
+	const [ date, setDate ] = useState< PostDate >( post.date );
+	const [ title, setTitle ] = useState< PostTitle >( post.title );
+	const [ content, setContent ] = useState< PostContent >( post.content );
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
