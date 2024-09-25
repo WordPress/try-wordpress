@@ -41,7 +41,7 @@ export class ApiClient {
 			method: 'GET',
 		} );
 		if ( response.httpStatusCode !== 200 ) {
-			console.error( response );
+			console.error( response, response.json );
 			throw Error( response.json.message );
 		}
 		return response.json;
@@ -58,7 +58,7 @@ export class ApiClient {
 		} );
 
 		if ( response.httpStatusCode < 200 || response.httpStatusCode >= 300 ) {
-			console.error( response );
+			console.error( response, response.json );
 			throw Error( response.json.message );
 		}
 		return response.json;
