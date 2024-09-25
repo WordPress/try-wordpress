@@ -10,8 +10,8 @@ interface CreateBody {
 	email: string;
 	password: string;
 	role?: string; // default roles: administrator, editor, author, subscriber (default)
-	firstname?: string;
-	lastname?: string;
+	firstName?: string;
+	lastName?: string;
 }
 
 export class UsersApi {
@@ -27,11 +27,11 @@ export class UsersApi {
 		if ( body.role ) {
 			actualBody.roles = [ body.role ];
 		}
-		if ( body.firstname ) {
-			actualBody.first_name = body.firstname;
+		if ( body.firstName ) {
+			actualBody.first_name = body.firstName;
 		}
-		if ( body.lastname ) {
-			actualBody.last_name = body.lastname;
+		if ( body.lastName ) {
+			actualBody.last_name = body.lastName;
 		}
 		return ( await this.client.post( `/users`, actualBody ) ) as ApiUser;
 	}
