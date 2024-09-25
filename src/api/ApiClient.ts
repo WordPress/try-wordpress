@@ -1,7 +1,12 @@
 /* eslint-disable react/no-is-mounted */
 import { PlaygroundClient } from '@wp-playground/client';
 import { User } from '@/api/User';
-import { ApiSettings } from '@/api/settings';
+import {
+	apiResponseToSiteSettings,
+	ApiSettings,
+	siteSettingsUpdateToApiRequestBody,
+	UpdateSettingsBody,
+} from '@/api/settings';
 import {
 	ApiPost,
 	apiResponseToPost,
@@ -10,6 +15,7 @@ import {
 	UpdatePostBody,
 } from '@/api/post';
 import { Post } from '@/model/Post';
+import { SiteSettings } from '@/model/SiteSettings';
 
 export interface CreateUserBody {
 	username: string;
@@ -55,10 +61,14 @@ export class ApiClient {
 		return null;
 	}
 
-	async updateSiteTitle( title: string ): Promise< ApiSettings > {
-		return ( await this.post( `/settings`, {
-			title,
-		} ) ) as ApiSettings;
+	async updateSiteSettings(
+		body: UpdateSettingsBody
+	): Promise< SiteSettings > {
+		const response = ( await this.post(
+			`/settings`,
+			siteSettingsUpdateToApiRequestBody( body )
+		) ) as ApiSettings;
+		return apiResponseToSiteSettings( response );
 	}
 
 	async createUser( body: CreateUserBody ): Promise< User > {
