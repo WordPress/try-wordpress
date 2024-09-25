@@ -40,59 +40,52 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 
 	// Handle a click on an event in the content script,
 	// according to which section is currently waiting for selection.
-	useEffect( () => {
-		if ( ! lastClickedElement ) {
-			return;
-		}
-		const original = lastClickedElement;
-		switch ( waitingForSelection ) {
-			case section.title:
-				setTitle( parsePostTitle( original ) );
-				break;
-			case section.date:
-				setDate( parsePostDate( original ) );
-				break;
-			case section.content:
-				setContent( parsePostContent( original ) );
-				break;
-		}
-		setWaitingForSelection( false );
-		setLastClickedElement( undefined );
-	}, [ waitingForSelection, lastClickedElement ] );
+	useEffect(
+		() => {
+			if (
+				! apiClient ||
+				! waitingForSelection ||
+				! lastClickedElement
+			) {
+				return;
+			}
+			async function updatePost(
+				field: section | false,
+				value: string
+			): Promise< void > {
+				let p: Post;
+				switch ( field ) {
+					case section.date:
+						p = await apiClient!.posts.update( post.id, {
+							date: parsePostDate( value ),
+						} );
+						setDate( p.date );
+						break;
+					case section.title:
+						p = await apiClient!.posts.update( post.id, {
+							title: parsePostTitle( value ),
+						} );
+						setTitle( p.title );
+						break;
+					case section.content:
+						p = await apiClient!.posts.update( post.id, {
+							content: parsePostContent( value ),
+						} );
+						setContent( p.content );
+						break;
+					default:
+						throw Error( `unexpected field: ${ field }` );
+				}
+			}
+			updatePost( waitingForSelection, lastClickedElement )
+				.then( () => playgroundClient.goTo( post.url ) )
+				.catch( ( err ) => console.error( err ) );
 
-	// Save the post when selections happen.
-	useEffect(
-		() => {
-			if ( apiClient && title ) {
-				apiClient.posts
-					.update( post.id, { title } )
-					.then( () => playgroundClient.goTo( post.url ) );
-			}
+			setWaitingForSelection( false );
+			setLastClickedElement( undefined );
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ title ]
-	);
-	useEffect(
-		() => {
-			if ( apiClient && content ) {
-				apiClient.posts
-					.update( post.id, { content } )
-					.then( () => playgroundClient.goTo( post.url ) );
-			}
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ content ]
-	);
-	useEffect(
-		() => {
-			if ( apiClient && date ) {
-				apiClient.posts
-					.update( post.id, { date } )
-					.then( () => playgroundClient.goTo( post.url ) );
-			}
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ date ]
+		[ waitingForSelection, lastClickedElement ]
 	);
 
 	const isValid = title && date && content;
