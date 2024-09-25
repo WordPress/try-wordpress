@@ -32,7 +32,13 @@ export function Preview( props: {
 		/>
 	);
 
-	const previewFront = <Playground slug={ session.id } onReady={ onReady } />;
+	const previewFront = (
+		<Playground
+			slug={ session.id }
+			blogName={ session.title }
+			onReady={ onReady }
+		/>
+	);
 
 	const previewAdmin = (
 		<iframe title={ `${ session.id }-admin` } src={ previewAdminUrl } />

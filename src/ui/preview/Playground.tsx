@@ -11,9 +11,10 @@ const playgroundIframeId = 'playground';
 export function Playground( props: {
 	slug: string;
 	className?: string;
+	blogName: string;
 	onReady: ( client: PlaygroundClient ) => void;
 } ) {
-	const { slug, className, onReady } = props;
+	const { slug, className, blogName, onReady } = props;
 
 	useEffect( () => {
 		const iframe = document.getElementById( playgroundIframeId );
@@ -25,7 +26,7 @@ export function Playground( props: {
 			return;
 		}
 
-		initPlayground( iframe, slug )
+		initPlayground( iframe, slug, blogName )
 			.then( async ( client: PlaygroundClient ) => {
 				const url = await client.absoluteUrl;
 				console.log( 'Playground communication established', url );
@@ -47,7 +48,8 @@ export function Playground( props: {
 
 async function initPlayground(
 	iframe: HTMLIFrameElement,
-	slug: string
+	slug: string,
+	blogName: string
 ): Promise< PlaygroundClient > {
 	const options: StartPlaygroundOptions = {
 		iframe,
@@ -57,6 +59,9 @@ async function initPlayground(
 		blueprint: {
 			login: true,
 			steps: steps(),
+			siteOptions: {
+				blogname: blogName,
+			},
 		},
 	};
 
