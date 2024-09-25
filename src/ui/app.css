@@ -30,14 +30,21 @@ ol {
 	border-right: 1px solid #000;
 }
 
-/* App Navbar */
-.app-nav {
-	height: 40px;
+/* Breadcrumbs */
+.breadcrumbs {
+	padding: 0.5rem;
 	border-bottom: 1px solid #000;
 }
 
-.app-nav ul {
-	padding: 5px;
+.breadcrumbs ul {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+	display: inline-block;
+	margin: 0 0.25rem;
+	content: "→";
 }
 
 /* App Main */
