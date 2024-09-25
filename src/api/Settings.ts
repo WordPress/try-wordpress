@@ -16,19 +16,21 @@ export class SettingsApi {
 	async update( body: UpdateBody ): Promise< SiteSettings > {
 		const response = ( await this.client.post(
 			`/settings`,
-			siteSettingsUpdateToApiRequestBody( body )
+			makeUpdateRequestBody( body )
 		) ) as ApiSettings;
-		return apiResponseToSiteSettings( response );
+		return makeSiteSettingsFromApiResponse( response );
 	}
 }
 
-function apiResponseToSiteSettings( response: ApiSettings ): SiteSettings {
+function makeSiteSettingsFromApiResponse(
+	response: ApiSettings
+): SiteSettings {
 	return {
 		title: response.title,
 	};
 }
 
-function siteSettingsUpdateToApiRequestBody( body: UpdateBody ): object {
+function makeUpdateRequestBody( body: UpdateBody ): object {
 	const actualBody: any = {};
 	if ( body.title ) {
 		actualBody.title = body.title;

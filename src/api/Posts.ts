@@ -33,15 +33,15 @@ export class PostsApi {
 				guid: body.guid,
 			},
 		} ) ) as ApiPost;
-		return apiResponseToPost( response );
+		return makePostFromApiResponse( response );
 	}
 
 	async update( id: number, body: UpdateBody ): Promise< Post > {
 		const response = ( await this.client.post(
 			`/liberated_posts/${ id }`,
-			postUpdateToApiRequestBody( body )
+			makeUpdateRequestBody( body )
 		) ) as ApiPost;
-		return apiResponseToPost( response );
+		return makePostFromApiResponse( response );
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -50,7 +50,7 @@ export class PostsApi {
 	}
 }
 
-function apiResponseToPost( response: ApiPost ): Post {
+function makePostFromApiResponse( response: ApiPost ): Post {
 	const meta = response.meta as unknown as PostMeta;
 	const date = new PostDate( response.date_gmt, meta.raw_date );
 	const title = new PostTitle( response.title.raw ?? '', meta.raw_title );
@@ -69,7 +69,7 @@ function apiResponseToPost( response: ApiPost ): Post {
 	};
 }
 
-function postUpdateToApiRequestBody( body: UpdateBody ): object {
+function makeUpdateRequestBody( body: UpdateBody ): object {
 	const actualBody: any = {};
 	if ( body.date ) {
 		actualBody.date = body.date.parsed;
