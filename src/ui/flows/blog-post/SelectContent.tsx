@@ -2,16 +2,9 @@ import { useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import {
-	parsePostContent,
-	parsePostDate,
-	parsePostTitle,
-	PostContent,
-	PostDate,
-	PostTitle,
-} from '@/parser/post';
+import { parsePostContent, parsePostDate, parsePostTitle } from '@/parser/post';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { Post } from '@/model/Post';
+import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
 
 enum section {
 	title = 1,

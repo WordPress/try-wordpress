@@ -2,9 +2,8 @@
 import { PlaygroundClient } from '@wp-playground/client';
 import { ApiSettings } from '@/api/ApiSettings';
 import { User } from '@/api/User';
-import { PostContent, PostDate, PostTitle } from '@/parser/post';
 import { ApiPost, apiResponseToPost } from '@/api/post';
-import { Post } from '@/model/Post';
+import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
 
 export interface CreatePostBody {
 	guid: string;
