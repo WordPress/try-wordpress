@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_Settings } from 'wp-types';
-interface ApiSettings extends WP_REST_API_Settings {}
+type ApiSettings = WP_REST_API_Settings;
 /* eslint-enable camelcase */
 
 import { ApiClient } from '@/api/ApiClient';
