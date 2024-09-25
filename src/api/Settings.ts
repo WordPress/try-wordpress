@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_Settings } from 'wp-types';
-import { SiteSettings } from '@/model/SiteSettings';
-import { ApiClient } from '@/api/ApiClient';
 interface ApiSettings extends WP_REST_API_Settings {}
 /* eslint-enable camelcase */
+
+import { ApiClient } from '@/api/ApiClient';
+import { SiteSettings } from '@/model/SiteSettings';
 
 interface UpdateBody {
 	title?: string;
