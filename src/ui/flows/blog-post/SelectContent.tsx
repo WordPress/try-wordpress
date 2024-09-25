@@ -10,8 +10,8 @@ import {
 	PostDate,
 	PostTitle,
 } from '@/parser/post';
-import { ApiPost } from '@/api/ApiPost';
 import { useSessionContext } from '@/ui/session/SessionProvider';
+import { Post } from '@/model/Post';
 
 enum section {
 	title = 1,
@@ -19,7 +19,7 @@ enum section {
 	content,
 }
 
-export function SelectContent( props: { post: ApiPost; onExit: () => void } ) {
+export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	const { post, onExit } = props;
 	const [ date, setDate ] = useState< PostDate >();
 	const [ title, setTitle ] = useState< PostTitle >();
@@ -73,7 +73,7 @@ export function SelectContent( props: { post: ApiPost; onExit: () => void } ) {
 			if ( apiClient && title ) {
 				apiClient
 					.updatePost( post.id, { title } )
-					.then( () => playgroundClient.goTo( post.link ) );
+					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,7 +84,7 @@ export function SelectContent( props: { post: ApiPost; onExit: () => void } ) {
 			if ( apiClient && content ) {
 				apiClient
 					.updatePost( post.id, { content } )
-					.then( () => playgroundClient.goTo( post.link ) );
+					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -95,7 +95,7 @@ export function SelectContent( props: { post: ApiPost; onExit: () => void } ) {
 			if ( apiClient && date ) {
 				apiClient
 					.updatePost( post.id, { date } )
-					.then( () => playgroundClient.goTo( post.link ) );
+					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps

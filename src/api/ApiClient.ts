@@ -1,10 +1,10 @@
 /* eslint-disable react/no-is-mounted */
-
 import { PlaygroundClient } from '@wp-playground/client';
-import { ApiPost } from '@/api/ApiPost';
 import { ApiSettings } from '@/api/ApiSettings';
 import { User } from '@/api/User';
 import { PostContent, PostDate, PostTitle } from '@/parser/post';
+import { ApiPost, apiResponseToPost } from '@/api/post';
+import { Post } from '@/model/Post';
 
 export interface CreatePostBody {
 	guid: string;
@@ -38,15 +38,16 @@ export class ApiClient {
 		return this._siteUrl;
 	}
 
-	async createPost( body: CreatePostBody ): Promise< ApiPost > {
-		return ( await this.post( '/liberated_posts', {
+	async createPost( body: CreatePostBody ): Promise< Post > {
+		const response = ( await this.post( '/liberated_posts', {
 			meta: {
 				guid: body.guid,
 			},
 		} ) ) as ApiPost;
+		return apiResponseToPost( response );
 	}
 
-	async updatePost( id: number, body: UpdatePostBody ): Promise< ApiPost > {
+	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
 		const actualBody: any = {};
 		if ( body.date ) {
 			actualBody.date = body.date.parsed;
@@ -60,14 +61,15 @@ export class ApiClient {
 				raw_content: body.content.original,
 			};
 		}
-		return ( await this.post(
+		const response = ( await this.post(
 			`/liberated_posts/${ id }`,
 			actualBody
 		) ) as ApiPost;
+		return apiResponseToPost( response );
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async getPostByGuid( guid: string ): Promise< ApiPost | null > {
+	async getPostByGuid( guid: string ): Promise< Post | null > {
 		return null;
 	}
 
