@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_User } from 'wp-types';
-export interface ApiUser extends WP_REST_API_User {}
+interface ApiUser extends WP_REST_API_User {}
 /* eslint-enable camelcase */
 
 import { ApiClient } from '@/api/ApiClient';
