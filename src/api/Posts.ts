@@ -50,6 +50,9 @@ export class PostsApi {
 				raw_content: body.content.original,
 			};
 		}
+		if ( Object.keys( actualBody ).length === 0 ) {
+			throw Error( 'attempting to update zero fields' );
+		}
 		const response = ( await this.client.post(
 			`/liberated_posts/${ id }`,
 			actualBody
