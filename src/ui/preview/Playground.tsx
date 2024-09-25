@@ -68,6 +68,12 @@ async function initPlayground(
 function steps(): StepDefinition[] {
 	return [
 		{
+			step: 'defineWpConfigConsts',
+			consts: {
+				WP_ENVIRONMENT_TYPE: 'local',
+			},
+		},
+		{
 			step: 'login',
 			username: 'admin',
 			password: 'password',
