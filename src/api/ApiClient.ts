@@ -14,7 +14,7 @@ export interface CreateUserBody {
 	username: string;
 	email: string;
 	password: string;
-	roles?: [ string ]; // default roles: administrator, editor, author, subscriber (default)
+	role?: string; // default roles: administrator, editor, author, subscriber (default)
 	firstname?: string;
 	lastname?: string;
 }
@@ -83,8 +83,8 @@ export class ApiClient {
 			email: body.email,
 			password: body.password,
 		};
-		if ( body.roles ) {
-			actualBody.roles = body.roles;
+		if ( body.role ) {
+			actualBody.roles = [ body.role ];
 		}
 		if ( body.firstname ) {
 			actualBody.first_name = body.firstname;
