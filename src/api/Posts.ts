@@ -37,18 +37,18 @@ export class PostsApi {
 	}
 
 	async update( id: number, body: UpdateBody ): Promise< Post > {
-		const actualBody: any = {};
+		const actualBody: any = { meta: {} };
 		if ( body.date ) {
 			actualBody.date = body.date.parsed;
+			actualBody.meta.raw_date = body.date.original;
 		}
 		if ( body.title ) {
 			actualBody.title = body.title.parsed;
+			actualBody.meta.raw_title = body.title.original;
 		}
 		if ( body.content ) {
 			actualBody.content = body.content.parsed;
-			actualBody.meta = {
-				raw_content: body.content.original,
-			};
+			actualBody.meta.raw_content = body.content.original;
 		}
 		if ( Object.keys( actualBody ).length === 0 ) {
 			throw Error( 'attempting to update zero fields' );
@@ -73,12 +73,14 @@ export class PostsApi {
 
 function makePostFromApiResponse( response: ApiPost ): Post {
 	const meta = response.meta as unknown as PostMeta;
-	const date = new PostDate( response.date_gmt, meta.raw_date );
-	const title = new PostTitle( response.title.raw ?? '', meta.raw_title );
+	const date = new PostDate( meta.raw_date, response.date_gmt );
+	const title = new PostTitle( meta.raw_title, response.title.raw ?? '' );
 	const content = new PostContent(
-		response.content.raw ?? '',
-		meta.raw_content
+		meta.raw_content,
+		response.content.raw ?? ''
 	);
+
+	console.log( date, title, content );
 
 	return {
 		guid: meta.guid,
