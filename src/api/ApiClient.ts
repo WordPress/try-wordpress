@@ -6,6 +6,7 @@ import {
 	ApiPost,
 	apiResponseToPost,
 	CreatePostBody,
+	postUpdateToApiRequestBody,
 	UpdatePostBody,
 } from '@/api/post';
 import { Post } from '@/model/Post';
@@ -42,22 +43,9 @@ export class ApiClient {
 	}
 
 	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
-		const actualBody: any = {};
-		if ( body.date ) {
-			actualBody.date = body.date.parsed;
-		}
-		if ( body.title ) {
-			actualBody.title = body.title.parsed;
-		}
-		if ( body.content ) {
-			actualBody.content = body.content.parsed;
-			actualBody.meta = {
-				raw_content: body.content.original,
-			};
-		}
 		const response = ( await this.post(
 			`/liberated_posts/${ id }`,
-			actualBody
+			postUpdateToApiRequestBody( body )
 		) ) as ApiPost;
 		return apiResponseToPost( response );
 	}

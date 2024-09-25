@@ -34,6 +34,23 @@ export function apiResponseToPost( response: ApiPost ): Post {
 	};
 }
 
+export function postUpdateToApiRequestBody( body: UpdatePostBody ): object {
+	const actualBody: any = {};
+	if ( body.date ) {
+		actualBody.date = body.date.parsed;
+	}
+	if ( body.title ) {
+		actualBody.title = body.title.parsed;
+	}
+	if ( body.content ) {
+		actualBody.content = body.content.parsed;
+		actualBody.meta = {
+			raw_content: body.content.original,
+		};
+	}
+	return actualBody;
+}
+
 interface PostMeta {
 	guid: string;
 	raw_title: string;
