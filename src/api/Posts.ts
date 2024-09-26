@@ -42,7 +42,7 @@ export class PostsApi {
 			actualBody.meta = {};
 		}
 		if ( body.date ) {
-			actualBody.date = body.date.parsed;
+			actualBody.date = body.date.utcString;
 			actualBody.meta.raw_date = body.date.original;
 		}
 		if ( body.title ) {

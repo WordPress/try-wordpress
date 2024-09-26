@@ -126,7 +126,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			<Section
 				label="Date"
 				originalValue={ date?.original }
-				parsedValue={ date?.parsed }
+				parsedValue={ date?.utcString }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
