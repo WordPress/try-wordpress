@@ -20,7 +20,6 @@ import { getSession, listSessions, Session } from '@/storage/session';
 import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
 import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 import { ApiClient } from '@/api/ApiClient';
-import { BlogPostFlow } from '@/ui/flows/blog-post/BlogPostFlow';
 import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
 import { NewBlogPost } from '@/ui/flows/blog-post/NewBlogPost';
@@ -80,7 +79,6 @@ function Routes( props: { initialScreen: string } ) {
 				<Route path="" element={ <ViewSession /> } />
 				<Route path="flow">
 					<Route path="blog-post">
-						<Route index element={ <BlogPostFlow /> } />
 						<Route path="new" element={ <NewBlogPost /> } />
 						<Route path=":postId" element={ <EditBlogPost /> } />
 					</Route>
