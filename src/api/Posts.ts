@@ -62,6 +62,7 @@ export class PostsApi {
 
 	async getByGuid( guid: string ): Promise< Post | null > {
 		const posts = ( await this.client.get( `/liberated_posts`, {
+			context: 'edit',
 			status: 'draft',
 			guid,
 		} ) ) as ApiPost[];
@@ -79,8 +80,6 @@ function makePostFromApiResponse( response: ApiPost ): Post {
 		meta.raw_content,
 		response.content.raw ?? ''
 	);
-
-	console.log( date, title, content );
 
 	return {
 		guid: meta.guid,
