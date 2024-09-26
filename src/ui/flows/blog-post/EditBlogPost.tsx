@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { Post } from '@/model/Post';
+import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
 import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Screens } from '@/ui/App';
 
@@ -32,7 +32,30 @@ export function EditBlogPost() {
 			{ ! post ? (
 				'Loading...'
 			) : (
-				<SelectContent post={ post } onExit={ () => {} } />
+				<SelectContent
+					post={ post }
+					onDateChanged={ async ( date: PostDate ) => {
+						const p = await apiClient!.posts.update( post.id, {
+							date,
+						} );
+						setPost( p );
+						void playgroundClient.goTo( post.url );
+					} }
+					onTitleChanged={ async ( title: PostTitle ) => {
+						const p = await apiClient!.posts.update( post.id, {
+							title,
+						} );
+						setPost( p );
+						void playgroundClient.goTo( post.url );
+					} }
+					onContentChanged={ async ( content: PostContent ) => {
+						const p = await apiClient!.posts.update( post.id, {
+							content,
+						} );
+						setPost( p );
+						void playgroundClient.goTo( post.url );
+					} }
+				/>
 			) }
 		</>
 	);

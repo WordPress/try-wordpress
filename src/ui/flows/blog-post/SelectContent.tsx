@@ -3,7 +3,6 @@ import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { parsePostContent, parsePostDate, parsePostTitle } from '@/parser/post';
-import { useSessionContext } from '@/ui/session/SessionProvider';
 import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
 
 enum section {
@@ -12,8 +11,15 @@ enum section {
 	content,
 }
 
-export function SelectContent( props: { post: Post; onExit: () => void } ) {
-	const { post, onExit } = props;
+interface Props {
+	post: Post;
+	onDateChanged: ( date: PostDate ) => void;
+	onTitleChanged: ( title: PostTitle ) => void;
+	onContentChanged: ( content: PostContent ) => void;
+}
+
+export function SelectContent( props: Props ) {
+	const { post, onDateChanged, onTitleChanged, onContentChanged } = props;
 	const [ date, setDate ] = useState< PostDate >( post.date );
 	const [ title, setTitle ] = useState< PostTitle >( post.title );
 	const [ content, setContent ] = useState< PostContent >( post.content );
@@ -21,7 +27,6 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
 	>( false );
-	const { apiClient, playgroundClient } = useSessionContext();
 
 	// Listen to click events coming from the content script.
 	useEffect( () => {
@@ -42,11 +47,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	// according to which section is currently waiting for selection.
 	useEffect(
 		() => {
-			if (
-				! apiClient ||
-				! waitingForSelection ||
-				! lastClickedElement
-			) {
+			if ( ! waitingForSelection || ! lastClickedElement ) {
 				return;
 			}
 			async function updatePost(
@@ -57,32 +58,25 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 					case section.date:
 						const newDate = parsePostDate( value );
 						setDate( newDate );
-						await apiClient!.posts.update( post.id, {
-							date: newDate,
-						} );
+						onDateChanged( newDate );
 						break;
 					case section.title:
 						const newTitle = parsePostTitle( value );
 						setTitle( newTitle );
-						await apiClient!.posts.update( post.id, {
-							title: newTitle,
-						} );
+						onTitleChanged( newTitle );
 						break;
 					case section.content:
 						const newContent = parsePostContent( value );
 						setContent( newContent );
-						await apiClient!.posts.update( post.id, {
-							content: newContent,
-						} );
+						onContentChanged( newContent );
 						break;
 					default:
 						throw Error( `unexpected field: ${ field }` );
 				}
 			}
-			updatePost( waitingForSelection, lastClickedElement )
-				.then( () => playgroundClient.goTo( post.url ) )
-				.catch( ( err ) => console.error( err ) );
-
+			updatePost( waitingForSelection, lastClickedElement ).catch(
+				( err ) => console.error( err )
+			);
 			setWaitingForSelection( false );
 			setLastClickedElement( undefined );
 		},
@@ -103,7 +97,6 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 				onClick={ async () => {
 					await ContentBus.disableHighlighting();
 					console.log( 'TODO: import' );
-					onExit();
 				} }
 			>
 				Import
@@ -124,10 +117,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 				onClear={ async () => {
 					const newTitle = new PostTitle();
 					setTitle( newTitle );
-					await apiClient!.posts.update( post.id, {
-						title: newTitle,
-					} );
-					await playgroundClient.goTo( post.url );
+					onTitleChanged( newTitle );
 				} }
 			/>
 			<Section
@@ -146,10 +136,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 				onClear={ async () => {
 					const newDate = new PostDate();
 					setDate( newDate );
-					await apiClient!.posts.update( post.id, {
-						date: newDate,
-					} );
-					await playgroundClient.goTo( post.url );
+					onDateChanged( newDate );
 				} }
 			/>
 			<Section
@@ -170,10 +157,7 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 				onClear={ async () => {
 					const newContent = new PostContent();
 					setContent( newContent );
-					await apiClient!.posts.update( post.id, {
-						content: newContent,
-					} );
-					await playgroundClient.goTo( post.url );
+					onContentChanged( newContent );
 				} }
 			/>
 		</>
