@@ -90,7 +90,11 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 		[ waitingForSelection, lastClickedElement ]
 	);
 
-	const isValid = title && date && content;
+	const isValid =
+		title.original !== '' &&
+		date.original !== '' &&
+		content.original !== '';
+
 	return (
 		<>
 			<div>Select the content of the post</div>
@@ -106,8 +110,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			</button>
 			<Section
 				label="Title"
-				originalValue={ title?.original }
-				parsedValue={ title?.parsed }
+				originalValue={ title.original }
+				parsedValue={ title.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -128,8 +132,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			/>
 			<Section
 				label="Date"
-				originalValue={ date?.original }
-				parsedValue={ date?.utcString }
+				originalValue={ date.original }
+				parsedValue={ date.utcString }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -150,8 +154,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			/>
 			<Section
 				label="Content"
-				originalValue={ content?.original }
-				parsedValue={ content?.parsed }
+				originalValue={ content.original }
+				parsedValue={ content.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
