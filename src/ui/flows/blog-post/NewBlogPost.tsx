@@ -53,5 +53,5 @@ export function NewBlogPost() {
 		</>
 	);
 
-	return <>{ isLoading ? '' : element }</>;
+	return <>{ isLoading ? 'Loading...' : element }</>;
 }
