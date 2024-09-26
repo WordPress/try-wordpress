@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { createSession } from '@/storage/session';
+import { ContentBus } from '@/bus/ContentBus';
 
 export function NewSession() {
 	const navigate = useNavigate();
 	const handleContinue = async () => {
 		try {
-			const info = await getSiteInfo();
+			const info = await ContentBus.getCurrentPageInfo();
 			if ( ! info ) {
 				throw new Error( 'Failed to retrieve site info' );
 			}
@@ -34,27 +35,4 @@ export function NewSession() {
 			<button onClick={ handleContinue }>Continue</button>
 		</>
 	);
-}
-
-async function getSiteInfo(): Promise< null | {
-	url: string;
-	title?: string;
-} > {
-	const tabs = await browser.tabs.query( {
-		currentWindow: true,
-		active: true,
-	} );
-	if ( tabs.length !== 1 ) {
-		return null;
-	}
-	const tab = tabs[ 0 ];
-
-	if ( ! tab.url ) {
-		return null;
-	}
-
-	return {
-		url: tab.url,
-		title: tab.title,
-	};
 }

@@ -9,8 +9,9 @@ export function Start( props: { onExit: ( postUrl: string ) => void } ) {
 			</div>
 			<button
 				onClick={ async () => {
-					const postUrl = await ContentBus.getCurrentUrl();
-					onExit( postUrl );
+					const currentPageInfo =
+						await ContentBus.getCurrentPageInfo();
+					onExit( currentPageInfo.url );
 				} }
 			>
 				Continue
