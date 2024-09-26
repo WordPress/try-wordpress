@@ -1,101 +1,41 @@
 /* eslint-disable react/no-is-mounted */
-
 import { PlaygroundClient } from '@wp-playground/client';
-import { Post } from '@/api/Post';
-import { Settings } from '@/api/Settings';
-import { User } from '@/api/User';
-import { PostContent, PostDate, PostTitle } from '@/parser/post';
-
-export interface CreatePostBody {
-	guid: string;
-}
-
-export interface CreateUserBody {
-	username: string;
-	email: string;
-	password: string;
-	role?: string; // default roles: administrator, editor, author, subscriber (default)
-	firstname?: string;
-	lastname?: string;
-}
-
-export interface UpdatePostBody {
-	date?: PostDate;
-	title?: PostTitle;
-	content?: PostContent;
-}
+import { PostsApi } from '@/api/Posts';
+import { SettingsApi } from '@/api/Settings';
+import { UsersApi } from '@/api/Users';
 
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
+	private readonly _posts: PostsApi;
+	private readonly _settings: SettingsApi;
+	private readonly _users: UsersApi;
 
 	constructor( playgroundClient: PlaygroundClient, siteUrl: string ) {
 		this.playgroundClient = playgroundClient;
 		this._siteUrl = siteUrl;
+		this._posts = new PostsApi( this );
+		this._settings = new SettingsApi( this );
+		this._users = new UsersApi( this );
 	}
 
 	get siteUrl(): string {
 		return this._siteUrl;
 	}
 
-	async createPost( body: CreatePostBody ): Promise< Post > {
-		return ( await this.post( '/liberated_posts', {
-			meta: {
-				guid: body.guid,
-			},
-		} ) ) as Post;
+	get posts(): PostsApi {
+		return this._posts;
 	}
 
-	async updatePost( id: number, body: UpdatePostBody ): Promise< Post > {
-		const actualBody: any = {};
-		if ( body.date ) {
-			actualBody.date = body.date.parsed;
-		}
-		if ( body.title ) {
-			actualBody.title = body.title.parsed;
-		}
-		if ( body.content ) {
-			actualBody.content = body.content.parsed;
-			actualBody.meta = {
-				raw_content: body.content.original,
-			};
-		}
-		return ( await this.post(
-			`/liberated_posts/${ id }`,
-			actualBody
-		) ) as Post;
+	get settings(): SettingsApi {
+		return this._settings;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async getPostByGuid( guid: string ): Promise< Post | null > {
-		return null;
+	get users(): UsersApi {
+		return this._users;
 	}
 
-	async updateSiteTitle( title: string ): Promise< Settings > {
-		return ( await this.post( `/settings`, {
-			title,
-		} ) ) as Settings;
-	}
-
-	async createUser( body: CreateUserBody ): Promise< User > {
-		const actualBody: any = {
-			username: body.username,
-			email: body.email,
-			password: body.password,
-		};
-		if ( body.role ) {
-			actualBody.roles = [ body.role ];
-		}
-		if ( body.firstname ) {
-			actualBody.first_name = body.firstname;
-		}
-		if ( body.lastname ) {
-			actualBody.last_name = body.lastname;
-		}
-		return ( await this.post( `/users`, actualBody ) ) as User;
-	}
-
-	private async get( route: string ): Promise< object > {
+	async get( route: string ): Promise< object > {
 		const response = await this.playgroundClient.request( {
 			url: `/index.php?rest_route=/wp/v2${ route }`,
 			method: 'GET',
@@ -107,7 +47,7 @@ export class ApiClient {
 		return response.json;
 	}
 
-	private async post( route: string, body: object ): Promise< object > {
+	async post( route: string, body: object ): Promise< object > {
 		const response = await this.playgroundClient.request( {
 			url: `/index.php?rest_route=/wp/v2${ route }`,
 			method: 'POST',

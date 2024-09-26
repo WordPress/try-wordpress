@@ -2,16 +2,9 @@ import { useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import {
-	parsePostContent,
-	parsePostDate,
-	parsePostTitle,
-	PostContent,
-	PostDate,
-	PostTitle,
-} from '@/parser/post';
-import { Post } from '@/api/Post';
+import { parsePostContent, parsePostDate, parsePostTitle } from '@/parser/post';
 import { useSessionContext } from '@/ui/session/SessionProvider';
+import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
 
 enum section {
 	title = 1,
@@ -71,9 +64,9 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	useEffect(
 		() => {
 			if ( apiClient && title ) {
-				apiClient
-					.updatePost( post.id, { title } )
-					.then( () => playgroundClient.goTo( post.link ) );
+				apiClient.posts
+					.update( post.id, { title } )
+					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,9 +75,9 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	useEffect(
 		() => {
 			if ( apiClient && content ) {
-				apiClient
-					.updatePost( post.id, { content } )
-					.then( () => playgroundClient.goTo( post.link ) );
+				apiClient.posts
+					.update( post.id, { content } )
+					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -93,9 +86,9 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	useEffect(
 		() => {
 			if ( apiClient && date ) {
-				apiClient
-					.updatePost( post.id, { date } )
-					.then( () => playgroundClient.goTo( post.link ) );
+				apiClient.posts
+					.update( post.id, { date } )
+					.then( () => playgroundClient.goTo( post.url ) );
 			}
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps

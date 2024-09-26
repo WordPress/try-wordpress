@@ -3,7 +3,7 @@ import { Start } from '@/ui/flows/blog-post/Start';
 import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Finish } from '@/ui/flows/blog-post/Finish';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { Post } from '@/api/Post';
+import { Post } from '@/model/Post';
 
 enum Steps {
 	start = 1,
@@ -25,15 +25,15 @@ export function BlogPostFlow() {
 			return;
 		}
 		const getOrCreatePost = async (): Promise< Post > => {
-			let p = await apiClient.getPostByGuid( sourcePostUrl );
+			let p = await apiClient.posts.getByGuid( sourcePostUrl );
 			if ( ! p ) {
-				p = await apiClient.createPost( { guid: sourcePostUrl } );
+				p = await apiClient.posts.create( { guid: sourcePostUrl } );
 			}
 			return p;
 		};
 		getOrCreatePost()
 			.then( async ( p: Post ) => {
-				void playgroundClient.goTo( p.link );
+				void playgroundClient.goTo( p.url );
 				setPost( p );
 				setCurrentStep( Steps.selectContent );
 			} )
