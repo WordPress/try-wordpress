@@ -60,15 +60,25 @@ export class PostsApi {
 		return makePostFromApiResponse( response );
 	}
 
-	async getByGuid( guid: string ): Promise< Post | null > {
-		const posts = ( await this.client.get( `/liberated_posts`, {
-			context: 'edit',
-			status: 'draft',
-			guid,
-		} ) ) as ApiPost[];
+	async findByGuid( guid: string ): Promise< Post | null > {
+		// eslint-disable-next-line react/no-is-mounted
+		const posts = await this.find( { guid } );
 		return posts.length === 0
 			? null
 			: makePostFromApiResponse( posts[ 0 ] );
+	}
+
+	private async find(
+		params: Record< string, string >
+	): Promise< ApiPost[] > {
+		// A liberated_post is always draft.
+		params.status = 'draft';
+		// Must set context to 'edit' to have all fields in the response.
+		params.context = 'edit';
+		return ( await this.client.get(
+			`/liberated_posts`,
+			params
+		) ) as ApiPost[];
 	}
 }
 
