@@ -23,11 +23,21 @@ import { ApiClient } from '@/api/ApiClient';
 import { BlogPostFlow } from '@/ui/flows/blog-post/BlogPostFlow';
 import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
+import { NewBlogPost } from '@/ui/flows/blog-post/NewBlogPost';
+import { EditBlogPost } from '@/ui/flows/blog-post/EditBlogPost';
 
 export const Screens = {
 	home: () => '/start/home',
 	newSession: () => '/start/new-session',
 	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
+	flows: {
+		blogPost: {
+			new: ( sessionId: string ) =>
+				`/session/${ sessionId }/flow/blog-post/new`,
+			edit: ( sessionId: string, postId: number ) =>
+				`/session/${ sessionId }/flow/blog-post/${ postId }`,
+		},
+	},
 	flowBlogPost: ( sessionId: string ) =>
 		`/session/${ sessionId }/flow/blog-post`,
 };
@@ -69,7 +79,11 @@ function Routes( props: { initialScreen: string } ) {
 			>
 				<Route path="" element={ <ViewSession /> } />
 				<Route path="flow">
-					<Route path="blog-post" element={ <BlogPostFlow /> } />
+					<Route path="blog-post">
+						<Route index element={ <BlogPostFlow /> } />
+						<Route path="new" element={ <NewBlogPost /> } />
+						<Route path=":postId" element={ <EditBlogPost /> } />
+					</Route>
 				</Route>
 			</Route>
 		</Route>
