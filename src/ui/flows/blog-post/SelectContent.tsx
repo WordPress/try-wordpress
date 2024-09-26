@@ -84,23 +84,8 @@ export function SelectContent( props: Props ) {
 		[ waitingForSelection, lastClickedElement ]
 	);
 
-	const isValid =
-		title.original !== '' &&
-		date.original !== '' &&
-		content.original !== '';
-
 	return (
 		<>
-			<div>Select the content of the post</div>
-			<button
-				disabled={ ! isValid }
-				onClick={ async () => {
-					await ContentBus.disableHighlighting();
-					console.log( 'TODO: import' );
-				} }
-			>
-				Import
-			</button>
 			<Section
 				label="Title"
 				originalValue={ title.original }

@@ -4,6 +4,7 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
 import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Screens } from '@/ui/App';
+import { ContentBus } from '@/bus/ContentBus';
 
 export function EditBlogPost() {
 	const [ post, setPost ] = useState< Post >();
@@ -27,35 +28,53 @@ export function EditBlogPost() {
 		} );
 	}, [ apiClient, postId ] );
 
+	const isValid =
+		!! post &&
+		post.title.original !== '' &&
+		post.date.original !== '' &&
+		post.content.original !== '';
+
 	return (
 		<>
 			{ ! post ? (
 				'Loading...'
 			) : (
-				<SelectContent
-					post={ post }
-					onDateChanged={ async ( date: PostDate ) => {
-						const p = await apiClient!.posts.update( post.id, {
-							date,
-						} );
-						setPost( p );
-						void playgroundClient.goTo( post.url );
-					} }
-					onTitleChanged={ async ( title: PostTitle ) => {
-						const p = await apiClient!.posts.update( post.id, {
-							title,
-						} );
-						setPost( p );
-						void playgroundClient.goTo( post.url );
-					} }
-					onContentChanged={ async ( content: PostContent ) => {
-						const p = await apiClient!.posts.update( post.id, {
-							content,
-						} );
-						setPost( p );
-						void playgroundClient.goTo( post.url );
-					} }
-				/>
+				<>
+					<div>Select the content of the post</div>
+					<button
+						disabled={ ! isValid }
+						onClick={ async () => {
+							await ContentBus.disableHighlighting();
+							console.log( 'TODO: import' );
+						} }
+					>
+						Import
+					</button>
+					<SelectContent
+						post={ post }
+						onDateChanged={ async ( date: PostDate ) => {
+							const p = await apiClient!.posts.update( post.id, {
+								date,
+							} );
+							setPost( p );
+							void playgroundClient.goTo( post.url );
+						} }
+						onTitleChanged={ async ( title: PostTitle ) => {
+							const p = await apiClient!.posts.update( post.id, {
+								title,
+							} );
+							setPost( p );
+							void playgroundClient.goTo( post.url );
+						} }
+						onContentChanged={ async ( content: PostContent ) => {
+							const p = await apiClient!.posts.update( post.id, {
+								content,
+							} );
+							setPost( p );
+							void playgroundClient.goTo( post.url );
+						} }
+					/>
+				</>
 			) }
 		</>
 	);
