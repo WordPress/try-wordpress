@@ -10,7 +10,7 @@ export interface Post {
 abstract class PostSection< T > {
 	original: string;
 	parsed: string;
-	constructor( original: string, parsed: string ) {
+	constructor( original: string = '', parsed: string = '' ) {
 		this.original = original;
 		this.parsed = parsed;
 	}

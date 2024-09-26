@@ -115,6 +115,13 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 					await ContentBus.enableHighlighting();
 					setWaitingForSelection( isWaiting ? section.title : false );
 				} }
+				onClear={ async () => {
+					const p = await apiClient!.posts.update( post.id, {
+						title: new PostTitle(),
+					} );
+					setTitle( p.title );
+					await playgroundClient.goTo( p.url );
+				} }
 			/>
 			<Section
 				label="Date"
@@ -128,6 +135,13 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 				onWaitingForSelection={ async ( isWaiting ) => {
 					await ContentBus.enableHighlighting();
 					setWaitingForSelection( isWaiting ? section.date : false );
+				} }
+				onClear={ async () => {
+					const p = await apiClient!.posts.update( post.id, {
+						date: new PostDate(),
+					} );
+					setDate( p.date );
+					await playgroundClient.goTo( p.url );
 				} }
 			/>
 			<Section
@@ -145,6 +159,13 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 						isWaiting ? section.content : false
 					);
 				} }
+				onClear={ async () => {
+					const p = await apiClient!.posts.update( post.id, {
+						content: new PostContent(),
+					} );
+					setContent( p.content );
+					await playgroundClient.goTo( p.url );
+				} }
 			/>
 		</>
 	);
@@ -157,6 +178,7 @@ function Section( props: {
 	parsedValue: string | undefined;
 	waitingForSelection: boolean;
 	onWaitingForSelection: ( isWaiting: boolean ) => void;
+	onClear: () => void;
 } ) {
 	const {
 		label,
@@ -165,6 +187,7 @@ function Section( props: {
 		parsedValue,
 		waitingForSelection,
 		onWaitingForSelection,
+		onClear,
 	} = props;
 
 	return (
@@ -177,6 +200,12 @@ function Section( props: {
 		>
 			<div>
 				{ label }{ ' ' }
+				<button
+					disabled={ disabled || originalValue === '' }
+					onClick={ onClear }
+				>
+					Clear
+				</button>
 				<button
 					disabled={ disabled }
 					onClick={ async () => {
