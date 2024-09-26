@@ -8,6 +8,7 @@ import {
 	Route,
 	RouterProvider,
 	useLocation,
+	useNavigate,
 	useRouteLoaderData,
 } from 'react-router-dom';
 import { StrictMode, useEffect, useState } from 'react';
@@ -76,6 +77,7 @@ function Routes( props: { initialScreen: string } ) {
 }
 
 function App() {
+	const navigate = useNavigate();
 	const location = useLocation();
 	useEffect( () => {
 		setConfig( { currentPath: location.pathname } ).catch( ( err ) =>
@@ -95,11 +97,16 @@ function App() {
 
 	// Debugging tools.
 	useEffect( () => {
-		if ( ! apiClient || !! ( window as any ).trywp ) {
-			return;
+		if ( ! ( window as any ).trywp ) {
+			( window as any ).trywp = {
+				navigateTo: ( url: string ) => navigate( url ),
+			};
 		}
-		( window as any ).trywp = { apiClient, playgroundClient };
-	}, [ apiClient, playgroundClient ] );
+		if ( apiClient ) {
+			( window as any ).trywp.apiClient = apiClient;
+			( window as any ).trywp.playgroundClient = playgroundClient;
+		}
+	}, [ apiClient ] );
 
 	const preview = ! session ? (
 		<PlaceholderPreview />
