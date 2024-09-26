@@ -53,25 +53,27 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 				field: section | false,
 				value: string
 			): Promise< void > {
-				let p: Post;
 				switch ( field ) {
 					case section.date:
-						p = await apiClient!.posts.update( post.id, {
-							date: parsePostDate( value ),
+						const newDate = parsePostDate( value );
+						setDate( newDate );
+						await apiClient!.posts.update( post.id, {
+							date: newDate,
 						} );
-						setDate( p.date );
 						break;
 					case section.title:
-						p = await apiClient!.posts.update( post.id, {
-							title: parsePostTitle( value ),
+						const newTitle = parsePostTitle( value );
+						setTitle( newTitle );
+						await apiClient!.posts.update( post.id, {
+							title: newTitle,
 						} );
-						setTitle( p.title );
 						break;
 					case section.content:
-						p = await apiClient!.posts.update( post.id, {
-							content: parsePostContent( value ),
+						const newContent = parsePostContent( value );
+						setContent( newContent );
+						await apiClient!.posts.update( post.id, {
+							content: newContent,
 						} );
-						setContent( p.content );
 						break;
 					default:
 						throw Error( `unexpected field: ${ field }` );
@@ -116,11 +118,12 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 					setWaitingForSelection( isWaiting ? section.title : false );
 				} }
 				onClear={ async () => {
-					const p = await apiClient!.posts.update( post.id, {
-						title: new PostTitle(),
+					const newTitle = new PostTitle();
+					setTitle( newTitle );
+					await apiClient!.posts.update( post.id, {
+						title: newTitle,
 					} );
-					setTitle( p.title );
-					await playgroundClient.goTo( p.url );
+					await playgroundClient.goTo( post.url );
 				} }
 			/>
 			<Section
@@ -137,11 +140,12 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 					setWaitingForSelection( isWaiting ? section.date : false );
 				} }
 				onClear={ async () => {
-					const p = await apiClient!.posts.update( post.id, {
-						date: new PostDate(),
+					const newDate = new PostDate();
+					setDate( newDate );
+					await apiClient!.posts.update( post.id, {
+						date: newDate,
 					} );
-					setDate( p.date );
-					await playgroundClient.goTo( p.url );
+					await playgroundClient.goTo( post.url );
 				} }
 			/>
 			<Section
@@ -160,11 +164,12 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 					);
 				} }
 				onClear={ async () => {
-					const p = await apiClient!.posts.update( post.id, {
-						content: new PostContent(),
+					const newContent = new PostContent();
+					setContent( newContent );
+					await apiClient!.posts.update( post.id, {
+						content: newContent,
 					} );
-					setContent( p.content );
-					await playgroundClient.goTo( p.url );
+					await playgroundClient.goTo( post.url );
 				} }
 			/>
 		</>
