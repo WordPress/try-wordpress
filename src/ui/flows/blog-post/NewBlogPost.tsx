@@ -20,11 +20,38 @@ export function NewBlogPost() {
 			const post = await apiClient!.posts.findByGuid( currentPage.url );
 			if ( post ) {
 				navigate( Screens.flows.blogPost.edit( session.id, post.id ) );
+				return;
 			}
 			setIsLoading( false );
 		}
 		maybeRedirect().catch( ( err ) => console.log( err ) );
-	}, [ apiClient ] );
+	}, [ session.id, apiClient ] );
 
-	return <div>{ isLoading ? 'Loading...' : 'new' }</div>;
+	const element = (
+		<>
+			<div>
+				Navigate to the page of the post you&apos;d like to import
+			</div>
+			<button
+				onClick={ async () => {
+					const currentPage = await ContentBus.getCurrentPageInfo();
+					let post = await apiClient!.posts.findByGuid(
+						currentPage.url
+					);
+					if ( ! post ) {
+						post = await apiClient!.posts.create( {
+							guid: currentPage.url,
+						} );
+					}
+					navigate(
+						Screens.flows.blogPost.edit( session.id, post.id )
+					);
+				} }
+			>
+				Continue
+			</button>
+		</>
+	);
+
+	return <>{ isLoading ? '' : element }</>;
 }
