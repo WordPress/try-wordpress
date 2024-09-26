@@ -37,7 +37,10 @@ export class PostsApi {
 	}
 
 	async update( id: number, body: UpdateBody ): Promise< Post > {
-		const actualBody: any = { meta: {} };
+		const actualBody: any = {};
+		if ( body.date || body.title || body.content ) {
+			actualBody.meta = {};
+		}
 		if ( body.date ) {
 			actualBody.date = body.date.parsed;
 			actualBody.meta.raw_date = body.date.original;
