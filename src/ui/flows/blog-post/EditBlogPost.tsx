@@ -5,6 +5,7 @@ import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
 import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Screens } from '@/ui/App';
 import { ContentBus } from '@/bus/ContentBus';
+import { Toolbar } from '@/ui/flows/blog-post/Toolbar';
 
 export function EditBlogPost() {
 	const [ post, setPost ] = useState< Post >();
@@ -40,16 +41,17 @@ export function EditBlogPost() {
 				'Loading...'
 			) : (
 				<>
-					<div>Select the content of the post</div>
-					<button
-						disabled={ ! isValid }
-						onClick={ async () => {
-							await ContentBus.disableHighlighting();
-							console.log( 'TODO: import' );
-						} }
-					>
-						Import
-					</button>
+					<Toolbar>
+						<button
+							disabled={ ! isValid }
+							onClick={ async () => {
+								await ContentBus.disableHighlighting();
+								console.log( 'TODO: import' );
+							} }
+						>
+							Import
+						</button>
+					</Toolbar>
 					<SelectContent
 						post={ post }
 						onDateChanged={ async ( date: PostDate ) => {
