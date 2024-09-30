@@ -1,16 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import {
-	BlogPost,
-	BlogPostContent,
-	BlogPostDate,
-	BlogPostTitle,
-} from '@/model/BlogPost';
+import { BlogPost } from '@/model/content/BlogPost';
 import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Screens } from '@/ui/App';
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/flows/blog-post/Toolbar';
+import { DateSection, HtmlSection, TextSection } from '@/model/content/Section';
 
 export function EditBlogPost() {
 	const [ post, setPost ] = useState< BlogPost >();
@@ -61,7 +57,7 @@ export function EditBlogPost() {
 					</Toolbar>
 					<SelectContent
 						post={ post }
-						onDateChanged={ async ( date: BlogPostDate ) => {
+						onDateChanged={ async ( date: DateSection ) => {
 							const p = await apiClient!.blogPosts.update(
 								post.id,
 								{
@@ -71,7 +67,7 @@ export function EditBlogPost() {
 							setPost( p );
 							void playgroundClient.goTo( post.url );
 						} }
-						onTitleChanged={ async ( title: BlogPostTitle ) => {
+						onTitleChanged={ async ( title: TextSection ) => {
 							const p = await apiClient!.blogPosts.update(
 								post.id,
 								{
@@ -81,9 +77,7 @@ export function EditBlogPost() {
 							setPost( p );
 							void playgroundClient.goTo( post.url );
 						} }
-						onContentChanged={ async (
-							content: BlogPostContent
-						) => {
+						onContentChanged={ async ( content: HtmlSection ) => {
 							const p = await apiClient!.blogPosts.update(
 								post.id,
 								{

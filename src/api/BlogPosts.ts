@@ -3,22 +3,18 @@ import { WP_REST_API_Post } from 'wp-types';
 type ApiPost = WP_REST_API_Post;
 /* eslint-enable camelcase */
 
-import {
-	BlogPost,
-	BlogPostContent,
-	BlogPostDate,
-	BlogPostTitle,
-} from '@/model/content/BlogPost';
+import { BlogPost } from '@/model/content/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
+import { DateSection, HtmlSection, TextSection } from '@/model/content/Section';
 
 interface CreateBody {
 	guid: string;
 }
 
 interface UpdateBody {
-	date?: BlogPostDate;
-	title?: BlogPostTitle;
-	content?: BlogPostContent;
+	date?: DateSection;
+	title?: TextSection;
+	content?: HtmlSection;
 }
 
 interface PostMeta {
@@ -96,9 +92,9 @@ export class BlogPostsApi {
 
 function fromApiResponse( response: ApiPost ): BlogPost {
 	const meta = response.meta as unknown as PostMeta;
-	const date = new BlogPostDate( meta.raw_date, response.date_gmt );
-	const title = new BlogPostTitle( meta.raw_title, response.title.raw ?? '' );
-	const content = new BlogPostContent(
+	const date = new DateSection( meta.raw_date, response.date_gmt );
+	const title = new TextSection( meta.raw_title, response.title.raw ?? '' );
+	const content = new HtmlSection(
 		meta.raw_content,
 		response.content.raw ?? ''
 	);

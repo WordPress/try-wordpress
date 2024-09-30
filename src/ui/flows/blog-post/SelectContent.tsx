@@ -7,12 +7,8 @@ import {
 	parsePostDate,
 	parsePostTitle,
 } from '@/parser/blog-post';
-import {
-	BlogPost,
-	BlogPostContent,
-	BlogPostDate,
-	BlogPostTitle,
-} from '@/model/BlogPost';
+import { BlogPost } from '@/model/content/BlogPost';
+import { DateSection, HtmlSection, TextSection } from '@/model/content/Section';
 
 enum section {
 	title = 1,
@@ -22,16 +18,16 @@ enum section {
 
 interface Props {
 	post: BlogPost;
-	onDateChanged: ( date: BlogPostDate ) => void;
-	onTitleChanged: ( title: BlogPostTitle ) => void;
-	onContentChanged: ( content: BlogPostContent ) => void;
+	onDateChanged: ( date: DateSection ) => void;
+	onTitleChanged: ( title: TextSection ) => void;
+	onContentChanged: ( content: HtmlSection ) => void;
 }
 
 export function SelectContent( props: Props ) {
 	const { post, onDateChanged, onTitleChanged, onContentChanged } = props;
-	const [ date, setDate ] = useState< BlogPostDate >( post.date );
-	const [ title, setTitle ] = useState< BlogPostTitle >( post.title );
-	const [ content, setContent ] = useState< BlogPostContent >( post.content );
+	const [ date, setDate ] = useState< DateSection >( post.date );
+	const [ title, setTitle ] = useState< TextSection >( post.title );
+	const [ content, setContent ] = useState< HtmlSection >( post.content );
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
@@ -109,7 +105,7 @@ export function SelectContent( props: Props ) {
 					setWaitingForSelection( isWaiting ? section.title : false );
 				} }
 				onClear={ async () => {
-					const newTitle = new BlogPostTitle();
+					const newTitle = new TextSection();
 					setTitle( newTitle );
 					onTitleChanged( newTitle );
 				} }
@@ -128,7 +124,7 @@ export function SelectContent( props: Props ) {
 					setWaitingForSelection( isWaiting ? section.date : false );
 				} }
 				onClear={ async () => {
-					const newDate = new BlogPostDate();
+					const newDate = new DateSection();
 					setDate( newDate );
 					onDateChanged( newDate );
 				} }
@@ -149,7 +145,7 @@ export function SelectContent( props: Props ) {
 					);
 				} }
 				onClear={ async () => {
-					const newContent = new BlogPostContent();
+					const newContent = new HtmlSection();
 					setContent( newContent );
 					onContentChanged( newContent );
 				} }
