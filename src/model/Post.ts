@@ -10,27 +10,35 @@ export interface Post {
 abstract class PostSection< T > {
 	original: string;
 	parsed: string;
-	constructor( original: string, parsed: string ) {
+	constructor( original: string = '', parsed: string = '' ) {
 		this.original = original;
 		this.parsed = parsed;
 	}
-	abstract value(): T;
+	abstract get value(): T;
 }
 
 export class PostDate extends PostSection< Date > {
-	value(): Date {
-		return new Date( this.parsed );
+	readonly _value: Date;
+	constructor( original: string = '', parsed: string = '' ) {
+		super( original, parsed );
+		this._value = parsed === '' ? new Date() : new Date( this.parsed );
+	}
+	get value(): Date {
+		return this._value;
+	}
+	get utcString(): string {
+		return this._value.toISOString();
 	}
 }
 
 export class PostTitle extends PostSection< string > {
-	value(): string {
+	get value(): string {
 		return this.parsed;
 	}
 }
 
 export class PostContent extends PostSection< string > {
-	value(): string {
+	get value(): string {
 		return this.parsed;
 	}
 }

@@ -14,9 +14,9 @@ enum section {
 
 export function SelectContent( props: { post: Post; onExit: () => void } ) {
 	const { post, onExit } = props;
-	const [ date, setDate ] = useState< PostDate >();
-	const [ title, setTitle ] = useState< PostTitle >();
-	const [ content, setContent ] = useState< PostContent >();
+	const [ date, setDate ] = useState< PostDate >( post.date );
+	const [ title, setTitle ] = useState< PostTitle >( post.title );
+	const [ content, setContent ] = useState< PostContent >( post.content );
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
@@ -40,62 +40,61 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 
 	// Handle a click on an event in the content script,
 	// according to which section is currently waiting for selection.
-	useEffect( () => {
-		if ( ! lastClickedElement ) {
-			return;
-		}
-		const original = lastClickedElement;
-		switch ( waitingForSelection ) {
-			case section.title:
-				setTitle( parsePostTitle( original ) );
-				break;
-			case section.date:
-				setDate( parsePostDate( original ) );
-				break;
-			case section.content:
-				setContent( parsePostContent( original ) );
-				break;
-		}
-		setWaitingForSelection( false );
-		setLastClickedElement( undefined );
-	}, [ waitingForSelection, lastClickedElement ] );
+	useEffect(
+		() => {
+			if (
+				! apiClient ||
+				! waitingForSelection ||
+				! lastClickedElement
+			) {
+				return;
+			}
+			async function updatePost(
+				field: section | false,
+				value: string
+			): Promise< void > {
+				switch ( field ) {
+					case section.date:
+						const newDate = parsePostDate( value );
+						setDate( newDate );
+						await apiClient!.posts.update( post.id, {
+							date: newDate,
+						} );
+						break;
+					case section.title:
+						const newTitle = parsePostTitle( value );
+						setTitle( newTitle );
+						await apiClient!.posts.update( post.id, {
+							title: newTitle,
+						} );
+						break;
+					case section.content:
+						const newContent = parsePostContent( value );
+						setContent( newContent );
+						await apiClient!.posts.update( post.id, {
+							content: newContent,
+						} );
+						break;
+					default:
+						throw Error( `unexpected field: ${ field }` );
+				}
+			}
+			updatePost( waitingForSelection, lastClickedElement )
+				.then( () => playgroundClient.goTo( post.url ) )
+				.catch( ( err ) => console.error( err ) );
 
-	// Save the post when selections happen.
-	useEffect(
-		() => {
-			if ( apiClient && title ) {
-				apiClient.posts
-					.update( post.id, { title } )
-					.then( () => playgroundClient.goTo( post.url ) );
-			}
+			setWaitingForSelection( false );
+			setLastClickedElement( undefined );
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ title ]
-	);
-	useEffect(
-		() => {
-			if ( apiClient && content ) {
-				apiClient.posts
-					.update( post.id, { content } )
-					.then( () => playgroundClient.goTo( post.url ) );
-			}
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ content ]
-	);
-	useEffect(
-		() => {
-			if ( apiClient && date ) {
-				apiClient.posts
-					.update( post.id, { date } )
-					.then( () => playgroundClient.goTo( post.url ) );
-			}
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ date ]
+		[ waitingForSelection, lastClickedElement ]
 	);
 
-	const isValid = title && date && content;
+	const isValid =
+		title.original !== '' &&
+		date.original !== '' &&
+		content.original !== '';
+
 	return (
 		<>
 			<div>Select the content of the post</div>
@@ -111,8 +110,8 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 			</button>
 			<Section
 				label="Title"
-				originalValue={ title?.original }
-				parsedValue={ title?.parsed }
+				originalValue={ title.original }
+				parsedValue={ title.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -122,11 +121,19 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 					await ContentBus.enableHighlighting();
 					setWaitingForSelection( isWaiting ? section.title : false );
 				} }
+				onClear={ async () => {
+					const newTitle = new PostTitle();
+					setTitle( newTitle );
+					await apiClient!.posts.update( post.id, {
+						title: newTitle,
+					} );
+					await playgroundClient.goTo( post.url );
+				} }
 			/>
 			<Section
 				label="Date"
-				originalValue={ date?.original }
-				parsedValue={ date?.parsed }
+				originalValue={ date.original }
+				parsedValue={ date.utcString }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -136,11 +143,19 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 					await ContentBus.enableHighlighting();
 					setWaitingForSelection( isWaiting ? section.date : false );
 				} }
+				onClear={ async () => {
+					const newDate = new PostDate();
+					setDate( newDate );
+					await apiClient!.posts.update( post.id, {
+						date: newDate,
+					} );
+					await playgroundClient.goTo( post.url );
+				} }
 			/>
 			<Section
 				label="Content"
-				originalValue={ content?.original }
-				parsedValue={ content?.parsed }
+				originalValue={ content.original }
+				parsedValue={ content.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -151,6 +166,14 @@ export function SelectContent( props: { post: Post; onExit: () => void } ) {
 					setWaitingForSelection(
 						isWaiting ? section.content : false
 					);
+				} }
+				onClear={ async () => {
+					const newContent = new PostContent();
+					setContent( newContent );
+					await apiClient!.posts.update( post.id, {
+						content: newContent,
+					} );
+					await playgroundClient.goTo( post.url );
 				} }
 			/>
 		</>
@@ -164,6 +187,7 @@ function Section( props: {
 	parsedValue: string | undefined;
 	waitingForSelection: boolean;
 	onWaitingForSelection: ( isWaiting: boolean ) => void;
+	onClear: () => void;
 } ) {
 	const {
 		label,
@@ -172,6 +196,7 @@ function Section( props: {
 		parsedValue,
 		waitingForSelection,
 		onWaitingForSelection,
+		onClear,
 	} = props;
 
 	return (
@@ -184,6 +209,12 @@ function Section( props: {
 		>
 			<div>
 				{ label }{ ' ' }
+				<button
+					disabled={ disabled || originalValue === '' }
+					onClick={ onClear }
+				>
+					Clear
+				</button>
 				<button
 					disabled={ disabled }
 					onClick={ async () => {

@@ -38,17 +38,20 @@ export class PostsApi {
 
 	async update( id: number, body: UpdateBody ): Promise< Post > {
 		const actualBody: any = {};
+		if ( body.date || body.title || body.content ) {
+			actualBody.meta = {};
+		}
 		if ( body.date ) {
-			actualBody.date = body.date.parsed;
+			actualBody.date = body.date.utcString;
+			actualBody.meta.raw_date = body.date.original;
 		}
 		if ( body.title ) {
 			actualBody.title = body.title.parsed;
+			actualBody.meta.raw_title = body.title.original;
 		}
 		if ( body.content ) {
 			actualBody.content = body.content.parsed;
-			actualBody.meta = {
-				raw_content: body.content.original,
-			};
+			actualBody.meta.raw_content = body.content.original;
 		}
 		if ( Object.keys( actualBody ).length === 0 ) {
 			throw Error( 'attempting to update zero fields' );
@@ -60,19 +63,35 @@ export class PostsApi {
 		return makePostFromApiResponse( response );
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async getByGuid( guid: string ): Promise< Post | null > {
-		return null;
+	async findByGuid( guid: string ): Promise< Post | null > {
+		// eslint-disable-next-line react/no-is-mounted
+		const posts = await this.find( { guid } );
+		return posts.length === 0
+			? null
+			: makePostFromApiResponse( posts[ 0 ] );
+	}
+
+	private async find(
+		params: Record< string, string >
+	): Promise< ApiPost[] > {
+		// A liberated_post is always draft.
+		params.status = 'draft';
+		// Must set context to 'edit' to have all fields in the response.
+		params.context = 'edit';
+		return ( await this.client.get(
+			`/liberated_posts`,
+			params
+		) ) as ApiPost[];
 	}
 }
 
 function makePostFromApiResponse( response: ApiPost ): Post {
 	const meta = response.meta as unknown as PostMeta;
-	const date = new PostDate( response.date_gmt, meta.raw_date );
-	const title = new PostTitle( response.title.raw ?? '', meta.raw_title );
+	const date = new PostDate( meta.raw_date, response.date_gmt );
+	const title = new PostTitle( meta.raw_title, response.title.raw ?? '' );
 	const content = new PostContent(
-		response.content.raw ?? '',
-		meta.raw_content
+		meta.raw_content,
+		response.content.raw ?? ''
 	);
 
 	return {
