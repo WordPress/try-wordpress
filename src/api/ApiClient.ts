@@ -1,20 +1,20 @@
 /* eslint-disable react/no-is-mounted */
 import { PlaygroundClient } from '@wp-playground/client';
-import { PostsApi } from '@/api/Posts';
+import { BlogPostsApi } from '@/api/BlogPosts';
 import { SettingsApi } from '@/api/Settings';
 import { UsersApi } from '@/api/Users';
 
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
-	private readonly _posts: PostsApi;
+	private readonly _blogPosts: BlogPostsApi;
 	private readonly _settings: SettingsApi;
 	private readonly _users: UsersApi;
 
 	constructor( playgroundClient: PlaygroundClient, siteUrl: string ) {
 		this.playgroundClient = playgroundClient;
 		this._siteUrl = siteUrl;
-		this._posts = new PostsApi( this );
+		this._blogPosts = new BlogPostsApi( this );
 		this._settings = new SettingsApi( this );
 		this._users = new UsersApi( this );
 	}
@@ -23,8 +23,8 @@ export class ApiClient {
 		return this._siteUrl;
 	}
 
-	get posts(): PostsApi {
-		return this._posts;
+	get blogPosts(): BlogPostsApi {
+		return this._blogPosts;
 	}
 
 	get settings(): SettingsApi {

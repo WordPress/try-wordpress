@@ -1,13 +1,13 @@
-export interface Post {
+export interface BlogPost {
 	id: number;
 	guid: string;
 	url: string;
-	date: PostDate;
-	title: PostTitle;
-	content: PostContent;
+	date: BlogPostDate;
+	title: BlogPostTitle;
+	content: BlogPostContent;
 }
 
-abstract class PostSection< T > {
+abstract class BlogPostSection< T > {
 	original: string;
 	parsed: string;
 	constructor( original: string = '', parsed: string = '' ) {
@@ -17,7 +17,7 @@ abstract class PostSection< T > {
 	abstract get value(): T;
 }
 
-export class PostDate extends PostSection< Date > {
+export class BlogPostDate extends BlogPostSection< Date > {
 	readonly _value: Date;
 	constructor( original: string = '', parsed: string = '' ) {
 		super( original, parsed );
@@ -31,13 +31,13 @@ export class PostDate extends PostSection< Date > {
 	}
 }
 
-export class PostTitle extends PostSection< string > {
+export class BlogPostTitle extends BlogPostSection< string > {
 	get value(): string {
 		return this.parsed;
 	}
 }
 
-export class PostContent extends PostSection< string > {
+export class BlogPostContent extends BlogPostSection< string > {
 	get value(): string {
 		return this.parsed;
 	}

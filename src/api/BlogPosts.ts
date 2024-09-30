@@ -3,7 +3,12 @@ import { WP_REST_API_Post } from 'wp-types';
 type ApiPost = WP_REST_API_Post;
 /* eslint-enable camelcase */
 
-import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
+import {
+	BlogPost,
+	BlogPostContent,
+	BlogPostDate,
+	BlogPostTitle,
+} from '@/model/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
 
 interface CreateBody {
@@ -11,9 +16,9 @@ interface CreateBody {
 }
 
 interface UpdateBody {
-	date?: PostDate;
-	title?: PostTitle;
-	content?: PostContent;
+	date?: BlogPostDate;
+	title?: BlogPostTitle;
+	content?: BlogPostContent;
 }
 
 interface PostMeta {
@@ -23,20 +28,20 @@ interface PostMeta {
 	raw_content: string;
 }
 
-export class PostsApi {
+export class BlogPostsApi {
 	// eslint-disable-next-line no-useless-constructor
 	constructor( private readonly client: ApiClient ) {}
 
-	async create( body: CreateBody ): Promise< Post > {
+	async create( body: CreateBody ): Promise< BlogPost > {
 		const response = ( await this.client.post( '/liberated_posts', {
 			meta: {
 				guid: body.guid,
 			},
 		} ) ) as ApiPost;
-		return makePostFromApiResponse( response );
+		return fromApiResponse( response );
 	}
 
-	async update( id: number, body: UpdateBody ): Promise< Post > {
+	async update( id: number, body: UpdateBody ): Promise< BlogPost > {
 		const actualBody: any = {};
 		if ( body.date || body.title || body.content ) {
 			actualBody.meta = {};
@@ -60,23 +65,19 @@ export class PostsApi {
 			`/liberated_posts/${ id }`,
 			actualBody
 		) ) as ApiPost;
-		return makePostFromApiResponse( response );
+		return fromApiResponse( response );
 	}
 
-	async findById( id: string ): Promise< Post | null > {
+	async findById( id: string ): Promise< BlogPost | null > {
 		// eslint-disable-next-line react/no-is-mounted
 		const posts = await this.find( { id } );
-		return posts.length === 0
-			? null
-			: makePostFromApiResponse( posts[ 0 ] );
+		return posts.length === 0 ? null : fromApiResponse( posts[ 0 ] );
 	}
 
-	async findByGuid( guid: string ): Promise< Post | null > {
+	async findByGuid( guid: string ): Promise< BlogPost | null > {
 		// eslint-disable-next-line react/no-is-mounted
 		const posts = await this.find( { guid } );
-		return posts.length === 0
-			? null
-			: makePostFromApiResponse( posts[ 0 ] );
+		return posts.length === 0 ? null : fromApiResponse( posts[ 0 ] );
 	}
 
 	private async find(
@@ -93,11 +94,11 @@ export class PostsApi {
 	}
 }
 
-function makePostFromApiResponse( response: ApiPost ): Post {
+function fromApiResponse( response: ApiPost ): BlogPost {
 	const meta = response.meta as unknown as PostMeta;
-	const date = new PostDate( meta.raw_date, response.date_gmt );
-	const title = new PostTitle( meta.raw_title, response.title.raw ?? '' );
-	const content = new PostContent(
+	const date = new BlogPostDate( meta.raw_date, response.date_gmt );
+	const title = new BlogPostTitle( meta.raw_title, response.title.raw ?? '' );
+	const content = new BlogPostContent(
 		meta.raw_content,
 		response.content.raw ?? ''
 	);

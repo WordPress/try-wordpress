@@ -18,7 +18,9 @@ export function NewBlogPost() {
 		}
 		async function maybeRedirect() {
 			const currentPage = await ContentBus.getCurrentPageInfo();
-			const post = await apiClient!.posts.findByGuid( currentPage.url );
+			const post = await apiClient!.blogPosts.findByGuid(
+				currentPage.url
+			);
 			if ( post ) {
 				navigate( Screens.flows.blogPost.edit( session.id, post.id ) );
 				return;
@@ -35,11 +37,11 @@ export function NewBlogPost() {
 					onClick={ async () => {
 						const currentPage =
 							await ContentBus.getCurrentPageInfo();
-						let post = await apiClient!.posts.findByGuid(
+						let post = await apiClient!.blogPosts.findByGuid(
 							currentPage.url
 						);
 						if ( ! post ) {
-							post = await apiClient!.posts.create( {
+							post = await apiClient!.blogPosts.create( {
 								guid: currentPage.url,
 							} );
 						}

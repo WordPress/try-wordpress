@@ -2,8 +2,17 @@ import { useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { parsePostContent, parsePostDate, parsePostTitle } from '@/parser/post';
-import { Post, PostContent, PostDate, PostTitle } from '@/model/Post';
+import {
+	parsePostContent,
+	parsePostDate,
+	parsePostTitle,
+} from '@/parser/blog-post';
+import {
+	BlogPost,
+	BlogPostContent,
+	BlogPostDate,
+	BlogPostTitle,
+} from '@/model/BlogPost';
 
 enum section {
 	title = 1,
@@ -12,17 +21,17 @@ enum section {
 }
 
 interface Props {
-	post: Post;
-	onDateChanged: ( date: PostDate ) => void;
-	onTitleChanged: ( title: PostTitle ) => void;
-	onContentChanged: ( content: PostContent ) => void;
+	post: BlogPost;
+	onDateChanged: ( date: BlogPostDate ) => void;
+	onTitleChanged: ( title: BlogPostTitle ) => void;
+	onContentChanged: ( content: BlogPostContent ) => void;
 }
 
 export function SelectContent( props: Props ) {
 	const { post, onDateChanged, onTitleChanged, onContentChanged } = props;
-	const [ date, setDate ] = useState< PostDate >( post.date );
-	const [ title, setTitle ] = useState< PostTitle >( post.title );
-	const [ content, setContent ] = useState< PostContent >( post.content );
+	const [ date, setDate ] = useState< BlogPostDate >( post.date );
+	const [ title, setTitle ] = useState< BlogPostTitle >( post.title );
+	const [ content, setContent ] = useState< BlogPostContent >( post.content );
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
@@ -100,7 +109,7 @@ export function SelectContent( props: Props ) {
 					setWaitingForSelection( isWaiting ? section.title : false );
 				} }
 				onClear={ async () => {
-					const newTitle = new PostTitle();
+					const newTitle = new BlogPostTitle();
 					setTitle( newTitle );
 					onTitleChanged( newTitle );
 				} }
@@ -119,7 +128,7 @@ export function SelectContent( props: Props ) {
 					setWaitingForSelection( isWaiting ? section.date : false );
 				} }
 				onClear={ async () => {
-					const newDate = new PostDate();
+					const newDate = new BlogPostDate();
 					setDate( newDate );
 					onDateChanged( newDate );
 				} }
@@ -140,7 +149,7 @@ export function SelectContent( props: Props ) {
 					);
 				} }
 				onClear={ async () => {
-					const newContent = new PostContent();
+					const newContent = new BlogPostContent();
 					setContent( newContent );
 					onContentChanged( newContent );
 				} }
