@@ -1,6 +1,10 @@
 import { pasteHandler, serialize } from '@wordpress/blocks';
 import { findDeepestChild } from '@/parser/util';
-import { BlogPostContent, BlogPostDate, BlogPostTitle } from '@/model/BlogPost';
+import {
+	BlogPostContent,
+	BlogPostDate,
+	BlogPostTitle,
+} from '@/model/content/BlogPost';
 
 export function parsePostDate( html: string ): BlogPostDate {
 	const container = document.createElement( 'div' );

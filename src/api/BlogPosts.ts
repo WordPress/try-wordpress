@@ -8,7 +8,7 @@ import {
 	BlogPostContent,
 	BlogPostDate,
 	BlogPostTitle,
-} from '@/model/BlogPost';
+} from '@/model/content/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
 
 interface CreateBody {
