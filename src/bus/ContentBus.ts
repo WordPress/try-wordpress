@@ -4,12 +4,16 @@ import MessageSender = browser.runtime.MessageSender;
 enum Actions {
 	EnableHighlighting = 1,
 	DisableHighlighting,
-	GetCurrentUrl,
+	GetCurrentPageInfo,
 }
 
-async function getCurrentUrl(): Promise< string > {
+interface CurrentPageInfo {
+	url: string;
+	title: string;
+}
+async function getCurrentPageInfo(): Promise< CurrentPageInfo > {
 	return sendMessageToContent( {
-		action: Actions.GetCurrentUrl,
+		action: Actions.GetCurrentPageInfo,
 		payload: {},
 	} );
 }
@@ -35,7 +39,7 @@ export const ContentBus = {
 	stopListening,
 	enableHighlighting,
 	disableHighlighting,
-	getCurrentUrl,
+	getCurrentPageInfo,
 };
 
 let listener: (

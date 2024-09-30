@@ -8,6 +8,7 @@ import {
 	Route,
 	RouterProvider,
 	useLocation,
+	useNavigate,
 	useRouteLoaderData,
 } from 'react-router-dom';
 import { StrictMode, useEffect, useState } from 'react';
@@ -19,14 +20,23 @@ import { getSession, listSessions, Session } from '@/storage/session';
 import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
 import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 import { ApiClient } from '@/api/ApiClient';
-import { BlogPostFlow } from '@/ui/flows/blog-post/BlogPostFlow';
 import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
+import { NewBlogPost } from '@/ui/flows/blog-post/NewBlogPost';
+import { EditBlogPost } from '@/ui/flows/blog-post/EditBlogPost';
 
 export const Screens = {
 	home: () => '/start/home',
 	newSession: () => '/start/new-session',
 	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
+	flows: {
+		blogPost: {
+			new: ( sessionId: string ) =>
+				`/session/${ sessionId }/flow/blog-post/new`,
+			edit: ( sessionId: string, postId: number ) =>
+				`/session/${ sessionId }/flow/blog-post/${ postId }`,
+		},
+	},
 	flowBlogPost: ( sessionId: string ) =>
 		`/session/${ sessionId }/flow/blog-post`,
 };
@@ -68,7 +78,10 @@ function Routes( props: { initialScreen: string } ) {
 			>
 				<Route path="" element={ <ViewSession /> } />
 				<Route path="flow">
-					<Route path="blog-post" element={ <BlogPostFlow /> } />
+					<Route path="blog-post">
+						<Route path="new" element={ <NewBlogPost /> } />
+						<Route path=":postId" element={ <EditBlogPost /> } />
+					</Route>
 				</Route>
 			</Route>
 		</Route>
@@ -76,6 +89,7 @@ function Routes( props: { initialScreen: string } ) {
 }
 
 function App() {
+	const navigate = useNavigate();
 	const location = useLocation();
 	useEffect( () => {
 		setConfig( { currentPath: location.pathname } ).catch( ( err ) =>
@@ -95,11 +109,16 @@ function App() {
 
 	// Debugging tools.
 	useEffect( () => {
-		if ( ! apiClient || !! ( window as any ).trywp ) {
-			return;
+		if ( ! ( window as any ).trywp ) {
+			( window as any ).trywp = {
+				navigateTo: ( url: string ) => navigate( url ),
+			};
 		}
-		( window as any ).trywp = { apiClient, playgroundClient };
-	}, [ apiClient, playgroundClient ] );
+		if ( apiClient ) {
+			( window as any ).trywp.apiClient = apiClient;
+			( window as any ).trywp.playgroundClient = playgroundClient;
+		}
+	}, [ apiClient ] );
 
 	const preview = ! session ? (
 		<PlaceholderPreview />

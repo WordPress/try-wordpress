@@ -20,8 +20,11 @@ ContentBus.listen(
 				disableHighlightingCursor();
 				removeStyle();
 				break;
-			case ContentBus.actions.GetCurrentUrl:
-				sendResponse( document.documentURI );
+			case ContentBus.actions.GetCurrentPageInfo:
+				sendResponse( {
+					url: document.documentURI,
+					title: document.title,
+				} );
 				break;
 			default:
 				console.error( `Unknown action: ${ message.action }` );

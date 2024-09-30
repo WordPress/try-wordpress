@@ -63,6 +63,14 @@ export class PostsApi {
 		return makePostFromApiResponse( response );
 	}
 
+	async findById( id: string ): Promise< Post | null > {
+		// eslint-disable-next-line react/no-is-mounted
+		const posts = await this.find( { id } );
+		return posts.length === 0
+			? null
+			: makePostFromApiResponse( posts[ 0 ] );
+	}
+
 	async findByGuid( guid: string ): Promise< Post | null > {
 		// eslint-disable-next-line react/no-is-mounted
 		const posts = await this.find( { guid } );
