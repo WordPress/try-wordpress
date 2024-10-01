@@ -2,7 +2,7 @@ export enum PostType {
 	BlogPost = 'blog-post',
 }
 
-export enum DataType {
+export enum FieldType {
 	Date = 'date',
 	Text = 'text',
 	Html = 'html',
@@ -19,21 +19,21 @@ export interface Post<
 	fields: Fields;
 }
 
-export type PostFields< FieldName extends string, T extends DataType > = {
+export type PostFields< FieldName extends string, T extends FieldType > = {
 	[ Property in keyof FieldName ]: PostField< T >;
 };
 
-export interface PostField< T extends DataType > {
-	dataType: T;
+export interface PostField< T extends FieldType > {
+	fieldType: T;
 	original: string;
 	parsed: string;
 }
 
-export type DateField = PostField< DataType.Date > & {
+export type DateField = PostField< FieldType.Date > & {
 	utcString: string;
 };
-export type TextField = PostField< DataType.Text >;
-export type HtmlField = PostField< DataType.Html >;
+export type TextField = PostField< FieldType.Text >;
+export type HtmlField = PostField< FieldType.Html >;
 
 export function newDateField(
 	original: string = '',
@@ -41,7 +41,7 @@ export function newDateField(
 ): DateField {
 	const date = parsed === '' ? new Date() : new Date( parsed );
 	return {
-		dataType: DataType.Date,
+		fieldType: FieldType.Date,
 		original,
 		parsed,
 		utcString: date.toUTCString(),
@@ -53,7 +53,7 @@ export function newTextField(
 	parsed: string = ''
 ): TextField {
 	return {
-		dataType: DataType.Text,
+		fieldType: FieldType.Text,
 		original,
 		parsed,
 	};
@@ -64,7 +64,7 @@ export function newHtmlField(
 	parsed: string = ''
 ): HtmlField {
 	return {
-		dataType: DataType.Html,
+		fieldType: FieldType.Html,
 		original,
 		parsed,
 	};
