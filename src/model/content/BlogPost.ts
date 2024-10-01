@@ -1,10 +1,15 @@
-import { DateSection, HtmlSection, TextSection } from '@/model/content/Section';
+import {
+	DateSection,
+	HtmlSection,
+	Post,
+	PostType,
+	TextSection,
+} from '@/model/content/Post';
 
-export interface BlogPost {
-	id: number;
-	guid: string;
-	url: string;
+type BlogPostSections = {
 	date: DateSection;
 	title: TextSection;
 	content: HtmlSection;
-}
+};
+
+export interface BlogPost extends Post< PostType.BlogPost, BlogPostSections > {}

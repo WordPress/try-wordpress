@@ -6,7 +6,7 @@ import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Screens } from '@/ui/App';
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/flows/blog-post/Toolbar';
-import { DateSection, HtmlSection, TextSection } from '@/model/content/Section';
+import { DateSection, HtmlSection, TextSection } from '@/model/content/Post';
 
 export function EditBlogPost() {
 	const [ post, setPost ] = useState< BlogPost >();
@@ -34,9 +34,9 @@ export function EditBlogPost() {
 
 	const isValid =
 		!! post &&
-		post.title.original !== '' &&
-		post.date.original !== '' &&
-		post.content.original !== '';
+		post.sections.title.original !== '' &&
+		post.sections.date.original !== '' &&
+		post.sections.content.original !== '';
 
 	return (
 		<>

@@ -5,7 +5,15 @@ type ApiPost = WP_REST_API_Post;
 
 import { BlogPost } from '@/model/content/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
-import { DateSection, HtmlSection, TextSection } from '@/model/content/Section';
+import {
+	DateSection,
+	HtmlSection,
+	newDateSection,
+	newHtmlSection,
+	newTextSection,
+	PostType,
+	TextSection,
+} from '@/model/content/Post';
 
 interface CreateBody {
 	guid: string;
@@ -92,19 +100,22 @@ export class BlogPostsApi {
 
 function fromApiResponse( response: ApiPost ): BlogPost {
 	const meta = response.meta as unknown as PostMeta;
-	const date = new DateSection( meta.raw_date, response.date_gmt );
-	const title = new TextSection( meta.raw_title, response.title.raw ?? '' );
-	const content = new HtmlSection(
+	const date = newDateSection( meta.raw_date, response.date_gmt );
+	const title = newTextSection( meta.raw_title, response.title.raw ?? '' );
+	const content = newHtmlSection(
 		meta.raw_content,
 		response.content.raw ?? ''
 	);
 
 	return {
+		type: PostType.BlogPost,
 		guid: meta.guid,
 		id: response.id,
 		url: response.link,
-		date,
-		content,
-		title,
+		sections: {
+			date,
+			content,
+			title,
+		},
 	};
 }

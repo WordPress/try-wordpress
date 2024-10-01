@@ -8,7 +8,14 @@ import {
 	parsePostTitle,
 } from '@/parser/blog-post';
 import { BlogPost } from '@/model/content/BlogPost';
-import { DateSection, HtmlSection, TextSection } from '@/model/content/Section';
+import {
+	DateSection,
+	HtmlSection,
+	newDateSection,
+	newHtmlSection,
+	newTextSection,
+	TextSection,
+} from '@/model/content/Post';
 
 enum section {
 	title = 1,
@@ -25,9 +32,11 @@ interface Props {
 
 export function SelectContent( props: Props ) {
 	const { post, onDateChanged, onTitleChanged, onContentChanged } = props;
-	const [ date, setDate ] = useState< DateSection >( post.date );
-	const [ title, setTitle ] = useState< TextSection >( post.title );
-	const [ content, setContent ] = useState< HtmlSection >( post.content );
+	const [ date, setDate ] = useState< DateSection >( post.sections.date );
+	const [ title, setTitle ] = useState< TextSection >( post.sections.title );
+	const [ content, setContent ] = useState< HtmlSection >(
+		post.sections.content
+	);
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		section | false
@@ -105,7 +114,7 @@ export function SelectContent( props: Props ) {
 					setWaitingForSelection( isWaiting ? section.title : false );
 				} }
 				onClear={ async () => {
-					const newTitle = new TextSection();
+					const newTitle = newTextSection();
 					setTitle( newTitle );
 					onTitleChanged( newTitle );
 				} }
@@ -124,7 +133,7 @@ export function SelectContent( props: Props ) {
 					setWaitingForSelection( isWaiting ? section.date : false );
 				} }
 				onClear={ async () => {
-					const newDate = new DateSection();
+					const newDate = newDateSection();
 					setDate( newDate );
 					onDateChanged( newDate );
 				} }
@@ -145,7 +154,7 @@ export function SelectContent( props: Props ) {
 					);
 				} }
 				onClear={ async () => {
-					const newContent = new HtmlSection();
+					const newContent = newHtmlSection();
 					setContent( newContent );
 					onContentChanged( newContent );
 				} }

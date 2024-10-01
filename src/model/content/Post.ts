@@ -29,6 +29,43 @@ export interface PostSection< T extends DataType > {
 	parsed: string;
 }
 
-export type DateSection = PostSection< DataType.Date >;
+export type DateSection = PostSection< DataType.Date > & {
+	utcString: string;
+};
 export type TextSection = PostSection< DataType.Text >;
 export type HtmlSection = PostSection< DataType.Html >;
+
+export function newDateSection(
+	original: string = '',
+	parsed: string = ''
+): DateSection {
+	const date = parsed === '' ? new Date() : new Date( parsed );
+	return {
+		dataType: DataType.Date,
+		original,
+		parsed,
+		utcString: date.toUTCString(),
+	};
+}
+
+export function newTextSection(
+	original: string = '',
+	parsed: string = ''
+): TextSection {
+	return {
+		dataType: DataType.Text,
+		original,
+		parsed,
+	};
+}
+
+export function newHtmlSection(
+	original: string = '',
+	parsed: string = ''
+): HtmlSection {
+	return {
+		dataType: DataType.Html,
+		original,
+		parsed,
+	};
+}
