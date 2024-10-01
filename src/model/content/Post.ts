@@ -1,5 +1,5 @@
 export enum PostType {
-	BlogPost = 'blog-post',
+	BlogPost = 'liberated_post',
 }
 
 export const humanReadablePostType: Map< PostType, string > = new Map( [

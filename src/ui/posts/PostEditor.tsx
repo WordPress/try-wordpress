@@ -2,12 +2,11 @@ import { ReactElement, useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { BlogPost } from '@/model/content/BlogPost';
-import { PostField } from '@/model/content/Post';
+import { Post, PostField } from '@/model/content/Post';
 import { FieldEditor } from '@/ui/posts/FieldEditor';
 
 interface Props {
-	post: BlogPost;
+	post: Post;
 	fieldOrder: Record< string, number >;
 	onFieldChanged: ( name: string, field: PostField ) => void;
 }
