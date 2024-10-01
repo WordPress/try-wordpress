@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import {
 	PlaygroundClient,
 	StartPlaygroundOptions,
@@ -20,15 +20,19 @@ export function Playground( props: {
 } ) {
 	const { slug, className, blogName, onReady } = props;
 
+	const initializationRef = useRef( false );
+
 	useEffect( () => {
 		const iframe = document.getElementById( playgroundIframeId );
 		if ( ! ( iframe instanceof HTMLIFrameElement ) ) {
 			throw Error( 'Playground container element must be an iframe' );
 		}
-		if ( iframe.src !== '' ) {
-			// Playground is already started.
+		if ( iframe.src !== '' || initializationRef.current ) {
+			// Playground is already started or initialization has been attempted.
 			return;
 		}
+
+		initializationRef.current = true;
 
 		initPlayground( iframe, slug, blogName )
 			.then( async ( client: PlaygroundClient ) => {
@@ -39,7 +43,7 @@ export function Playground( props: {
 			.catch( ( error ) => {
 				throw error;
 			} );
-	}, [ slug, onReady ] );
+	}, [ slug, onReady, blogName ] );
 
 	return (
 		<iframe
