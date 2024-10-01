@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlogPost } from '@/model/content/BlogPost';
-import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
+import { PostEditor } from '@/ui/flows/blog-post/PostEditor';
 import { Screens } from '@/ui/App';
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/flows/blog-post/Toolbar';
@@ -55,7 +55,7 @@ export function EditBlogPost() {
 							Import
 						</button>
 					</Toolbar>
-					<SelectContent
+					<PostEditor
 						post={ post }
 						onDateChanged={ async ( date: DateField ) => {
 							const p = await apiClient!.blogPosts.update(

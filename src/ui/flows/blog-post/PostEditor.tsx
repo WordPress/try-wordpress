@@ -31,7 +31,7 @@ interface Props {
 	onContentChanged: ( content: HtmlField ) => void;
 }
 
-export function SelectContent( props: Props ) {
+export function PostEditor( props: Props ) {
 	const { post, onDateChanged, onTitleChanged, onContentChanged } = props;
 	const [ date, setDate ] = useState< DateField >( post.fields.date );
 	const [ title, setTitle ] = useState< TextField >( post.fields.title );
