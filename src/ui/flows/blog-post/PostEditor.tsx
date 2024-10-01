@@ -33,11 +33,6 @@ interface Props {
 
 export function PostEditor( props: Props ) {
 	const { post, onDateChanged, onTitleChanged, onContentChanged } = props;
-	const [ date, setDate ] = useState< DateField >( post.fields.date );
-	const [ title, setTitle ] = useState< TextField >( post.fields.title );
-	const [ content, setContent ] = useState< HtmlField >(
-		post.fields.content
-	);
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
 		fieldType | false
@@ -72,17 +67,14 @@ export function PostEditor( props: Props ) {
 				switch ( field ) {
 					case fieldType.date:
 						const newDate = parsePostDate( value );
-						setDate( newDate );
 						onDateChanged( newDate );
 						break;
 					case fieldType.title:
 						const newTitle = parsePostTitle( value );
-						setTitle( newTitle );
 						onTitleChanged( newTitle );
 						break;
 					case fieldType.content:
 						const newContent = parsePostContent( value );
-						setContent( newContent );
 						onContentChanged( newContent );
 						break;
 					default:
@@ -102,9 +94,8 @@ export function PostEditor( props: Props ) {
 	return (
 		<>
 			<FieldEditor
+				field={ post.fields.title }
 				label="Title"
-				originalValue={ title.original }
-				parsedValue={ title.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -118,14 +109,12 @@ export function PostEditor( props: Props ) {
 				} }
 				onClear={ async () => {
 					const newTitle = newTextField();
-					setTitle( newTitle );
 					onTitleChanged( newTitle );
 				} }
 			/>
 			<FieldEditor
+				field={ post.fields.date }
 				label="Date"
-				originalValue={ date.original }
-				parsedValue={ date.utcString }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -139,14 +128,12 @@ export function PostEditor( props: Props ) {
 				} }
 				onClear={ async () => {
 					const newDate = newDateField();
-					setDate( newDate );
 					onDateChanged( newDate );
 				} }
 			/>
 			<FieldEditor
+				field={ post.fields.content }
 				label="Content"
-				originalValue={ content.original }
-				parsedValue={ content.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
@@ -160,7 +147,6 @@ export function PostEditor( props: Props ) {
 				} }
 				onClear={ async () => {
 					const newContent = newHtmlField();
-					setContent( newContent );
 					onContentChanged( newContent );
 				} }
 			/>

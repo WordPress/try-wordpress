@@ -1,19 +1,18 @@
 import { ContentBus } from '@/bus/ContentBus';
+import { PostField } from '@/model/content/Post';
 
 export function FieldEditor( props: {
+	field: PostField;
 	label: string;
 	disabled: boolean;
-	originalValue: string | undefined;
-	parsedValue: string | undefined;
 	waitingForSelection: boolean;
 	onWaitingForSelection: ( isWaiting: boolean ) => void;
 	onClear: () => void;
 } ) {
 	const {
+		field,
 		label,
 		disabled,
-		originalValue,
-		parsedValue,
 		waitingForSelection,
 		onWaitingForSelection,
 		onClear,
@@ -30,7 +29,7 @@ export function FieldEditor( props: {
 			<div>
 				{ label }{ ' ' }
 				<button
-					disabled={ disabled || originalValue === '' }
+					disabled={ disabled || field.original === '' }
 					onClick={ onClear }
 				>
 					Clear
@@ -55,10 +54,8 @@ export function FieldEditor( props: {
 					</button>
 				) }
 			</div>
-			<div style={ { paddingTop: '1rem' } }>
-				{ originalValue ?? 'Not found' }
-			</div>
-			<div style={ { paddingTop: '1rem' } }>{ parsedValue }</div>
+			<div style={ { paddingTop: '1rem' } }>{ field.original }</div>
+			<div style={ { paddingTop: '1rem' } }>{ field.parsed }</div>
 		</div>
 	);
 }
