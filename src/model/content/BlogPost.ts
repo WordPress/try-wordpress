@@ -1,15 +1,16 @@
 import {
 	DateField,
+	GenericPost,
 	HtmlField,
-	Post,
 	PostType,
 	TextField,
 } from '@/model/content/Post';
 
-type BlogPostSections = {
+type BlogPostFields = {
 	date: DateField;
 	title: TextField;
 	content: HtmlField;
 };
 
-export interface BlogPost extends Post< PostType.BlogPost, BlogPostSections > {}
+export interface BlogPost
+	extends GenericPost< PostType.BlogPost, BlogPostFields > {}

@@ -8,7 +8,9 @@ export enum FieldType {
 	Html = 'html',
 }
 
-export interface Post<
+export type Post = GenericPost< any, PostFields< any, FieldType > >;
+
+export interface GenericPost<
 	Type extends PostType,
 	Fields extends PostFields< any, any >,
 > {
@@ -19,21 +21,23 @@ export interface Post<
 	fields: Fields;
 }
 
-export type PostFields< FieldName extends string, T extends FieldType > = {
-	[ Property in keyof FieldName ]: PostField< T >;
-};
+export type PostField = GenericField< FieldType >;
 
-export interface PostField< T extends FieldType > {
+interface GenericField< T extends FieldType > {
 	fieldType: T;
 	original: string;
 	parsed: string;
 }
 
-export type DateField = PostField< FieldType.Date > & {
+export type DateField = GenericField< FieldType.Date > & {
 	utcString: string;
 };
-export type TextField = PostField< FieldType.Text >;
-export type HtmlField = PostField< FieldType.Html >;
+export type TextField = GenericField< FieldType.Text >;
+export type HtmlField = GenericField< FieldType.Html >;
+
+type PostFields< FieldName extends string, T extends FieldType > = {
+	[ Property in keyof FieldName ]: GenericField< T >;
+};
 
 export function newDateField(
 	original: string = '',
