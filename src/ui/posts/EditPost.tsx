@@ -2,17 +2,17 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlogPost } from '@/model/content/BlogPost';
-import { PostEditor } from '@/ui/flows/blog-post/PostEditor';
+import { PostEditor } from '@/ui/posts/PostEditor';
 import { Screens } from '@/ui/App';
 import { ContentBus } from '@/bus/ContentBus';
-import { Toolbar } from '@/ui/flows/blog-post/Toolbar';
+import { Toolbar } from '@/ui/posts/Toolbar';
 import {
 	parsePostContent,
 	parsePostDate,
 	parsePostTitle,
 } from '@/parser/blog-post';
 
-export function EditBlogPost() {
+export function EditPost() {
 	const [ post, setPost ] = useState< BlogPost >();
 	const { postId } = useParams();
 	const { session, apiClient, playgroundClient } = useSessionContext();
@@ -28,7 +28,7 @@ export function EditBlogPost() {
 				if ( ! p ) {
 					// This can happen when the app initially loads with a URL that was saved in local storage.
 					// Instead of throwing an error, we just send the user to the "new blog post" screen.
-					navigate( Screens.flows.blogPost.new( session.id ) );
+					navigate( Screens.posts.new( session.id ) );
 					return;
 				}
 				setPost( p );

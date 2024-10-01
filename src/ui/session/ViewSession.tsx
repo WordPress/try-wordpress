@@ -15,7 +15,7 @@ export function ViewSession() {
 				<li>
 					<button
 						onClick={ () =>
-							navigate( Screens.flows.blogPost.new( session.id ) )
+							navigate( Screens.posts.new( session.id ) )
 						}
 					>
 						Import Blog Post

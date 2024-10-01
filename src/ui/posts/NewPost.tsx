@@ -3,9 +3,9 @@ import { ContentBus } from '@/bus/ContentBus';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate } from 'react-router-dom';
 import { Screens } from '@/ui/App';
-import { Toolbar } from '@/ui/flows/blog-post/Toolbar';
+import { Toolbar } from '@/ui/posts/Toolbar';
 
-export function NewBlogPost() {
+export function NewPost() {
 	const navigate = useNavigate();
 	const [ isLoading, setIsLoading ] = useState( true );
 	const { session, apiClient } = useSessionContext();
@@ -22,7 +22,7 @@ export function NewBlogPost() {
 				currentPage.url
 			);
 			if ( post ) {
-				navigate( Screens.flows.blogPost.edit( session.id, post.id ) );
+				navigate( Screens.posts.edit( session.id, post.id ) );
 				return;
 			}
 			setIsLoading( false );
@@ -45,9 +45,7 @@ export function NewBlogPost() {
 								guid: currentPage.url,
 							} );
 						}
-						navigate(
-							Screens.flows.blogPost.edit( session.id, post.id )
-						);
+						navigate( Screens.posts.edit( session.id, post.id ) );
 					} }
 				>
 					Continue

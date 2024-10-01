@@ -107,12 +107,12 @@ ol {
 	height: 100%;
 }
 
-/* Blog Post Flow */
-.flow-blog-post-toolbar {
+/* Posts */
+.posts-toolbar {
 	display: flex;
 	margin-bottom: 1rem;
 }
 
-.flow-blog-post-toolbar button {
+.posts-toolbar button {
 	margin-left: auto;
 }

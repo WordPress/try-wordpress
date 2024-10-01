@@ -4,7 +4,7 @@ import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { BlogPost } from '@/model/content/BlogPost';
 import { PostField } from '@/model/content/Post';
-import { FieldEditor } from '@/ui/flows/blog-post/FieldEditor';
+import { FieldEditor } from '@/ui/posts/FieldEditor';
 
 interface Props {
 	post: BlogPost;
