@@ -10,35 +10,35 @@ export enum DataType {
 
 export interface Post<
 	Type extends PostType,
-	Sections extends PostSections< any, any >,
+	Fields extends PostFields< any, any >,
 > {
 	type: Type;
 	id: number;
 	guid: string;
 	url: string;
-	sections: Sections;
+	fields: Fields;
 }
 
-export type PostSections< SectionName extends string, T extends DataType > = {
-	[ Property in keyof SectionName ]: PostSection< T >;
+export type PostFields< FieldName extends string, T extends DataType > = {
+	[ Property in keyof FieldName ]: PostField< T >;
 };
 
-export interface PostSection< T extends DataType > {
+export interface PostField< T extends DataType > {
 	dataType: T;
 	original: string;
 	parsed: string;
 }
 
-export type DateSection = PostSection< DataType.Date > & {
+export type DateField = PostField< DataType.Date > & {
 	utcString: string;
 };
-export type TextSection = PostSection< DataType.Text >;
-export type HtmlSection = PostSection< DataType.Html >;
+export type TextField = PostField< DataType.Text >;
+export type HtmlField = PostField< DataType.Html >;
 
-export function newDateSection(
+export function newDateField(
 	original: string = '',
 	parsed: string = ''
-): DateSection {
+): DateField {
 	const date = parsed === '' ? new Date() : new Date( parsed );
 	return {
 		dataType: DataType.Date,
@@ -48,10 +48,10 @@ export function newDateSection(
 	};
 }
 
-export function newTextSection(
+export function newTextField(
 	original: string = '',
 	parsed: string = ''
-): TextSection {
+): TextField {
 	return {
 		dataType: DataType.Text,
 		original,
@@ -59,10 +59,10 @@ export function newTextSection(
 	};
 }
 
-export function newHtmlSection(
+export function newHtmlField(
 	original: string = '',
 	parsed: string = ''
-): HtmlSection {
+): HtmlField {
 	return {
 		dataType: DataType.Html,
 		original,

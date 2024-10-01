@@ -9,15 +9,15 @@ import {
 } from '@/parser/blog-post';
 import { BlogPost } from '@/model/content/BlogPost';
 import {
-	DateSection,
-	HtmlSection,
-	newDateSection,
-	newHtmlSection,
-	newTextSection,
-	TextSection,
+	DateField,
+	HtmlField,
+	newDateField,
+	newHtmlField,
+	newTextField,
+	TextField,
 } from '@/model/content/Post';
 
-enum section {
+enum fieldType {
 	title = 1,
 	date,
 	content,
@@ -25,21 +25,21 @@ enum section {
 
 interface Props {
 	post: BlogPost;
-	onDateChanged: ( date: DateSection ) => void;
-	onTitleChanged: ( title: TextSection ) => void;
-	onContentChanged: ( content: HtmlSection ) => void;
+	onDateChanged: ( date: DateField ) => void;
+	onTitleChanged: ( title: TextField ) => void;
+	onContentChanged: ( content: HtmlField ) => void;
 }
 
 export function SelectContent( props: Props ) {
 	const { post, onDateChanged, onTitleChanged, onContentChanged } = props;
-	const [ date, setDate ] = useState< DateSection >( post.sections.date );
-	const [ title, setTitle ] = useState< TextSection >( post.sections.title );
-	const [ content, setContent ] = useState< HtmlSection >(
-		post.sections.content
+	const [ date, setDate ] = useState< DateField >( post.fields.date );
+	const [ title, setTitle ] = useState< TextField >( post.fields.title );
+	const [ content, setContent ] = useState< HtmlField >(
+		post.fields.content
 	);
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ waitingForSelection, setWaitingForSelection ] = useState<
-		section | false
+		fieldType | false
 	>( false );
 
 	// Listen to click events coming from the content script.
@@ -58,28 +58,28 @@ export function SelectContent( props: Props ) {
 	}, [] );
 
 	// Handle a click on an event in the content script,
-	// according to which section is currently waiting for selection.
+	// according to which field is currently waiting for selection.
 	useEffect(
 		() => {
 			if ( ! waitingForSelection || ! lastClickedElement ) {
 				return;
 			}
 			async function updatePost(
-				field: section | false,
+				field: fieldType | false,
 				value: string
 			): Promise< void > {
 				switch ( field ) {
-					case section.date:
+					case fieldType.date:
 						const newDate = parsePostDate( value );
 						setDate( newDate );
 						onDateChanged( newDate );
 						break;
-					case section.title:
+					case fieldType.title:
 						const newTitle = parsePostTitle( value );
 						setTitle( newTitle );
 						onTitleChanged( newTitle );
 						break;
-					case section.content:
+					case fieldType.content:
 						const newContent = parsePostContent( value );
 						setContent( newContent );
 						onContentChanged( newContent );
@@ -100,61 +100,65 @@ export function SelectContent( props: Props ) {
 
 	return (
 		<>
-			<Section
+			<Field
 				label="Title"
 				originalValue={ title.original }
 				parsedValue={ title.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
-					waitingForSelection === section.title
+					waitingForSelection === fieldType.title
 				}
 				onWaitingForSelection={ async ( isWaiting ) => {
 					await ContentBus.enableHighlighting();
-					setWaitingForSelection( isWaiting ? section.title : false );
+					setWaitingForSelection(
+						isWaiting ? fieldType.title : false
+					);
 				} }
 				onClear={ async () => {
-					const newTitle = newTextSection();
+					const newTitle = newTextField();
 					setTitle( newTitle );
 					onTitleChanged( newTitle );
 				} }
 			/>
-			<Section
+			<Field
 				label="Date"
 				originalValue={ date.original }
 				parsedValue={ date.utcString }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
-					waitingForSelection === section.date
+					waitingForSelection === fieldType.date
 				}
 				onWaitingForSelection={ async ( isWaiting ) => {
 					await ContentBus.enableHighlighting();
-					setWaitingForSelection( isWaiting ? section.date : false );
+					setWaitingForSelection(
+						isWaiting ? fieldType.date : false
+					);
 				} }
 				onClear={ async () => {
-					const newDate = newDateSection();
+					const newDate = newDateField();
 					setDate( newDate );
 					onDateChanged( newDate );
 				} }
 			/>
-			<Section
+			<Field
 				label="Content"
 				originalValue={ content.original }
 				parsedValue={ content.parsed }
 				disabled={ !! waitingForSelection }
 				waitingForSelection={
 					!! waitingForSelection &&
-					waitingForSelection === section.content
+					waitingForSelection === fieldType.content
 				}
 				onWaitingForSelection={ async ( isWaiting ) => {
 					await ContentBus.enableHighlighting();
 					setWaitingForSelection(
-						isWaiting ? section.content : false
+						isWaiting ? fieldType.content : false
 					);
 				} }
 				onClear={ async () => {
-					const newContent = newHtmlSection();
+					const newContent = newHtmlField();
 					setContent( newContent );
 					onContentChanged( newContent );
 				} }
@@ -163,7 +167,7 @@ export function SelectContent( props: Props ) {
 	);
 }
 
-function Section( props: {
+function Field( props: {
 	label: string;
 	disabled: boolean;
 	originalValue: string | undefined;

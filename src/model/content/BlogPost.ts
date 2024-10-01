@@ -1,15 +1,15 @@
 import {
-	DateSection,
-	HtmlSection,
+	DateField,
+	HtmlField,
 	Post,
 	PostType,
-	TextSection,
+	TextField,
 } from '@/model/content/Post';
 
 type BlogPostSections = {
-	date: DateSection;
-	title: TextSection;
-	content: HtmlSection;
+	date: DateField;
+	title: TextField;
+	content: HtmlField;
 };
 
 export interface BlogPost extends Post< PostType.BlogPost, BlogPostSections > {}

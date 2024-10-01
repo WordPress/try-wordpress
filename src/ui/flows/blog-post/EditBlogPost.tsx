@@ -6,7 +6,7 @@ import { SelectContent } from '@/ui/flows/blog-post/SelectContent';
 import { Screens } from '@/ui/App';
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/flows/blog-post/Toolbar';
-import { DateSection, HtmlSection, TextSection } from '@/model/content/Post';
+import { DateField, HtmlField, TextField } from '@/model/content/Post';
 
 export function EditBlogPost() {
 	const [ post, setPost ] = useState< BlogPost >();
@@ -34,9 +34,9 @@ export function EditBlogPost() {
 
 	const isValid =
 		!! post &&
-		post.sections.title.original !== '' &&
-		post.sections.date.original !== '' &&
-		post.sections.content.original !== '';
+		post.fields.title.original !== '' &&
+		post.fields.date.original !== '' &&
+		post.fields.content.original !== '';
 
 	return (
 		<>
@@ -57,7 +57,7 @@ export function EditBlogPost() {
 					</Toolbar>
 					<SelectContent
 						post={ post }
-						onDateChanged={ async ( date: DateSection ) => {
+						onDateChanged={ async ( date: DateField ) => {
 							const p = await apiClient!.blogPosts.update(
 								post.id,
 								{
@@ -67,7 +67,7 @@ export function EditBlogPost() {
 							setPost( p );
 							void playgroundClient.goTo( post.url );
 						} }
-						onTitleChanged={ async ( title: TextSection ) => {
+						onTitleChanged={ async ( title: TextField ) => {
 							const p = await apiClient!.blogPosts.update(
 								post.id,
 								{
@@ -77,7 +77,7 @@ export function EditBlogPost() {
 							setPost( p );
 							void playgroundClient.goTo( post.url );
 						} }
-						onContentChanged={ async ( content: HtmlSection ) => {
+						onContentChanged={ async ( content: HtmlField ) => {
 							const p = await apiClient!.blogPosts.update(
 								post.id,
 								{
