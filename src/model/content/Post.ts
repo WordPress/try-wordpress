@@ -2,6 +2,10 @@ export enum PostType {
 	BlogPost = 'blog-post',
 }
 
+export const humanReadablePostType: Map< PostType, string > = new Map( [
+	[ PostType.BlogPost, 'Blog Post' ],
+] );
+
 export enum FieldType {
 	Date = 'date',
 	Text = 'text',
