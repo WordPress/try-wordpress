@@ -1,41 +1,21 @@
-import { useEffect, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import {
-	parsePostContent,
-	parsePostDate,
-	parsePostTitle,
-} from '@/parser/blog-post';
 import { BlogPost } from '@/model/content/BlogPost';
-import {
-	DateField,
-	HtmlField,
-	newDateField,
-	newHtmlField,
-	newTextField,
-	TextField,
-} from '@/model/content/Post';
+import { PostField } from '@/model/content/Post';
 import { FieldEditor } from '@/ui/flows/blog-post/FieldEditor';
-
-enum fieldType {
-	title = 1,
-	date,
-	content,
-}
 
 interface Props {
 	post: BlogPost;
-	onDateChanged: ( date: DateField ) => void;
-	onTitleChanged: ( title: TextField ) => void;
-	onContentChanged: ( content: HtmlField ) => void;
+	onFieldChanged: ( name: string, field: PostField ) => void;
 }
 
 export function PostEditor( props: Props ) {
-	const { post, onDateChanged, onTitleChanged, onContentChanged } = props;
+	const { post, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
-	const [ waitingForSelection, setWaitingForSelection ] = useState<
-		fieldType | false
+	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
+		false | { field: PostField; name: string }
 	>( false );
 
 	// Listen to click events coming from the content script.
@@ -57,99 +37,49 @@ export function PostEditor( props: Props ) {
 	// according to which field is currently waiting for selection.
 	useEffect(
 		() => {
-			if ( ! waitingForSelection || ! lastClickedElement ) {
+			if ( ! fieldWaitingForSelection || ! lastClickedElement ) {
 				return;
 			}
-			async function updatePost(
-				field: fieldType | false,
-				value: string
-			): Promise< void > {
-				switch ( field ) {
-					case fieldType.date:
-						const newDate = parsePostDate( value );
-						onDateChanged( newDate );
-						break;
-					case fieldType.title:
-						const newTitle = parsePostTitle( value );
-						onTitleChanged( newTitle );
-						break;
-					case fieldType.content:
-						const newContent = parsePostContent( value );
-						onContentChanged( newContent );
-						break;
-					default:
-						throw Error( `unexpected field: ${ field }` );
-				}
-			}
-			updatePost( waitingForSelection, lastClickedElement ).catch(
-				( err ) => console.error( err )
+			fieldWaitingForSelection.field.original = lastClickedElement;
+			onFieldChanged(
+				fieldWaitingForSelection.name,
+				fieldWaitingForSelection.field
 			);
-			setWaitingForSelection( false );
+			setFieldWaitingForSelection( false );
 			setLastClickedElement( undefined );
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ waitingForSelection, lastClickedElement ]
+		[ fieldWaitingForSelection, lastClickedElement ]
 	);
 
-	return (
-		<>
+	const elements: ReactElement[] = [];
+	for ( const [ name, field ] of Object.entries( post.fields ) ) {
+		const isWaitingForSelection =
+			!! fieldWaitingForSelection &&
+			fieldWaitingForSelection.name === name;
+
+		elements.push(
 			<FieldEditor
-				field={ post.fields.title }
-				label="Title"
-				disabled={ !! waitingForSelection }
-				waitingForSelection={
-					!! waitingForSelection &&
-					waitingForSelection === fieldType.title
-				}
-				onWaitingForSelection={ async ( isWaiting ) => {
+				key={ name }
+				label={ name }
+				field={ field }
+				waitingForSelection={ isWaitingForSelection }
+				onWaitingForSelection={ async ( f: PostField | false ) => {
 					await ContentBus.enableHighlighting();
-					setWaitingForSelection(
-						isWaiting ? fieldType.title : false
-					);
+					if ( !! f ) {
+						setFieldWaitingForSelection( { field: f, name } );
+					} else {
+						setFieldWaitingForSelection( false );
+					}
 				} }
 				onClear={ async () => {
-					const newTitle = newTextField();
-					onTitleChanged( newTitle );
+					field.original = '';
+					field.parsed = '';
+					onFieldChanged( name, field );
 				} }
 			/>
-			<FieldEditor
-				field={ post.fields.date }
-				label="Date"
-				disabled={ !! waitingForSelection }
-				waitingForSelection={
-					!! waitingForSelection &&
-					waitingForSelection === fieldType.date
-				}
-				onWaitingForSelection={ async ( isWaiting ) => {
-					await ContentBus.enableHighlighting();
-					setWaitingForSelection(
-						isWaiting ? fieldType.date : false
-					);
-				} }
-				onClear={ async () => {
-					const newDate = newDateField();
-					onDateChanged( newDate );
-				} }
-			/>
-			<FieldEditor
-				field={ post.fields.content }
-				label="Content"
-				disabled={ !! waitingForSelection }
-				waitingForSelection={
-					!! waitingForSelection &&
-					waitingForSelection === fieldType.content
-				}
-				onWaitingForSelection={ async ( isWaiting ) => {
-					await ContentBus.enableHighlighting();
-					setWaitingForSelection(
-						isWaiting ? fieldType.content : false
-					);
-				} }
-				onClear={ async () => {
-					const newContent = newHtmlField();
-					onContentChanged( newContent );
-				} }
-			/>
-		</>
-	);
+		);
+	}
+
+	return <>{ elements }</>;
 }

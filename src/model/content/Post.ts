@@ -48,7 +48,7 @@ export function newDateField(
 		fieldType: FieldType.Date,
 		original,
 		parsed,
-		utcString: date.toUTCString(),
+		utcString: date.toISOString(),
 	};
 }
 

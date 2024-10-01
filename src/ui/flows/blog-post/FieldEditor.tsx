@@ -4,15 +4,13 @@ import { PostField } from '@/model/content/Post';
 export function FieldEditor( props: {
 	field: PostField;
 	label: string;
-	disabled: boolean;
 	waitingForSelection: boolean;
-	onWaitingForSelection: ( isWaiting: boolean ) => void;
+	onWaitingForSelection: ( field: PostField | false ) => void;
 	onClear: () => void;
 } ) {
 	const {
 		field,
 		label,
-		disabled,
 		waitingForSelection,
 		onWaitingForSelection,
 		onClear,
@@ -29,15 +27,15 @@ export function FieldEditor( props: {
 			<div>
 				{ label }{ ' ' }
 				<button
-					disabled={ disabled || field.original === '' }
+					disabled={ waitingForSelection || field.original === '' }
 					onClick={ onClear }
 				>
 					Clear
 				</button>
 				<button
-					disabled={ disabled }
+					disabled={ waitingForSelection }
 					onClick={ async () => {
-						onWaitingForSelection( true );
+						onWaitingForSelection( field );
 						await ContentBus.enableHighlighting();
 					} }
 				>
