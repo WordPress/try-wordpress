@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { ContentBus } from '@/bus/ContentBus';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/posts/Toolbar';
 
 export function NewPost() {
+	const { postType } = useParams();
 	const navigate = useNavigate();
 	const [ isLoading, setIsLoading ] = useState( true );
 	const { session, apiClient } = useSessionContext();
+
+	console.log( postType );
 
 	// Check if there is already a post for the page that is currently active in the source site,
 	// and if yes, redirect to that post.

@@ -1,9 +1,8 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlogPost } from '@/model/content/BlogPost';
 import { PostEditor } from '@/ui/posts/PostEditor';
-import { Screens } from '@/ui/App';
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/posts/Toolbar';
 import {
@@ -15,8 +14,7 @@ import {
 export function EditPost() {
 	const [ post, setPost ] = useState< BlogPost >();
 	const { postId } = useParams();
-	const { session, apiClient, playgroundClient } = useSessionContext();
-	const navigate = useNavigate();
+	const { apiClient, playgroundClient } = useSessionContext();
 
 	useEffect( () => {
 		if ( ! apiClient ) {
@@ -26,10 +24,7 @@ export function EditPost() {
 			.findById( postId! )
 			.then( ( p: BlogPost | null ) => {
 				if ( ! p ) {
-					// This can happen when the app initially loads with a URL that was saved in local storage.
-					// Instead of throwing an error, we just send the user to the "new blog post" screen.
-					navigate( Screens.posts.new( session.id ) );
-					return;
+					throw Error( `post with id ${ postId } not found` );
 				}
 				setPost( p );
 				playgroundClient.goTo( p.url );

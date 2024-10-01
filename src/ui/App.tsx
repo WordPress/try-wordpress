@@ -24,13 +24,15 @@ import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
 import { NewPost } from '@/ui/posts/NewPost';
 import { EditPost } from '@/ui/posts/EditPost';
+import { PostType } from '@/model/content/Post';
 
 export const Screens = {
 	home: () => '/start/home',
 	newSession: () => '/start/new-session',
 	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
 	posts: {
-		new: ( sessionId: string ) => `/session/${ sessionId }/posts/new`,
+		new: ( sessionId: string, postType: PostType ) =>
+			`/session/${ sessionId }/posts/new/${ postType }`,
 		edit: ( sessionId: string, postId: number ) =>
 			`/session/${ sessionId }/posts/${ postId }`,
 	},
@@ -73,7 +75,7 @@ function Routes( props: { initialScreen: string } ) {
 			>
 				<Route path="" element={ <ViewSession /> } />
 				<Route path="posts">
-					<Route path="new" element={ <NewPost /> } />
+					<Route path="new/:postType" element={ <NewPost /> } />
 					<Route path=":postId" element={ <EditPost /> } />
 				</Route>
 			</Route>
