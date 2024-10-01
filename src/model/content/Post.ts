@@ -30,7 +30,7 @@ interface GenericField< T extends FieldType > {
 }
 
 export type DateField = GenericField< FieldType.Date > & {
-	utcString: string;
+	value: Date;
 };
 export type TextField = GenericField< FieldType.Text >;
 export type HtmlField = GenericField< FieldType.Html >;
@@ -48,7 +48,7 @@ export function newDateField(
 		fieldType: FieldType.Date,
 		original,
 		parsed,
-		utcString: date.toISOString(),
+		value: date,
 	};
 }
 

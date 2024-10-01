@@ -51,7 +51,7 @@ export class BlogPostsApi {
 			actualBody.meta = {};
 		}
 		if ( body.date ) {
-			actualBody.date = body.date.utcString;
+			actualBody.date = body.date.value.toISOString();
 			actualBody.meta.raw_date = body.date.original;
 		}
 		if ( body.title ) {
