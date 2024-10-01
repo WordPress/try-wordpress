@@ -61,6 +61,11 @@ export function EditBlogPost() {
 					</Toolbar>
 					<PostEditor
 						post={ post }
+						fieldOrder={ {
+							title: 0,
+							date: 1,
+							content: 2,
+						} }
 						onFieldChanged={ async ( name, field ) => {
 							let fieldsToUpdate: object | undefined;
 							switch ( name ) {

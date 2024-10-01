@@ -8,11 +8,12 @@ import { FieldEditor } from '@/ui/flows/blog-post/FieldEditor';
 
 interface Props {
 	post: BlogPost;
+	fieldOrder: Record< string, number >;
 	onFieldChanged: ( name: string, field: PostField ) => void;
 }
 
 export function PostEditor( props: Props ) {
-	const { post, onFieldChanged } = props;
+	const { post, fieldOrder, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
 		false | { field: PostField; name: string }
@@ -52,8 +53,14 @@ export function PostEditor( props: Props ) {
 		[ fieldWaitingForSelection, lastClickedElement ]
 	);
 
-	const elements: ReactElement[] = [];
+	const fields: { name: string; field: PostField }[] = [];
 	for ( const [ name, field ] of Object.entries( post.fields ) ) {
+		const order = fieldOrder[ name ];
+		fields[ order ] = { name, field };
+	}
+
+	const elements: ReactElement[] = [];
+	for ( const { name, field } of fields ) {
 		const isWaitingForSelection =
 			!! fieldWaitingForSelection &&
 			fieldWaitingForSelection.name === name;
