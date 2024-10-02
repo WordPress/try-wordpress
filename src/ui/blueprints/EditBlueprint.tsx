@@ -10,44 +10,58 @@ import {
 	parsePostTitle,
 } from '@/parser/blog-post';
 import { Post, PostType } from '@/model/content/Post';
+import { Blueprint } from '@/model/content/Blueprint';
 
 export function EditBlueprint() {
 	const [ post, setPost ] = useState< Post >();
-	const { postId } = useParams();
+	const [ blueprint, setBlueprint ] = useState< Blueprint >();
+	const { blueprintId } = useParams();
 	const { apiClient, playgroundClient } = useSessionContext();
 
 	useEffect( () => {
 		if ( ! apiClient ) {
 			return;
 		}
-		async function loadPost() {
-			const genericPost = await apiClient!.posts.findById( postId! );
-			if ( ! genericPost ) {
-				throw Error( `post with id ${ postId } not found` );
+		// Load the blueprint and a post to preview the blueprint's results.
+		// If a post already exists for the source URL, load that post,
+		// otherwise create a new post.
+		async function load( bpId: string ) {
+			const bp = await apiClient!.blueprints.findById( bpId );
+			if ( ! bp ) {
+				throw Error( `blueprint with id ${ bpId } not found` );
 			}
 			let p: Post | null;
-			switch ( genericPost.type ) {
+			switch ( bp.type ) {
 				case PostType.BlogPost:
-					p = await apiClient!.blogPosts.findById( postId! );
+					p = await apiClient!.blogPosts.findByGuid( bp.sourceUrl );
 					break;
 				default:
-					throw Error( `unknown post type ${ genericPost.type }` );
+					throw Error( `unknown blueprint type ${ bp.type }` );
 			}
 			if ( ! p ) {
-				throw Error( `post with id ${ postId } not found` );
+				switch ( bp.type ) {
+					case PostType.BlogPost:
+						p = await apiClient!.blogPosts.create( {
+							guid: bp.sourceUrl,
+						} );
+						break;
+					default:
+						throw Error( `unknown post type ${ bp.type }` );
+				}
 			}
+			setBlueprint( bp );
 			setPost( p );
 			playgroundClient.goTo( p.url );
 		}
-		loadPost().catch( console.error );
-	}, [ postId, apiClient, playgroundClient ] );
+		load( blueprintId! ).catch( console.error );
+	}, [ blueprintId, apiClient, playgroundClient ] );
 
 	let isValid = true;
-	if ( ! post ) {
+	if ( ! blueprint || ! post ) {
 		isValid = false;
 	} else {
-		for ( const value of Object.values( post.fields ) ) {
-			if ( value.parsed === '' ) {
+		for ( const field of Object.values( blueprint.fields ) ) {
+			if ( field.selector === '' ) {
 				isValid = false;
 				break;
 			}

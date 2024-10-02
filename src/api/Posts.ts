@@ -20,6 +20,12 @@ export class PostsApi {
 		return posts.length === 0 ? null : fromApiResponse( posts[ 0 ] );
 	}
 
+	async findByGuid( guid: string ): Promise< Post | null > {
+		// eslint-disable-next-line react/no-is-mounted
+		const posts = await this.find( { guid } );
+		return posts.length === 0 ? null : fromApiResponse( posts[ 0 ] );
+	}
+
 	private async find(
 		params: Record< string, string >
 	): Promise< ApiPost[] > {

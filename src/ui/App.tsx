@@ -76,7 +76,7 @@ function Routes( props: { initialScreen: string } ) {
 				<Route path="" element={ <ViewSession /> } />
 				<Route path="blueprints">
 					<Route path="new/:postType" element={ <NewBlueprint /> } />
-					<Route path=":postId" element={ <EditBlueprint /> } />
+					<Route path=":blueprintId" element={ <EditBlueprint /> } />
 				</Route>
 			</Route>
 		</Route>
