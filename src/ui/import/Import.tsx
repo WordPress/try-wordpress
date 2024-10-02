@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { humanReadablePostType } from '@/model/content/Post';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
-import { ReactElement } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { Screens } from '@/ui/App';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
@@ -12,6 +12,13 @@ export function Import() {
 	const [ blueprint ] = useBlueprint( blueprintId );
 	const { session } = useSessionContext();
 	const navigate = useNavigate();
+
+	// Navigate to the blueprint's edit screen if the blueprint is not valid.
+	useEffect( () => {
+		if ( blueprint && ! blueprint.valid ) {
+			navigate( Screens.blueprints.edit( session.id, blueprint.id ) );
+		}
+	}, [ session.id, blueprint ] );
 
 	const fields: ReactElement[] = [];
 	if ( blueprint ) {
