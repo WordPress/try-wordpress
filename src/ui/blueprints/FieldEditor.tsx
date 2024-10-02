@@ -11,6 +11,7 @@ export function FieldEditor( props: {
 	onClear: () => void;
 } ) {
 	const {
+		blueprintField,
 		postField,
 		label,
 		waitingForSelection,
@@ -56,8 +57,15 @@ export function FieldEditor( props: {
 					</button>
 				) }
 			</div>
-			<div style={ { paddingTop: '1rem' } }>{ postField.original }</div>
-			<div style={ { paddingTop: '1rem' } }>{ postField.parsed }</div>
+			<div style={ { paddingTop: '1rem' } }>
+				selector: { blueprintField.selector }
+			</div>
+			<div style={ { paddingTop: '1rem' } }>
+				original: { postField.original }
+			</div>
+			<div style={ { paddingTop: '1rem' } }>
+				parsed: { postField.parsed }
+			</div>
 		</div>
 	);
 }
