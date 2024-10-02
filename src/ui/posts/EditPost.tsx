@@ -42,11 +42,17 @@ export function EditPost() {
 		loadPost().catch( console.error );
 	}, [ apiClient, postId ] );
 
-	const isValid =
-		!! post &&
-		post.fields.title.original !== '' &&
-		post.fields.date.original !== '' &&
-		post.fields.content.original !== '';
+	let isValid = true;
+	if ( ! post ) {
+		isValid = false;
+	} else {
+		for ( const value of Object.values( post.fields ) ) {
+			if ( value.parsed === '' ) {
+				isValid = false;
+				break;
+			}
+		}
+	}
 
 	return (
 		<>
