@@ -13,23 +13,40 @@ import { Post, PostType } from '@/model/content/Post';
 import { Blueprint } from '@/model/content/Blueprint';
 
 export function EditBlueprint() {
+	const params = useParams();
+	const blueprintId = params.blueprintId!;
 	const [ post, setPost ] = useState< Post >();
 	const [ blueprint, setBlueprint ] = useState< Blueprint >();
-	const { blueprintId } = useParams();
 	const { apiClient, playgroundClient } = useSessionContext();
 
+	// Load the blueprint,
+	// and make the source site navigate to the blueprint's source URL.
 	useEffect( () => {
-		if ( ! apiClient ) {
+		if ( apiClient ) {
+			apiClient.blueprints
+				.findById( blueprintId )
+				.then( ( bp ) => {
+					if ( ! bp ) {
+						throw Error(
+							`blueprint with id ${ blueprintId } not found`
+						);
+					}
+					setBlueprint( bp );
+					void ContentBus.navigateTo( bp.sourceUrl );
+				} )
+				.catch( console.error );
+		}
+	}, [ blueprintId, apiClient ] );
+
+	// Load a post to preview the blueprint's results,
+	// and make playground navigate to that post's URL.
+	// If a post already exists for the blueprint's source URL, we use that post,
+	// otherwise we create a new post.
+	useEffect( () => {
+		if ( ! blueprint ) {
 			return;
 		}
-		// Load the blueprint and a post to preview the blueprint's results.
-		// If a post already exists for the source URL, load that post,
-		// otherwise create a new post.
-		async function load( bpId: string ) {
-			const bp = await apiClient!.blueprints.findById( bpId );
-			if ( ! bp ) {
-				throw Error( `blueprint with id ${ bpId } not found` );
-			}
+		async function loadPost( bp: Blueprint ) {
 			let p: Post | null;
 			switch ( bp.type ) {
 				case PostType.BlogPost:
@@ -49,13 +66,11 @@ export function EditBlueprint() {
 						throw Error( `unknown post type ${ bp.type }` );
 				}
 			}
-			setBlueprint( bp );
 			setPost( p );
 			void playgroundClient.goTo( p.url );
-			void ContentBus.navigateTo( bp.sourceUrl );
 		}
-		load( blueprintId! ).catch( console.error );
-	}, [ blueprintId, apiClient, playgroundClient ] );
+		loadPost( blueprint ).catch( console.error );
+	}, [ blueprint, apiClient, playgroundClient ] );
 
 	let isValid = true;
 	if ( ! blueprint || ! post ) {
