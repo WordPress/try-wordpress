@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
 import { ContentBus } from '@/bus/ContentBus';
@@ -9,16 +9,16 @@ import {
 	parsePostDate,
 	parsePostTitle,
 } from '@/parser/blog-post';
-import { Post, PostField, PostType } from '@/model/content/Post';
-import { Blueprint } from '@/model/content/Blueprint';
+import { PostField, PostType } from '@/model/content/Post';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
+import { usePostForBlueprint } from '@/ui/blueprints/usePostForBlueprint';
 
 export function EditBlueprint() {
 	const params = useParams();
 	const blueprintId = params.blueprintId!;
 	const [ blueprint, setBlueprint ] = useBlueprint( blueprintId );
-	const [ post, setPost ] = useState< Post >();
+	const [ post, setPost ] = usePostForBlueprint( blueprint );
 	const { session, apiClient, playgroundClient } = useSessionContext();
 	const navigate = useNavigate();
 
@@ -29,40 +29,14 @@ export function EditBlueprint() {
 		}
 	}, [ blueprint ] );
 
-	// Load a post to preview the blueprint's results,
-	// and make playground navigate to that post's URL.
-	// If a post already exists for the blueprint's source URL, we use that post,
-	// otherwise we create a new post.
+	// Make playground navigate to the post's URL.
 	useEffect( () => {
-		if ( ! blueprint ) {
-			return;
+		if ( post && !! playgroundClient ) {
+			void playgroundClient.goTo( post.url );
 		}
-		async function loadPost( bp: Blueprint ) {
-			let p: Post | null;
-			switch ( bp.type ) {
-				case PostType.BlogPost:
-					p = await apiClient!.blogPosts.findByGuid( bp.sourceUrl );
-					break;
-				default:
-					throw Error( `unknown blueprint type ${ bp.type }` );
-			}
-			if ( ! p ) {
-				switch ( bp.type ) {
-					case PostType.BlogPost:
-						p = await apiClient!.blogPosts.create( {
-							guid: bp.sourceUrl,
-						} );
-						break;
-					default:
-						throw Error( `unknown post type ${ bp.type }` );
-				}
-			}
-			setPost( p );
-			void playgroundClient.goTo( p.url );
-		}
-		loadPost( blueprint ).catch( console.error );
-	}, [ blueprint, apiClient, playgroundClient ] );
+	}, [ post, playgroundClient ] );
 
+	// Handle field change events.
 	async function onFieldChanged(
 		name: string,
 		field: PostField,
