@@ -12,33 +12,22 @@ import {
 import { Post, PostField, PostType } from '@/model/content/Post';
 import { Blueprint } from '@/model/content/Blueprint';
 import { Screens } from '@/ui/App';
+import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 
 export function EditBlueprint() {
 	const params = useParams();
 	const blueprintId = params.blueprintId!;
+	const [ blueprint, setBlueprint ] = useBlueprint( blueprintId );
 	const [ post, setPost ] = useState< Post >();
-	const [ blueprint, setBlueprint ] = useState< Blueprint >();
 	const { session, apiClient, playgroundClient } = useSessionContext();
 	const navigate = useNavigate();
 
-	// Load the blueprint,
-	// and make the source site navigate to the blueprint's source URL.
+	// Make the source site navigate to the blueprint's source URL.
 	useEffect( () => {
-		if ( apiClient ) {
-			apiClient.blueprints
-				.findById( blueprintId )
-				.then( ( bp ) => {
-					if ( ! bp ) {
-						throw Error(
-							`blueprint with id ${ blueprintId } not found`
-						);
-					}
-					setBlueprint( bp );
-					void ContentBus.navigateTo( bp.sourceUrl );
-				} )
-				.catch( console.error );
+		if ( blueprint ) {
+			void ContentBus.navigateTo( blueprint.sourceUrl );
 		}
-	}, [ blueprintId, apiClient ] );
+	}, [ blueprint ] );
 
 	// Load a post to preview the blueprint's results,
 	// and make playground navigate to that post's URL.
