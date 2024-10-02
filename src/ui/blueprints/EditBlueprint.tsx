@@ -74,6 +74,15 @@ export function EditBlueprint() {
 		}
 
 		blueprint.fields[ name ].selector = selector;
+
+		let isBlueprintValid = true;
+		for ( const f of Object.values( blueprint.fields ) ) {
+			if ( f.selector === '' ) {
+				isBlueprintValid = false;
+			}
+		}
+		blueprint.valid = isBlueprintValid;
+
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );
 
@@ -87,22 +96,14 @@ export function EditBlueprint() {
 		}
 	}
 
-	let isValid = true;
-	if ( ! blueprint || ! post ) {
+	let isValid = ! blueprint ? false : blueprint.valid;
+	if ( ! post ) {
 		isValid = false;
-	} else {
-		for ( const field of Object.values( blueprint.fields ) ) {
-			if ( field.selector === '' ) {
+	} else if ( isValid && post ) {
+		for ( const f of Object.values( post.fields ) ) {
+			if ( f.original === '' || f.parsed === '' ) {
 				isValid = false;
 				break;
-			}
-		}
-		if ( isValid ) {
-			for ( const field of Object.values( post.fields ) ) {
-				if ( field.original === '' || field.parsed === '' ) {
-					isValid = false;
-					break;
-				}
 			}
 		}
 	}

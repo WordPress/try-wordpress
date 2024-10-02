@@ -91,9 +91,7 @@ function App() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	useEffect( () => {
-		setConfig( { currentPath: location.pathname } ).catch( ( err ) =>
-			console.log( err )
-		);
+		setConfig( { currentPath: location.pathname } ).catch( console.error );
 	}, [ location ] );
 
 	const session = useRouteLoaderData( 'session' ) as Session;

@@ -17,7 +17,7 @@ export interface GenericBlueprint<
 	type: Type;
 	id: string; // TODO: Probably need to make this a number when we start storing Blueprints on the backend.
 	sourceUrl: string;
-	valid: false;
+	valid: boolean;
 	fields: Fields;
 }
 
