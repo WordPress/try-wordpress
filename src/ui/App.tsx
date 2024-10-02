@@ -33,7 +33,7 @@ export const Screens = {
 	blueprints: {
 		new: ( sessionId: string, postType: PostType ) =>
 			`/session/${ sessionId }/blueprints/new/${ postType }`,
-		edit: ( sessionId: string, postId: number ) =>
+		edit: ( sessionId: string, postId: string ) =>
 			`/session/${ sessionId }/blueprints/${ postId }`,
 	},
 };

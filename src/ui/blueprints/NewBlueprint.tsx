@@ -4,7 +4,9 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
-import { humanReadablePostType, Post, PostType } from '@/model/content/Post';
+import { humanReadablePostType, PostType } from '@/model/content/Post';
+import { newBlogPostBlueprint } from '@/model/content/BlogPost';
+import { Blueprint } from '@/model/content/Blueprint';
 
 export function NewBlueprint() {
 	const params = useParams();
@@ -13,26 +15,18 @@ export function NewBlueprint() {
 	const [ isLoading, setIsLoading ] = useState( true );
 	const { session, apiClient } = useSessionContext();
 
-	// Check if there is already a post for the page that is currently active in the source site,
-	// and if yes, redirect to that post.
+	// Check if there is already a blueprint for the postType,
+	// and if so, redirect to that blueprint.
 	useEffect( () => {
 		if ( ! apiClient ) {
 			return;
 		}
 		async function maybeRedirect() {
-			const currentPage = await ContentBus.getCurrentPageInfo();
-			let post: Post | null;
-			switch ( postType ) {
-				case PostType.BlogPost:
-					post = await apiClient!.blogPosts.findByGuid(
-						currentPage.url
-					);
-					break;
-				default:
-					throw new Error( `unknown post type ${ postType }` );
-			}
-			if ( post ) {
-				navigate( Screens.blueprints.edit( session.id, post.id ) );
+			const blueprints =
+				await apiClient!.blueprints.findByPostType( postType );
+			const blueprint = blueprints.length > 0 ? blueprints[ 0 ] : null;
+			if ( blueprint ) {
+				navigate( Screens.blueprints.edit( session.id, blueprint.id ) );
 				return;
 			}
 			setIsLoading( false );
@@ -47,25 +41,20 @@ export function NewBlueprint() {
 					onClick={ async () => {
 						const currentPage =
 							await ContentBus.getCurrentPageInfo();
-						let post: Post | null;
+						let blueprint: Blueprint | null;
 						switch ( postType ) {
 							case PostType.BlogPost:
-								post = await apiClient!.blogPosts.findByGuid(
-									currentPage.url
+								blueprint = await apiClient!.blueprints.create(
+									newBlogPostBlueprint( currentPage.url )
 								);
-								if ( ! post ) {
-									post = await apiClient!.blogPosts.create( {
-										guid: currentPage.url,
-									} );
-								}
 								break;
 							default:
-								throw new Error(
+								throw Error(
 									`unknown post type ${ postType }`
 								);
 						}
 						navigate(
-							Screens.blueprints.edit( session.id, post.id )
+							Screens.blueprints.edit( session.id, blueprint.id )
 						);
 					} }
 				>
@@ -73,9 +62,8 @@ export function NewBlueprint() {
 				</button>
 			</Toolbar>
 			<div>
-				Navigate to the page of the{ ' ' }
-				{ humanReadablePostType.get( postType ) } you&apos;d like to
-				import
+				Navigate to the page of a{ ' ' }
+				{ humanReadablePostType.get( postType ) }
 			</div>
 		</>
 	);
