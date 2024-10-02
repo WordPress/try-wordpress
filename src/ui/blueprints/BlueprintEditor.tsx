@@ -8,7 +8,11 @@ import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 interface Props {
 	post: Post;
 	fieldOrder: Record< string, number >;
-	onFieldChanged: ( name: string, field: PostField ) => void;
+	onFieldChanged: (
+		name: string,
+		field: PostField,
+		selector: string
+	) => void;
 }
 
 export function BlueprintEditor( props: Props ) {
@@ -40,10 +44,12 @@ export function BlueprintEditor( props: Props ) {
 			if ( ! fieldWaitingForSelection || ! lastClickedElement ) {
 				return;
 			}
+			const selector = 'TODO';
 			fieldWaitingForSelection.field.original = lastClickedElement;
 			onFieldChanged(
 				fieldWaitingForSelection.name,
-				fieldWaitingForSelection.field
+				fieldWaitingForSelection.field,
+				selector
 			);
 			setFieldWaitingForSelection( false );
 			setLastClickedElement( undefined );
@@ -81,7 +87,7 @@ export function BlueprintEditor( props: Props ) {
 				onClear={ async () => {
 					field.original = '';
 					field.parsed = '';
-					onFieldChanged( name, field );
+					onFieldChanged( name, field, '' );
 				} }
 			/>
 		);

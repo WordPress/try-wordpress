@@ -108,7 +108,7 @@ export function EditBlueprint() {
 							date: 1,
 							content: 2,
 						} }
-						onFieldChanged={ async ( name, field ) => {
+						onFieldChanged={ async ( name, field, selector ) => {
 							let fieldsToUpdate: object | undefined;
 							switch ( post.type ) {
 								case PostType.BlogPost:
