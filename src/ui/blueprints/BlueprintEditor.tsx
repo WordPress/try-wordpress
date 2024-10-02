@@ -18,7 +18,7 @@ interface Props {
 }
 
 export function BlueprintEditor( props: Props ) {
-	const { post, fieldOrder, onFieldChanged } = props;
+	const { blueprint, post, fieldOrder, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
 		false | { field: PostField; name: string }
@@ -76,7 +76,8 @@ export function BlueprintEditor( props: Props ) {
 			<FieldEditor
 				key={ name }
 				label={ name }
-				field={ field }
+				blueprintField={ blueprint.fields[ name ] }
+				postField={ field }
 				waitingForSelection={ isWaitingForSelection }
 				onWaitingForSelection={ async ( f: PostField | false ) => {
 					await ContentBus.enableHighlighting();
