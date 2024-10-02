@@ -25,6 +25,7 @@ import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
 import { NewBlueprint } from '@/ui/blueprints/NewBlueprint';
 import { EditBlueprint } from '@/ui/blueprints/EditBlueprint';
 import { PostType } from '@/model/content/Post';
+import { Import } from '@/ui/import/Import';
 
 export const Screens = {
 	home: () => '/start/home',
@@ -36,6 +37,8 @@ export const Screens = {
 		edit: ( sessionId: string, postId: string ) =>
 			`/session/${ sessionId }/blueprints/${ postId }`,
 	},
+	import: ( sessionId: string, blueprintId: string ) =>
+		`/session/${ sessionId }/import/${ blueprintId }`,
 };
 
 const homeLoader: LoaderFunction = async () => {
@@ -78,6 +81,7 @@ function Routes( props: { initialScreen: string } ) {
 					<Route path="new/:postType" element={ <NewBlueprint /> } />
 					<Route path=":blueprintId" element={ <EditBlueprint /> } />
 				</Route>
+				<Route path="import/:blueprintId" element={ <Import /> } />
 			</Route>
 		</Route>
 	);

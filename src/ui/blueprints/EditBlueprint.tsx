@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
@@ -11,13 +11,15 @@ import {
 } from '@/parser/blog-post';
 import { Post, PostField, PostType } from '@/model/content/Post';
 import { Blueprint } from '@/model/content/Blueprint';
+import { Screens } from '@/ui/App';
 
 export function EditBlueprint() {
 	const params = useParams();
 	const blueprintId = params.blueprintId!;
 	const [ post, setPost ] = useState< Post >();
 	const [ blueprint, setBlueprint ] = useState< Blueprint >();
-	const { apiClient, playgroundClient } = useSessionContext();
+	const { session, apiClient, playgroundClient } = useSessionContext();
+	const navigate = useNavigate();
 
 	// Load the blueprint,
 	// and make the source site navigate to the blueprint's source URL.
@@ -145,10 +147,12 @@ export function EditBlueprint() {
 							disabled={ ! isValid }
 							onClick={ async () => {
 								await ContentBus.disableHighlighting();
-								console.log( 'TODO: import' );
+								navigate(
+									Screens.import( session.id, blueprint!.id )
+								);
 							} }
 						>
-							Import
+							Continue
 						</button>
 					</Toolbar>
 					<BlueprintEditor
