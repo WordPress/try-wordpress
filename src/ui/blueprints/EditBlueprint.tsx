@@ -9,7 +9,7 @@ import {
 	parsePostDate,
 	parsePostTitle,
 } from '@/parser/blog-post';
-import { Post, PostType } from '@/model/content/Post';
+import { Post, PostField, PostType } from '@/model/content/Post';
 import { Blueprint } from '@/model/content/Blueprint';
 
 export function EditBlueprint() {
@@ -72,6 +72,56 @@ export function EditBlueprint() {
 		loadPost( blueprint ).catch( console.error );
 	}, [ blueprint, apiClient, playgroundClient ] );
 
+	async function onFieldChanged(
+		name: string,
+		field: PostField,
+		selector: string
+	) {
+		if ( ! blueprint || ! post ) {
+			return;
+		}
+		let postFieldsToUpdate: object | undefined;
+		switch ( post.type ) {
+			case PostType.BlogPost:
+				switch ( name ) {
+					case 'date':
+						field = parsePostDate( field.original );
+						postFieldsToUpdate = {
+							date: field,
+						};
+						break;
+					case 'title':
+						field = parsePostTitle( field.original );
+						postFieldsToUpdate = {
+							title: field,
+						};
+						break;
+					case 'content':
+						field = parsePostContent( field.original );
+						postFieldsToUpdate = {
+							content: field,
+						};
+						break;
+				}
+				break;
+			default:
+				throw Error( `unknown post type ${ field.type }` );
+		}
+
+		blueprint.fields[ name ].selector = selector;
+		const bp = await apiClient!.blueprints.update( blueprint );
+		setBlueprint( bp );
+
+		if ( postFieldsToUpdate ) {
+			const p = await apiClient!.blogPosts.update(
+				post.id,
+				postFieldsToUpdate
+			);
+			setPost( p );
+			void playgroundClient.goTo( post.url );
+		}
+	}
+
 	let isValid = true;
 	if ( ! blueprint || ! post ) {
 		isValid = false;
@@ -109,57 +159,7 @@ export function EditBlueprint() {
 							date: 1,
 							content: 2,
 						} }
-						onFieldChanged={ async ( name, field, selector ) => {
-							let postFieldsToUpdate: object | undefined;
-							switch ( post.type ) {
-								case PostType.BlogPost:
-									switch ( name ) {
-										case 'date':
-											field = parsePostDate(
-												field.original
-											);
-											postFieldsToUpdate = {
-												date: field,
-											};
-											break;
-										case 'title':
-											field = parsePostTitle(
-												field.original
-											);
-											postFieldsToUpdate = {
-												title: field,
-											};
-											break;
-										case 'content':
-											field = parsePostContent(
-												field.original
-											);
-											postFieldsToUpdate = {
-												content: field,
-											};
-											break;
-									}
-									break;
-								default:
-									throw Error(
-										`unknown post type ${ field.type }`
-									);
-							}
-
-							blueprint.fields[ name ].selector = selector;
-							const bp =
-								await apiClient!.blueprints.update( blueprint );
-							setBlueprint( bp );
-
-							if ( postFieldsToUpdate ) {
-								const p = await apiClient!.blogPosts.update(
-									post.id,
-									postFieldsToUpdate
-								);
-								setPost( p );
-								void playgroundClient.goTo( post.url );
-							}
-						} }
+						onFieldChanged={ onFieldChanged }
 					/>
 				</>
 			) }
