@@ -110,7 +110,7 @@ export function EditBlueprint() {
 							content: 2,
 						} }
 						onFieldChanged={ async ( name, field, selector ) => {
-							let fieldsToUpdate: object | undefined;
+							let postFieldsToUpdate: object | undefined;
 							switch ( post.type ) {
 								case PostType.BlogPost:
 									switch ( name ) {
@@ -118,19 +118,25 @@ export function EditBlueprint() {
 											field = parsePostDate(
 												field.original
 											);
-											fieldsToUpdate = { date: field };
+											postFieldsToUpdate = {
+												date: field,
+											};
 											break;
 										case 'title':
 											field = parsePostTitle(
 												field.original
 											);
-											fieldsToUpdate = { title: field };
+											postFieldsToUpdate = {
+												title: field,
+											};
 											break;
 										case 'content':
 											field = parsePostContent(
 												field.original
 											);
-											fieldsToUpdate = { content: field };
+											postFieldsToUpdate = {
+												content: field,
+											};
 											break;
 									}
 									break;
@@ -139,15 +145,20 @@ export function EditBlueprint() {
 										`unknown post type ${ field.type }`
 									);
 							}
-							if ( ! fieldsToUpdate ) {
-								return;
+
+							blueprint.fields[ name ].selector = selector;
+							const bp =
+								await apiClient!.blueprints.update( blueprint );
+							setBlueprint( bp );
+
+							if ( postFieldsToUpdate ) {
+								const p = await apiClient!.blogPosts.update(
+									post.id,
+									postFieldsToUpdate
+								);
+								setPost( p );
+								void playgroundClient.goTo( post.url );
 							}
-							const p = await apiClient!.blogPosts.update(
-								post.id,
-								fieldsToUpdate
-							);
-							setPost( p );
-							void playgroundClient.goTo( post.url );
 						} }
 					/>
 				</>
