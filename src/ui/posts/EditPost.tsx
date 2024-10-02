@@ -80,19 +80,33 @@ export function EditPost() {
 						} }
 						onFieldChanged={ async ( name, field ) => {
 							let fieldsToUpdate: object | undefined;
-							switch ( name ) {
-								case 'date':
-									field = parsePostDate( field.original );
-									fieldsToUpdate = { date: field };
+							switch ( post.type ) {
+								case PostType.BlogPost:
+									switch ( name ) {
+										case 'date':
+											field = parsePostDate(
+												field.original
+											);
+											fieldsToUpdate = { date: field };
+											break;
+										case 'title':
+											field = parsePostTitle(
+												field.original
+											);
+											fieldsToUpdate = { title: field };
+											break;
+										case 'content':
+											field = parsePostContent(
+												field.original
+											);
+											fieldsToUpdate = { content: field };
+											break;
+									}
 									break;
-								case 'title':
-									field = parsePostTitle( field.original );
-									fieldsToUpdate = { title: field };
-									break;
-								case 'content':
-									field = parsePostContent( field.original );
-									fieldsToUpdate = { content: field };
-									break;
+								default:
+									throw Error(
+										`unknown post type ${ field.fieldType }`
+									);
 							}
 							if ( ! fieldsToUpdate ) {
 								return;
