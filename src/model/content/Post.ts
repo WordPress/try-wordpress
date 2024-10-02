@@ -28,7 +28,7 @@ export interface GenericPost<
 export type PostField = GenericField< FieldType >;
 
 interface GenericField< T extends FieldType > {
-	fieldType: T;
+	type: T;
 	original: string;
 	parsed: string;
 }
@@ -49,7 +49,7 @@ export function newDateField(
 ): DateField {
 	const date = parsed === '' ? new Date() : new Date( parsed );
 	return {
-		fieldType: FieldType.Date,
+		type: FieldType.Date,
 		original,
 		parsed,
 		value: date,
@@ -61,7 +61,7 @@ export function newTextField(
 	parsed: string = ''
 ): TextField {
 	return {
-		fieldType: FieldType.Text,
+		type: FieldType.Text,
 		original,
 		parsed,
 	};
@@ -72,7 +72,7 @@ export function newHtmlField(
 	parsed: string = ''
 ): HtmlField {
 	return {
-		fieldType: FieldType.Html,
+		type: FieldType.Html,
 		original,
 		parsed,
 	};

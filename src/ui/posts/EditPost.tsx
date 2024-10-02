@@ -105,7 +105,7 @@ export function EditPost() {
 									break;
 								default:
 									throw Error(
-										`unknown post type ${ field.fieldType }`
+										`unknown post type ${ field.type }`
 									);
 							}
 							if ( ! fieldsToUpdate ) {
