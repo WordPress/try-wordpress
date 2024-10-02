@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { PostEditor } from '@/ui/posts/PostEditor';
+import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
 import { ContentBus } from '@/bus/ContentBus';
-import { Toolbar } from '@/ui/posts/Toolbar';
+import { Toolbar } from '@/ui/blueprints/Toolbar';
 import {
 	parsePostContent,
 	parsePostDate,
@@ -11,7 +11,7 @@ import {
 } from '@/parser/blog-post';
 import { Post, PostType } from '@/model/content/Post';
 
-export function EditPost() {
+export function EditBlueprint() {
 	const [ post, setPost ] = useState< Post >();
 	const { postId } = useParams();
 	const { apiClient, playgroundClient } = useSessionContext();
@@ -71,7 +71,7 @@ export function EditPost() {
 							Import
 						</button>
 					</Toolbar>
-					<PostEditor
+					<BlueprintEditor
 						post={ post }
 						fieldOrder={ {
 							title: 0,

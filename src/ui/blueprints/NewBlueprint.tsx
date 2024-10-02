@@ -3,10 +3,10 @@ import { ContentBus } from '@/bus/ContentBus';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
-import { Toolbar } from '@/ui/posts/Toolbar';
+import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { humanReadablePostType, Post, PostType } from '@/model/content/Post';
 
-export function NewPost() {
+export function NewBlueprint() {
 	const params = useParams();
 	const postType = params.postType as PostType;
 	const navigate = useNavigate();
@@ -32,7 +32,7 @@ export function NewPost() {
 					throw new Error( `unknown post type ${ postType }` );
 			}
 			if ( post ) {
-				navigate( Screens.posts.edit( session.id, post.id ) );
+				navigate( Screens.blueprints.edit( session.id, post.id ) );
 				return;
 			}
 			setIsLoading( false );
@@ -64,7 +64,9 @@ export function NewPost() {
 									`unknown post type ${ postType }`
 								);
 						}
-						navigate( Screens.posts.edit( session.id, post.id ) );
+						navigate(
+							Screens.blueprints.edit( session.id, post.id )
+						);
 					} }
 				>
 					Continue

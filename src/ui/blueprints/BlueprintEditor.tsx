@@ -3,7 +3,7 @@ import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { Post, PostField } from '@/model/content/Post';
-import { FieldEditor } from '@/ui/posts/FieldEditor';
+import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 
 interface Props {
 	post: Post;
@@ -11,7 +11,7 @@ interface Props {
 	onFieldChanged: ( name: string, field: PostField ) => void;
 }
 
-export function PostEditor( props: Props ) {
+export function BlueprintEditor( props: Props ) {
 	const { post, fieldOrder, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<

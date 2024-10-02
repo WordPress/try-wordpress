@@ -22,19 +22,19 @@ import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 import { ApiClient } from '@/api/ApiClient';
 import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
-import { NewPost } from '@/ui/posts/NewPost';
-import { EditPost } from '@/ui/posts/EditPost';
+import { NewBlueprint } from '@/ui/blueprints/NewBlueprint';
+import { EditBlueprint } from '@/ui/blueprints/EditBlueprint';
 import { PostType } from '@/model/content/Post';
 
 export const Screens = {
 	home: () => '/start/home',
 	newSession: () => '/start/new-session',
 	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
-	posts: {
+	blueprints: {
 		new: ( sessionId: string, postType: PostType ) =>
-			`/session/${ sessionId }/posts/new/${ postType }`,
+			`/session/${ sessionId }/blueprints/new/${ postType }`,
 		edit: ( sessionId: string, postId: number ) =>
-			`/session/${ sessionId }/posts/${ postId }`,
+			`/session/${ sessionId }/blueprints/${ postId }`,
 	},
 };
 
@@ -74,9 +74,9 @@ function Routes( props: { initialScreen: string } ) {
 				loader={ sessionLoader }
 			>
 				<Route path="" element={ <ViewSession /> } />
-				<Route path="posts">
-					<Route path="new/:postType" element={ <NewPost /> } />
-					<Route path=":postId" element={ <EditPost /> } />
+				<Route path="blueprints">
+					<Route path="new/:postType" element={ <NewBlueprint /> } />
+					<Route path=":postId" element={ <EditBlueprint /> } />
 				</Route>
 			</Route>
 		</Route>
