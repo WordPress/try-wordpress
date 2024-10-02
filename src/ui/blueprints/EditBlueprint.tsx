@@ -134,6 +134,14 @@ export function EditBlueprint() {
 				break;
 			}
 		}
+		if ( isValid ) {
+			for ( const field of Object.values( post.fields ) ) {
+				if ( field.original === '' || field.parsed === '' ) {
+					isValid = false;
+					break;
+				}
+			}
+		}
 	}
 
 	return (
