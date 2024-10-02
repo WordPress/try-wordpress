@@ -1,13 +1,17 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { humanReadablePostType } from '@/model/content/Post';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { ReactElement } from 'react';
+import { Screens } from '@/ui/App';
+import { useSessionContext } from '@/ui/session/SessionProvider';
 
 export function Import() {
 	const params = useParams();
 	const blueprintId = params.blueprintId!;
 	const [ blueprint ] = useBlueprint( blueprintId );
+	const { session } = useSessionContext();
+	const navigate = useNavigate();
 
 	const fields: ReactElement[] = [];
 	if ( blueprint ) {
@@ -27,6 +31,18 @@ export function Import() {
 			) : (
 				<>
 					<Toolbar>
+						<button
+							onClick={ async () => {
+								navigate(
+									Screens.blueprints.edit(
+										session.id,
+										blueprint.id
+									)
+								);
+							} }
+						>
+							Edit blueprint
+						</button>
 						<button
 							onClick={ async () => {
 								console.log( 'TODO' );

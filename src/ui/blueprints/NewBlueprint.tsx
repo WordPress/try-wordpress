@@ -15,8 +15,9 @@ export function NewBlueprint() {
 	const [ isLoading, setIsLoading ] = useState( true );
 	const { session, apiClient } = useSessionContext();
 
-	// Check if there is already a blueprint for the postType,
-	// and if so, redirect to that blueprint.
+	// Check if there is already a blueprint for the postType and if so,
+	// redirect to that blueprint's edit screen is the blueprint is not valid yet,
+	// or redirect to the import screen if the blueprint is already valid.
 	useEffect( () => {
 		if ( ! apiClient ) {
 			return;
@@ -25,7 +26,10 @@ export function NewBlueprint() {
 			const blueprints =
 				await apiClient!.blueprints.findByPostType( postType );
 			const blueprint = blueprints.length > 0 ? blueprints[ 0 ] : null;
-			if ( blueprint ) {
+			if ( blueprint && blueprint.valid ) {
+				navigate( Screens.import( session.id, blueprint.id ) );
+				return;
+			} else if ( blueprint ) {
 				navigate( Screens.blueprints.edit( session.id, blueprint.id ) );
 				return;
 			}

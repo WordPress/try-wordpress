@@ -24,7 +24,7 @@ export function ViewSession() {
 							)
 						}
 					>
-						Import Blog Post
+						Import Blog Posts
 					</button>
 				</li>
 			</ul>
