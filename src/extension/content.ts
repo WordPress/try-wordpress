@@ -26,6 +26,12 @@ ContentBus.listen(
 					title: document.title,
 				} );
 				break;
+			case ContentBus.actions.NavigateTo:
+				const url = ( message.payload as any ).url;
+				if ( document.location.href !== url ) {
+					document.location.href = url;
+				}
+				break;
 			default:
 				console.error( `Unknown action: ${ message.action }` );
 				break;

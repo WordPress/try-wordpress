@@ -5,6 +5,7 @@ enum Actions {
 	EnableHighlighting = 1,
 	DisableHighlighting,
 	GetCurrentPageInfo,
+	NavigateTo,
 }
 
 interface CurrentPageInfo {
@@ -15,6 +16,13 @@ async function getCurrentPageInfo(): Promise< CurrentPageInfo > {
 	return sendMessageToContent( {
 		action: Actions.GetCurrentPageInfo,
 		payload: {},
+	} );
+}
+
+async function navigateTo( url: string ): Promise< void > {
+	return sendMessageToContent( {
+		action: Actions.NavigateTo,
+		payload: { url },
 	} );
 }
 
@@ -40,6 +48,7 @@ export const ContentBus = {
 	enableHighlighting,
 	disableHighlighting,
 	getCurrentPageInfo,
+	navigateTo,
 };
 
 let listener: (

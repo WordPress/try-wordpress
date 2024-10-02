@@ -51,7 +51,8 @@ export function EditBlueprint() {
 			}
 			setBlueprint( bp );
 			setPost( p );
-			playgroundClient.goTo( p.url );
+			void playgroundClient.goTo( p.url );
+			void ContentBus.navigateTo( bp.sourceUrl );
 		}
 		load( blueprintId! ).catch( console.error );
 	}, [ blueprintId, apiClient, playgroundClient ] );
