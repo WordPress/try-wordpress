@@ -13,6 +13,13 @@ export enum FieldType {
 }
 
 export type Post = GenericPost< any, PostFields< any, FieldType > >;
+export type PostField = GenericField< FieldType >;
+
+export type DateField = GenericField< FieldType.Date > & {
+	value: Date;
+};
+export type TextField = GenericField< FieldType.Text >;
+export type HtmlField = GenericField< FieldType.Html >;
 
 export interface GenericPost<
 	Type extends PostType,
@@ -25,19 +32,11 @@ export interface GenericPost<
 	fields: Fields;
 }
 
-export type PostField = GenericField< FieldType >;
-
-interface GenericField< T extends FieldType > {
+export interface GenericField< T extends FieldType > {
 	type: T;
 	original: string;
 	parsed: string;
 }
-
-export type DateField = GenericField< FieldType.Date > & {
-	value: Date;
-};
-export type TextField = GenericField< FieldType.Text >;
-export type HtmlField = GenericField< FieldType.Html >;
 
 type PostFields< FieldName extends string, T extends FieldType > = {
 	[ Property in keyof FieldName ]: GenericField< T >;
