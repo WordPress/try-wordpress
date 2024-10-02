@@ -4,8 +4,10 @@ import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { Post, PostField } from '@/model/content/Post';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
+import { Blueprint } from '@/model/content/Blueprint';
 
 interface Props {
+	blueprint: Blueprint;
 	post: Post;
 	fieldOrder: Record< string, number >;
 	onFieldChanged: (

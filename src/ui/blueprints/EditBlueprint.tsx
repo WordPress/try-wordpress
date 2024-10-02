@@ -86,7 +86,7 @@ export function EditBlueprint() {
 
 	return (
 		<>
-			{ ! post ? (
+			{ ! blueprint || ! post ? (
 				'Loading...'
 			) : (
 				<>
@@ -102,6 +102,7 @@ export function EditBlueprint() {
 						</button>
 					</Toolbar>
 					<BlueprintEditor
+						blueprint={ blueprint }
 						post={ post }
 						fieldOrder={ {
 							title: 0,
