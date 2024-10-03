@@ -17,6 +17,7 @@ require 'class-post-type-ui.php';
 require 'class-promoter.php';
 require 'class-meta-fields-manager.php';
 require 'class-rest-api-extender.php';
+require 'class-storage.php';
 
 ( function () {
 	$post_type_manager = new Post_Type_Manager();
@@ -28,4 +29,6 @@ require 'class-rest-api-extender.php';
 	new Meta_Fields_Manager( $custom_post_types );
 
 	new Rest_API_Extender( $custom_post_types, $promoter );
+
+	new Storage();
 } )();
