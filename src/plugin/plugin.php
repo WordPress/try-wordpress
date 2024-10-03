@@ -20,8 +20,7 @@ require 'class-rest-api-extender.php';
 require 'class-storage.php';
 
 ( function () {
-	$post_type_manager = new Post_Type_Manager();
-	$custom_post_types = $post_type_manager->get_custom_post_types();
+	$custom_post_types = array( Storage::POST_TYPE );
 
 	$promoter = new Promoter();
 
