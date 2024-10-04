@@ -33,7 +33,8 @@ class Promoter {
 				$post_type = 'post';
 		}
 
-		return $post_type;
+		// @TODO: filter name would be changed w.r.t new verb in place of 'promoted' once its decided
+		return apply_filters( 'post_type_for_promoted_post', $post_type, $liberated_post );
 	}
 
 	public function get_promoted_post_id( $liberated_post_id ): int|null {
