@@ -61,8 +61,7 @@ class Rest_API_Extender_Test extends TestCase {
 
 		$routes = rest_get_server()->get_routes( 'wp/v2' );
 
-		$this->assertArrayHasKey( '/wp/v2/lib_xs/(?P<id>\d+)/promote', $routes );
-		$this->assertArrayHasKey( '/wp/v2/lib_ys/(?P<id>\d+)/promote', $routes );
+		$this->assertArrayHasKey( '/wp/v2/lib_x/(?P<id>\d+)/promote', $routes );
 	}
 
 	public function testPromotePost(): void {

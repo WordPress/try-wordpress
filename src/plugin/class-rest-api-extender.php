@@ -32,7 +32,7 @@ class Rest_API_Extender {
 		foreach ( $this->custom_post_types as $post_type ) {
 			register_rest_route(
 				'wp/v2',
-				'/' . $post_type . 's/(?P<id>\d+)/promote',
+				'/' . $post_type . '/(?P<id>\d+)/promote',
 				array(
 					'methods'             => 'POST',
 					'callback'            => array( $this, 'promote_post' ),
