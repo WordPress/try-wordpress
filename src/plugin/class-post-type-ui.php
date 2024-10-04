@@ -10,6 +10,10 @@ class Post_Type_UI {
 		$this->post_types = $post_types;
 		$this->promoter   = $promoter;
 
+		foreach ( $this->post_types as $post_type ) {
+			$this->remove_add_new_option( $post_type );
+		}
+
 		// Strip editor to be barebones.
 		add_filter(
 			'wp_editor_settings',
@@ -122,6 +126,53 @@ class Post_Type_UI {
 				}
 			},
 			999
+		);
+	}
+
+	public function remove_add_new_option( $post_type ): void {
+		// Remove "Add New" from sidebar menu.
+		add_action(
+			'admin_menu',
+			function () use ( $post_type ) {
+				$menu_slug    = 'edit.php?post_type=' . $post_type;
+				$submenu_slug = 'post-new.php?post_type=' . $post_type;
+				remove_submenu_page( $menu_slug, $submenu_slug );
+			}
+		);
+
+		// Remove "Add New" from admin bar menu.
+		add_action(
+			'admin_bar_menu',
+			function ( $wp_admin_bar ) use ( $post_type ) {
+				$wp_admin_bar->remove_node( 'new-' . $post_type );
+			},
+			999
+		);
+
+		// Redirect if you go to "Add New" page directly.
+		add_action(
+			'admin_init',
+			function () use ( $post_type ) {
+				global $pagenow;
+				// @phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				if ( 'post-new.php' === $pagenow && isset( $_GET['post_type'] ) && $_GET['post_type'] === $post_type ) {
+					wp_safe_redirect( admin_url( 'edit.php?post_type=' . $post_type ) );
+					exit;
+				}
+			}
+		);
+
+		// Hide "Add New" button next to title on the listing page.
+		add_action(
+			'admin_head',
+			function () use ( $post_type ) {
+				$post_type_key = $post_type;
+				global $pagenow, $post_type;
+
+				if ( 'edit.php' === $pagenow && $post_type === $post_type_key ) {
+					echo '<style>.page-title-action { display: none !important; }</style>';
+				}
+			}
 		);
 	}
 }
