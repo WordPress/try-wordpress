@@ -28,7 +28,13 @@ class Promoter {
 
 		$content_type = get_post_meta( $liberated_post->ID, 'content_type', true );
 		switch ( $content_type ) {
-			// @TODO add more cases here, once we know those values
+			case 'blogpost':
+			case 'post':
+				$post_type = 'post';
+				break;
+			case 'product':
+				$post_type = 'product';
+				break;
 			default:
 				$post_type = 'post';
 		}

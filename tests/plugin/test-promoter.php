@@ -21,9 +21,10 @@ class Promoter_Test extends TestCase {
 				'post_status'           => 'draft',
 				'post_content_filtered' => '<div><p>Content 1</p><p>Content 2</p></div>',
 				'guid'                  => 'https://example.com/x',
-				'post_type'             => 'liberated_post',
+				'post_type'             => 'liberated_data',
 			)
 		);
+		update_post_meta( $this->post_id_in_db, 'content_type', 'blogpost' );
 
 		$this->promoter = new Promoter( array( 'lib_x' ) );
 	}
@@ -42,10 +43,13 @@ class Promoter_Test extends TestCase {
 		$reflection = new ReflectionClass( $this->promoter );
 		$method     = $reflection->getMethod( 'get_post_type_for_promoted_post' );
 
-		$result = $method->invokeArgs( $this->promoter, array( 'liberated_x' ) );
-		$this->assertEquals( 'x', $result );
-		$result = $method->invokeArgs( $this->promoter, array( 'liberated_y' ) );
-		$this->assertEquals( 'y', $result );
+		$result = $method->invokeArgs( $this->promoter, array( $this->post_id_in_db ) );
+		$this->assertEquals( 'post', $result );
+
+		update_post_meta( $this->post_id_in_db, 'content_type', 'product' );
+
+		$result = $method->invokeArgs( $this->promoter, array( $this->post_id_in_db ) );
+		$this->assertEquals( 'product', $result );
 	}
 
 	public function testGetPromotedPost() {
