@@ -9,8 +9,19 @@ class Promoter {
 
 	public function __construct() {}
 
-	private function get_post_type_for_promoted_post( string $post_type ): string {
-		return str_replace( 'liberated_', '', $post_type );
+	private function get_post_type_for_promoted_post( int|WP_Post $liberated_post ): string {
+		if ( is_int( $liberated_post ) ) {
+			$liberated_post = get_post( $liberated_post );
+		}
+
+		$content_type = get_post_meta( $liberated_post->ID, 'content_type', true );
+		switch ( $content_type ) {
+			// @TODO add more cases here, once we know those values
+			default:
+				$post_type = 'post';
+		}
+
+		return $post_type;
 	}
 
 	public function get_promoted_post_id( $liberated_post_id ): int|null {
@@ -48,7 +59,7 @@ class Promoter {
 				'ping_status'       => $liberated_post->ping_status,
 				'post_password'     => $liberated_post->post_password,
 				'post_name'         => $liberated_post->post_name,
-				'post_type'         => $this->get_post_type_for_promoted_post( $liberated_post->post_type ),
+				'post_type'         => $this->get_post_type_for_promoted_post( $liberated_post->ID ),
 			)
 		);
 
