@@ -34,6 +34,8 @@ class Promoter_Test extends TestCase {
 		$promoted_post_id = $this->promoter->get_promoted_post_id( $this->post_id_in_db );
 		wp_delete_post( $promoted_post_id, true );
 		wp_delete_post( $this->post_id_in_db, true );
+
+		delete_post_meta( 99, '_promoted_post' );
 	}
 
 	public function testGetPostTypeForPromotedPost() {
