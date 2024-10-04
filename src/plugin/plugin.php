@@ -12,7 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require 'class-post-type-manager.php';
 require 'class-post-type-ui.php';
 require 'class-promoter.php';
 require 'class-meta-fields-manager.php';
