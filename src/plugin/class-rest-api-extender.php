@@ -25,6 +25,8 @@ class Rest_API_Extender {
 				10,
 				2
 			);
+
+			add_filter( 'rest_prepare_' . $post_type, array( $this, 'inject_preview_link' ), 10, 3 );
 		}
 	}
 
@@ -95,5 +97,17 @@ class Rest_API_Extender {
 		}
 
 		return $args;
+	}
+
+	public function inject_preview_link( WP_REST_Response $response, object $post, WP_REST_Request $request ): WP_REST_Response {
+		$data = $response->get_data();
+
+		$promoted_post_id = $this->promoter->get_promoted_post_id( $post->ID );
+		if ( $promoted_post_id ) {
+			$data['pg_preview_link'] = get_permalink( $promoted_post_id );
+			$response->set_data( $data );
+		}
+
+		return $response;
 	}
 }
