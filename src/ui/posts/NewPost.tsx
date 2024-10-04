@@ -37,7 +37,7 @@ export function NewPost() {
 			}
 			setIsLoading( false );
 		}
-		maybeRedirect().catch( ( err ) => console.log( err ) );
+		maybeRedirect().catch( console.error );
 	}, [ session.id, apiClient, postType ] );
 
 	const element = (
