@@ -25,7 +25,7 @@ class Promoter_Test extends TestCase {
 			)
 		);
 
-		$this->promoter = new Promoter();
+		$this->promoter = new Promoter( array( 'lib_x' ) );
 	}
 
 	protected function tearDown(): void {

@@ -7,7 +7,19 @@ use WP_Post;
 class Promoter {
 	private string $meta_key_for_promoted_post = '_promoted_post';
 
-	public function __construct() {}
+	public function __construct( $post_types ) {
+		// constantly promote for now
+		foreach ( $post_types as $post_type ) {
+			add_action(
+				'save_post_' . $post_type,
+				function ( $post_id, $post ) {
+					$this->promote( $post );
+				},
+				10,
+				2
+			);
+		}
+	}
 
 	private function get_post_type_for_promoted_post( int|WP_Post $liberated_post ): string {
 		if ( is_int( $liberated_post ) ) {
