@@ -27,7 +27,7 @@ class Storage {
 		$args = array(
 			'public'              => false,
 			'exclude_from_search' => true,
-			'publicly_queryable'  => true,
+			'publicly_queryable'  => false,
 			'show_in_rest'        => true,
 			'show_ui'             => true,
 			'show_in_menu'        => WP_DEBUG,
