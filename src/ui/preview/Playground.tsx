@@ -68,16 +68,9 @@ async function initPlayground(
 	};
 
 	let isWordPressInstalled = false;
-	if ( mountDescriptor ) {
-		try {
-			isWordPressInstalled = await playgroundAvailableInOpfs(
-				await directoryHandleFromMountDevice( mountDescriptor.device )
-			);
-		} catch ( e ) {
-			console.error( e );
-		}
+	if ( localStorage.getItem( 'isWordPressInstalled' ) !== null ) {
+		isWordPressInstalled = true;
 	}
-
 	console.info( 'isWordPressInstalled', isWordPressInstalled );
 
 	const options: StartPlaygroundOptions = {
@@ -96,6 +89,9 @@ async function initPlayground(
 
 	const client: PlaygroundClient = await startPlaygroundWeb( options );
 	await client.isReady();
+
+	localStorage.setItem( 'isWordPressInstalled', 'true' );
+
 	return client;
 }
 
@@ -217,39 +213,4 @@ $post_id = wp_insert_post(array(
     ));
 wp_set_object_terms($post_id, $term_id, 'wp_theme');
 `;
-}
-
-/**
- * Copied from https://github.com/WordPress/wordpress-playground/blob/8140715a273cefc503b87604e8ae397e112bfe92/packages/playground/website/src/lib/state/redux/boot-site-client.ts#L225
- * since its currently not exported in a public npm package
- *
- * @param dirHandle
- */
-async function playgroundAvailableInOpfs(
-	dirHandle: FileSystemDirectoryHandle
-) {
-	// Run this loop just to trigger an exception if the directory handle is no good.
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	for await ( const _ of dirHandle.keys() ) {
-		break;
-	}
-
-	try {
-		/**
-		 * Assume it's a Playground directory if these files exist:
-		 * - wp-config.php
-		 * - wp-content/database/.ht.sqlite
-		 */
-		await dirHandle.getFileHandle( 'wp-config.php', { create: false } );
-		const wpContent = await dirHandle.getDirectoryHandle( 'wp-content', {
-			create: false,
-		} );
-		const database = await wpContent.getDirectoryHandle( 'database', {
-			create: false,
-		} );
-		await database.getFileHandle( '.ht.sqlite', { create: false } );
-	} catch ( e ) {
-		return false;
-	}
-	return true;
 }
