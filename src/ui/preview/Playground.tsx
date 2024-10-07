@@ -4,6 +4,7 @@ import {
 	StartPlaygroundOptions,
 	startPlaygroundWeb,
 	StepDefinition,
+	MountDescriptor,
 } from '@wp-playground/client';
 
 const playgroundIframeId = 'playground';
@@ -55,9 +56,26 @@ async function initPlayground(
 	slug: string,
 	blogName: string
 ): Promise< PlaygroundClient > {
+	const mountDescriptor: MountDescriptor = {
+		device: {
+			type: 'opfs',
+			path: '/try-wp-' + slug,
+		},
+		mountpoint: '/wordpress',
+	};
+
+	let isWordPressInstalled = false;
+	if ( localStorage.getItem( 'isWordPressInstalled' ) !== null ) {
+		isWordPressInstalled = true;
+	}
+
+	console.info( 'isWordPressInstalled', isWordPressInstalled );
+
 	const options: StartPlaygroundOptions = {
 		iframe,
-		remoteUrl: 'https://playground.wordpress.net/remote.html',
+		remoteUrl: `https://playground.wordpress.net/remote.html`,
+		mounts: [ mountDescriptor ],
+		shouldInstallWordPress: ! isWordPressInstalled,
 		blueprint: {
 			login: true,
 			steps: steps(),
@@ -68,7 +86,10 @@ async function initPlayground(
 	};
 
 	const client: PlaygroundClient = await startPlaygroundWeb( options );
-	await client.isReady;
+	await client.isReady();
+
+	localStorage.setItem( 'isWordPressInstalled', 'true' );
+
 	return client;
 }
 
