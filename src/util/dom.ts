@@ -21,22 +21,18 @@ export function findDeepestChild( html: string ): Element | undefined {
 export function getSelectors( elem: HTMLElement ) {
 	const selectors = [];
 
-	while ( elem.parentElement ) {
-		const currentElement = elem.parentElement;
+	let currentElement;
+	while ( ( currentElement = elem.parentElement ) ) {
 		const tagName = elem.tagName.toLowerCase();
-		const classes = < string[] >[];
-
 		if ( elem.id ) {
 			selectors.push( tagName + '#' + elem.id );
 			break;
 		}
 
-		elem.classList.forEach( function ( c ) {
-			if ( ! filterSelectors( c ) ) {
-				return;
-			}
-			classes.push( c );
-		} );
+		const classes = elem.classList
+			.values()
+			.filter( filterSelectors )
+			.toArray();
 
 		if ( classes.length ) {
 			selectors.push( tagName + '.' + classes.join( '.' ) );
