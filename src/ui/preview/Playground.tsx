@@ -53,9 +53,7 @@ async function initPlayground(
 ): Promise< PlaygroundClient > {
 	const options: StartPlaygroundOptions = {
 		iframe,
-		remoteUrl:
-			'https://playground.wordpress.net/remote.html?storage=browser',
-		siteSlug: slug,
+		remoteUrl: 'https://playground.wordpress.net/remote.html',
 		blueprint: {
 			login: true,
 			steps: steps(),
