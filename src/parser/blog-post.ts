@@ -1,5 +1,5 @@
 import { pasteHandler, serialize } from '@wordpress/blocks';
-import { findDeepestChild } from '@/parser/util';
+import { findDeepestChild } from '@/util/dom';
 import {
 	DateField,
 	HtmlField,
