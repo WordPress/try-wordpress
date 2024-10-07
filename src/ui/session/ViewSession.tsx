@@ -1,6 +1,7 @@
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate } from 'react-router-dom';
 import { Screens } from '@/ui/App';
+import { PostType } from '@/model/content/Post';
 
 export function ViewSession() {
 	const { session } = useSessionContext();
@@ -15,7 +16,12 @@ export function ViewSession() {
 				<li>
 					<button
 						onClick={ () =>
-							navigate( Screens.flows.blogPost.new( session.id ) )
+							navigate(
+								Screens.posts.new(
+									session.id,
+									PostType.BlogPost
+								)
+							)
 						}
 					>
 						Import Blog Post

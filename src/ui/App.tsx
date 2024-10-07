@@ -22,23 +22,20 @@ import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 import { ApiClient } from '@/api/ApiClient';
 import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
-import { NewBlogPost } from '@/ui/flows/blog-post/NewBlogPost';
-import { EditBlogPost } from '@/ui/flows/blog-post/EditBlogPost';
+import { NewPost } from '@/ui/posts/NewPost';
+import { EditPost } from '@/ui/posts/EditPost';
+import { PostType } from '@/model/content/Post';
 
 export const Screens = {
 	home: () => '/start/home',
 	newSession: () => '/start/new-session',
 	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
-	flows: {
-		blogPost: {
-			new: ( sessionId: string ) =>
-				`/session/${ sessionId }/flow/blog-post/new`,
-			edit: ( sessionId: string, postId: number ) =>
-				`/session/${ sessionId }/flow/blog-post/${ postId }`,
-		},
+	posts: {
+		new: ( sessionId: string, postType: PostType ) =>
+			`/session/${ sessionId }/posts/new/${ postType }`,
+		edit: ( sessionId: string, postId: number ) =>
+			`/session/${ sessionId }/posts/${ postId }`,
 	},
-	flowBlogPost: ( sessionId: string ) =>
-		`/session/${ sessionId }/flow/blog-post`,
 };
 
 const homeLoader: LoaderFunction = async () => {
@@ -77,11 +74,9 @@ function Routes( props: { initialScreen: string } ) {
 				loader={ sessionLoader }
 			>
 				<Route path="" element={ <ViewSession /> } />
-				<Route path="flow">
-					<Route path="blog-post">
-						<Route path="new" element={ <NewBlogPost /> } />
-						<Route path=":postId" element={ <EditBlogPost /> } />
-					</Route>
+				<Route path="posts">
+					<Route path="new/:postType" element={ <NewPost /> } />
+					<Route path=":postId" element={ <EditPost /> } />
 				</Route>
 			</Route>
 		</Route>
@@ -118,7 +113,7 @@ function App() {
 			( window as any ).trywp.apiClient = apiClient;
 			( window as any ).trywp.playgroundClient = playgroundClient;
 		}
-	}, [ apiClient ] );
+	}, [ apiClient, playgroundClient, navigate ] );
 
 	const preview = ! session ? (
 		<PlaceholderPreview />
