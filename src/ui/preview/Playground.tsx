@@ -39,7 +39,7 @@ export function Playground( props: {
 			.catch( ( error ) => {
 				throw error;
 			} );
-	}, [ slug, onReady, blogName ] );
+	}, [ slug, blogName, onReady ] );
 
 	return (
 		<iframe

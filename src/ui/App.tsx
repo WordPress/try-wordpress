@@ -113,7 +113,7 @@ function App() {
 			( window as any ).trywp.apiClient = apiClient;
 			( window as any ).trywp.playgroundClient = playgroundClient;
 		}
-	}, [ apiClient ] );
+	}, [ apiClient, playgroundClient, navigate ] );
 
 	const preview = ! session ? (
 		<PlaceholderPreview />

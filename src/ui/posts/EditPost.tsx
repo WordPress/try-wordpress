@@ -40,7 +40,7 @@ export function EditPost() {
 			playgroundClient.goTo( p.url );
 		}
 		loadPost().catch( console.error );
-	}, [ apiClient, postId ] );
+	}, [ postId, apiClient, playgroundClient ] );
 
 	let isValid = true;
 	if ( ! post ) {

@@ -38,7 +38,7 @@ export function NewPost() {
 			setIsLoading( false );
 		}
 		maybeRedirect().catch( console.error );
-	}, [ session.id, apiClient, postType ] );
+	}, [ session.id, apiClient, postType, navigate ] );
 
 	const element = (
 		<>
