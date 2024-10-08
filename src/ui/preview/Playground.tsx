@@ -59,7 +59,7 @@ async function initPlayground(
 	const mountDescriptor: MountDescriptor = {
 		device: {
 			type: 'opfs',
-			path: '/try-wp-' + slug,
+			path: '/try-wp-sites/' + slug,
 		},
 		mountpoint: '/wordpress',
 	};
