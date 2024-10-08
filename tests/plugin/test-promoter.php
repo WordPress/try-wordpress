@@ -10,7 +10,7 @@ class Promoter_Test extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		// insert liberated_post post
+		// insert liberated_data post
 		$this->post_id_in_db = wp_insert_post(
 			array(
 				'post_author'           => 1,
