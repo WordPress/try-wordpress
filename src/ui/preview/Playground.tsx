@@ -64,18 +64,14 @@ async function initPlayground(
 		mountpoint: '/wordpress',
 	};
 
-	let isWordPressInstalled = false;
-	if ( localStorage.getItem( 'isWordPressInstalled' ) !== null ) {
-		isWordPressInstalled = true;
-	}
-
-	console.info( 'isWordPressInstalled', isWordPressInstalled );
+	const isWPInstalled = await isWordPressInstalled( slug );
+	console.info( 'isWordPressInstalled', isWPInstalled );
 
 	const options: StartPlaygroundOptions = {
 		iframe,
 		remoteUrl: `https://playground.wordpress.net/remote.html`,
 		mounts: [ mountDescriptor ],
-		shouldInstallWordPress: ! isWordPressInstalled,
+		shouldInstallWordPress: ! isWPInstalled,
 		blueprint: {
 			login: true,
 			steps: steps(),
@@ -88,9 +84,32 @@ async function initPlayground(
 	const client: PlaygroundClient = await startPlaygroundWeb( options );
 	await client.isReady();
 
-	localStorage.setItem( 'isWordPressInstalled', 'true' );
+	if ( ! isWPInstalled ) {
+		await setWordPressAsInstalled( slug );
+	}
 
 	return client;
+}
+
+async function isWordPressInstalled( slug: string ) {
+	const localStorageKey = `${ slug }-isWordPressInstalled`;
+	let isInstalled = false;
+
+	try {
+		const result = await browser.storage.local.get( localStorageKey );
+		if ( result[ localStorageKey ] === 'true' ) {
+			isInstalled = true;
+		}
+		return isInstalled;
+	} catch ( error ) {
+		console.log( `Error: ${ error }` );
+		return false; // In case of error, assume WordPress is not installed
+	}
+}
+
+async function setWordPressAsInstalled( slug: string ) {
+	const localStorageKey = `${ slug }-isWordPressInstalled`;
+	await browser.storage.local.set( { [ localStorageKey ]: 'true' } );
 }
 
 function steps(): StepDefinition[] {
