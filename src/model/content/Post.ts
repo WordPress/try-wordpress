@@ -14,7 +14,6 @@ export enum FieldType {
 
 export type Post = GenericPost< any, PostFields< any, FieldType > >;
 export type PostField = GenericField< FieldType >;
-
 export type DateField = GenericField< FieldType.Date > & {
 	value: Date;
 };

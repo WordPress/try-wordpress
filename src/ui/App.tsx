@@ -22,20 +22,23 @@ import { SessionContext, SessionProvider } from '@/ui/session/SessionProvider';
 import { ApiClient } from '@/api/ApiClient';
 import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
-import { NewPost } from '@/ui/posts/NewPost';
-import { EditPost } from '@/ui/posts/EditPost';
+import { NewBlueprint } from '@/ui/blueprints/NewBlueprint';
+import { EditBlueprint } from '@/ui/blueprints/EditBlueprint';
 import { PostType } from '@/model/content/Post';
+import { Import } from '@/ui/import/Import';
 
 export const Screens = {
 	home: () => '/start/home',
 	newSession: () => '/start/new-session',
 	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
-	posts: {
+	blueprints: {
 		new: ( sessionId: string, postType: PostType ) =>
-			`/session/${ sessionId }/posts/new/${ postType }`,
-		edit: ( sessionId: string, postId: number ) =>
-			`/session/${ sessionId }/posts/${ postId }`,
+			`/session/${ sessionId }/blueprints/new/${ postType }`,
+		edit: ( sessionId: string, postId: string ) =>
+			`/session/${ sessionId }/blueprints/${ postId }`,
 	},
+	import: ( sessionId: string, blueprintId: string ) =>
+		`/session/${ sessionId }/import/${ blueprintId }`,
 };
 
 const homeLoader: LoaderFunction = async () => {
@@ -74,10 +77,11 @@ function Routes( props: { initialScreen: string } ) {
 				loader={ sessionLoader }
 			>
 				<Route path="" element={ <ViewSession /> } />
-				<Route path="posts">
-					<Route path="new/:postType" element={ <NewPost /> } />
-					<Route path=":postId" element={ <EditPost /> } />
+				<Route path="blueprints">
+					<Route path="new/:postType" element={ <NewBlueprint /> } />
+					<Route path=":blueprintId" element={ <EditBlueprint /> } />
 				</Route>
+				<Route path="import/:blueprintId" element={ <Import /> } />
 			</Route>
 		</Route>
 	);
@@ -87,9 +91,7 @@ function App() {
 	const navigate = useNavigate();
 	const location = useLocation();
 	useEffect( () => {
-		setConfig( { currentPath: location.pathname } ).catch( ( err ) =>
-			console.log( err )
-		);
+		setConfig( { currentPath: location.pathname } ).catch( console.error );
 	}, [ location ] );
 
 	const session = useRouteLoaderData( 'session' ) as Session;

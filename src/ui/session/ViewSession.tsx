@@ -17,14 +17,14 @@ export function ViewSession() {
 					<button
 						onClick={ () =>
 							navigate(
-								Screens.posts.new(
+								Screens.blueprints.new(
 									session.id,
 									PostType.BlogPost
 								)
 							)
 						}
 					>
-						Import Blog Post
+						Import Blog Posts
 					</button>
 				</li>
 			</ul>

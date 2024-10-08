@@ -3,16 +3,22 @@ import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { Post, PostField } from '@/model/content/Post';
-import { FieldEditor } from '@/ui/posts/FieldEditor';
+import { FieldEditor } from '@/ui/blueprints/FieldEditor';
+import { Blueprint } from '@/model/content/Blueprint';
 
 interface Props {
+	blueprint: Blueprint;
 	post: Post;
 	fieldOrder: Record< string, number >;
-	onFieldChanged: ( name: string, field: PostField ) => void;
+	onFieldChanged: (
+		name: string,
+		field: PostField,
+		selector: string
+	) => void;
 }
 
-export function PostEditor( props: Props ) {
-	const { post, fieldOrder, onFieldChanged } = props;
+export function BlueprintEditor( props: Props ) {
+	const { blueprint, post, fieldOrder, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
 		false | { field: PostField; name: string }
@@ -40,10 +46,12 @@ export function PostEditor( props: Props ) {
 			if ( ! fieldWaitingForSelection || ! lastClickedElement ) {
 				return;
 			}
+			const selector = 'TODO';
 			fieldWaitingForSelection.field.original = lastClickedElement;
 			onFieldChanged(
 				fieldWaitingForSelection.name,
-				fieldWaitingForSelection.field
+				fieldWaitingForSelection.field,
+				selector
 			);
 			setFieldWaitingForSelection( false );
 			setLastClickedElement( undefined );
@@ -68,7 +76,8 @@ export function PostEditor( props: Props ) {
 			<FieldEditor
 				key={ name }
 				label={ name }
-				field={ field }
+				blueprintField={ blueprint.fields[ name ] }
+				postField={ field }
 				waitingForSelection={ isWaitingForSelection }
 				onWaitingForSelection={ async ( f: PostField | false ) => {
 					await ContentBus.enableHighlighting();
@@ -81,7 +90,7 @@ export function PostEditor( props: Props ) {
 				onClear={ async () => {
 					field.original = '';
 					field.parsed = '';
-					onFieldChanged( name, field );
+					onFieldChanged( name, field, '' );
 				} }
 			/>
 		);
