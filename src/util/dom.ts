@@ -26,7 +26,6 @@ export function getSelectors( elem: HTMLElement ) {
 		const tagName = elem.tagName.toLowerCase();
 		if ( elem.id ) {
 			selectors.push( tagName + '#' + elem.id );
-			break;
 		}
 
 		const classes = elem.classList
