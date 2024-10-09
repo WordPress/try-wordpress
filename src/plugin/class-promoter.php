@@ -57,6 +57,11 @@ class Promoter {
 	 * @return bool
 	 */
 	public function promote( int|WP_Post $liberated_post ): bool {
+		// @TODO: filter name would be changed w.r.t new verb in place of 'promoted' once its decided
+		if ( apply_filters( 'skip_native_promotion', false ) ) {
+			return true;
+		}
+
 		if ( is_int( $liberated_post ) ) {
 			$liberated_post = get_post( $liberated_post );
 		}
