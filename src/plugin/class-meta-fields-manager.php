@@ -6,34 +6,30 @@ use WP_REST_Request;
 use WP_REST_Response;
 
 class Meta_Fields_Manager {
-	private array $custom_post_types;
+	private string $post_type;
 	private array $post_meta_fields = array( 'guid', 'raw_title', 'raw_date', 'raw_content' );
 
-	public function __construct( $custom_post_types ) {
-		$this->custom_post_types = $custom_post_types;
+	public function __construct( $custom_post_type ) {
+		$this->post_type = $custom_post_type;
 
 		add_action( 'init', array( $this, 'register_meta_fields' ) );
 
 		// Intercept the REST API call for moving over 'guid' and 'raw_content' to posts table for our custom post types
-		foreach ( $this->custom_post_types as $post_type ) {
-			add_filter( 'rest_pre_insert_' . $post_type, array( $this, 'move_meta_fields' ), 10, 2 );
-			add_filter( 'rest_prepare_' . $post_type, array( $this, 'prepare_meta_fields' ), 10, 3 );
-		}
+		add_filter( 'rest_pre_insert_' . $this->post_type, array( $this, 'move_meta_fields' ), 10, 2 );
+		add_filter( 'rest_prepare_' . $this->post_type, array( $this, 'prepare_meta_fields' ), 10, 3 );
 	}
 
 	public function register_meta_fields(): void {
-		foreach ( $this->custom_post_types as $post_type ) {
-			foreach ( $this->post_meta_fields as $field ) {
-				register_post_meta(
-					$post_type,
-					$field,
-					array(
-						'show_in_rest' => true,
-						'single'       => true,
-						'type'         => 'string',
-					)
-				);
-			}
+		foreach ( $this->post_meta_fields as $field ) {
+			register_post_meta(
+				$this->post_type,
+				$field,
+				array(
+					'show_in_rest' => true,
+					'single'       => true,
+					'type'         => 'string',
+				)
+			);
 		}
 	}
 
