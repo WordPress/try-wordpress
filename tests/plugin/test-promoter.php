@@ -26,7 +26,7 @@ class Promoter_Test extends TestCase {
 		);
 		update_post_meta( $this->post_id_in_db, 'content_type', 'blogpost' );
 
-		$this->promoter = new Promoter( array( 'lib_x' ) );
+		$this->promoter = new Promoter( 'lib_x' );
 	}
 
 	protected function tearDown(): void {

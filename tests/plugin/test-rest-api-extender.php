@@ -1,13 +1,13 @@
 <?php
 
-use DotOrg\TryWordPress\Rest_API_Extender;
 use DotOrg\TryWordPress\Promoter;
+use DotOrg\TryWordPress\Rest_API_Extender;
 use PHPUnit\Framework\TestCase;
 
 class Rest_API_Extender_Test extends TestCase {
 	private Rest_API_Extender $rest_api_extender;
 	private Promoter $promoter;
-	private array $custom_post_types = array( 'lib_x', 'lib_y' );
+	private string $custom_post_type = 'lib_x';
 	private int $post_id_in_db;
 
 	protected function setUp(): void {
@@ -43,7 +43,7 @@ class Rest_API_Extender_Test extends TestCase {
 
 		$this->promoter          = $this->createMock( Promoter::class );
 		$this->rest_api_extender = new Rest_API_Extender(
-			$this->custom_post_types,
+			$this->custom_post_type,
 			$this->promoter
 		);
 	}
