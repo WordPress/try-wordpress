@@ -1,6 +1,10 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_Post } from 'wp-types';
-type ApiPost = WP_REST_API_Post;
+
+type ApiPost = WP_REST_API_Post & {
+	pg_preview_link: string;
+};
+
 /* eslint-enable camelcase */
 
 import { BlogPost } from '@/model/content/BlogPost';
@@ -110,7 +114,7 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 		type: PostType.BlogPost,
 		guid: meta.guid,
 		id: response.id,
-		url: response.link,
+		url: response.pg_preview_link,
 		fields: {
 			date,
 			content,
