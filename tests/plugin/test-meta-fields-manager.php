@@ -5,28 +5,27 @@ use PHPUnit\Framework\TestCase;
 
 class Meta_Fields_Manager_Test extends TestCase {
 	private Meta_Fields_Manager $meta_fields_manager;
-	private array $custom_post_types = array( 'lib_x', 'lib_y' );
+	private string $custom_post_type = 'lib_x';
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		// register post types
-		$args = array(
-			'public'              => false,
-			'exclude_from_search' => true,
-			'publicly_queryable'  => true,
-			'show_in_rest'        => true,
-			'show_ui'             => false,
-			'show_in_menu'        => false,
-			'supports'            => array( 'title', 'editor', 'custom-fields' ),
+		register_post_type(
+			$this->custom_post_type,
+			array(
+				'public'              => false,
+				'exclude_from_search' => true,
+				'publicly_queryable'  => true,
+				'show_in_rest'        => true,
+				'show_ui'             => false,
+				'show_in_menu'        => false,
+				'supports'            => array( 'title', 'editor', 'custom-fields' ),
+				'label'               => $this->custom_post_type,
+				'rest_base'           => $this->custom_post_type,
+			)
 		);
-		foreach ( $this->custom_post_types as $post_type ) {
-			$args['label']     = $post_type;
-			$args['rest_base'] = $post_type . 's';
-			register_post_type( $post_type, $args );
-		}
 
-		$this->meta_fields_manager = new Meta_Fields_Manager( $this->custom_post_types );
+		$this->meta_fields_manager = new Meta_Fields_Manager( $this->custom_post_type );
 	}
 
 	public function testRegisterMetaFields(): void {
@@ -42,10 +41,6 @@ class Meta_Fields_Manager_Test extends TestCase {
 		$this->assertEquals(
 			array( 'x', 'y' ),
 			array_keys( get_registered_meta_keys( 'post', 'lib_x' ) )
-		);
-		$this->assertEquals(
-			array( 'x', 'y' ),
-			array_keys( get_registered_meta_keys( 'post', 'lib_y' ) )
 		);
 	}
 

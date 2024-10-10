@@ -2,51 +2,49 @@
 
 namespace DotOrg\TryWordPress;
 
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
-use WP_Error;
 
 class Rest_API_Extender {
-	private array $custom_post_types;
+	private string $post_type;
 	private Promoter $promoter;
 
-	public function __construct( $custom_post_types, $promoter ) {
-		$this->custom_post_types = $custom_post_types;
-		$this->promoter          = $promoter;
+	public function __construct( $custom_post_type, $promoter ) {
+		$this->post_type = $custom_post_type;
+		$this->promoter  = $promoter;
 
 		add_action( 'rest_api_init', array( $this, 'register_route' ) );
 
-		foreach ( $this->custom_post_types as $post_type ) {
-			add_filter(
-				'rest_' . $post_type . '_query',
-				function ( $args, \WP_REST_Request $request ) use ( $post_type ) {
-					return $this->filter_posts_by_guid( $post_type, $args, $request );
-				},
-				10,
-				2
-			);
-		}
+		add_filter(
+			'rest_' . $this->post_type . '_query',
+			function ( $args, \WP_REST_Request $request ) {
+				return $this->filter_posts_by_guid( $this->post_type, $args, $request );
+			},
+			10,
+			2
+		);
+
+		add_filter( 'rest_prepare_' . $this->post_type, array( $this, 'inject_preview_link' ), 10, 3 );
 	}
 
 	public function register_route(): void {
-		foreach ( $this->custom_post_types as $post_type ) {
-			register_rest_route(
-				'wp/v2',
-				'/' . $post_type . 's/(?P<id>\d+)/promote',
-				array(
-					'methods'             => 'POST',
-					'callback'            => array( $this, 'promote_post' ),
-					'permission_callback' => '__return_true',
-					'args'                => array(
-						'id' => array(
-							'validate_callback' => function ( $param, $request, $key ) {
-								return is_numeric( $param );
-							},
-						),
+		register_rest_route(
+			'wp/v2',
+			'/' . $this->post_type . '/(?P<id>\d+)/promote',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'promote_post' ),
+				'permission_callback' => '__return_true',
+				'args'                => array(
+					'id' => array(
+						'validate_callback' => function ( $param, $request, $key ) {
+							return is_numeric( $param );
+						},
 					),
-				)
-			);
-		}
+				),
+			)
+		);
 	}
 
 	public function promote_post( WP_REST_Request $request ): WP_Error|WP_REST_Response {
@@ -95,5 +93,17 @@ class Rest_API_Extender {
 		}
 
 		return $args;
+	}
+
+	public function inject_preview_link( WP_REST_Response $response, object $post, WP_REST_Request $request ): WP_REST_Response {
+		$data = $response->get_data();
+
+		$promoted_post_id = $this->promoter->get_promoted_post_id( $post->ID );
+		if ( $promoted_post_id ) {
+			$data['preview_link'] = get_permalink( $promoted_post_id );
+			$response->set_data( $data );
+		}
+
+		return $response;
 	}
 }

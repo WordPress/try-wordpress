@@ -1,8 +1,5 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_Post } from 'wp-types';
-type ApiPost = WP_REST_API_Post;
-/* eslint-enable camelcase */
-
 import { BlogPost } from '@/model/content/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
 import {
@@ -14,6 +11,12 @@ import {
 	PostType,
 	TextField,
 } from '@/model/content/Post';
+
+type ApiPost = WP_REST_API_Post & {
+	preview_link: string;
+};
+
+/* eslint-enable camelcase */
 
 interface CreateBody {
 	guid: string;
@@ -37,7 +40,7 @@ export class BlogPostsApi {
 	constructor( private readonly client: ApiClient ) {}
 
 	async create( body: CreateBody ): Promise< BlogPost > {
-		const response = ( await this.client.post( '/liberated_posts', {
+		const response = ( await this.client.post( '/liberated_data', {
 			meta: {
 				guid: body.guid,
 			},
@@ -66,7 +69,7 @@ export class BlogPostsApi {
 			throw Error( 'attempting to update zero fields' );
 		}
 		const response = ( await this.client.post(
-			`/liberated_posts/${ id }`,
+			`/liberated_data/${ id }`,
 			actualBody
 		) ) as ApiPost;
 		return fromApiResponse( response );
@@ -87,12 +90,11 @@ export class BlogPostsApi {
 	private async find(
 		params: Record< string, string >
 	): Promise< ApiPost[] > {
-		// A liberated_post is always draft.
 		params.status = 'draft';
 		// Must set context to 'edit' to have all fields in the response.
 		params.context = 'edit';
 		return ( await this.client.get(
-			`/liberated_posts`,
+			`/liberated_data`,
 			params
 		) ) as ApiPost[];
 	}
@@ -111,7 +113,7 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 		type: PostType.BlogPost,
 		guid: meta.guid,
 		id: response.id,
-		url: response.link,
+		url: response.preview_link,
 		fields: {
 			date,
 			content,

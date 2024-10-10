@@ -29,13 +29,11 @@ export class PostsApi {
 	private async find(
 		params: Record< string, string >
 	): Promise< ApiPost[] > {
-		// A liberated_post is always draft.
+		// A liberated_data post is always draft.
 		params.status = 'draft';
 
-		// TODO: For now we're querying liberated_posts but this must be changed as this call needs to retrieve
-		//       any kind of post.
 		return ( await this.client.get(
-			`/liberated_posts`,
+			`/liberated_data`,
 			params
 		) ) as ApiPost[];
 	}
