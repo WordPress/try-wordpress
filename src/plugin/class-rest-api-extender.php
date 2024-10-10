@@ -2,9 +2,9 @@
 
 namespace DotOrg\TryWordPress;
 
+use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
-use WP_Error;
 
 class Rest_API_Extender {
 	private string $post_type;
@@ -100,7 +100,7 @@ class Rest_API_Extender {
 
 		$promoted_post_id = $this->promoter->get_promoted_post_id( $post->ID );
 		if ( $promoted_post_id ) {
-			$data['pg_preview_link'] = get_permalink( $promoted_post_id );
+			$data['preview_link'] = get_permalink( $promoted_post_id );
 			$response->set_data( $data );
 		}
 
