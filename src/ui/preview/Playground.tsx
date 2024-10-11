@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 import {
+	MountDescriptor,
 	PlaygroundClient,
 	StartPlaygroundOptions,
 	startPlaygroundWeb,
 	StepDefinition,
-	MountDescriptor,
 } from '@wp-playground/client';
 
 const playgroundIframeId = 'playground';
@@ -168,20 +168,9 @@ add_filter( "determine_current_user", function() { return 1; }, 99999 );
 function deleteDefaultContent(): string {
 	return `<?php
 require_once 'wordpress/wp-load.php';
-$posts = get_posts( array( 'posts_per_page' => -1 ) );
-foreach ( $posts as $post ) {
-    wp_delete_post( $post->ID, true );
-}
-$pages = get_posts(
-    array(
-        'posts_per_page' => -1,
-        'post_type'      => 'page',
-        'post_status'    => array( 'publish', 'draft' ),
-    )
-);
-foreach ( $pages as $page ) {
-    wp_delete_post( $page->ID, true );
-}
+wp_delete_post( 1, true );
+wp_delete_post( 2, true );
+wp_delete_post( 3, true );
 `;
 }
 
@@ -196,7 +185,6 @@ if(!$term){
     );
     $term_id = $term['term_id'];
 } else {
-
     $term_id = $term->term_id;
 }
 $post_id = wp_insert_post(array(
