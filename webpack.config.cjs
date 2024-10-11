@@ -2,6 +2,8 @@ const path = require( 'node:path' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
 const { TsconfigPathsPlugin } = require( 'tsconfig-paths-webpack-plugin' );
 const FileManagerPlugin = require( 'filemanager-webpack-plugin' );
+// eslint-disable-next-line import/no-extraneous-dependencies
+const webpack = require( 'webpack' );
 
 module.exports = function ( env ) {
 	let targets = [ 'firefox', 'chrome' ];
@@ -41,6 +43,10 @@ function extensionModules( mode, target ) {
 		],
 	};
 
+	const webExtensionPolyfillPlugin = new webpack.ProvidePlugin( {
+		browser: 'webextension-polyfill',
+	} );
+
 	return [
 		// Extension background script.
 		{
@@ -48,7 +54,7 @@ function extensionModules( mode, target ) {
 			devtool,
 			resolve,
 			module,
-			entry: './src/extension/background.ts',
+			entry: [ 'webextension-polyfill', './src/extension/background.ts' ],
 			output: {
 				path: targetPath,
 				filename: path.join( 'background.js' ),
@@ -66,6 +72,7 @@ function extensionModules( mode, target ) {
 						},
 					],
 				} ),
+				webExtensionPolyfillPlugin,
 			],
 		},
 		// Extension content script.
@@ -74,11 +81,12 @@ function extensionModules( mode, target ) {
 			devtool,
 			resolve,
 			module,
-			entry: './src/extension/content.ts',
+			entry: [ 'webextension-polyfill', './src/extension/content.ts' ],
 			output: {
 				path: targetPath,
 				filename: path.join( 'content.js' ),
 			},
+			plugins: [ webExtensionPolyfillPlugin ],
 		},
 		// The app.
 		{
@@ -86,7 +94,7 @@ function extensionModules( mode, target ) {
 			devtool,
 			resolve,
 			module,
-			entry: './src/ui/main.ts',
+			entry: [ 'webextension-polyfill', './src/ui/main.ts' ],
 			output: {
 				path: targetPath,
 				filename: path.join( 'app.js' ),
@@ -132,6 +140,7 @@ function extensionModules( mode, target ) {
 						},
 					},
 				} ),
+				webExtensionPolyfillPlugin,
 			],
 		},
 	];
