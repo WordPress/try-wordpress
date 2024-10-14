@@ -2,7 +2,6 @@ const path = require( 'node:path' );
 const CopyPlugin = require( 'copy-webpack-plugin' );
 const { TsconfigPathsPlugin } = require( 'tsconfig-paths-webpack-plugin' );
 const FileManagerPlugin = require( 'filemanager-webpack-plugin' );
-// eslint-disable-next-line import/no-extraneous-dependencies
 const webpack = require( 'webpack' );
 
 module.exports = function ( env ) {
