@@ -129,6 +129,10 @@ function steps(): StepDefinition[] {
 		},
 		{
 			step: 'runPHP',
+			code: setPlainPermalinks(),
+		},
+		{
+			step: 'runPHP',
 			code: deleteDefaultContent(),
 		},
 		{
@@ -158,6 +162,13 @@ function steps(): StepDefinition[] {
 			data: authenticateRestRequest(),
 		},
 	];
+}
+
+function setPlainPermalinks(): string {
+	return `<?php
+require_once 'wordpress/wp-load.php';
+$option_result = update_option( 'permalink_structure', '');
+`;
 }
 
 function authenticateRestRequest(): string {
