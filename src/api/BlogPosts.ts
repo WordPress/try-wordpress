@@ -1,5 +1,10 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_Post } from 'wp-types';
+type ApiPost = WP_REST_API_Post & {
+	preview_link: string;
+};
+/* eslint-enable camelcase */
+
 import { BlogPost } from '@/model/content/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
 import {
@@ -11,12 +16,6 @@ import {
 	PostType,
 	TextField,
 } from '@/model/content/Post';
-
-type ApiPost = WP_REST_API_Post & {
-	preview_link: string;
-};
-
-/* eslint-enable camelcase */
 
 interface CreateBody {
 	guid: string;
