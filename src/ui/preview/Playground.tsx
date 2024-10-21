@@ -56,6 +56,8 @@ async function initPlayground(
 	slug: string,
 	blogName: string
 ): Promise< PlaygroundClient > {
+	const opfsEnabled = true;
+
 	const mountDescriptor: MountDescriptor = {
 		device: {
 			type: 'opfs',
@@ -70,8 +72,8 @@ async function initPlayground(
 	const options: StartPlaygroundOptions = {
 		iframe,
 		remoteUrl: `https://playground.wordpress.net/remote.html`,
-		mounts: [ mountDescriptor ],
-		shouldInstallWordPress: ! isWPInstalled,
+		mounts: opfsEnabled ? [ mountDescriptor ] : undefined,
+		shouldInstallWordPress: opfsEnabled ? ! isWPInstalled : undefined,
 		blueprint: {
 			login: true,
 			steps: steps(),
