@@ -15,6 +15,7 @@
 		"dev:debug": "wp-env start --xdebug",
 		"dev:stop": "wp-env stop",
 		"dev:destroy": "yes | wp-env destroy",
+		"dev:db": "wp-env run cli wp db export - > backup-$(date +%Y%m%d-%H%M%S).sql",
 		"dev:test": "wp-env run tests-cli --env-cwd=wp-content/ plugins/plugin/vendor/bin/phpunit"
 	},
 	"config": {
