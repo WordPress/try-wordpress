@@ -75,7 +75,7 @@ class Promoter {
 		// so that the post-slug is not just a number.
 		$title = $liberated_post->post_title;
 		if ( empty( $title ) ) {
-			$title = 'To be populated';
+			$title = '[Title]';
 		}
 
 		$args = array(
