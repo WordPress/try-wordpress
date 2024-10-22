@@ -68,6 +68,16 @@ class Promoter {
 
 		$promoted_post_id = get_post_meta( $liberated_post->ID, $this->meta_key_for_promoted_post, true );
 
+		// An immediately cloned post with no data and just the guid in meta,
+		// would have its slug as just the post id. I believe being just a number
+		// it gets caught up in some bad regex with playground.
+		// To overcome that, we temporarily set the title here to be string,
+		// so that the post-slug is not just a number.
+		$title = $liberated_post->post_title;
+		if ( empty( $title ) ) {
+			$title = 'To be populated';
+		}
+
 		$args = array(
 			'post_author'       => $liberated_post->post_author,
 			'post_date'         => $liberated_post->post_date,
@@ -75,7 +85,7 @@ class Promoter {
 			'post_modified'     => $liberated_post->post_modified,
 			'post_modified_gmt' => $liberated_post->post_modified_gmt,
 			'post_content'      => $liberated_post->post_content,
-			'post_title'        => $liberated_post->post_title,
+			'post_title'        => $title,
 			'post_excerpt'      => $liberated_post->post_excerpt,
 			'post_status'       => 'publish',
 			'comment_status'    => $liberated_post->comment_status,
