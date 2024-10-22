@@ -98,9 +98,7 @@ class Promoter {
 			$args['ID'] = $promoted_post_id;
 		}
 
-		add_filter( 'wp_insert_post_empty_content', '__return_false' );
 		$inserted_post_id = wp_insert_post( $args, true );
-		remove_filter( 'wp_insert_post_empty_content', '__return_false' );
 
 		// @TODO: handle attachments, terms etc in future
 		// Note: Do not need anything from postmeta.
