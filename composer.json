@@ -10,13 +10,27 @@
 	"scripts": {
 		"lint": "phpcs --standard=phpcs.xml -s",
 		"lint:fix": "phpcbf --standard=phpcs.xml",
-		"lint:autofix": "composer lint:fix; composer lint",
-		"dev:start": "wp-env start && wp-env run cli wp rewrite structure '/%postname%/' && wp-env run cli wp rewrite flush",
+		"lint:autofix": [
+			"@lint",
+			"@lint:fix"
+		],
+		"load:preset": [
+			"wp-env run cli wp rewrite structure '/%postname%/'",
+			"wp-env run cli wp rewrite flush"
+		],
+		"dev:start": [
+			"wp-env start",
+			"@load:preset"
+		],
 		"dev:debug": "wp-env start --xdebug",
 		"dev:stop": "wp-env stop",
 		"dev:destroy": "yes | wp-env destroy",
-		"dev:reset": "wp-env clean all && wp-env start",
-		"dev:db": "wp-env run cli wp db export - > backup-$(date +%Y%m%d-%H%M%S).sql",
+		"dev:reset": [
+			"wp-env clean all",
+			"@dev:start"
+		],
+		"dev:db": "wp-env run cli wp db export - > backup.sql",
+		"dev:db:backup": "wp-env run cli wp db export - > backup-$(date +%Y%m%d-%H%M%S).sql",
 		"dev:test": "wp-env run tests-cli --env-cwd=wp-content/ plugins/plugin/vendor/bin/phpunit"
 	},
 	"config": {
