@@ -11,7 +11,7 @@
 		"lint": "phpcs --standard=phpcs.xml -s",
 		"lint:fix": "phpcbf --standard=phpcs.xml",
 		"lint:autofix": "composer lint:fix; composer lint",
-		"dev:start": "wp-env start && wp-env run cli wp rewrite structure '/%postname%/'",
+		"dev:start": "wp-env start && wp-env run cli wp rewrite structure '/%postname%/' && wp-env run cli wp rewrite flush",
 		"dev:debug": "wp-env start --xdebug",
 		"dev:stop": "wp-env stop",
 		"dev:destroy": "yes | wp-env destroy",
