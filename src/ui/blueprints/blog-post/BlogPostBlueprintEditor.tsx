@@ -2,20 +2,20 @@ import { ReactElement, useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { Subject } from '@/model/subject/Subject';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 import { Blueprint } from '@/model/blueprint/Blueprint';
 import { Field } from '@/model/field/Field';
+import { BlogPost } from '@/model/subject/BlogPost';
 
 interface Props {
 	blueprint: Blueprint;
-	post: Subject;
+	subject: BlogPost;
 	fieldOrder: Record< string, number >;
 	onFieldChanged: ( name: string, field: Field, selector: string ) => void;
 }
 
 export function BlogPostBlueprintEditor( props: Props ) {
-	const { blueprint, post, fieldOrder, onFieldChanged } = props;
+	const { blueprint, subject, fieldOrder, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
 		false | { field: Field; name: string }
@@ -58,7 +58,7 @@ export function BlogPostBlueprintEditor( props: Props ) {
 	);
 
 	const fields: { name: string; field: Field }[] = [];
-	for ( const [ name, field ] of Object.entries( post.fields ) ) {
+	for ( const [ name, field ] of Object.entries( subject.fields ) ) {
 		const order = fieldOrder[ name ];
 		fields[ order ] = { name, field };
 	}

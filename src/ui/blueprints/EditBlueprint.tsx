@@ -14,6 +14,7 @@ import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { usePostForBlueprint } from '@/ui/blueprints/usePostForBlueprint';
 import { Field } from '@/model/field/Field';
+import { BlogPost } from '@/model/subject/BlogPost';
 
 export function EditBlueprint() {
 	const params = useParams();
@@ -130,7 +131,7 @@ export function EditBlueprint() {
 					</Toolbar>
 					<BlogPostBlueprintEditor
 						blueprint={ blueprint }
-						post={ post }
+						subject={ post as BlogPost }
 						fieldOrder={ {
 							title: 0,
 							date: 1,
