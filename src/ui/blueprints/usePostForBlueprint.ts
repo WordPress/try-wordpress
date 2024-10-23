@@ -1,5 +1,5 @@
 import { Blueprint } from '@/model/blueprint/Blueprint';
-import { Post, PostType } from '@/model/subject/Post';
+import { Subject, SubjectType } from '@/model/subject/Subject';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
@@ -8,8 +8,8 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 // otherwise we create a new post.
 export function usePostForBlueprint(
 	blueprint: Blueprint | undefined
-): [ Post | undefined, ( post: Post ) => void ] {
-	const [ post, setPost ] = useState< Post >();
+): [ Subject | undefined, ( post: Subject ) => void ] {
+	const [ post, setPost ] = useState< Subject >();
 	const { apiClient } = useSessionContext();
 
 	useEffect( () => {
@@ -17,9 +17,9 @@ export function usePostForBlueprint(
 			return;
 		}
 		async function loadPost( bp: Blueprint ) {
-			let p: Post | null;
+			let p: Subject | null;
 			switch ( bp.type ) {
-				case PostType.BlogPost:
+				case SubjectType.BlogPost:
 					p = await apiClient!.blogPosts.findByGuid( bp.sourceUrl );
 					break;
 				default:
@@ -27,7 +27,7 @@ export function usePostForBlueprint(
 			}
 			if ( ! p ) {
 				switch ( bp.type ) {
-					case PostType.BlogPost:
+					case SubjectType.BlogPost:
 						p = await apiClient!.blogPosts.create( {
 							guid: bp.sourceUrl,
 						} );

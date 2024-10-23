@@ -24,7 +24,7 @@ import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
 import { NewBlueprint } from '@/ui/blueprints/NewBlueprint';
 import { EditBlueprint } from '@/ui/blueprints/EditBlueprint';
-import { PostType } from '@/model/subject/Post';
+import { SubjectType } from '@/model/subject/Subject';
 import { Import } from '@/ui/import/Import';
 
 export const Screens = {
@@ -32,7 +32,7 @@ export const Screens = {
 	newSession: () => '/start/new-session',
 	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
 	blueprints: {
-		new: ( sessionId: string, postType: PostType ) =>
+		new: ( sessionId: string, postType: SubjectType ) =>
 			`/session/${ sessionId }/blueprints/new/${ postType }`,
 		edit: ( sessionId: string, postId: string ) =>
 			`/session/${ sessionId }/blueprints/${ postId }`,

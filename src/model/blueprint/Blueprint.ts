@@ -1,4 +1,4 @@
-import { PostType } from '@/model/subject/Post';
+import { SubjectType } from '@/model/subject/Subject';
 import { FieldType, GenericField } from '@/model/field/Field';
 
 export type Blueprint = GenericBlueprint<
@@ -12,7 +12,7 @@ export type BlueprintTextField = GenericBlueprintField< FieldType.Text >;
 export type BlueprintHtmlField = GenericBlueprintField< FieldType.Html >;
 
 export interface GenericBlueprint<
-	Type extends PostType,
+	Type extends SubjectType,
 	Fields extends BlueprintFields< any, any >,
 > {
 	type: Type;

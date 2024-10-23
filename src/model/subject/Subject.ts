@@ -1,17 +1,17 @@
 import { FieldType, GenericField } from '@/model/field/Field';
 
-export enum PostType {
+export enum SubjectType {
 	BlogPost = 'liberated_data',
 }
 
-export const humanReadablePostType: Map< PostType, string > = new Map( [
-	[ PostType.BlogPost, 'Blog Post' ],
+export const humanReadableSubjectType: Map< SubjectType, string > = new Map( [
+	[ SubjectType.BlogPost, 'Blog Post' ],
 ] );
 
-export type Post = GenericPost< any, PostFields< any, FieldType > >;
+export type Subject = GenericSubject< any, PostFields< any, FieldType > >;
 
-export interface GenericPost<
-	Type extends PostType,
+export interface GenericSubject<
+	Type extends SubjectType,
 	Fields extends PostFields< any, any >,
 > {
 	type: Type;

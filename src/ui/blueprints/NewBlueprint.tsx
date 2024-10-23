@@ -4,13 +4,13 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
-import { humanReadablePostType, PostType } from '@/model/subject/Post';
+import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
 import { newBlogPostBlueprint } from '@/model/subject/BlogPost';
 import { Blueprint } from '@/model/blueprint/Blueprint';
 
 export function NewBlueprint() {
 	const params = useParams();
-	const postType = params.postType as PostType;
+	const postType = params.postType as SubjectType;
 	const navigate = useNavigate();
 	const [ isLoading, setIsLoading ] = useState( true );
 	const { session, apiClient } = useSessionContext();
@@ -47,7 +47,7 @@ export function NewBlueprint() {
 							await ContentBus.getCurrentPageInfo();
 						let blueprint: Blueprint | null;
 						switch ( postType ) {
-							case PostType.BlogPost:
+							case SubjectType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
 									newBlogPostBlueprint( currentPage.url )
 								);
@@ -67,7 +67,7 @@ export function NewBlueprint() {
 			</Toolbar>
 			<div>
 				Navigate to the page of a{ ' ' }
-				{ humanReadablePostType.get( postType ) }
+				{ humanReadableSubjectType.get( postType ) }
 			</div>
 		</>
 	);

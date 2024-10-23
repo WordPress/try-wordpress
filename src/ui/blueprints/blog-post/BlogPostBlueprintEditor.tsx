@@ -2,14 +2,14 @@ import { ReactElement, useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { Post } from '@/model/subject/Post';
+import { Subject } from '@/model/subject/Subject';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 import { Blueprint } from '@/model/blueprint/Blueprint';
 import { Field } from '@/model/field/Field';
 
 interface Props {
 	blueprint: Blueprint;
-	post: Post;
+	post: Subject;
 	fieldOrder: Record< string, number >;
 	onFieldChanged: ( name: string, field: Field, selector: string ) => void;
 }

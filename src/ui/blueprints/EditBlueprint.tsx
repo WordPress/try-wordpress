@@ -9,7 +9,7 @@ import {
 	parsePostDate,
 	parsePostTitle,
 } from '@/parser/blog-post';
-import { PostType } from '@/model/subject/Post';
+import { SubjectType } from '@/model/subject/Subject';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { usePostForBlueprint } from '@/ui/blueprints/usePostForBlueprint';
@@ -48,7 +48,7 @@ export function EditBlueprint() {
 		}
 		let postFieldsToUpdate: object | undefined;
 		switch ( post.type ) {
-			case PostType.BlogPost:
+			case SubjectType.BlogPost:
 				switch ( name ) {
 					case 'date':
 						field = parsePostDate( field.original );

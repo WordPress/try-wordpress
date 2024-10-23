@@ -2,7 +2,7 @@
 import { WP_REST_API_Post } from 'wp-types';
 import { BlogPost } from '@/model/subject/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
-import { PostType } from '@/model/subject/Post';
+import { SubjectType } from '@/model/subject/Subject';
 import { DateField, newDateField } from '@/model/field/DateField';
 import { newTextField, TextField } from '@/model/field/TextField';
 import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
@@ -105,7 +105,7 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 	);
 
 	return {
-		type: PostType.BlogPost,
+		type: SubjectType.BlogPost,
 		guid: meta.guid,
 		id: response.id,
 		transformedId: response.transformed_id as number,

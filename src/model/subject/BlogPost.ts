@@ -1,4 +1,4 @@
-import { GenericPost, PostType } from '@/model/subject/Post';
+import { GenericSubject, SubjectType } from '@/model/subject/Subject';
 import {
 	GenericBlueprint,
 	BlueprintDateField,
@@ -23,15 +23,15 @@ type BlogPostBlueprintFields = {
 };
 
 export interface BlogPost
-	extends GenericPost< PostType.BlogPost, BlogPostFields > {}
+	extends GenericSubject< SubjectType.BlogPost, BlogPostFields > {}
 
 export interface BlogPostBlueprint
-	extends GenericBlueprint< PostType.BlogPost, BlogPostBlueprintFields > {}
+	extends GenericBlueprint< SubjectType.BlogPost, BlogPostBlueprintFields > {}
 
 export function newBlogPostBlueprint( sourceUrl: string ): BlogPostBlueprint {
 	return {
 		id: '',
-		type: PostType.BlogPost,
+		type: SubjectType.BlogPost,
 		sourceUrl,
 		valid: false,
 		fields: {
