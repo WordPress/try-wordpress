@@ -2,15 +2,15 @@
 import { WP_REST_API_Post } from 'wp-types';
 import { BlogPost } from '@/model/subject/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
+import { PostType } from '@/model/subject/Post';
 import {
 	DateField,
 	HtmlField,
 	newDateField,
 	newHtmlField,
 	newTextField,
-	PostType,
 	TextField,
-} from '@/model/subject/Post';
+} from '@/model/field/Field';
 
 type ApiPost = WP_REST_API_Post & {
 	preview_link: string;

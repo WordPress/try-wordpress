@@ -1,4 +1,5 @@
-import { FieldType, GenericField, PostType } from '@/model/subject/Post';
+import { PostType } from '@/model/subject/Post';
+import { FieldType, GenericField } from '@/model/field/Field';
 
 export type Blueprint = GenericBlueprint<
 	any,

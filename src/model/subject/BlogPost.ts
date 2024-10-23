@@ -1,17 +1,16 @@
-import {
-	DateField,
-	FieldType,
-	GenericPost,
-	HtmlField,
-	PostType,
-	TextField,
-} from '@/model/subject/Post';
+import { GenericPost, PostType } from '@/model/subject/Post';
 import {
 	GenericBlueprint,
 	BlueprintDateField,
 	BlueprintTextField,
 	BlueprintHtmlField,
 } from '@/model/blueprint/Blueprint';
+import {
+	DateField,
+	FieldType,
+	HtmlField,
+	TextField,
+} from '@/model/field/Field';
 
 type BlogPostFields = {
 	date: DateField;
