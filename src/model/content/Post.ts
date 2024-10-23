@@ -26,8 +26,8 @@ export interface GenericPost<
 > {
 	type: Type;
 	id: number;
+	transformedId: number;
 	guid: string;
-	url: string;
 	fields: Fields;
 }
 

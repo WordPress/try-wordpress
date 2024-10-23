@@ -32,7 +32,7 @@ export function EditBlueprint() {
 	// Make playground navigate to the post's URL.
 	useEffect( () => {
 		if ( post && !! playgroundClient ) {
-			void playgroundClient.goTo( post.url );
+			void playgroundClient.goTo( '/?p=' + post.transformedId );
 		}
 	}, [ post, playgroundClient ] );
 
@@ -92,7 +92,7 @@ export function EditBlueprint() {
 				postFieldsToUpdate
 			);
 			setPost( p );
-			void playgroundClient.goTo( post.url );
+			void playgroundClient.goTo( '/?p=' + post.transformedId );
 		}
 	}
 
