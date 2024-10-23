@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
+import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBlueprintEditor';
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import {
@@ -127,7 +127,7 @@ export function EditBlueprint() {
 							Continue
 						</button>
 					</Toolbar>
-					<BlueprintEditor
+					<BlogPostBlueprintEditor
 						blueprint={ blueprint }
 						post={ post }
 						fieldOrder={ {

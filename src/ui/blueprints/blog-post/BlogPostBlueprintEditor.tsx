@@ -17,7 +17,7 @@ interface Props {
 	) => void;
 }
 
-export function BlueprintEditor( props: Props ) {
+export function BlogPostBlueprintEditor( props: Props ) {
 	const { blueprint, post, fieldOrder, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
