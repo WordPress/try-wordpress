@@ -1,7 +1,7 @@
 import { FieldType, GenericField } from '@/model/field/Field';
 
 export enum SubjectType {
-	BlogPost = 'liberated_data',
+	BlogPost = 'blog-post',
 }
 
 export const humanReadableSubjectType: Map< SubjectType, string > = new Map( [
