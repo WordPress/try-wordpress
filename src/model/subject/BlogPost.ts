@@ -5,12 +5,10 @@ import {
 	BlueprintTextField,
 	BlueprintHtmlField,
 } from '@/model/blueprint/Blueprint';
-import {
-	DateField,
-	FieldType,
-	HtmlField,
-	TextField,
-} from '@/model/field/Field';
+import { FieldType } from '@/model/field/Field';
+import { DateField } from '@/model/field/DateField';
+import { TextField } from '@/model/field/TextField';
+import { HtmlField } from '@/model/field/HtmlField';
 
 type BlogPostFields = {
 	date: DateField;

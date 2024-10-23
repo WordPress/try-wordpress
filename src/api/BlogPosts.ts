@@ -3,14 +3,9 @@ import { WP_REST_API_Post } from 'wp-types';
 import { BlogPost } from '@/model/subject/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
 import { PostType } from '@/model/subject/Post';
-import {
-	DateField,
-	HtmlField,
-	newDateField,
-	newHtmlField,
-	newTextField,
-	TextField,
-} from '@/model/field/Field';
+import { DateField, newDateField } from '@/model/field/DateField';
+import { newTextField, TextField } from '@/model/field/TextField';
+import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
 
 type ApiPost = WP_REST_API_Post & {
 	preview_link: string;

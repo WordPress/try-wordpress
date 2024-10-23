@@ -1,13 +1,8 @@
 import { pasteHandler, serialize } from '@wordpress/blocks';
 import { findDeepestChild } from '@/parser/util';
-import {
-	DateField,
-	HtmlField,
-	newDateField,
-	newHtmlField,
-	newTextField,
-	TextField,
-} from '@/model/field/Field';
+import { DateField, newDateField } from '@/model/field/DateField';
+import { newTextField, TextField } from '@/model/field/TextField';
+import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
 
 export function parsePostDate( html: string ): DateField {
 	const container = document.createElement( 'div' );
