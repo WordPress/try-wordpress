@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
-import { humanReadablePostType } from '@/model/content/Post';
+import { humanReadablePostType } from '@/model/subject/Post';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { ReactElement, useEffect } from 'react';
 import { Screens } from '@/ui/App';

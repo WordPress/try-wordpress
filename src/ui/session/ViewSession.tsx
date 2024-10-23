@@ -1,7 +1,7 @@
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate } from 'react-router-dom';
 import { Screens } from '@/ui/App';
-import { PostType } from '@/model/content/Post';
+import { PostType } from '@/model/subject/Post';
 
 export function ViewSession() {
 	const { session } = useSessionContext();

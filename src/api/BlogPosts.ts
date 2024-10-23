@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_Post } from 'wp-types';
-import { BlogPost } from '@/model/content/BlogPost';
+import { BlogPost } from '@/model/subject/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
 import {
 	DateField,
@@ -10,7 +10,7 @@ import {
 	newTextField,
 	PostType,
 	TextField,
-} from '@/model/content/Post';
+} from '@/model/subject/Post';
 
 type ApiPost = WP_REST_API_Post & {
 	preview_link: string;

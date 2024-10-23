@@ -4,8 +4,8 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
-import { humanReadablePostType, PostType } from '@/model/content/Post';
-import { newBlogPostBlueprint } from '@/model/content/BlogPost';
+import { humanReadablePostType, PostType } from '@/model/subject/Post';
+import { newBlogPostBlueprint } from '@/model/subject/BlogPost';
 import { Blueprint } from '@/model/blueprint/Blueprint';
 
 export function NewBlueprint() {

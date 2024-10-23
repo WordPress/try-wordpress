@@ -5,7 +5,7 @@ import {
 	HtmlField,
 	PostType,
 	TextField,
-} from '@/model/content/Post';
+} from '@/model/subject/Post';
 import {
 	GenericBlueprint,
 	BlueprintDateField,

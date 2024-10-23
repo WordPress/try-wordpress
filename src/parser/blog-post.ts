@@ -7,7 +7,7 @@ import {
 	newHtmlField,
 	newTextField,
 	TextField,
-} from '@/model/content/Post';
+} from '@/model/subject/Post';
 
 export function parsePostDate( html: string ): DateField {
 	const container = document.createElement( 'div' );

@@ -24,7 +24,7 @@ import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
 import { NewBlueprint } from '@/ui/blueprints/NewBlueprint';
 import { EditBlueprint } from '@/ui/blueprints/EditBlueprint';
-import { PostType } from '@/model/content/Post';
+import { PostType } from '@/model/subject/Post';
 import { Import } from '@/ui/import/Import';
 
 export const Screens = {

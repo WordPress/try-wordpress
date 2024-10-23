@@ -1,5 +1,5 @@
 import { Blueprint } from '@/model/blueprint/Blueprint';
-import { Post, PostType } from '@/model/content/Post';
+import { Post, PostType } from '@/model/subject/Post';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 

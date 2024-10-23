@@ -1,6 +1,6 @@
 import { ApiClient } from '@/api/ApiClient';
 import { Blueprint } from '@/model/blueprint/Blueprint';
-import { PostType } from '@/model/content/Post';
+import { PostType } from '@/model/subject/Post';
 
 export class BlueprintsApi {
 	// eslint-disable-next-line no-useless-constructor

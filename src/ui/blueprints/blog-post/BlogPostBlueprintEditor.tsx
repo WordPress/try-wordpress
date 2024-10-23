@@ -2,7 +2,7 @@ import { ReactElement, useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { Post, PostField } from '@/model/content/Post';
+import { Post, PostField } from '@/model/subject/Post';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 import { Blueprint } from '@/model/blueprint/Blueprint';
 

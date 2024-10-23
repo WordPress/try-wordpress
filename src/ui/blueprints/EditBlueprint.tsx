@@ -9,7 +9,7 @@ import {
 	parsePostDate,
 	parsePostTitle,
 } from '@/parser/blog-post';
-import { PostField, PostType } from '@/model/content/Post';
+import { PostField, PostType } from '@/model/subject/Post';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { usePostForBlueprint } from '@/ui/blueprints/usePostForBlueprint';

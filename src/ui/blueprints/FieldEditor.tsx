@@ -1,5 +1,5 @@
 import { ContentBus } from '@/bus/ContentBus';
-import { PostField } from '@/model/content/Post';
+import { PostField } from '@/model/subject/Post';
 import { BlueprintField } from '@/model/blueprint/Blueprint';
 
 export function FieldEditor( props: {
