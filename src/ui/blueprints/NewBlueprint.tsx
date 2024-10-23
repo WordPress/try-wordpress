@@ -6,7 +6,7 @@ import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { humanReadablePostType, PostType } from '@/model/content/Post';
 import { newBlogPostBlueprint } from '@/model/content/BlogPost';
-import { Blueprint } from '@/model/content/Blueprint';
+import { Blueprint } from '@/model/blueprint/Blueprint';
 
 export function NewBlueprint() {
 	const params = useParams();

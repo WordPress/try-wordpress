@@ -1,5 +1,5 @@
 import { ApiClient } from '@/api/ApiClient';
-import { Blueprint } from '@/model/content/Blueprint';
+import { Blueprint } from '@/model/blueprint/Blueprint';
 import { PostType } from '@/model/content/Post';
 
 export class BlueprintsApi {

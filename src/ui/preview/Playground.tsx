@@ -56,7 +56,7 @@ async function initPlayground(
 	slug: string,
 	blogName: string
 ): Promise< PlaygroundClient > {
-	const opfsEnabled = true;
+	const opfsEnabled = false;
 
 	const mountDescriptor: MountDescriptor = {
 		device: {

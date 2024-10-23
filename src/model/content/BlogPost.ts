@@ -11,7 +11,7 @@ import {
 	BlueprintDateField,
 	BlueprintTextField,
 	BlueprintHtmlField,
-} from '@/model/content/Blueprint';
+} from '@/model/blueprint/Blueprint';
 
 type BlogPostFields = {
 	date: DateField;

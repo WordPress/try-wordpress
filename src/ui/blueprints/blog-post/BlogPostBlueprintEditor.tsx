@@ -4,7 +4,7 @@ import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { Post, PostField } from '@/model/content/Post';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
-import { Blueprint } from '@/model/content/Blueprint';
+import { Blueprint } from '@/model/blueprint/Blueprint';
 
 interface Props {
 	blueprint: Blueprint;
