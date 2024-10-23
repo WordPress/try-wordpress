@@ -68,14 +68,23 @@ class Promoter {
 
 		$promoted_post_id = get_post_meta( $liberated_post->ID, $this->meta_key_for_promoted_post, true );
 
+		$title = $liberated_post->post_title;
+		if ( empty( $title ) ) {
+			$title = '[Title]';
+		}
+		$body = $liberated_post->post_content;
+		if ( empty( $body ) ) {
+			$body = '[Body]';
+		}
+
 		$args = array(
 			'post_author'       => $liberated_post->post_author,
 			'post_date'         => $liberated_post->post_date,
 			'post_date_gmt'     => $liberated_post->post_date_gmt,
 			'post_modified'     => $liberated_post->post_modified,
 			'post_modified_gmt' => $liberated_post->post_modified_gmt,
-			'post_content'      => $liberated_post->post_content,
-			'post_title'        => $liberated_post->post_title,
+			'post_content'      => $body,
+			'post_title'        => $title,
 			'post_excerpt'      => $liberated_post->post_excerpt,
 			'post_status'       => 'publish',
 			'comment_status'    => $liberated_post->comment_status,
