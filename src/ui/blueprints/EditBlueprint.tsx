@@ -104,7 +104,20 @@ export function EditBlueprint() {
 	if ( ! subject ) {
 		isValid = false;
 	} else if ( isValid && subject ) {
-		for ( const f of Object.values( subject.fields ) ) {
+		let fields: Field[];
+		switch ( subject.type ) {
+			case SubjectType.BlogPost:
+				const blogPost = subject as BlogPost;
+				fields = [
+					blogPost.fields.title,
+					blogPost.fields.date,
+					blogPost.fields.content,
+				];
+				break;
+			default:
+				throw Error( `unknown subject type ${ subject.type }` );
+		}
+		for ( const f of fields ) {
 			if ( f.original === '' || f.parsed === '' ) {
 				isValid = false;
 				break;
