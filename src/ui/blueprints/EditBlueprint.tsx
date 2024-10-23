@@ -9,10 +9,11 @@ import {
 	parsePostDate,
 	parsePostTitle,
 } from '@/parser/blog-post';
-import { PostField, PostType } from '@/model/subject/Post';
+import { PostType } from '@/model/subject/Post';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { usePostForBlueprint } from '@/ui/blueprints/usePostForBlueprint';
+import { Field } from '@/model/field/Field';
 
 export function EditBlueprint() {
 	const params = useParams();
@@ -39,7 +40,7 @@ export function EditBlueprint() {
 	// Handle field change events.
 	async function onFieldChanged(
 		name: string,
-		field: PostField,
+		field: Field,
 		selector: string
 	) {
 		if ( ! blueprint || ! post ) {

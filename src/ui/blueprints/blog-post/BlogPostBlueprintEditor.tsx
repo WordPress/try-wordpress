@@ -2,26 +2,23 @@ import { ReactElement, useEffect, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
-import { Post, PostField } from '@/model/subject/Post';
+import { Post } from '@/model/subject/Post';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 import { Blueprint } from '@/model/blueprint/Blueprint';
+import { Field } from '@/model/field/Field';
 
 interface Props {
 	blueprint: Blueprint;
 	post: Post;
 	fieldOrder: Record< string, number >;
-	onFieldChanged: (
-		name: string,
-		field: PostField,
-		selector: string
-	) => void;
+	onFieldChanged: ( name: string, field: Field, selector: string ) => void;
 }
 
 export function BlogPostBlueprintEditor( props: Props ) {
 	const { blueprint, post, fieldOrder, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
-		false | { field: PostField; name: string }
+		false | { field: Field; name: string }
 	>( false );
 
 	// Listen to click events coming from the content script.
@@ -60,7 +57,7 @@ export function BlogPostBlueprintEditor( props: Props ) {
 		[ fieldWaitingForSelection, lastClickedElement ]
 	);
 
-	const fields: { name: string; field: PostField }[] = [];
+	const fields: { name: string; field: Field }[] = [];
 	for ( const [ name, field ] of Object.entries( post.fields ) ) {
 		const order = fieldOrder[ name ];
 		fields[ order ] = { name, field };
@@ -77,9 +74,9 @@ export function BlogPostBlueprintEditor( props: Props ) {
 				key={ name }
 				label={ name }
 				blueprintField={ blueprint.fields[ name ] }
-				postField={ field }
+				field={ field }
 				waitingForSelection={ isWaitingForSelection }
-				onWaitingForSelection={ async ( f: PostField | false ) => {
+				onWaitingForSelection={ async ( f: Field | false ) => {
 					await ContentBus.enableHighlighting();
 					if ( !! f ) {
 						setFieldWaitingForSelection( { field: f, name } );

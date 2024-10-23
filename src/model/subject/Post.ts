@@ -9,7 +9,6 @@ export const humanReadablePostType: Map< PostType, string > = new Map( [
 ] );
 
 export type Post = GenericPost< any, PostFields< any, FieldType > >;
-export type PostField = GenericField< FieldType >;
 
 export interface GenericPost<
 	Type extends PostType,

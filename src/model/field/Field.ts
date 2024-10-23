@@ -10,6 +10,8 @@ export type DateField = GenericField< FieldType.Date > & {
 export type TextField = GenericField< FieldType.Text >;
 export type HtmlField = GenericField< FieldType.Html >;
 
+export type Field = GenericField< FieldType >;
+
 export interface GenericField< T extends FieldType > {
 	type: T;
 	original: string;

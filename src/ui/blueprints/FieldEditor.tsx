@@ -1,18 +1,18 @@
 import { ContentBus } from '@/bus/ContentBus';
-import { PostField } from '@/model/subject/Post';
 import { BlueprintField } from '@/model/blueprint/Blueprint';
+import { Field } from '@/model/field/Field';
 
 export function FieldEditor( props: {
-	postField: PostField;
+	field: Field;
 	blueprintField: BlueprintField;
 	label: string;
 	waitingForSelection: boolean;
-	onWaitingForSelection: ( field: PostField | false ) => void;
+	onWaitingForSelection: ( field: Field | false ) => void;
 	onClear: () => void;
 } ) {
 	const {
 		blueprintField,
-		postField,
+		field,
 		label,
 		waitingForSelection,
 		onWaitingForSelection,
@@ -30,9 +30,7 @@ export function FieldEditor( props: {
 			<div>
 				{ label }{ ' ' }
 				<button
-					disabled={
-						waitingForSelection || postField.original === ''
-					}
+					disabled={ waitingForSelection || field.original === '' }
 					onClick={ onClear }
 				>
 					Clear
@@ -40,7 +38,7 @@ export function FieldEditor( props: {
 				<button
 					disabled={ waitingForSelection }
 					onClick={ async () => {
-						onWaitingForSelection( postField );
+						onWaitingForSelection( field );
 						await ContentBus.enableHighlighting();
 					} }
 				>
@@ -61,11 +59,9 @@ export function FieldEditor( props: {
 				selector: { blueprintField.selector }
 			</div>
 			<div style={ { paddingTop: '1rem' } }>
-				original: { postField.original }
+				original: { field.original }
 			</div>
-			<div style={ { paddingTop: '1rem' } }>
-				parsed: { postField.parsed }
-			</div>
+			<div style={ { paddingTop: '1rem' } }>parsed: { field.parsed }</div>
 		</div>
 	);
 }
