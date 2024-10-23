@@ -57,9 +57,9 @@ export function BlogPostBlueprintEditor( props: Props ) {
 	);
 
 	const fields: { name: string; field: Field }[] = [
-		{ name: 'title', field: subject.fields.title },
-		{ name: 'date', field: subject.fields.date },
-		{ name: 'content', field: subject.fields.content },
+		{ name: 'title', field: subject.title },
+		{ name: 'date', field: subject.date },
+		{ name: 'content', field: subject.content },
 	];
 
 	const elements: ReactElement[] = [];

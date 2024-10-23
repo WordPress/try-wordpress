@@ -109,10 +109,8 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 		guid: meta.guid,
 		id: response.id,
 		transformedId: response.transformed_id as number,
-		fields: {
-			date,
-			content,
-			title,
-		},
+		title,
+		date,
+		content,
 	};
 }

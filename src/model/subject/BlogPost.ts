@@ -10,20 +10,17 @@ import { DateField } from '@/model/field/DateField';
 import { TextField } from '@/model/field/TextField';
 import { HtmlField } from '@/model/field/HtmlField';
 
-type BlogPostFields = {
-	date: DateField;
-	title: TextField;
-	content: HtmlField;
-};
-
 type BlogPostBlueprintFields = {
 	date: BlueprintDateField;
 	title: BlueprintTextField;
 	content: BlueprintHtmlField;
 };
 
-export interface BlogPost
-	extends GenericSubject< SubjectType.BlogPost, BlogPostFields > {}
+export interface BlogPost extends GenericSubject< SubjectType.BlogPost > {
+	date: DateField;
+	title: TextField;
+	content: HtmlField;
+}
 
 export interface BlogPostBlueprint
 	extends GenericBlueprint< SubjectType.BlogPost, BlogPostBlueprintFields > {}

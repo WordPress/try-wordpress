@@ -108,11 +108,7 @@ export function EditBlueprint() {
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
 				const blogPost = subject as BlogPost;
-				fields = [
-					blogPost.fields.title,
-					blogPost.fields.date,
-					blogPost.fields.content,
-				];
+				fields = [ blogPost.title, blogPost.date, blogPost.content ];
 				break;
 			default:
 				throw Error( `unknown subject type ${ subject.type }` );
