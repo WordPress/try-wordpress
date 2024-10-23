@@ -5,14 +5,14 @@ import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBluep
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import {
-	parsePostContent,
-	parsePostDate,
-	parsePostTitle,
+	parseBlogPostContent,
+	parseBlogPostDate,
+	parseBlogPostTitle,
 } from '@/parser/blog-post';
 import { SubjectType } from '@/model/subject/Subject';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
-import { usePostForBlueprint } from '@/ui/blueprints/usePostForBlueprint';
+import { useSubjectForBlueprint } from '@/ui/blueprints/useSubjectForBlueprint';
 import { Field } from '@/model/field/Field';
 import { BlogPost } from '@/model/subject/BlogPost';
 
@@ -20,7 +20,7 @@ export function EditBlueprint() {
 	const params = useParams();
 	const blueprintId = params.blueprintId!;
 	const [ blueprint, setBlueprint ] = useBlueprint( blueprintId );
-	const [ post, setPost ] = usePostForBlueprint( blueprint );
+	const [ subject, setSubject ] = useSubjectForBlueprint( blueprint );
 	const { session, apiClient, playgroundClient } = useSessionContext();
 	const navigate = useNavigate();
 
@@ -31,12 +31,12 @@ export function EditBlueprint() {
 		}
 	}, [ blueprint ] );
 
-	// Make playground navigate to the post's URL.
+	// Make playground navigate to the transformed post of the subject.
 	useEffect( () => {
-		if ( post && !! playgroundClient ) {
-			void playgroundClient.goTo( '/?p=' + post.transformedId );
+		if ( subject && !! playgroundClient ) {
+			void playgroundClient.goTo( '/?p=' + subject.transformedId );
 		}
-	}, [ post, playgroundClient ] );
+	}, [ subject, playgroundClient ] );
 
 	// Handle field change events.
 	async function onFieldChanged(
@@ -44,35 +44,37 @@ export function EditBlueprint() {
 		field: Field,
 		selector: string
 	) {
-		if ( ! blueprint || ! post ) {
+		if ( ! blueprint || ! subject ) {
 			return;
 		}
-		let postFieldsToUpdate: object | undefined;
-		switch ( post.type ) {
+		let subjectFieldsToUpdate: object | undefined;
+		switch ( subject.type ) {
 			case SubjectType.BlogPost:
 				switch ( name ) {
 					case 'date':
-						field = parsePostDate( field.original );
-						postFieldsToUpdate = {
+						field = parseBlogPostDate( field.original );
+						subjectFieldsToUpdate = {
 							date: field,
 						};
 						break;
 					case 'title':
-						field = parsePostTitle( field.original );
-						postFieldsToUpdate = {
+						field = parseBlogPostTitle( field.original );
+						subjectFieldsToUpdate = {
 							title: field,
 						};
 						break;
 					case 'content':
-						field = parsePostContent( field.original );
-						postFieldsToUpdate = {
+						field = parseBlogPostContent( field.original );
+						subjectFieldsToUpdate = {
 							content: field,
 						};
 						break;
+					default:
+						throw Error( `unknown field type ${ field.type }` );
 				}
 				break;
 			default:
-				throw Error( `unknown post type ${ field.type }` );
+				throw Error( `unknown subject type ${ subject.type }` );
 		}
 
 		blueprint.fields[ name ].selector = selector;
@@ -88,21 +90,21 @@ export function EditBlueprint() {
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );
 
-		if ( postFieldsToUpdate ) {
+		if ( subjectFieldsToUpdate ) {
 			const p = await apiClient!.blogPosts.update(
-				post.id,
-				postFieldsToUpdate
+				subject.id,
+				subjectFieldsToUpdate
 			);
-			setPost( p );
-			void playgroundClient.goTo( '/?p=' + post.transformedId );
+			setSubject( p );
+			void playgroundClient.goTo( '/?p=' + subject.transformedId );
 		}
 	}
 
 	let isValid = ! blueprint ? false : blueprint.valid;
-	if ( ! post ) {
+	if ( ! subject ) {
 		isValid = false;
-	} else if ( isValid && post ) {
-		for ( const f of Object.values( post.fields ) ) {
+	} else if ( isValid && subject ) {
+		for ( const f of Object.values( subject.fields ) ) {
 			if ( f.original === '' || f.parsed === '' ) {
 				isValid = false;
 				break;
@@ -112,7 +114,7 @@ export function EditBlueprint() {
 
 	return (
 		<>
-			{ ! blueprint || ! post ? (
+			{ ! blueprint || ! subject ? (
 				'Loading...'
 			) : (
 				<>
@@ -131,7 +133,7 @@ export function EditBlueprint() {
 					</Toolbar>
 					<BlogPostBlueprintEditor
 						blueprint={ blueprint }
-						subject={ post as BlogPost }
+						subject={ subject as BlogPost }
 						onFieldChanged={ onFieldChanged }
 					/>
 				</>

@@ -3,20 +3,20 @@ import { Subject, SubjectType } from '@/model/subject/Subject';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
-// Load a post to preview the blueprint's results.
-// If a post already exists for the blueprint's source URL, we use that post,
-// otherwise we create a new post.
-export function usePostForBlueprint(
+// Create or load a Subject to preview the Blueprint's results.
+// If a Subject already exists for the Blueprint's source URL, we use that Subject,
+// otherwise we create a new one.
+export function useSubjectForBlueprint(
 	blueprint: Blueprint | undefined
-): [ Subject | undefined, ( post: Subject ) => void ] {
-	const [ post, setPost ] = useState< Subject >();
+): [ Subject | undefined, ( subject: Subject ) => void ] {
+	const [ subject, setSubject ] = useState< Subject >();
 	const { apiClient } = useSessionContext();
 
 	useEffect( () => {
 		if ( ! blueprint || ! apiClient ) {
 			return;
 		}
-		async function loadPost( bp: Blueprint ) {
+		async function loadSubject( bp: Blueprint ) {
 			let p: Subject | null;
 			switch ( bp.type ) {
 				case SubjectType.BlogPost:
@@ -33,13 +33,13 @@ export function usePostForBlueprint(
 						} );
 						break;
 					default:
-						throw Error( `unknown post type ${ bp.type }` );
+						throw Error( `unknown blueprint type ${ bp.type }` );
 				}
 			}
-			setPost( p );
+			setSubject( p );
 		}
-		loadPost( blueprint ).catch( console.error );
+		loadSubject( blueprint ).catch( console.error );
 	}, [ blueprint, apiClient ] );
 
-	return [ post, setPost ];
+	return [ subject, setSubject ];
 }
