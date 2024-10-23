@@ -1,6 +1,7 @@
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { AppBus } from '@/bus/AppBus';
+import { getSelectors } from '@/util/dom';
 
 let currentElement: HTMLElement | null = null;
 
@@ -45,6 +46,10 @@ function onClick( event: MouseEvent ) {
 	if ( ! element ) {
 		return;
 	}
+
+	const selectors = getSelectors( element );
+	console.log( selectors );
+
 	const clone = element.cloneNode( true ) as HTMLElement;
 	clone.style.outline = '';
 	let content = clone.outerHTML.trim();
