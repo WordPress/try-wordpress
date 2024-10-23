@@ -10,12 +10,11 @@ import { BlogPost } from '@/model/subject/BlogPost';
 interface Props {
 	blueprint: Blueprint;
 	subject: BlogPost;
-	fieldOrder: Record< string, number >;
 	onFieldChanged: ( name: string, field: Field, selector: string ) => void;
 }
 
 export function BlogPostBlueprintEditor( props: Props ) {
-	const { blueprint, subject, fieldOrder, onFieldChanged } = props;
+	const { blueprint, subject, onFieldChanged } = props;
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
 		false | { field: Field; name: string }
@@ -57,11 +56,11 @@ export function BlogPostBlueprintEditor( props: Props ) {
 		[ fieldWaitingForSelection, lastClickedElement ]
 	);
 
-	const fields: { name: string; field: Field }[] = [];
-	for ( const [ name, field ] of Object.entries( subject.fields ) ) {
-		const order = fieldOrder[ name ];
-		fields[ order ] = { name, field };
-	}
+	const fields: { name: string; field: Field }[] = [
+		{ name: 'title', field: subject.fields.title },
+		{ name: 'date', field: subject.fields.date },
+		{ name: 'content', field: subject.fields.content },
+	];
 
 	const elements: ReactElement[] = [];
 	for ( const { name, field } of fields ) {

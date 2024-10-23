@@ -132,11 +132,6 @@ export function EditBlueprint() {
 					<BlogPostBlueprintEditor
 						blueprint={ blueprint }
 						subject={ post as BlogPost }
-						fieldOrder={ {
-							title: 0,
-							date: 1,
-							content: 2,
-						} }
 						onFieldChanged={ onFieldChanged }
 					/>
 				</>
