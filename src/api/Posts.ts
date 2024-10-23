@@ -1,10 +1,10 @@
 /* eslint-disable camelcase */
 import { WP_REST_API_Post } from 'wp-types';
-type ApiPost = WP_REST_API_Post;
-/* eslint-enable camelcase */
-
 import { ApiClient } from '@/api/ApiClient';
 import { Post } from '@/model/content/Post';
+
+type ApiPost = WP_REST_API_Post;
+/* eslint-enable camelcase */
 
 interface PostMeta {
 	guid: string;
@@ -45,7 +45,7 @@ function fromApiResponse( response: ApiPost ): Post {
 		type: response.type,
 		guid: meta.guid,
 		id: response.id,
-		url: response.link,
+		transformedId: response.transformed_id as number,
 		fields: {},
 	};
 }

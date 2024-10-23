@@ -100,7 +100,7 @@ class Rest_API_Extender {
 
 		$promoted_post_id = $this->promoter->get_promoted_post_id( $post->ID );
 		if ( $promoted_post_id ) {
-			$data['preview_link'] = get_permalink( $promoted_post_id );
+			$data['transformed_id'] = $promoted_post_id;
 			$response->set_data( $data );
 		}
 

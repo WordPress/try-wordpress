@@ -113,7 +113,7 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 		type: PostType.BlogPost,
 		guid: meta.guid,
 		id: response.id,
-		url: response.preview_link,
+		transformedId: response.transformed_id as number,
 		fields: {
 			date,
 			content,
