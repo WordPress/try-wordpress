@@ -1,8 +1,9 @@
-import { FieldType, GenericField } from '@/model/field/Field';
+import { Field, FieldType } from '@/model/field/Field';
 
-export type DateField = GenericField< FieldType.Date > & {
+export interface DateField extends Field {
+	type: FieldType.Date;
 	value: Date;
-};
+}
 
 export function newDateField(
 	original: string = '',

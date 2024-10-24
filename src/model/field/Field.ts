@@ -4,10 +4,8 @@ export enum FieldType {
 	Html = 'html',
 }
 
-export type Field = GenericField< FieldType >;
-
-export interface GenericField< T extends FieldType > {
-	type: T;
+export interface Field {
+	type: FieldType;
 	original: string;
 	parsed: string;
 }

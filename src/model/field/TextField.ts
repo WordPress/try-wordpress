@@ -1,6 +1,8 @@
-import { FieldType, GenericField } from '@/model/field/Field';
+import { Field, FieldType } from '@/model/field/Field';
 
-export type TextField = GenericField< FieldType.Text >;
+export interface TextField extends Field {
+	type: FieldType.Text;
+}
 
 export function newTextField(
 	original: string = '',

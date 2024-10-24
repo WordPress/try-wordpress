@@ -1,6 +1,8 @@
-import { FieldType, GenericField } from '@/model/field/Field';
+import { Field, FieldType } from '@/model/field/Field';
 
-export type HtmlField = GenericField< FieldType.Html >;
+export interface HtmlField extends Field {
+	type: FieldType.Html;
+}
 
 export function newHtmlField(
 	original: string = '',
