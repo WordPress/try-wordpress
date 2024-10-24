@@ -10,12 +10,12 @@ import { Blueprint } from '@/model/blueprint/Blueprint';
 
 export function NewBlueprint() {
 	const params = useParams();
-	const postType = params.postType as SubjectType;
+	const subjectType = params.subjectType as SubjectType;
 	const navigate = useNavigate();
 	const [ isLoading, setIsLoading ] = useState( true );
 	const { session, apiClient } = useSessionContext();
 
-	// Check if there is already a blueprint for the postType and if so,
+	// Check if there is already a blueprint for the subjectType and if so,
 	// redirect to that blueprint's edit screen is the blueprint is not valid yet,
 	// or redirect to the import screen if the blueprint is already valid.
 	useEffect( () => {
@@ -24,7 +24,7 @@ export function NewBlueprint() {
 		}
 		async function maybeRedirect() {
 			const blueprints =
-				await apiClient!.blueprints.findByPostType( postType );
+				await apiClient!.blueprints.findBySubjectType( subjectType );
 			const blueprint = blueprints.length > 0 ? blueprints[ 0 ] : null;
 			if ( blueprint && blueprint.valid ) {
 				navigate( Screens.import( session.id, blueprint.id ) );
@@ -36,12 +36,12 @@ export function NewBlueprint() {
 			setIsLoading( false );
 		}
 		maybeRedirect().catch( console.error );
-	}, [ session.id, apiClient, postType, navigate ] );
+	}, [ session.id, apiClient, subjectType, navigate ] );
 
 	const navigateMessage = (
 		<>
 			Navigate to the page of a{ ' ' }
-			{ humanReadableSubjectType.get( postType ) }
+			{ humanReadableSubjectType.get( subjectType ) }
 		</>
 	);
 
@@ -53,7 +53,7 @@ export function NewBlueprint() {
 						const currentPage =
 							await ContentBus.getCurrentPageInfo();
 						let blueprint: Blueprint | null;
-						switch ( postType ) {
+						switch ( subjectType ) {
 							case SubjectType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
 									newBlogPostBlueprint( currentPage.url )
@@ -61,7 +61,7 @@ export function NewBlueprint() {
 								break;
 							default:
 								throw Error(
-									`unknown post type ${ postType }`
+									`unknown post type ${ subjectType }`
 								);
 						}
 						navigate(
