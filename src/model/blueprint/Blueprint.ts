@@ -1,32 +1,15 @@
 import { SubjectType } from '@/model/subject/Subject';
-import { FieldType, GenericField } from '@/model/field/Field';
+import { FieldType } from '@/model/field/Field';
 
-export type Blueprint = GenericBlueprint<
-	any,
-	BlueprintFields< any, FieldType >
->;
-
-export type BlueprintField = GenericBlueprintField< FieldType >;
-export type BlueprintDateField = GenericBlueprintField< FieldType.Date >;
-export type BlueprintTextField = GenericBlueprintField< FieldType.Text >;
-export type BlueprintHtmlField = GenericBlueprintField< FieldType.Html >;
-
-export interface GenericBlueprint<
-	Type extends SubjectType,
-	Fields extends BlueprintFields< any, any >,
-> {
-	type: Type;
-	id: string; // TODO: Probably need to make this a number when we start storing Blueprints on the backend.
-	sourceUrl: string;
-	valid: boolean;
-	fields: Fields;
-}
-
-interface GenericBlueprintField< T extends FieldType >
-	extends Pick< GenericField< T >, 'type' > {
+export interface BlueprintField {
+	type: FieldType;
 	selector?: string;
 }
 
-type BlueprintFields< FieldName extends string, T extends FieldType > = {
-	[ Property in keyof FieldName ]: GenericBlueprintField< T >;
-};
+export interface Blueprint {
+	type: SubjectType;
+	id: string; // TODO: Probably need to make this a number when we start storing Blueprints on the backend.
+	sourceUrl: string;
+	valid: boolean;
+	fields: Record< string, BlueprintField >;
+}
