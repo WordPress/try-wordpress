@@ -9,3 +9,15 @@ export interface BlogPost extends Subject {
 	title: TextField;
 	content: HtmlField;
 }
+
+export function validateBlogPost( blogPost: BlogPost ): boolean {
+	const fields = [ blogPost.title, blogPost.date, blogPost.content ];
+	let isValid = true;
+	for ( const f of fields ) {
+		if ( f.original === '' || f.parsed === '' ) {
+			isValid = false;
+			break;
+		}
+	}
+	return isValid;
+}

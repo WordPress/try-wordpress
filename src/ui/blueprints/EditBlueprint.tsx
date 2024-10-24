@@ -10,7 +10,7 @@ import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { useSubjectForBlueprint } from '@/ui/blueprints/useSubjectForBlueprint';
 import { Field } from '@/model/field/Field';
-import { BlogPost } from '@/model/subject/BlogPost';
+import { BlogPost, validateBlogPost } from '@/model/subject/BlogPost';
 import {
 	BlogPostBlueprint,
 	validateBlogpostBlueprint,
@@ -74,31 +74,13 @@ export function EditBlueprint() {
 		void playgroundClient.goTo( '/?p=' + subject.transformedId );
 	}
 
-	let isValid = ! blueprint ? false : blueprint.valid;
-	if ( ! subject ) {
-		isValid = false;
-	} else if ( isValid && subject ) {
-		let fields: Field[];
-		switch ( subject.type ) {
-			case SubjectType.BlogPost:
-				const blogPost = subject as BlogPost;
-				fields = [ blogPost.title, blogPost.date, blogPost.content ];
-				break;
-			default:
-				throw Error( `unknown subject type ${ subject.type }` );
-		}
-		for ( const f of fields ) {
-			if ( f.original === '' || f.parsed === '' ) {
-				isValid = false;
-				break;
-			}
-		}
-	}
-
+	let isValid = false;
 	let editor: ReactElement | undefined;
+
 	if ( blueprint && subject ) {
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
+				isValid = validateBlogPost( subject as BlogPost );
 				editor = (
 					<BlogPostBlueprintEditor
 						blueprint={ blueprint as BlogPostBlueprint }
@@ -110,6 +92,10 @@ export function EditBlueprint() {
 			default:
 				throw Error( `unknown subject type ${ subject.type }` );
 		}
+	}
+
+	if ( isValid ) {
+		isValid = blueprint!.valid;
 	}
 
 	return (
