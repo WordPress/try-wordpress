@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
-import { newBlogPostBlueprint } from '@/model/subject/BlogPost';
+import { newBlogPostBlueprint } from '@/model/blueprint/BlogPost';
 import { Blueprint } from '@/model/blueprint/Blueprint';
 
 export function NewBlueprint() {
