@@ -1,6 +1,6 @@
 import { ApiClient } from '@/api/ApiClient';
-import { Blueprint } from '@/model/content/Blueprint';
-import { PostType } from '@/model/content/Post';
+import { Blueprint } from '@/model/blueprint/Blueprint';
+import { SubjectType } from '@/model/subject/Subject';
 
 export class BlueprintsApi {
 	// eslint-disable-next-line no-useless-constructor
@@ -44,7 +44,9 @@ export class BlueprintsApi {
 		return values[ key( id ) ] as Blueprint;
 	}
 
-	async findByPostType( postType: PostType ): Promise< Blueprint[] > {
+	async findBySubjectType(
+		subjectType: SubjectType
+	): Promise< Blueprint[] > {
 		let blueprintIds = [];
 		const values = await browser.storage.local.get( 'blueprints' );
 		if ( values && values.blueprints ) {
@@ -55,7 +57,7 @@ export class BlueprintsApi {
 		for ( const blueprintId of blueprintIds ) {
 			// eslint-disable-next-line react/no-is-mounted
 			const blueprint = await this.findById( blueprintId );
-			if ( blueprint && blueprint.type === postType ) {
+			if ( blueprint && blueprint.type === subjectType ) {
 				blueprints.push( blueprint );
 			}
 		}

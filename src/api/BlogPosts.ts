@@ -1,26 +1,10 @@
-/* eslint-disable camelcase */
-import { WP_REST_API_Post } from 'wp-types';
-import { BlogPost } from '@/model/content/BlogPost';
+import { BlogPost } from '@/model/subject/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
-import {
-	DateField,
-	HtmlField,
-	newDateField,
-	newHtmlField,
-	newTextField,
-	PostType,
-	TextField,
-} from '@/model/content/Post';
-
-type ApiPost = WP_REST_API_Post & {
-	preview_link: string;
-};
-
-/* eslint-enable camelcase */
-
-interface CreateBody {
-	guid: string;
-}
+import { SubjectType } from '@/model/subject/Subject';
+import { DateField, newDateField } from '@/model/field/DateField';
+import { newTextField, TextField } from '@/model/field/TextField';
+import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
+import { ApiPost } from '@/api/ApiTypes';
 
 interface UpdateBody {
 	date?: DateField;
@@ -39,10 +23,10 @@ export class BlogPostsApi {
 	// eslint-disable-next-line no-useless-constructor
 	constructor( private readonly client: ApiClient ) {}
 
-	async create( body: CreateBody ): Promise< BlogPost > {
+	async create( blogPost: BlogPost ): Promise< BlogPost > {
 		const response = ( await this.client.post( '/liberated_data', {
 			meta: {
-				guid: body.guid,
+				guid: blogPost.sourceUrl,
 			},
 		} ) ) as ApiPost;
 		return fromApiResponse( response );
@@ -81,9 +65,9 @@ export class BlogPostsApi {
 		return posts.length === 0 ? null : fromApiResponse( posts[ 0 ] );
 	}
 
-	async findByGuid( guid: string ): Promise< BlogPost | null > {
+	async findBySourceUrl( sourceUrl: string ): Promise< BlogPost | null > {
 		// eslint-disable-next-line react/no-is-mounted
-		const posts = await this.find( { guid } );
+		const posts = await this.find( { guid: sourceUrl } );
 		return posts.length === 0 ? null : fromApiResponse( posts[ 0 ] );
 	}
 
@@ -110,14 +94,12 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 	);
 
 	return {
-		type: PostType.BlogPost,
-		guid: meta.guid,
+		type: SubjectType.BlogPost,
+		sourceUrl: meta.guid,
 		id: response.id,
-		transformedId: response.transformed_id as number,
-		fields: {
-			date,
-			content,
-			title,
-		},
+		transformedId: response.transformed_id,
+		title,
+		date,
+		content,
 	};
 }

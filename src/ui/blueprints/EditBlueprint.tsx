@@ -1,24 +1,26 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
+import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBlueprintEditor';
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
-import {
-	parsePostContent,
-	parsePostDate,
-	parsePostTitle,
-} from '@/parser/blog-post';
-import { PostField, PostType } from '@/model/content/Post';
+import { parseBlogPostField } from '@/parser/blog-post';
+import { SubjectType } from '@/model/subject/Subject';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
-import { usePostForBlueprint } from '@/ui/blueprints/usePostForBlueprint';
+import { useSubjectForBlueprint } from '@/ui/blueprints/useSubjectForBlueprint';
+import { Field } from '@/model/field/Field';
+import { BlogPost, validateBlogPost } from '@/model/subject/BlogPost';
+import {
+	BlogPostBlueprint,
+	validateBlogpostBlueprint,
+} from '@/model/blueprint/BlogPost';
 
 export function EditBlueprint() {
 	const params = useParams();
 	const blueprintId = params.blueprintId!;
 	const [ blueprint, setBlueprint ] = useBlueprint( blueprintId );
-	const [ post, setPost ] = usePostForBlueprint( blueprint );
+	const [ subject, setSubject ] = useSubjectForBlueprint( blueprint );
 	const { session, apiClient, playgroundClient } = useSessionContext();
 	const navigate = useNavigate();
 
@@ -29,88 +31,78 @@ export function EditBlueprint() {
 		}
 	}, [ blueprint ] );
 
-	// Make playground navigate to the post's URL.
+	// Make playground navigate to the transformed post of the subject.
 	useEffect( () => {
-		if ( post && !! playgroundClient ) {
-			void playgroundClient.goTo( '/?p=' + post.transformedId );
+		if ( subject && !! playgroundClient ) {
+			void playgroundClient.goTo( '/?p=' + subject.transformedId );
 		}
-	}, [ post, playgroundClient ] );
+	}, [ subject, playgroundClient ] );
 
 	// Handle field change events.
 	async function onFieldChanged(
 		name: string,
-		field: PostField,
+		field: Field,
 		selector: string
 	) {
-		if ( ! blueprint || ! post ) {
+		if ( ! blueprint || ! subject ) {
 			return;
-		}
-		let postFieldsToUpdate: object | undefined;
-		switch ( post.type ) {
-			case PostType.BlogPost:
-				switch ( name ) {
-					case 'date':
-						field = parsePostDate( field.original );
-						postFieldsToUpdate = {
-							date: field,
-						};
-						break;
-					case 'title':
-						field = parsePostTitle( field.original );
-						postFieldsToUpdate = {
-							title: field,
-						};
-						break;
-					case 'content':
-						field = parsePostContent( field.original );
-						postFieldsToUpdate = {
-							content: field,
-						};
-						break;
-				}
-				break;
-			default:
-				throw Error( `unknown post type ${ field.type }` );
 		}
 
 		blueprint.fields[ name ].selector = selector;
 
-		let isBlueprintValid = true;
-		for ( const f of Object.values( blueprint.fields ) ) {
-			if ( f.selector === '' ) {
-				isBlueprintValid = false;
-			}
+		const subjectFieldsToUpdate: Record< string, Field > = {};
+		switch ( subject.type ) {
+			case SubjectType.BlogPost:
+				blueprint.valid = validateBlogpostBlueprint(
+					blueprint as BlogPostBlueprint
+				);
+				subjectFieldsToUpdate[ name ] = parseBlogPostField(
+					name,
+					field
+				);
+				break;
+			default:
+				throw Error( `unknown subject type ${ subject.type }` );
 		}
-		blueprint.valid = isBlueprintValid;
 
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );
 
-		if ( postFieldsToUpdate ) {
-			const p = await apiClient!.blogPosts.update(
-				post.id,
-				postFieldsToUpdate
-			);
-			setPost( p );
-			void playgroundClient.goTo( '/?p=' + post.transformedId );
+		const p = await apiClient!.blogPosts.update(
+			subject.id,
+			subjectFieldsToUpdate
+		);
+		setSubject( p );
+		void playgroundClient.goTo( '/?p=' + subject.transformedId );
+	}
+
+	let isValid = false;
+	let editor: ReactElement | undefined;
+
+	if ( blueprint && subject ) {
+		switch ( subject.type ) {
+			case SubjectType.BlogPost:
+				isValid = validateBlogPost( subject as BlogPost );
+				editor = (
+					<BlogPostBlueprintEditor
+						blueprint={ blueprint as BlogPostBlueprint }
+						subject={ subject as BlogPost }
+						onFieldChanged={ onFieldChanged }
+					/>
+				);
+				break;
+			default:
+				throw Error( `unknown subject type ${ subject.type }` );
 		}
 	}
 
-	let isValid = ! blueprint ? false : blueprint.valid;
-	if ( ! post ) {
-		isValid = false;
-	} else if ( isValid && post ) {
-		for ( const f of Object.values( post.fields ) ) {
-			if ( f.original === '' || f.parsed === '' ) {
-				isValid = false;
-				break;
-			}
-		}
+	if ( isValid ) {
+		isValid = blueprint!.valid;
 	}
 
 	return (
 		<>
-			{ ! blueprint || ! post ? (
+			{ ! editor ? (
 				'Loading...'
 			) : (
 				<>
@@ -127,16 +119,7 @@ export function EditBlueprint() {
 							Continue
 						</button>
 					</Toolbar>
-					<BlueprintEditor
-						blueprint={ blueprint }
-						post={ post }
-						fieldOrder={ {
-							title: 0,
-							date: 1,
-							content: 2,
-						} }
-						onFieldChanged={ onFieldChanged }
-					/>
+					{ editor }
 				</>
 			) }
 		</>

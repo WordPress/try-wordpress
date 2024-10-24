@@ -1,10 +1,6 @@
-/* eslint-disable camelcase */
-import { WP_REST_API_User } from 'wp-types';
-type ApiUser = WP_REST_API_User;
-/* eslint-enable camelcase */
-
 import { ApiClient } from '@/api/ApiClient';
 import { User } from '@/model/User';
+import { ApiUser } from '@/api/ApiTypes';
 
 interface CreateBody {
 	username: string;

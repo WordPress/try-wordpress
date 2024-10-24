@@ -1,7 +1,7 @@
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate } from 'react-router-dom';
 import { Screens } from '@/ui/App';
-import { PostType } from '@/model/content/Post';
+import { SubjectType } from '@/model/subject/Subject';
 
 export function ViewSession() {
 	const { session } = useSessionContext();
@@ -19,7 +19,7 @@ export function ViewSession() {
 							navigate(
 								Screens.blueprints.new(
 									session.id,
-									PostType.BlogPost
+									SubjectType.BlogPost
 								)
 							)
 						}

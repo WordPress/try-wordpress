@@ -4,18 +4,18 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
-import { humanReadablePostType, PostType } from '@/model/content/Post';
-import { newBlogPostBlueprint } from '@/model/content/BlogPost';
-import { Blueprint } from '@/model/content/Blueprint';
+import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
+import { newBlogPostBlueprint } from '@/model/blueprint/BlogPost';
+import { Blueprint } from '@/model/blueprint/Blueprint';
 
 export function NewBlueprint() {
 	const params = useParams();
-	const postType = params.postType as PostType;
+	const subjectType = params.subjectType as SubjectType;
 	const navigate = useNavigate();
 	const [ isLoading, setIsLoading ] = useState( true );
 	const { session, apiClient } = useSessionContext();
 
-	// Check if there is already a blueprint for the postType and if so,
+	// Check if there is already a blueprint for the subjectType and if so,
 	// redirect to that blueprint's edit screen is the blueprint is not valid yet,
 	// or redirect to the import screen if the blueprint is already valid.
 	useEffect( () => {
@@ -24,7 +24,7 @@ export function NewBlueprint() {
 		}
 		async function maybeRedirect() {
 			const blueprints =
-				await apiClient!.blueprints.findByPostType( postType );
+				await apiClient!.blueprints.findBySubjectType( subjectType );
 			const blueprint = blueprints.length > 0 ? blueprints[ 0 ] : null;
 			if ( blueprint && blueprint.valid ) {
 				navigate( Screens.import( session.id, blueprint.id ) );
@@ -36,7 +36,14 @@ export function NewBlueprint() {
 			setIsLoading( false );
 		}
 		maybeRedirect().catch( console.error );
-	}, [ session.id, apiClient, postType, navigate ] );
+	}, [ session.id, apiClient, subjectType, navigate ] );
+
+	const navigateMessage = (
+		<>
+			Navigate to the page of a{ ' ' }
+			{ humanReadableSubjectType.get( subjectType ) }
+		</>
+	);
 
 	const element = (
 		<>
@@ -46,15 +53,15 @@ export function NewBlueprint() {
 						const currentPage =
 							await ContentBus.getCurrentPageInfo();
 						let blueprint: Blueprint | null;
-						switch ( postType ) {
-							case PostType.BlogPost:
+						switch ( subjectType ) {
+							case SubjectType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
 									newBlogPostBlueprint( currentPage.url )
 								);
 								break;
 							default:
 								throw Error(
-									`unknown post type ${ postType }`
+									`unknown post type ${ subjectType }`
 								);
 						}
 						navigate(
@@ -65,10 +72,7 @@ export function NewBlueprint() {
 					Continue
 				</button>
 			</Toolbar>
-			<div>
-				Navigate to the page of a{ ' ' }
-				{ humanReadablePostType.get( postType ) }
-			</div>
+			<div>{ navigateMessage }</div>
 		</>
 	);
 

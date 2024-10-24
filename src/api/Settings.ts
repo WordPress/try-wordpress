@@ -1,10 +1,6 @@
-/* eslint-disable camelcase */
-import { WP_REST_API_Settings } from 'wp-types';
-type ApiSettings = WP_REST_API_Settings;
-/* eslint-enable camelcase */
-
 import { ApiClient } from '@/api/ApiClient';
 import { SiteSettings } from '@/model/SiteSettings';
+import { ApiSettings } from '@/api/ApiTypes';
 
 interface UpdateBody {
 	title?: string;

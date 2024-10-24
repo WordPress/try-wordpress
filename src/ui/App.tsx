@@ -24,7 +24,7 @@ import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/breadcrumbs/Breadcrumbs';
 import { NewBlueprint } from '@/ui/blueprints/NewBlueprint';
 import { EditBlueprint } from '@/ui/blueprints/EditBlueprint';
-import { PostType } from '@/model/content/Post';
+import { SubjectType } from '@/model/subject/Subject';
 import { Import } from '@/ui/import/Import';
 
 export const Screens = {
@@ -32,8 +32,8 @@ export const Screens = {
 	newSession: () => '/start/new-session',
 	viewSession: ( sessionId: string ) => `/session/${ sessionId }`,
 	blueprints: {
-		new: ( sessionId: string, postType: PostType ) =>
-			`/session/${ sessionId }/blueprints/new/${ postType }`,
+		new: ( sessionId: string, subjectType: SubjectType ) =>
+			`/session/${ sessionId }/blueprints/new/${ subjectType }`,
 		edit: ( sessionId: string, postId: string ) =>
 			`/session/${ sessionId }/blueprints/${ postId }`,
 	},
@@ -78,7 +78,10 @@ function Routes( props: { initialScreen: string } ) {
 			>
 				<Route path="" element={ <ViewSession /> } />
 				<Route path="blueprints">
-					<Route path="new/:postType" element={ <NewBlueprint /> } />
+					<Route
+						path="new/:subjectType"
+						element={ <NewBlueprint /> }
+					/>
 					<Route path=":blueprintId" element={ <EditBlueprint /> } />
 				</Route>
 				<Route path="import/:blueprintId" element={ <Import /> } />

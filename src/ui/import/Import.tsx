@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
-import { humanReadablePostType } from '@/model/content/Post';
+import { humanReadableSubjectType } from '@/model/subject/Subject';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { ReactElement, useEffect } from 'react';
 import { Screens } from '@/ui/App';
@@ -59,8 +59,8 @@ export function Import() {
 						</button>
 					</Toolbar>
 					We&apos;ll now import{ ' ' }
-					{ humanReadablePostType.get( blueprint.type ) }s using the
-					following selectors:
+					{ humanReadableSubjectType.get( blueprint.type ) }s using
+					the following selectors:
 					<br />
 					<br />
 					<ul>{ fields }</ul>
