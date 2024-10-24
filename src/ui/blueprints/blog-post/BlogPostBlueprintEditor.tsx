@@ -1,11 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { AppBus } from '@/bus/AppBus';
-import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 import { Field } from '@/model/field/Field';
 import { BlogPost } from '@/model/subject/BlogPost';
 import { BlogPostBlueprint } from '@/model/blueprint/BlogPost';
+import { useLastClickedElement } from '@/ui/blueprints/useLastClickedElement';
 
 interface Props {
 	blueprint: BlogPostBlueprint;
@@ -15,31 +14,17 @@ interface Props {
 
 export function BlogPostBlueprintEditor( props: Props ) {
 	const { blueprint, subject, onFieldChanged } = props;
-	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
 		false | { field: Field; name: string }
 	>( false );
+	const [ lastClickedElement, resetLastClickedElement ] =
+		useLastClickedElement();
 
 	const subjectFields: { name: string; field: Field }[] = [
 		{ name: 'title', field: subject.title },
 		{ name: 'date', field: subject.date },
 		{ name: 'content', field: subject.content },
 	];
-
-	// Listen to click events coming from the content script.
-	useEffect( () => {
-		AppBus.listen( async ( message: Message ) => {
-			switch ( message.action ) {
-				case AppBus.actions.ElementClicked:
-					await ContentBus.disableHighlighting();
-					setLastClickedElement( ( message.payload as any ).content );
-			}
-		} );
-		return () => {
-			void ContentBus.disableHighlighting();
-			AppBus.stopListening();
-		};
-	}, [] );
 
 	// Handle a click on an event in the content script,
 	// according to which field is currently waiting for selection.
@@ -56,7 +41,7 @@ export function BlogPostBlueprintEditor( props: Props ) {
 				selector
 			);
 			setFieldWaitingForSelection( false );
-			setLastClickedElement( undefined );
+			resetLastClickedElement();
 		},
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[ fieldWaitingForSelection, lastClickedElement ]
