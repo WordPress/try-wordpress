@@ -2,6 +2,7 @@ import { Blueprint } from '@/model/blueprint/Blueprint';
 import { Subject, SubjectType } from '@/model/subject/Subject';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
+import { newBlogPost } from '@/model/subject/BlogPost';
 
 // Create or load a Subject to preview the Blueprint's results.
 // If a Subject already exists for the Blueprint's source URL, we use that Subject,
@@ -17,26 +18,28 @@ export function useSubjectForBlueprint(
 			return;
 		}
 		async function loadSubject( bp: Blueprint ) {
-			let p: Subject | null;
+			let subj: Subject | null;
 			switch ( bp.type ) {
 				case SubjectType.BlogPost:
-					p = await apiClient!.blogPosts.findByGuid( bp.sourceUrl );
+					subj = await apiClient!.blogPosts.findByGuid(
+						bp.sourceUrl
+					);
 					break;
 				default:
 					throw Error( `unknown blueprint type ${ bp.type }` );
 			}
-			if ( ! p ) {
+			if ( ! subj ) {
 				switch ( bp.type ) {
 					case SubjectType.BlogPost:
-						p = await apiClient!.blogPosts.create( {
-							guid: bp.sourceUrl,
-						} );
+						subj = await apiClient!.blogPosts.create(
+							newBlogPost( bp.sourceUrl )
+						);
 						break;
 					default:
 						throw Error( `unknown blueprint type ${ bp.type }` );
 				}
 			}
-			setSubject( p );
+			setSubject( subj );
 		}
 		loadSubject( blueprint ).catch( console.error );
 	}, [ blueprint, apiClient ] );

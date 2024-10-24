@@ -6,10 +6,6 @@ import { newTextField, TextField } from '@/model/field/TextField';
 import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
 import { ApiPost } from '@/api/ApiTypes';
 
-interface CreateBody {
-	guid: string;
-}
-
 interface UpdateBody {
 	date?: DateField;
 	title?: TextField;
@@ -27,10 +23,10 @@ export class BlogPostsApi {
 	// eslint-disable-next-line no-useless-constructor
 	constructor( private readonly client: ApiClient ) {}
 
-	async create( body: CreateBody ): Promise< BlogPost > {
+	async create( blogPost: BlogPost ): Promise< BlogPost > {
 		const response = ( await this.client.post( '/liberated_data', {
 			meta: {
-				guid: body.guid,
+				guid: blogPost.guid,
 			},
 		} ) ) as ApiPost;
 		return fromApiResponse( response );
