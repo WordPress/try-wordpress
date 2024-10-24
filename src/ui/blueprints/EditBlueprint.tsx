@@ -11,7 +11,10 @@ import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { useSubjectForBlueprint } from '@/ui/blueprints/useSubjectForBlueprint';
 import { Field } from '@/model/field/Field';
 import { BlogPost } from '@/model/subject/BlogPost';
-import { BlogPostBlueprint } from '@/model/blueprint/BlogPost';
+import {
+	BlogPostBlueprint,
+	validateBlogpostBlueprint,
+} from '@/model/blueprint/BlogPost';
 
 export function EditBlueprint() {
 	const params = useParams();
@@ -44,26 +47,21 @@ export function EditBlueprint() {
 		if ( ! blueprint || ! subject ) {
 			return;
 		}
-		let parsedField: Field;
+
+		blueprint.fields[ name ].selector = selector;
+
+		const subjectFieldsToUpdate: Record< string, Field > = {};
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
-				parsedField = parseBlogPostField( name, field );
+				blueprint.valid = validateBlogpostBlueprint( blueprint );
+				subjectFieldsToUpdate[ name ] = parseBlogPostField(
+					name,
+					field
+				);
 				break;
 			default:
 				throw Error( `unknown subject type ${ subject.type }` );
 		}
-		const subjectFieldsToUpdate: Record< string, Field > = {};
-		subjectFieldsToUpdate[ name ] = parsedField;
-
-		blueprint.fields[ name ].selector = selector;
-		let isBlueprintValid = true;
-		for ( const f of Object.values( blueprint.fields ) ) {
-			if ( f.selector === '' ) {
-				isBlueprintValid = false;
-				break;
-			}
-		}
-		blueprint.valid = isBlueprintValid;
 
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );

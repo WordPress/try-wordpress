@@ -33,3 +33,14 @@ export function newBlogPostBlueprint( sourceUrl: string ): BlogPostBlueprint {
 		},
 	};
 }
+
+export function validateBlogpostBlueprint( blueprint: Blueprint ): boolean {
+	let isValid = true;
+	for ( const f of Object.values( blueprint.fields ) ) {
+		if ( f.selector === '' ) {
+			isValid = false;
+			break;
+		}
+	}
+	return isValid;
+}
