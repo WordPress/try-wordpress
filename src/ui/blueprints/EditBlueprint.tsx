@@ -4,11 +4,7 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBlueprintEditor';
 import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
-import {
-	parseBlogPostContent,
-	parseBlogPostDate,
-	parseBlogPostTitle,
-} from '@/parser/blog-post';
+import { parseBlogPostField } from '@/parser/blog-post';
 import { SubjectType } from '@/model/subject/Subject';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
@@ -48,42 +44,23 @@ export function EditBlueprint() {
 		if ( ! blueprint || ! subject ) {
 			return;
 		}
-		let subjectFieldsToUpdate: object | undefined;
+		let parsedField: Field;
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
-				switch ( name ) {
-					case 'date':
-						field = parseBlogPostDate( field.original );
-						subjectFieldsToUpdate = {
-							date: field,
-						};
-						break;
-					case 'title':
-						field = parseBlogPostTitle( field.original );
-						subjectFieldsToUpdate = {
-							title: field,
-						};
-						break;
-					case 'content':
-						field = parseBlogPostContent( field.original );
-						subjectFieldsToUpdate = {
-							content: field,
-						};
-						break;
-					default:
-						throw Error( `unknown field type ${ field.type }` );
-				}
+				parsedField = parseBlogPostField( name, field );
 				break;
 			default:
 				throw Error( `unknown subject type ${ subject.type }` );
 		}
+		const subjectFieldsToUpdate: Record< string, Field > = {};
+		subjectFieldsToUpdate[ name ] = parsedField;
 
 		blueprint.fields[ name ].selector = selector;
-
 		let isBlueprintValid = true;
 		for ( const f of Object.values( blueprint.fields ) ) {
 			if ( f.selector === '' ) {
 				isBlueprintValid = false;
+				break;
 			}
 		}
 		blueprint.valid = isBlueprintValid;
@@ -91,14 +68,12 @@ export function EditBlueprint() {
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );
 
-		if ( subjectFieldsToUpdate ) {
-			const p = await apiClient!.blogPosts.update(
-				subject.id,
-				subjectFieldsToUpdate
-			);
-			setSubject( p );
-			void playgroundClient.goTo( '/?p=' + subject.transformedId );
-		}
+		const p = await apiClient!.blogPosts.update(
+			subject.id,
+			subjectFieldsToUpdate
+		);
+		setSubject( p );
+		void playgroundClient.goTo( '/?p=' + subject.transformedId );
 	}
 
 	let isValid = ! blueprint ? false : blueprint.valid;
