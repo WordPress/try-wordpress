@@ -38,6 +38,13 @@ export function NewBlueprint() {
 		maybeRedirect().catch( console.error );
 	}, [ session.id, apiClient, postType, navigate ] );
 
+	const navigateMessage = (
+		<>
+			Navigate to the page of a{ ' ' }
+			{ humanReadableSubjectType.get( postType ) }
+		</>
+	);
+
 	const element = (
 		<>
 			<Toolbar>
@@ -65,10 +72,7 @@ export function NewBlueprint() {
 					Continue
 				</button>
 			</Toolbar>
-			<div>
-				Navigate to the page of a{ ' ' }
-				{ humanReadableSubjectType.get( postType ) }
-			</div>
+			<div>{ navigateMessage }</div>
 		</>
 	);
 
