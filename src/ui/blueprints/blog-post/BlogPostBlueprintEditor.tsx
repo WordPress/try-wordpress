@@ -20,6 +20,12 @@ export function BlogPostBlueprintEditor( props: Props ) {
 		false | { field: Field; name: string }
 	>( false );
 
+	const subjectFields: { name: string; field: Field }[] = [
+		{ name: 'title', field: subject.title },
+		{ name: 'date', field: subject.date },
+		{ name: 'content', field: subject.content },
+	];
+
 	// Listen to click events coming from the content script.
 	useEffect( () => {
 		AppBus.listen( async ( message: Message ) => {
@@ -56,14 +62,8 @@ export function BlogPostBlueprintEditor( props: Props ) {
 		[ fieldWaitingForSelection, lastClickedElement ]
 	);
 
-	const fields: { name: string; field: Field }[] = [
-		{ name: 'title', field: subject.title },
-		{ name: 'date', field: subject.date },
-		{ name: 'content', field: subject.content },
-	];
-
 	const elements: ReactElement[] = [];
-	for ( const { name, field } of fields ) {
+	for ( const { name, field } of subjectFields ) {
 		const isWaitingForSelection =
 			!! fieldWaitingForSelection &&
 			fieldWaitingForSelection.name === name;
