@@ -53,7 +53,9 @@ export function EditBlueprint() {
 		const subjectFieldsToUpdate: Record< string, Field > = {};
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
-				blueprint.valid = validateBlogpostBlueprint( blueprint );
+				blueprint.valid = validateBlogpostBlueprint(
+					blueprint as BlogPostBlueprint
+				);
 				subjectFieldsToUpdate[ name ] = parseBlogPostField(
 					name,
 					field
