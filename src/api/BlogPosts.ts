@@ -101,7 +101,7 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 		type: SubjectType.BlogPost,
 		guid: meta.guid,
 		id: response.id,
-		transformedId: response.transformed_id as number,
+		transformedId: response.transformed_id,
 		title,
 		date,
 		content,

@@ -6,7 +6,7 @@ import {
 } from 'wp-types';
 
 export type ApiPost = WP_REST_API_Post & {
-	preview_link: string;
+	transformed_id: number;
 };
 
 export type ApiUser = WP_REST_API_User;
