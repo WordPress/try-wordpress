@@ -21,7 +21,7 @@ export function useSubjectForBlueprint(
 			let subj: Subject | null;
 			switch ( bp.type ) {
 				case SubjectType.BlogPost:
-					subj = await apiClient!.blogPosts.findByGuid(
+					subj = await apiClient!.blogPosts.findBySourceUrl(
 						bp.sourceUrl
 					);
 					break;

@@ -26,7 +26,7 @@ export class BlogPostsApi {
 	async create( blogPost: BlogPost ): Promise< BlogPost > {
 		const response = ( await this.client.post( '/liberated_data', {
 			meta: {
-				guid: blogPost.guid,
+				guid: blogPost.sourceUrl,
 			},
 		} ) ) as ApiPost;
 		return fromApiResponse( response );
@@ -65,9 +65,9 @@ export class BlogPostsApi {
 		return posts.length === 0 ? null : fromApiResponse( posts[ 0 ] );
 	}
 
-	async findByGuid( guid: string ): Promise< BlogPost | null > {
+	async findBySourceUrl( sourceUrl: string ): Promise< BlogPost | null > {
 		// eslint-disable-next-line react/no-is-mounted
-		const posts = await this.find( { guid } );
+		const posts = await this.find( { guid: sourceUrl } );
 		return posts.length === 0 ? null : fromApiResponse( posts[ 0 ] );
 	}
 
@@ -95,7 +95,7 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 
 	return {
 		type: SubjectType.BlogPost,
-		guid: meta.guid,
+		sourceUrl: meta.guid,
 		id: response.id,
 		transformedId: response.transformed_id,
 		title,

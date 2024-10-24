@@ -10,5 +10,5 @@ export interface Subject {
 	type: SubjectType;
 	id: number;
 	transformedId: number;
-	guid: string;
+	sourceUrl: string;
 }

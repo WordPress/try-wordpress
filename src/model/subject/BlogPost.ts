@@ -15,7 +15,7 @@ export function newBlogPost( sourceUrl: string ): BlogPost {
 		id: 0,
 		transformedId: 0,
 		type: SubjectType.BlogPost,
-		guid: sourceUrl,
+		sourceUrl: sourceUrl,
 		date: newDateField(),
 		title: newTextField(),
 		content: newHtmlField(),
