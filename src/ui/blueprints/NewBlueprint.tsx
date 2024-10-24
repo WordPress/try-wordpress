@@ -7,6 +7,7 @@ import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
 import { newBlogPostBlueprint } from '@/model/blueprint/BlogPost';
 import { Blueprint } from '@/model/blueprint/Blueprint';
+import { newHeaderBlueprint } from '@/model/blueprint/Header';
 
 export function NewBlueprint() {
 	const params = useParams();
@@ -38,12 +39,15 @@ export function NewBlueprint() {
 		maybeRedirect().catch( console.error );
 	}, [ session.id, apiClient, subjectType, navigate ] );
 
-	const navigateMessage = (
+	let navigateMessage = (
 		<>
 			Navigate to the page of a{ ' ' }
 			{ humanReadableSubjectType.get( subjectType ) }
 		</>
 	);
+	if ( subjectType === SubjectType.Header ) {
+		navigateMessage = <>Navigate to a page that shows the header</>;
+	}
 
 	const element = (
 		<>
@@ -54,6 +58,11 @@ export function NewBlueprint() {
 							await ContentBus.getCurrentPageInfo();
 						let blueprint: Blueprint | null;
 						switch ( subjectType ) {
+							case SubjectType.Header:
+								blueprint = await apiClient!.blueprints.create(
+									newHeaderBlueprint( currentPage.url )
+								);
+								break;
 							case SubjectType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
 									newBlogPostBlueprint( currentPage.url )
