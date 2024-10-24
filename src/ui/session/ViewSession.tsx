@@ -19,6 +19,20 @@ export function ViewSession() {
 							navigate(
 								Screens.blueprints.new(
 									session.id,
+									SubjectType.Navigation
+								)
+							)
+						}
+					>
+						Import Navigation
+					</button>
+				</li>
+				<li>
+					<button
+						onClick={ () =>
+							navigate(
+								Screens.blueprints.new(
+									session.id,
 									SubjectType.BlogPost
 								)
 							)
