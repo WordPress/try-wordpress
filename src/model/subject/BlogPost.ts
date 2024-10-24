@@ -1,4 +1,4 @@
-import { GenericSubject, SubjectType } from '@/model/subject/Subject';
+import { Subject, SubjectType } from '@/model/subject/Subject';
 import {
 	GenericBlueprint,
 	BlueprintDateField,
@@ -16,7 +16,8 @@ type BlogPostBlueprintFields = {
 	content: BlueprintHtmlField;
 };
 
-export interface BlogPost extends GenericSubject< SubjectType.BlogPost > {
+export interface BlogPost extends Subject {
+	type: SubjectType.BlogPost;
 	date: DateField;
 	title: TextField;
 	content: HtmlField;
