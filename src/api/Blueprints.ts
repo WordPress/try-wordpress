@@ -35,7 +35,6 @@ export class BlueprintsApi {
 		return blueprint;
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async findById( id: string ): Promise< Blueprint | null > {
 		const values = await browser.storage.local.get( key( id ) );
 		if ( ! values || ! values[ key( id ) ] ) {
@@ -66,6 +65,6 @@ export class BlueprintsApi {
 	}
 }
 
-function key( blueprintId: string ): string {
-	return `blueprint-${ blueprintId }`;
+function key( id: string ): string {
+	return `blueprint-${ id }`;
 }

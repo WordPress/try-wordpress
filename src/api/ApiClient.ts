@@ -3,34 +3,29 @@ import { BlogPostsApi } from '@/api/BlogPosts';
 import { SettingsApi } from '@/api/Settings';
 import { UsersApi } from '@/api/Users';
 import { BlueprintsApi } from '@/api/Blueprints';
+import { NavigationApi } from '@/api/Navigation';
 
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
-	private readonly _blogPosts: BlogPostsApi;
 	private readonly _settings: SettingsApi;
 	private readonly _users: UsersApi;
 	private readonly _blueprints: BlueprintsApi;
+	private readonly _navigation: NavigationApi;
+	private readonly _blogPosts: BlogPostsApi;
 
 	constructor( playgroundClient: PlaygroundClient, siteUrl: string ) {
 		this.playgroundClient = playgroundClient;
 		this._siteUrl = siteUrl;
-		this._blueprints = new BlueprintsApi( this );
-		this._blogPosts = new BlogPostsApi( this );
 		this._settings = new SettingsApi( this );
 		this._users = new UsersApi( this );
+		this._blueprints = new BlueprintsApi( this );
+		this._navigation = new NavigationApi( this );
+		this._blogPosts = new BlogPostsApi( this );
 	}
 
 	get siteUrl(): string {
 		return this._siteUrl;
-	}
-
-	get blueprints(): BlueprintsApi {
-		return this._blueprints;
-	}
-
-	get blogPosts(): BlogPostsApi {
-		return this._blogPosts;
 	}
 
 	get settings(): SettingsApi {
@@ -39,6 +34,18 @@ export class ApiClient {
 
 	get users(): UsersApi {
 		return this._users;
+	}
+
+	get blueprints(): BlueprintsApi {
+		return this._blueprints;
+	}
+
+	get navigation(): NavigationApi {
+		return this._navigation;
+	}
+
+	get blogPosts(): BlogPostsApi {
+		return this._blogPosts;
 	}
 
 	async get(

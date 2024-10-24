@@ -7,6 +7,7 @@ import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
 import { newBlogPostBlueprint } from '@/model/blueprint/BlogPost';
 import { Blueprint } from '@/model/blueprint/Blueprint';
+import { newNavigationBlueprint } from '@/model/blueprint/Navigation';
 
 export function NewBlueprint() {
 	const params = useParams();
@@ -57,6 +58,11 @@ export function NewBlueprint() {
 							case SubjectType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
 									newBlogPostBlueprint( currentPage.url )
+								);
+								break;
+							case SubjectType.Navigation:
+								blueprint = await apiClient!.blueprints.create(
+									newNavigationBlueprint( currentPage.url )
 								);
 								break;
 							default:
