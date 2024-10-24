@@ -1,17 +1,10 @@
-/* eslint-disable camelcase */
-import { WP_REST_API_Post } from 'wp-types';
 import { BlogPost } from '@/model/subject/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
 import { SubjectType } from '@/model/subject/Subject';
 import { DateField, newDateField } from '@/model/field/DateField';
 import { newTextField, TextField } from '@/model/field/TextField';
 import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
-
-type ApiPost = WP_REST_API_Post & {
-	preview_link: string;
-};
-
-/* eslint-enable camelcase */
+import { ApiPost } from '@/api/ApiTypes';
 
 interface CreateBody {
 	guid: string;
