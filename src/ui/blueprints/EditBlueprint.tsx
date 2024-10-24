@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBlueprintEditor';
 import { ContentBus } from '@/bus/ContentBus';
@@ -95,9 +95,26 @@ export function EditBlueprint() {
 		}
 	}
 
+	let editor: ReactElement | undefined;
+	if ( blueprint && subject ) {
+		switch ( subject.type ) {
+			case SubjectType.BlogPost:
+				editor = (
+					<BlogPostBlueprintEditor
+						blueprint={ blueprint as BlogPostBlueprint }
+						subject={ subject as BlogPost }
+						onFieldChanged={ onFieldChanged }
+					/>
+				);
+				break;
+			default:
+				throw Error( `unknown subject type ${ subject.type }` );
+		}
+	}
+
 	return (
 		<>
-			{ ! blueprint || ! subject ? (
+			{ ! editor ? (
 				'Loading...'
 			) : (
 				<>
@@ -114,11 +131,7 @@ export function EditBlueprint() {
 							Continue
 						</button>
 					</Toolbar>
-					<BlogPostBlueprintEditor
-						blueprint={ blueprint as BlogPostBlueprint }
-						subject={ subject as BlogPost }
-						onFieldChanged={ onFieldChanged }
-					/>
+					{ editor }
 				</>
 			) }
 		</>
