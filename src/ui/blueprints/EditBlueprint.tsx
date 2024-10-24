@@ -15,6 +15,7 @@ import { useBlueprint } from '@/ui/blueprints/useBlueprint';
 import { useSubjectForBlueprint } from '@/ui/blueprints/useSubjectForBlueprint';
 import { Field } from '@/model/field/Field';
 import { BlogPost } from '@/model/subject/BlogPost';
+import { BlogPostBlueprint } from '@/model/blueprint/BlogPost';
 
 export function EditBlueprint() {
 	const params = useParams();
@@ -141,7 +142,7 @@ export function EditBlueprint() {
 						</button>
 					</Toolbar>
 					<BlogPostBlueprintEditor
-						blueprint={ blueprint }
+						blueprint={ blueprint as BlogPostBlueprint }
 						subject={ subject as BlogPost }
 						onFieldChanged={ onFieldChanged }
 					/>

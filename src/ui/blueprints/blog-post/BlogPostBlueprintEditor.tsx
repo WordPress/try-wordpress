@@ -3,12 +3,12 @@ import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
-import { Blueprint } from '@/model/blueprint/Blueprint';
 import { Field } from '@/model/field/Field';
 import { BlogPost } from '@/model/subject/BlogPost';
+import { BlogPostBlueprint } from '@/model/blueprint/BlogPost';
 
 interface Props {
-	blueprint: Blueprint;
+	blueprint: BlogPostBlueprint;
 	subject: BlogPost;
 	onFieldChanged: ( name: string, field: Field, selector: string ) => void;
 }
@@ -68,11 +68,17 @@ export function BlogPostBlueprintEditor( props: Props ) {
 			!! fieldWaitingForSelection &&
 			fieldWaitingForSelection.name === name;
 
+		const blueprintField =
+			blueprint.fields[ name as keyof typeof blueprint.fields ];
+		if ( ! blueprintField ) {
+			throw new Error( `blueprint field ${ name } not found` );
+		}
+
 		elements.push(
 			<FieldEditor
 				key={ name }
 				label={ name }
-				blueprintField={ blueprint.fields[ name ] }
+				blueprintField={ blueprintField }
 				field={ field }
 				waitingForSelection={ isWaitingForSelection }
 				onWaitingForSelection={ async ( f: Field | false ) => {
