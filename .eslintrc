@@ -20,6 +20,8 @@
         "import/no-unresolved": "error",
         "no-console": [
             "off"
-        ]
+        ],
+        "react/no-is-mounted": "off",
+        "no-useless-constructor": "off"
     }
 }
