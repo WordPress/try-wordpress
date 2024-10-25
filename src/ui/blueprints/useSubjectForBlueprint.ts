@@ -3,6 +3,7 @@ import { Subject, SubjectType } from '@/model/subject/Subject';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { newBlogPost } from '@/model/subject/BlogPost';
+import { newHeader } from '@/model/subject/Header';
 
 // Create or load a Subject to preview the Blueprint's results.
 // If a Subject already exists for the Blueprint's source URL, we use that Subject,
@@ -20,6 +21,11 @@ export function useSubjectForBlueprint(
 		async function loadSubject( bp: Blueprint ) {
 			let subj: Subject | null;
 			switch ( bp.type ) {
+				case SubjectType.Header:
+					subj = await apiClient!.headers.findBySourceUrl(
+						bp.sourceUrl
+					);
+					break;
 				case SubjectType.BlogPost:
 					subj = await apiClient!.blogPosts.findBySourceUrl(
 						bp.sourceUrl
@@ -30,6 +36,11 @@ export function useSubjectForBlueprint(
 			}
 			if ( ! subj ) {
 				switch ( bp.type ) {
+					case SubjectType.Header:
+						subj = await apiClient!.headers.create(
+							newHeader( bp.sourceUrl )
+						);
+						break;
 					case SubjectType.BlogPost:
 						subj = await apiClient!.blogPosts.create(
 							newBlogPost( bp.sourceUrl )

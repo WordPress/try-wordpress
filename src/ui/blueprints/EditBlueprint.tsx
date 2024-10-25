@@ -15,6 +15,13 @@ import {
 	BlogPostBlueprint,
 	validateBlogpostBlueprint,
 } from '@/model/blueprint/BlogPost';
+import { Header, validateHeader } from '@/model/subject/Header';
+import { HeaderBlueprintEditor } from '@/ui/blueprints/header/HeaderBlueprintEditor';
+import {
+	HeaderBlueprint,
+	validateHeaderBlueprint,
+} from '@/model/blueprint/Header';
+import { parseHeaderField } from '@/parser/header';
 
 export function EditBlueprint() {
 	const params = useParams();
@@ -52,6 +59,12 @@ export function EditBlueprint() {
 
 		const subjectFieldsToUpdate: Record< string, Field > = {};
 		switch ( subject.type ) {
+			case SubjectType.Header:
+				blueprint.valid = validateHeaderBlueprint(
+					blueprint as HeaderBlueprint
+				);
+				subjectFieldsToUpdate[ name ] = parseHeaderField( name, field );
+				break;
 			case SubjectType.BlogPost:
 				blueprint.valid = validateBlogpostBlueprint(
 					blueprint as BlogPostBlueprint
@@ -81,6 +94,16 @@ export function EditBlueprint() {
 
 	if ( blueprint && subject ) {
 		switch ( subject.type ) {
+			case SubjectType.Header:
+				isValid = validateHeader( subject as Header );
+				editor = (
+					<HeaderBlueprintEditor
+						blueprint={ blueprint as HeaderBlueprint }
+						subject={ subject as Header }
+						onFieldChanged={ onFieldChanged }
+					/>
+				);
+				break;
 			case SubjectType.BlogPost:
 				isValid = validateBlogPost( subject as BlogPost );
 				editor = (
