@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
@@ -6,6 +6,10 @@ import { ContentBus } from '@/bus/ContentBus';
 // Listen to click events coming from the content script.
 export function useLastClickedElement(): [ string | undefined, () => void ] {
 	const [ lastClickedElement, setLastClickedElement ] = useState< string >();
+
+	const resetLastClickedElement = useMemo< () => void >( () => {
+		return () => setLastClickedElement( undefined );
+	}, [ setLastClickedElement ] );
 
 	useEffect( () => {
 		AppBus.listen( async ( message: Message ) => {
@@ -21,5 +25,5 @@ export function useLastClickedElement(): [ string | undefined, () => void ] {
 		};
 	}, [] );
 
-	return [ lastClickedElement, () => setLastClickedElement( undefined ) ];
+	return [ lastClickedElement, resetLastClickedElement ];
 }

@@ -26,7 +26,7 @@ export function BlogPostBlueprintEditor( props: Props ) {
 		{ name: 'content', field: subject.content },
 	];
 
-	// Handle a click on an event in the content script,
+	// Handle a click on an element in the content script,
 	// according to which field is currently waiting for selection.
 	useEffect(
 		() => {
