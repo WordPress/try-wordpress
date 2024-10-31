@@ -1,3 +1,5 @@
+import { pasteHandler, serialize } from '@wordpress/blocks';
+
 export function findDeepestChild( html: string ): Element | undefined {
 	const container = document.createElement( 'div' );
 	container.innerHTML = html.trim();
@@ -16,4 +18,12 @@ export function findDeepestChild( html: string ): Element | undefined {
 		return undefined;
 	}
 	return deepestChild;
+}
+
+export function serializeBlocks( html: string ): string {
+	const blocks = pasteHandler( {
+		mode: 'BLOCKS',
+		HTML: html,
+	} );
+	return serialize( blocks );
 }
