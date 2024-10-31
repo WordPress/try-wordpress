@@ -8,29 +8,29 @@ import { Field } from '@/model/field/Field';
 export function parseBlogPostField( name: string, field: Field ): Field {
 	switch ( name ) {
 		case 'date':
-			return parseBlogPostDate( field.original );
+			return parseDate( field.original );
 		case 'title':
-			return parseBlogPostTitle( field.original );
+			return parseTitle( field.original );
 		case 'content':
-			return parseBlogPostContent( field.original );
+			return parseContent( field.original );
 		default:
 			throw Error( `unknown field type ${ field.type }` );
 	}
 }
 
-export function parseBlogPostDate( html: string ): DateField {
+function parseDate( html: string ): DateField {
 	const container = document.createElement( 'div' );
 	container.innerHTML = html.trim();
 	const element = container.querySelector( 'time' );
 	return newDateField( html, element ? element.dateTime : '' );
 }
 
-export function parseBlogPostTitle( html: string ): TextField {
+function parseTitle( html: string ): TextField {
 	const deepestChild = findDeepestChild( html );
 	return newTextField( html, deepestChild?.innerHTML ?? '' );
 }
 
-export function parseBlogPostContent( html: string ): HtmlField {
+function parseContent( html: string ): HtmlField {
 	return newHtmlField( html, serializeBlocks( html ) );
 }
 
