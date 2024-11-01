@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBlueprintEditor';
-import { ContentBus } from '@/bus/ContentBus';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { parseBlogPostField } from '@/parser/blog-post';
 import { SubjectType } from '@/model/subject/Subject';
@@ -137,7 +136,10 @@ export function EditBlueprint() {
 						<button
 							disabled={ ! isValid }
 							onClick={ async () => {
-								await ContentBus.disableHighlighting();
+								void sendCommandToContent( {
+									type: CommandTypes.DisableHighlighting,
+									payload: {},
+								} );
 								navigate(
 									Screens.import( session.id, blueprint!.id )
 								);

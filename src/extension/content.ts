@@ -1,5 +1,3 @@
-import { Message } from '@/bus/Message';
-import { ContentBus } from '@/bus/ContentBus';
 import { AppBus } from '@/bus/AppBus';
 import { startListening } from '@/bus/Bus';
 import { CommandTypes } from '@/bus/Command';
@@ -27,19 +25,12 @@ startListening( CommandTypes.EnableHighlighting, () => {
 	enableHighlightingCursor();
 } );
 
-ContentBus.listen( ( message: Message ) => {
-	switch ( message.action ) {
-		case ContentBus.actions.DisableHighlighting:
-			document.body.removeEventListener( 'mouseover', onMouseOver );
-			document.body.removeEventListener( 'mouseout', onMouseOut );
-			document.body.removeEventListener( 'click', onClick );
-			disableHighlightingCursor();
-			removeStyle();
-			break;
-		default:
-			console.error( `Unknown action: ${ message.action }` );
-			break;
-	}
+startListening( CommandTypes.DisableHighlighting, () => {
+	document.body.removeEventListener( 'mouseover', onMouseOver );
+	document.body.removeEventListener( 'mouseout', onMouseOut );
+	document.body.removeEventListener( 'click', onClick );
+	disableHighlightingCursor();
+	removeStyle();
 } );
 
 function onClick( event: MouseEvent ) {

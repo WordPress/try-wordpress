@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { AppBus } from '@/bus/AppBus';
 import { Message } from '@/bus/Message';
-import { ContentBus } from '@/bus/ContentBus';
+import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 
 // Listen to click events coming from the content script.
 export function useLastClickedElement(): [ string | undefined, () => void ] {
@@ -15,12 +15,18 @@ export function useLastClickedElement(): [ string | undefined, () => void ] {
 		AppBus.listen( async ( message: Message ) => {
 			switch ( message.action ) {
 				case AppBus.actions.ElementClicked:
-					await ContentBus.disableHighlighting();
+					void sendCommandToContent( {
+						type: CommandTypes.DisableHighlighting,
+						payload: {},
+					} );
 					setLastClickedElement( ( message.payload as any ).content );
 			}
 		} );
 		return () => {
-			void ContentBus.disableHighlighting();
+			void sendCommandToContent( {
+				type: CommandTypes.DisableHighlighting,
+				payload: {},
+			} );
 			AppBus.stopListening();
 		};
 	}, [] );
