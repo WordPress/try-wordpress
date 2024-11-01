@@ -1,0 +1,33 @@
+import { useCallback, useEffect, useRef } from 'react';
+import { stopListening, startListening, Listener } from '@/bus/Bus';
+import { EventType, EventWithResponder } from '@/bus/Event';
+
+// Listen to events coming from the content script.
+export function ContentEventHandler( props: {
+	eventType: EventType;
+	onEvent: ( event: EventWithResponder ) => void;
+} ) {
+	const { eventType, onEvent } = props;
+	const listenerRef = useRef< Listener >();
+
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	const callback = useCallback( onEvent, [] );
+
+	// Start listening for events.
+	useEffect( () => {
+		listenerRef.current = startListening( eventType, callback );
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [] );
+
+	// Stop listening on unmount.
+	useEffect( () => {
+		return () => {
+			if ( listenerRef.current !== undefined ) {
+				stopListening( listenerRef.current );
+			}
+		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [] );
+
+	return <></>;
+}
