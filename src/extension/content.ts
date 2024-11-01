@@ -1,8 +1,17 @@
 import { Message } from '@/bus/Message';
 import { ContentBus } from '@/bus/ContentBus';
 import { AppBus } from '@/bus/AppBus';
+import { startListening } from '@/bus/Bus';
+import { CommandTypes } from '@/bus/Command';
 
 let currentElement: HTMLElement | null = null;
+
+startListening( CommandTypes.GetCurrentPageInfo, ( event ) => {
+	event.sendResponse( {
+		url: document.documentURI,
+		title: document.title,
+	} );
+} );
 
 ContentBus.listen(
 	( message: Message, sendResponse: ( response?: any ) => void ) => {

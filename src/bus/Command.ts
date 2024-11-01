@@ -7,6 +7,11 @@ export enum CommandTypes {
 	DisableHighlighting = 'DisableHighlighting',
 }
 
+export interface CurrentPageInfo {
+	url: string;
+	title: string;
+}
+
 export type CommandType = `${ CommandTypes }`;
 
 export interface Command {

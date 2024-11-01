@@ -8,17 +8,6 @@ enum Actions {
 	NavigateTo,
 }
 
-interface CurrentPageInfo {
-	url: string;
-	title: string;
-}
-async function getCurrentPageInfo(): Promise< CurrentPageInfo > {
-	return sendMessageToContent( {
-		action: Actions.GetCurrentPageInfo,
-		payload: {},
-	} );
-}
-
 async function navigateTo( url: string ): Promise< void > {
 	return sendMessageToContent( {
 		action: Actions.NavigateTo,
@@ -44,10 +33,8 @@ export const ContentBus = {
 	namespace: `${ Namespace }_CONTENT`,
 	actions: Actions,
 	listen,
-	stopListening,
 	enableHighlighting,
 	disableHighlighting,
-	getCurrentPageInfo,
 	navigateTo,
 };
 

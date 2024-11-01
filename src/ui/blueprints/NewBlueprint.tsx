@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { ContentBus } from '@/bus/ContentBus';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
@@ -8,6 +7,11 @@ import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
 import { newBlogPostBlueprint } from '@/model/blueprint/BlogPost';
 import { Blueprint } from '@/model/blueprint/Blueprint';
 import { newHeaderBlueprint } from '@/model/blueprint/Header';
+import {
+	CommandTypes,
+	CurrentPageInfo,
+	sendCommandToContent,
+} from '@/bus/Command';
 
 export function NewBlueprint() {
 	const params = useParams();
@@ -54,8 +58,10 @@ export function NewBlueprint() {
 			<Toolbar>
 				<button
 					onClick={ async () => {
-						const currentPage =
-							await ContentBus.getCurrentPageInfo();
+						const currentPage = ( await sendCommandToContent( {
+							type: CommandTypes.GetCurrentPageInfo,
+							payload: {},
+						} ) ) as CurrentPageInfo;
 						let blueprint: Blueprint | null;
 						switch ( subjectType ) {
 							case SubjectType.Header:
