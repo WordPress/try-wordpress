@@ -1,5 +1,6 @@
 import MessageSender = browser.runtime.MessageSender;
 import { EventType, EventWithNamespace, EventWithResponder } from '@/bus/Event';
+import { CommandType } from '@/bus/Command';
 
 export const Namespace = 'TRY_WORDPRESS';
 export type EventSender = MessageSender;
@@ -11,7 +12,7 @@ export type Listener = (
 ) => void;
 
 export function startListening(
-	eventType: EventType,
+	type: EventType | CommandType,
 	callback: ( event: EventWithResponder ) => void
 ): Listener {
 	const internalListener = (
@@ -19,7 +20,7 @@ export function startListening(
 		sender: EventSender,
 		sendResponse: ( response?: any ) => void
 	) => {
-		if ( event.namespace === Namespace && event.type === eventType ) {
+		if ( event.namespace === Namespace && event.type === type ) {
 			callback( { event, sendResponse } );
 		}
 	};
