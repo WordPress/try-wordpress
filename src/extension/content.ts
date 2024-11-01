@@ -20,14 +20,15 @@ startListening( CommandTypes.NavigateTo, ( event ) => {
 	}
 } );
 
+startListening( CommandTypes.EnableHighlighting, () => {
+	document.body.addEventListener( 'mouseover', onMouseOver );
+	document.body.addEventListener( 'mouseout', onMouseOut );
+	document.body.addEventListener( 'click', onClick );
+	enableHighlightingCursor();
+} );
+
 ContentBus.listen( ( message: Message ) => {
 	switch ( message.action ) {
-		case ContentBus.actions.EnableHighlighting:
-			document.body.addEventListener( 'mouseover', onMouseOver );
-			document.body.addEventListener( 'mouseout', onMouseOut );
-			document.body.addEventListener( 'click', onClick );
-			enableHighlightingCursor();
-			break;
 		case ContentBus.actions.DisableHighlighting:
 			document.body.removeEventListener( 'mouseover', onMouseOver );
 			document.body.removeEventListener( 'mouseout', onMouseOut );

@@ -2,15 +2,7 @@ import { Listener, Message, Namespace } from '@/bus/Message';
 import MessageSender = browser.runtime.MessageSender;
 
 enum Actions {
-	EnableHighlighting = 1,
-	DisableHighlighting,
-}
-
-async function enableHighlighting(): Promise< void > {
-	return sendMessageToContent( {
-		action: Actions.EnableHighlighting,
-		payload: {},
-	} );
+	DisableHighlighting = 1,
 }
 
 async function disableHighlighting(): Promise< void > {
@@ -24,7 +16,6 @@ export const ContentBus = {
 	namespace: `${ Namespace }_CONTENT`,
 	actions: Actions,
 	listen,
-	enableHighlighting,
 	disableHighlighting,
 };
 

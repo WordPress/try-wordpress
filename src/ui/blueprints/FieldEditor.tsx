@@ -1,6 +1,7 @@
 import { ContentBus } from '@/bus/ContentBus';
 import { BlueprintField } from '@/model/blueprint/Blueprint';
 import { Field } from '@/model/field/Field';
+import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 
 export function FieldEditor( props: {
 	field: Field;
@@ -39,7 +40,10 @@ export function FieldEditor( props: {
 					disabled={ waitingForSelection }
 					onClick={ async () => {
 						onWaitingForSelection( field );
-						await ContentBus.enableHighlighting();
+						void sendCommandToContent( {
+							type: CommandTypes.EnableHighlighting,
+							payload: {},
+						} );
 					} }
 				>
 					Select

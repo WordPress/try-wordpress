@@ -1,10 +1,10 @@
 import { ReactElement, useEffect, useState } from 'react';
-import { ContentBus } from '@/bus/ContentBus';
 import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 import { Field } from '@/model/field/Field';
 import { BlogPost } from '@/model/subject/BlogPost';
 import { BlogPostBlueprint } from '@/model/blueprint/BlogPost';
 import { useLastClickedElement } from '@/ui/blueprints/useLastClickedElement';
+import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 
 interface Props {
 	blueprint: BlogPostBlueprint;
@@ -67,7 +67,10 @@ export function BlogPostBlueprintEditor( props: Props ) {
 				field={ field }
 				waitingForSelection={ isWaitingForSelection }
 				onWaitingForSelection={ async ( f: Field | false ) => {
-					await ContentBus.enableHighlighting();
+					void sendCommandToContent( {
+						type: CommandTypes.EnableHighlighting,
+						payload: {},
+					} );
 					if ( !! f ) {
 						setFieldWaitingForSelection( { field: f, name } );
 					} else {
