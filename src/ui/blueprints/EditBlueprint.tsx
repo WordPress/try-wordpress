@@ -22,6 +22,7 @@ import {
 	validateHeaderBlueprint,
 } from '@/model/blueprint/Header';
 import { parseHeaderField } from '@/parser/header';
+import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 
 export function EditBlueprint() {
 	const params = useParams();
@@ -34,7 +35,10 @@ export function EditBlueprint() {
 	// Make the source site navigate to the blueprint's source URL.
 	useEffect( () => {
 		if ( blueprint ) {
-			void ContentBus.navigateTo( blueprint.sourceUrl );
+			void sendCommandToContent( {
+				type: CommandTypes.NavigateTo,
+				payload: { url: blueprint.sourceUrl },
+			} );
 		}
 	}, [ blueprint ] );
 

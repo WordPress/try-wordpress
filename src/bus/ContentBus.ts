@@ -4,15 +4,6 @@ import MessageSender = browser.runtime.MessageSender;
 enum Actions {
 	EnableHighlighting = 1,
 	DisableHighlighting,
-	GetCurrentPageInfo,
-	NavigateTo,
-}
-
-async function navigateTo( url: string ): Promise< void > {
-	return sendMessageToContent( {
-		action: Actions.NavigateTo,
-		payload: { url },
-	} );
 }
 
 async function enableHighlighting(): Promise< void > {
@@ -35,7 +26,6 @@ export const ContentBus = {
 	listen,
 	enableHighlighting,
 	disableHighlighting,
-	navigateTo,
 };
 
 let listener: (
