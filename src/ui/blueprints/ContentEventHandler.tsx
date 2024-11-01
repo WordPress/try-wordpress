@@ -9,15 +9,16 @@ export function ContentEventHandler( props: {
 } ) {
 	const { eventType, onEvent } = props;
 	const listenerRef = useRef< Listener >();
-
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	const callback = useCallback( onEvent, [] );
+	const callback = useCallback( onEvent, [ onEvent ] );
 
 	// Start listening for events.
 	useEffect( () => {
+		if ( listenerRef.current ) {
+			stopListening( listenerRef.current );
+		}
 		listenerRef.current = startListening( eventType, callback );
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [] );
+	}, [ callback ] );
 
 	// Stop listening on unmount.
 	useEffect( () => {

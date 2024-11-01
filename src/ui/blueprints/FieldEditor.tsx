@@ -1,6 +1,5 @@
 import { BlueprintField } from '@/model/blueprint/Blueprint';
 import { Field } from '@/model/field/Field';
-import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 
 export function FieldEditor( props: {
 	field: Field;
@@ -37,26 +36,12 @@ export function FieldEditor( props: {
 				</button>
 				<button
 					disabled={ waitingForSelection }
-					onClick={ async () => {
-						onWaitingForSelection( field );
-						void sendCommandToContent( {
-							type: CommandTypes.EnableHighlighting,
-							payload: {},
-						} );
-					} }
+					onClick={ () => onWaitingForSelection( field ) }
 				>
 					Select
 				</button>
 				{ ! waitingForSelection ? null : (
-					<button
-						onClick={ async () => {
-							onWaitingForSelection( false );
-							void sendCommandToContent( {
-								type: CommandTypes.DisableHighlighting,
-								payload: {},
-							} );
-						} }
-					>
+					<button onClick={ () => onWaitingForSelection( false ) }>
 						Cancel
 					</button>
 				) }

@@ -3,8 +3,9 @@ import { FieldEditor } from '@/ui/blueprints/FieldEditor';
 import { Field } from '@/model/field/Field';
 import { BlogPost } from '@/model/subject/BlogPost';
 import { BlogPostBlueprint } from '@/model/blueprint/BlogPost';
-import { useLastClickedElement } from '@/ui/blueprints/useLastClickedElement';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
+import { EventTypes } from '@/bus/Event';
+import { ContentEventHandler } from '@/ui/blueprints/ContentEventHandler';
 
 interface Props {
 	blueprint: BlogPostBlueprint;
@@ -17,8 +18,6 @@ export function BlogPostBlueprintEditor( props: Props ) {
 	const [ fieldWaitingForSelection, setFieldWaitingForSelection ] = useState<
 		false | { field: Field; name: string }
 	>( false );
-	const [ lastClickedElement, resetLastClickedElement ] =
-		useLastClickedElement();
 
 	const subjectFields: { name: string; field: Field }[] = [
 		{ name: 'title', field: subject.title },
@@ -26,26 +25,14 @@ export function BlogPostBlueprintEditor( props: Props ) {
 		{ name: 'content', field: subject.content },
 	];
 
-	// Handle a click on an element in the content script,
-	// according to which field is currently waiting for selection.
-	useEffect(
-		() => {
-			if ( ! fieldWaitingForSelection || ! lastClickedElement ) {
-				return;
-			}
-			const selector = 'TODO';
-			fieldWaitingForSelection.field.original = lastClickedElement;
-			onFieldChanged(
-				fieldWaitingForSelection.name,
-				fieldWaitingForSelection.field,
-				selector
-			);
-			setFieldWaitingForSelection( false );
-			resetLastClickedElement();
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[ fieldWaitingForSelection, lastClickedElement ]
-	);
+	// Enable or disable highlighting according to whether a field is waiting for selection.
+	useEffect( () => {
+		const type =
+			fieldWaitingForSelection === false
+				? CommandTypes.DisableHighlighting
+				: CommandTypes.EnableHighlighting;
+		void sendCommandToContent( { type, payload: {} } );
+	}, [ fieldWaitingForSelection ] );
 
 	const elements: ReactElement[] = [];
 	for ( const { name, field } of subjectFields ) {
@@ -67,14 +54,10 @@ export function BlogPostBlueprintEditor( props: Props ) {
 				field={ field }
 				waitingForSelection={ isWaitingForSelection }
 				onWaitingForSelection={ async ( f: Field | false ) => {
-					void sendCommandToContent( {
-						type: CommandTypes.EnableHighlighting,
-						payload: {},
-					} );
-					if ( !! f ) {
-						setFieldWaitingForSelection( { field: f, name } );
-					} else {
+					if ( f === false ) {
 						setFieldWaitingForSelection( false );
+					} else {
+						setFieldWaitingForSelection( { field: f, name } );
 					}
 				} }
 				onClear={ async () => {
@@ -86,5 +69,34 @@ export function BlogPostBlueprintEditor( props: Props ) {
 		);
 	}
 
-	return <>{ elements }</>;
+	return (
+		<>
+			{ /*
+			Handle a click on an element in the content script,
+			according to which field is currently waiting for selection.
+			*/ }
+			<ContentEventHandler
+				eventType={ EventTypes.OnElementClick }
+				onEvent={ async ( event ) => {
+					if ( fieldWaitingForSelection === false ) {
+						console.warn(
+							'Received an OnElementClick event but no field is waiting for selection'
+						);
+						return;
+					}
+					const selector = 'TODO';
+					fieldWaitingForSelection.field.original = (
+						event.event.payload as any
+					 ).content;
+					onFieldChanged(
+						fieldWaitingForSelection.name,
+						fieldWaitingForSelection.field,
+						selector
+					);
+					setFieldWaitingForSelection( false );
+				} }
+			/>
+			{ elements }
+		</>
+	);
 }

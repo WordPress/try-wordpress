@@ -1,6 +1,6 @@
-import { AppBus } from '@/bus/AppBus';
 import { startListening } from '@/bus/Bus';
 import { CommandTypes } from '@/bus/Command';
+import { EventTypes, sendEventToApp } from '@/bus/Event';
 
 let currentElement: HTMLElement | null = null;
 
@@ -43,7 +43,10 @@ function onClick( event: MouseEvent ) {
 	clone.style.outline = '';
 	let content = clone.outerHTML.trim();
 	content = content.replaceAll( ' style=""', '' );
-	void AppBus.elementClicked( content );
+	void sendEventToApp( {
+		type: EventTypes.OnElementClick,
+		payload: { content },
+	} );
 }
 
 function onMouseOver( event: MouseEvent ) {
