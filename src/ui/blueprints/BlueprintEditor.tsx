@@ -61,6 +61,7 @@ export function BlueprintEditor( props: Props ) {
 	);
 
 	const fields: { name: string; field: PostField }[] = [];
+	console.log(post.fields);
 	for ( const [ name, field ] of Object.entries( post.fields ) ) {
 		const order = fieldOrder[ name ];
 		fields[ order ] = { name, field };
@@ -72,7 +73,7 @@ export function BlueprintEditor( props: Props ) {
 			!! fieldWaitingForSelection &&
 			fieldWaitingForSelection.name === name;
 
-		elements.push(
+		typeof blueprint.fields[ name ] !== 'undefined' && elements.push(
 			<FieldEditor
 				key={ name }
 				label={ name }

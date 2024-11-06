@@ -68,6 +68,21 @@ export function EditBlueprint() {
 						};
 						break;
 				}
+			case PostType.Page:
+				switch ( name ) {
+					case 'title':
+						field = parsePostTitle( field.original );
+						postFieldsToUpdate = {
+							title: field,
+						};
+						break;
+					case 'content':
+						field = parsePostContent( field.original );
+						postFieldsToUpdate = {
+							content: field,
+						};
+						break;
+				}
 				break;
 			default:
 				throw Error( `unknown post type ${ field.type }` );
@@ -100,7 +115,11 @@ export function EditBlueprint() {
 	if ( ! post ) {
 		isValid = false;
 	} else if ( isValid && post ) {
-		for ( const f of Object.values( post.fields ) ) {
+		for ( const field in post.fields ) {
+			if ( typeof blueprint.fields[field] === 'undefined' ) {
+				continue;
+			}
+			const f = post.fields[field];
 			if ( f.original === '' || f.parsed === '' ) {
 				isValid = false;
 				break;

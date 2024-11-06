@@ -26,6 +26,18 @@ export function ViewSession() {
 					>
 						Import Blog Posts
 					</button>
+					<button
+						onClick={ () =>
+							navigate(
+								Screens.blueprints.new(
+									session.id,
+									PostType.Page
+								)
+							)
+						}
+					>
+						Import Pages
+					</button>
 				</li>
 			</ul>
 		</>

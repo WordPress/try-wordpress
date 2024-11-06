@@ -6,6 +6,7 @@ import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { humanReadablePostType, PostType } from '@/model/content/Post';
 import { newBlogPostBlueprint } from '@/model/content/BlogPost';
+import { newPageBlueprint } from '@/model/content/Page';
 import { Blueprint } from '@/model/content/Blueprint';
 
 export function NewBlueprint() {
@@ -50,6 +51,11 @@ export function NewBlueprint() {
 							case PostType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
 									newBlogPostBlueprint( currentPage.url )
+								);
+								break;
+							case PostType.Page:
+								blueprint = await apiClient!.blueprints.create(
+									newPageBlueprint( currentPage.url )
 								);
 								break;
 							default:

@@ -19,6 +19,7 @@ export function usePostForBlueprint(
 		async function loadPost( bp: Blueprint ) {
 			let p: Post | null;
 			switch ( bp.type ) {
+				case PostType.Page:
 				case PostType.BlogPost:
 					p = await apiClient!.blogPosts.findByGuid( bp.sourceUrl );
 					break;
@@ -27,6 +28,7 @@ export function usePostForBlueprint(
 			}
 			if ( ! p ) {
 				switch ( bp.type ) {
+					case PostType.Page:
 					case PostType.BlogPost:
 						p = await apiClient!.blogPosts.create( {
 							guid: bp.sourceUrl,

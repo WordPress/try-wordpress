@@ -1,9 +1,11 @@
 export enum PostType {
-	BlogPost = 'liberated_data',
+	BlogPost = 'liberated_data_post',
+	Page = 'liberated_data',
 }
 
 export const humanReadablePostType: Map< PostType, string > = new Map( [
 	[ PostType.BlogPost, 'Blog Post' ],
+	[ PostType.Page, 'Page' ],
 ] );
 
 export enum FieldType {
