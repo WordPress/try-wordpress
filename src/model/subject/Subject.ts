@@ -1,9 +1,11 @@
 export enum SubjectType {
 	BlogPost = 'blog-post',
+	Page = 'page',
 }
 
 export const humanReadableSubjectType: Map< SubjectType, string > = new Map( [
 	[ SubjectType.BlogPost, 'Blog Post' ],
+	[ SubjectType.Page, 'Page' ],
 ] );
 
 export interface Subject {

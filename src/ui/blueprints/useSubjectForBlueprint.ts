@@ -3,6 +3,7 @@ import { Subject, SubjectType } from '@/model/subject/Subject';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { newBlogPost } from '@/model/subject/BlogPost';
+import { newPage } from '@/model/subject/Page';
 
 // Create or load a Subject to preview the Blueprint's results.
 // If a Subject already exists for the Blueprint's source URL, we use that Subject,
@@ -25,6 +26,11 @@ export function useSubjectForBlueprint(
 						bp.sourceUrl
 					);
 					break;
+				case SubjectType.Page:
+					subj = await apiClient!.pages.findBySourceUrl(
+						bp.sourceUrl
+					);
+					break;
 				default:
 					throw Error( `unknown blueprint type ${ bp.type }` );
 			}
@@ -33,6 +39,11 @@ export function useSubjectForBlueprint(
 					case SubjectType.BlogPost:
 						subj = await apiClient!.blogPosts.create(
 							newBlogPost( bp.sourceUrl )
+						);
+						break;
+					case SubjectType.Page:
+						subj = await apiClient!.pages.create(
+							newPage( bp.sourceUrl )
 						);
 						break;
 					default:

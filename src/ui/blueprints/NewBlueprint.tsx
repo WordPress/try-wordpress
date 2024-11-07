@@ -5,6 +5,7 @@ import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
 import { newBlogPostBlueprint } from '@/model/blueprint/BlogPost';
+import { newPageBlueprint } from '@/model/blueprint/Page';
 import { Blueprint } from '@/model/blueprint/Blueprint';
 import {
 	CommandTypes,
@@ -63,6 +64,11 @@ export function NewBlueprint() {
 							case SubjectType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
 									newBlogPostBlueprint( currentPage.url )
+								);
+								break;
+							case SubjectType.Page:
+								blueprint = await apiClient!.blueprints.create(
+									newPageBlueprint( currentPage.url )
 								);
 								break;
 							default:

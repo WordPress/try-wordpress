@@ -2,8 +2,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBlueprintEditor';
+import { PageBlueprintEditor } from '@/ui/blueprints/blog-post/PageBlueprintEditor';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { parseBlogPostField } from '@/parser/blog-post';
+import { parsePageField } from '@/parser/page';
 import { SubjectType } from '@/model/subject/Subject';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/blueprints/useBlueprint';
@@ -14,6 +16,11 @@ import {
 	BlogPostBlueprint,
 	validateBlogpostBlueprint,
 } from '@/model/blueprint/BlogPost';
+import { Page, validatePage } from '@/model/subject/Page';
+import {
+	PageBlueprint,
+	validatePageBlueprint,
+} from '@/model/blueprint/Page';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 
 export function EditBlueprint() {
@@ -64,6 +71,15 @@ export function EditBlueprint() {
 					field
 				);
 				break;
+			case SubjectType.Page:
+				blueprint.valid = validatePageBlueprint(
+					blueprint as PageBlueprint
+				);
+				subjectFieldsToUpdate[ name ] = parsePageField(
+					name,
+					field
+				);
+				break;
 			default:
 				throw Error( `unknown subject type ${ subject.type }` );
 		}
@@ -90,6 +106,16 @@ export function EditBlueprint() {
 					<BlogPostBlueprintEditor
 						blueprint={ blueprint as BlogPostBlueprint }
 						subject={ subject as BlogPost }
+						onFieldChanged={ onFieldChanged }
+					/>
+				);
+				break;
+			case SubjectType.Page:
+				isValid = validatePage( subject as Page );
+				editor = (
+					<PageBlueprintEditor
+						blueprint={ blueprint as PageBlueprint }
+						subject={ subject as Page }
 						onFieldChanged={ onFieldChanged }
 					/>
 				);
