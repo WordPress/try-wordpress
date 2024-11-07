@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
 import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
+import { newNavigationBlueprint } from '@/model/blueprint/Navigation';
 import { newBlogPostBlueprint } from '@/model/blueprint/BlogPost';
 import { newPageBlueprint } from '@/model/blueprint/Page';
 import { Blueprint } from '@/model/blueprint/Blueprint';
@@ -43,7 +44,7 @@ export function NewBlueprint() {
 		maybeRedirect().catch( console.error );
 	}, [ session.id, apiClient, subjectType, navigate ] );
 
-	const navigateMessage = (
+	let navigateMessage = (
 		<>
 			Navigate to the page of a{ ' ' }
 			{ humanReadableSubjectType.get( subjectType ) }
@@ -61,6 +62,17 @@ export function NewBlueprint() {
 						} ) ) as CurrentPageInfo;
 						let blueprint: Blueprint | null;
 						switch ( subjectType ) {
+							case SubjectType.Navigation:
+								navigateMessage = (
+									<>
+										Please navigate to the page that you would like to
+										extract the navigation from.
+									</>
+								);
+								blueprint = await apiClient!.blueprints.create(
+									newNavigationBlueprint( currentPage.url )
+								);
+								break;
 							case SubjectType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
 									newBlogPostBlueprint( currentPage.url )

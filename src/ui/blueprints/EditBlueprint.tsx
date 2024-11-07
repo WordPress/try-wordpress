@@ -1,9 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
+import { NavigationBlueprintEditor } from '@/ui/blueprints/blog-post/NavigationBlueprintEditor';
 import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBlueprintEditor';
 import { PageBlueprintEditor } from '@/ui/blueprints/blog-post/PageBlueprintEditor';
 import { Toolbar } from '@/ui/blueprints/Toolbar';
+import { parseNavigationField } from '@/parser/navigation';
 import { parseBlogPostField } from '@/parser/blog-post';
 import { parsePageField } from '@/parser/page';
 import { SubjectType } from '@/model/subject/Subject';
@@ -16,6 +18,11 @@ import {
 	BlogPostBlueprint,
 	validateBlogpostBlueprint,
 } from '@/model/blueprint/BlogPost';
+import { Navigation, validateNavigation } from '@/model/subject/Navigation';
+import {
+	NavigationBlueprint,
+	validateNavigationBlueprint,
+} from '@/model/blueprint/Navigation';
 import { Page, validatePage } from '@/model/subject/Page';
 import {
 	PageBlueprint,
@@ -62,6 +69,15 @@ export function EditBlueprint() {
 
 		const subjectFieldsToUpdate: Record< string, Field > = {};
 		switch ( subject.type ) {
+			case SubjectType.Navigation:
+				blueprint.valid = validateNavigationBlueprint(
+					blueprint as NavigationBlueprint
+				);
+				subjectFieldsToUpdate[ name ] = parseNavigationField(
+					name,
+					field
+				);
+				break;
 			case SubjectType.BlogPost:
 				blueprint.valid = validateBlogpostBlueprint(
 					blueprint as BlogPostBlueprint
@@ -100,6 +116,16 @@ export function EditBlueprint() {
 
 	if ( blueprint && subject ) {
 		switch ( subject.type ) {
+			case SubjectType.Navigation:
+				isValid = validateNavigation( subject as Navigation );
+				editor = (
+					<NavigationBlueprintEditor
+						blueprint={ blueprint as NavigationBlueprint }
+						subject={ subject as Navigation }
+						onFieldChanged={ onFieldChanged }
+					/>
+				);
+				break;
 			case SubjectType.BlogPost:
 				isValid = validateBlogPost( subject as BlogPost );
 				editor = (

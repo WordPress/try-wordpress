@@ -1,4 +1,5 @@
 import { PlaygroundClient } from '@wp-playground/client';
+import { NavigationApi } from '@/api/Navigation';
 import { BlogPostsApi } from '@/api/BlogPosts';
 import { PagesApi } from '@/api/Pages';
 import { SettingsApi } from '@/api/Settings';
@@ -8,6 +9,7 @@ import { BlueprintsApi } from '@/api/Blueprints';
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
+	private readonly _navigation: NavigationApi;
 	private readonly _blogPosts: BlogPostsApi;
 	private readonly _pages: PagesApi;
 	private readonly _settings: SettingsApi;
@@ -18,6 +20,7 @@ export class ApiClient {
 		this.playgroundClient = playgroundClient;
 		this._siteUrl = siteUrl;
 		this._blueprints = new BlueprintsApi( this );
+		this._navigation = new NavigationApi( this );
 		this._blogPosts = new BlogPostsApi( this );
 		this._pages = new PagesApi( this );
 		this._settings = new SettingsApi( this );
@@ -34,6 +37,10 @@ export class ApiClient {
 
 	get blogPosts(): BlogPostsApi {
 		return this._blogPosts;
+	}
+
+	get navigation(): NavigationApi {
+		return this._navigation;
 	}
 
 	get pages(): PagesApi {

@@ -2,6 +2,7 @@ import { Blueprint } from '@/model/blueprint/Blueprint';
 import { Subject, SubjectType } from '@/model/subject/Subject';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
+import { newNavigation } from '@/model/subject/Navigation';
 import { newBlogPost } from '@/model/subject/BlogPost';
 import { newPage } from '@/model/subject/Page';
 
@@ -21,6 +22,11 @@ export function useSubjectForBlueprint(
 		async function loadSubject( bp: Blueprint ) {
 			let subj: Subject | null;
 			switch ( bp.type ) {
+				case SubjectType.Navigation:
+					subj = await apiClient!.navigation.findBySourceUrl(
+						bp.sourceUrl
+					);
+					break;
 				case SubjectType.BlogPost:
 					subj = await apiClient!.blogPosts.findBySourceUrl(
 						bp.sourceUrl
@@ -36,6 +42,11 @@ export function useSubjectForBlueprint(
 			}
 			if ( ! subj ) {
 				switch ( bp.type ) {
+					case SubjectType.Navigation:
+						subj = await apiClient!.navigation.create(
+							newNavigation( bp.sourceUrl )
+						);
+						break;
 					case SubjectType.BlogPost:
 						subj = await apiClient!.blogPosts.create(
 							newBlogPost( bp.sourceUrl )
