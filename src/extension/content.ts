@@ -39,15 +39,18 @@ function onClick( event: MouseEvent ) {
 	if ( ! element ) {
 		return;
 	}
+	let clearH1 = false;
 	if ( element?.textContent?.trim() === '' ) {
 		element = element.closest( 'section' )?.parentNode as HTMLElement;
-
+		clearH1 = true;
 	}
 	const clone = element.cloneNode( true ) as HTMLElement;
 	clone.style.outline = '';
 	let content = clone.outerHTML.trim();
 	content = content.replaceAll( ' style=""', '' );
-	content = content.replace( /<h1[^>]*>.*?<\/h1>/g, '' );
+	if ( clearH1 ) {
+		content = content.replace( /<h1[^>]*>.*?<\/h1>/g, '' );
+	}
 
 	void sendEventToApp( {
 		type: EventTypes.OnElementClick,
