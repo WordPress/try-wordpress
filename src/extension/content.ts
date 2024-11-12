@@ -35,14 +35,20 @@ startListening( CommandTypes.DisableHighlighting, () => {
 
 function onClick( event: MouseEvent ) {
 	event.preventDefault();
-	const element = event.target as HTMLElement;
+	let element = event.target as HTMLElement;
 	if ( ! element ) {
 		return;
+	}
+	if ( element?.textContent?.trim() === '' ) {
+		element = element.closest( 'section' )?.parentNode as HTMLElement;
+
 	}
 	const clone = element.cloneNode( true ) as HTMLElement;
 	clone.style.outline = '';
 	let content = clone.outerHTML.trim();
 	content = content.replaceAll( ' style=""', '' );
+	content = content.replace( /<h1[^>]*>.*?<\/h1>/g, '' );
+
 	void sendEventToApp( {
 		type: EventTypes.OnElementClick,
 		payload: { content },
