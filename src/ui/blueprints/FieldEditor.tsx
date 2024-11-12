@@ -56,7 +56,7 @@ export function FieldEditor( props: {
 			<div style={ { paddingTop: '1rem' } }>
 				Original:
 				<br />
-				<div className="string">{ field.rawValue }</div>
+				<textarea disabled readOnly value={ field.rawValue } />
 			</div>
 			<div style={ { paddingTop: '1rem' } }>
 				Parsed:

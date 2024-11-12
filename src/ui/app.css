@@ -120,6 +120,7 @@ h6 {
 	border-right: 1px solid var(--color-border);
 	min-width: var(--col-width);
 	max-width: var(--col-width);
+	overflow: scroll;
 }
 
 /* Second column */
