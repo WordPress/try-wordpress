@@ -51,10 +51,6 @@ class Transformer {
 	}
 
 	public function transform( int|WP_Post $liberated_post ): bool {
-		if ( apply_filters( 'skip_native_transformation', false ) ) {
-			return true;
-		}
-
 		if ( is_int( $liberated_post ) ) {
 			$liberated_post = get_post( $liberated_post );
 		}
