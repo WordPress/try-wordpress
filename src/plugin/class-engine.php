@@ -13,6 +13,7 @@ class Engine {
 		require 'class-blogpost-controller.php';
 		require 'class-page-controller.php';
 		require 'class-storage.php';
+		require 'class-ops.php';
 
 		( function () {
 			$transformer = new Transformer( self::STORAGE_POST_TYPE );
@@ -24,6 +25,8 @@ class Engine {
 			new Page_Controller( self::STORAGE_POST_TYPE );
 
 			new Storage( self::STORAGE_POST_TYPE );
+
+			Ops::init( self::STORAGE_POST_TYPE );
 		} )();
 	}
 }
