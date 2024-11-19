@@ -6,20 +6,22 @@ use WP_Post;
 
 class Ops {
 	private static string $post_type;
+	private static HandlerRegistry $handler_registry;
 
 	public static function init( string $post_type ): void {
-		static::$post_type = $post_type;
+		static::$post_type        = $post_type;
+		static::$handler_registry = new HandlerRegistry();
 	}
 
 	/**
-	 * Register your handler for the specified subject type
+	 * Register your handler for the specified subject type, disabling the native handler
 	 *
 	 * @param SubjectType $subject_type Type of subject.
 	 * @param callable    $handler Function that would handle the transformation of subject for the specific subject type.
 	 * @return void
 	 */
 	public static function handle( SubjectType $subject_type, callable $handler ): void {
-		// @TODO: use support registry here
+		static::$handler_registry::add( $subject_type->value, $handler );
 	}
 
 	/**

@@ -22,15 +22,12 @@ following:
 
 ```php
 // register support for subject_type
-add_action( 'init', func() {
+add_action( 'init', function() {
     DotOrg\TryWordPress\Ops::handle( 'product', func( DotOrg\TryWordPress\Subject $data ) {
-        // run your transformations and use the post id as a result below
-        $new_post_id = wp_insert_post( array( 'post_type' => 'your_post_type' ) );
-        
-        // update post meta entry
-        update_post_meta( $data->id(), '_dl_transformed', $new_post_id );
+        // run your transformations and return the post id that was created
+        return wp_insert_post( array( 'post_type' => 'your_post_type' ) );
     } );
-});
+} );
 ```
 
 ## Offer integration *after* data liberation

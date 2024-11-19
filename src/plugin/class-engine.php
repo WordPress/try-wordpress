@@ -14,6 +14,7 @@ class Engine {
 		require 'class-page-controller.php';
 		require 'class-storage.php';
 		require 'class-ops.php';
+		require 'class-handler-registry.php';
 
 		( function () {
 			$transformer = new Transformer( self::STORAGE_POST_TYPE );
