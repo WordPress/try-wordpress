@@ -25,6 +25,17 @@ class Ops {
 	}
 
 	/**
+	 * Register your handler for the specified subject type, without disabling the native handler
+	 *
+	 * @param SubjectType $subject_type Type of subject.
+	 * @param callable    $handler Function that would handle the transformation of subject for the specific subject type.
+	 * @return void
+	 */
+	public static function observe( SubjectType $subject_type, callable $handler ): void {
+		static::$handler_registry::add( $subject_type->value, $handler );
+	}
+
+	/**
 	 * Loops over all liberated_post posts for the specified subject_type
 	 *
 	 * @param SubjectType $subject_type Type of subject.

@@ -18,7 +18,7 @@ following:
 2) Run transformations on each save
 3) Render preview
 
-### How to run tranformations?
+### How to run your own transformations disabling native transformations?
 
 ```php
 // register support for subject_type
@@ -26,6 +26,17 @@ add_action( 'init', function() {
     DotOrg\TryWordPress\Ops::handle( 'product', func( DotOrg\TryWordPress\Subject $data ) {
         // run your transformations and return the post id that was created
         return wp_insert_post( array( 'post_type' => 'your_post_type' ) );
+    } );
+} );
+```
+
+### How to just observe transformations without disabling native transformations?
+
+```php
+// register support for subject_type
+add_action( 'init', function() {
+    DotOrg\TryWordPress\Ops::observe( 'product', func( DotOrg\TryWordPress\Subject $data ) {
+        // do meta stuff like SEO tags
     } );
 } );
 ```
