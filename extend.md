@@ -1,7 +1,7 @@
 Extending Try-WP
 ================
 
-Try-WP browser extension (part of [Data Liberation initiative](https://wordpress.org/data-liberation/)) collabrates with
+Try-WP browser extension (part of [Data Liberation initiative](https://wordpress.org/data-liberation/)) collaborates with
 the user to understand their website markup before crawling and extracting data. This act of extracting data and sending
 it to a WordPress install running right in your browser (via [WordPress playground](https://wordpress.org/playground/))
 is referred to as `liberation` in the documentation and code.
