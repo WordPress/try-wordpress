@@ -18,6 +18,21 @@ following:
 2) Run transformations on each save
 3) Render preview
 
+### How to run tranformations?
+
+```php
+// register support for subject_type
+add_action( 'init', func() {
+    DotOrg\TryWordPress\Ops::handle( 'product', func( DotOrg\TryWordPress\Subject $data ) {
+        // run your transformations and use the post id as a result below
+        $new_post_id = wp_insert_post( array( 'post_type' => 'your_post_type' ) );
+        
+        // update post meta entry
+        update_post_meta( $data->id(), '_dl_transformed', $new_post_id );
+    } );
+});
+```
+
 ## Offer integration *after* data liberation
 
 For a rich experience, we recommend plugin authors to use WP Playground to spin up a staging environment of the current
