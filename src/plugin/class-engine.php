@@ -7,12 +7,15 @@ class Engine {
 	public const string STORAGE_POST_TYPE = 'liberated_data';
 
 	public function __construct() {
+		require 'enum-subject-type.php';
+
 		require 'class-post-type-ui.php';
 		require 'class-transformer.php';
 		require 'class-liberate-controller.php';
 		require 'class-blogpost-controller.php';
 		require 'class-page-controller.php';
 		require 'class-storage.php';
+		require 'class-subject.php';
 
 		( function () {
 			$transformer = new Transformer( self::STORAGE_POST_TYPE );
