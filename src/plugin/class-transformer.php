@@ -33,8 +33,7 @@ class Transformer {
 			default               => 'post',
 		};
 
-		// @TODO: filter name would be changed w.r.t new verb in place of 'transformed' once its decided
-		return apply_filters( 'post_type_for_transformed_post', $post_type, $liberated_post );
+		return $post_type;
 	}
 
 	public function get_transformed_post_id( $liberated_post_id ): int|null {
