@@ -5,6 +5,7 @@ namespace DotOrg\TryWordPress;
 use WP_Post;
 
 class Transformer {
+	public const string META_KEY_LIBERATED_SOURCE = '_data_liberation_source';
 	public const string META_KEY_LIBERATED_OUTPUT = '_data_liberation_output';
 
 	public function __construct() {
@@ -93,7 +94,9 @@ class Transformer {
 			return false;
 		}
 
+		update_post_meta( $inserted_post_id, self::META_KEY_LIBERATED_SOURCE, $liberated_post->ID );
 		update_post_meta( $liberated_post->ID, self::META_KEY_LIBERATED_OUTPUT, $inserted_post_id );
+
 		return true;
 	}
 }
