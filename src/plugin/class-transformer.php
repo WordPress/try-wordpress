@@ -23,20 +23,15 @@ class Transformer {
 			$liberated_post = get_post( $liberated_post );
 		}
 
-		$subject_type = get_post_meta( $liberated_post->ID, 'subject_type', true );
-		switch ( $subject_type ) {
-			case 'blog-post':
-				$post_type = 'post';
-				break;
-			case 'product':
-				$post_type = 'product';
-				break;
-			case 'page':
-				$post_type = 'page';
-				break;
-			default:
-				$post_type = 'post';
-		}
+		$subject_type = SubjectType::tryFrom(
+			get_post_meta( $liberated_post->ID, 'subject_type', true )
+		);
+
+		$post_type = match ( $subject_type ) {
+			SubjectType::PAGE     => 'page',
+			SubjectType::PRODUCT  => 'product',
+			default               => 'post',
+		};
 
 		// @TODO: filter name would be changed w.r.t new verb in place of 'transformed' once its decided
 		return apply_filters( 'post_type_for_transformed_post', $post_type, $liberated_post );
