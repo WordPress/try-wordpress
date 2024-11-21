@@ -1,6 +1,7 @@
 <?php
 
 use DotOrg\TryWordPress\Transformer;
+use DotOrg\TryWordPress\SubjectType;
 use PHPUnit\Framework\TestCase;
 
 class Transformer_Test extends TestCase {
@@ -24,7 +25,7 @@ class Transformer_Test extends TestCase {
 				'post_type'             => 'liberated_data',
 			)
 		);
-		update_post_meta( $this->post_id_in_db, 'subject_type', 'blog-post' );
+		update_post_meta( $this->post_id_in_db, 'subject_type', SubjectType::BLOGPOST->value );
 
 		$this->transformer = new Transformer();
 	}
@@ -46,7 +47,7 @@ class Transformer_Test extends TestCase {
 		$result = $method->invokeArgs( $this->transformer, array( $this->post_id_in_db ) );
 		$this->assertEquals( 'post', $result );
 
-		update_post_meta( $this->post_id_in_db, 'subject_type', 'product' );
+		update_post_meta( $this->post_id_in_db, 'subject_type', SubjectType::PRODUCT->value );
 
 		$result = $method->invokeArgs( $this->transformer, array( $this->post_id_in_db ) );
 		$this->assertEquals( 'product', $result );
