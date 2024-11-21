@@ -117,7 +117,7 @@ class Liberate_Controller extends WP_REST_Controller {
 		// allow filtration of what post should be treated as the transformed output
 		$response['transformedId'] = apply_filters(
 			'transformed_post_id',
-			get_post_meta( $item['ID'], '_dl_transformed', true ),
+			get_post_meta( $item['ID'], Transformer::META_KEY_LIBERATED_OUTPUT, true ),
 			Subject::from_post( $item['ID'] )
 		);
 

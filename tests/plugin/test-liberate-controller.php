@@ -61,7 +61,7 @@ class Liberate_Controller_Test extends TestCase {
 		update_post_meta( $this->inserted_post_id, 'raw_title', $this->raw_title );
 		update_post_meta( $this->inserted_post_id, 'raw_content', $this->raw_content );
 
-		$this->transformed_post_id = get_post_meta( $this->inserted_post_id, '_dl_transformed', true );
+		$this->transformed_post_id = get_post_meta( $this->inserted_post_id, Transformer::META_KEY_LIBERATED_OUTPUT, true );
 	}
 
 	protected function tearDown(): void {
