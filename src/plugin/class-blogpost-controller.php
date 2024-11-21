@@ -222,7 +222,14 @@ class Blogpost_Controller extends Liberate_Controller {
 		foreach ( $item_meta as $key => $value ) {
 			update_post_meta( $item['ID'], $key, $value );
 		}
-		update_post_meta( $item['ID'], 'subject_type', 'blog-post' );
+		update_post_meta( $item['ID'], 'subject_type', SubjectType::BLOGPOST->value );
+
+		// data_liberated_blogpost hook
+		do_action(
+			'data_liberated_' . SubjectType::BLOGPOST->value,
+			Subject::from_post( $item['ID'] ),
+			'create'
+		);
 
 		return $this->prepare_item_for_response( $item, $request );
 	}
@@ -245,6 +252,13 @@ class Blogpost_Controller extends Liberate_Controller {
 		foreach ( $item_meta as $key => $value ) {
 			update_post_meta( $item['ID'], $key, $value );
 		}
+
+		// data_liberated_blogpost hook
+		do_action(
+			'data_liberated_' . SubjectType::BLOGPOST->value,
+			Subject::from_post( $item['ID'] ),
+			'update'
+		);
 
 		return $this->prepare_item_for_response( $item, $request );
 	}

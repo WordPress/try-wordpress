@@ -222,7 +222,14 @@ class Page_Controller extends Liberate_Controller {
 		foreach ( $item_meta as $key => $value ) {
 			update_post_meta( $item['ID'], $key, $value );
 		}
-		update_post_meta( $item['ID'], 'subject_type', 'page' );
+		update_post_meta( $item['ID'], 'subject_type', SubjectType::PAGE->value );
+
+		// data_liberated_page hook
+		do_action(
+			'data_liberated_' . SubjectType::PAGE->value,
+			Subject::from_post( $item['ID'] ),
+			'create'
+		);
 
 		return $this->prepare_item_for_response( $item, $request );
 	}
@@ -245,6 +252,13 @@ class Page_Controller extends Liberate_Controller {
 		foreach ( $item_meta as $key => $value ) {
 			update_post_meta( $item['ID'], $key, $value );
 		}
+
+		// data_liberated_page hook
+		do_action(
+			'data_liberated_' . SubjectType::PAGE->value,
+			Subject::from_post( $item['ID'] ),
+			'update'
+		);
 
 		return $this->prepare_item_for_response( $item, $request );
 	}
