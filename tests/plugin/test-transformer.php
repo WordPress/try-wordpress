@@ -1,5 +1,6 @@
 <?php
 
+use DotOrg\TryWordPress\Engine;
 use DotOrg\TryWordPress\Transformer;
 use DotOrg\TryWordPress\SubjectType;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +23,7 @@ class Transformer_Test extends TestCase {
 				'post_status'           => 'draft',
 				'post_content_filtered' => '<div><p>Content 1</p><p>Content 2</p></div>',
 				'guid'                  => 'https://example.com/x',
-				'post_type'             => 'liberated_data',
+				'post_type'             => Engine::STORAGE_POST_TYPE,
 			)
 		);
 		update_post_meta( $this->post_id_in_db, 'subject_type', SubjectType::BLOGPOST->value );
