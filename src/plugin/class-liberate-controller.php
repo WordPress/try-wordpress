@@ -112,7 +112,13 @@ class Liberate_Controller extends WP_REST_Controller {
 			'parsedDate'    => $item['post_date'] ?? '',
 			'rawContent'    => get_post_meta( $item['ID'], 'raw_content', true ),
 			'parsedContent' => $item['post_content'] ?? '',
-			'transformedId' => get_post_meta( $item['ID'], '_dl_transformed', true ),
+		);
+
+		// allow filtration of what post should be treated as the transformed output
+		$response['transformedId'] = apply_filters(
+			'transformed_post_id',
+			get_post_meta( $item['ID'], '_dl_transformed', true ),
+			Subject::from_post( $item['ID'] )
 		);
 
 		$response['previewUrl'] = get_permalink( $response['transformedId'] );
