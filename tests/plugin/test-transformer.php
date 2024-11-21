@@ -26,7 +26,7 @@ class Transformer_Test extends TestCase {
 		);
 		update_post_meta( $this->post_id_in_db, 'subject_type', 'blog-post' );
 
-		$this->transformer = new Transformer( 'lib_x' );
+		$this->transformer = new Transformer();
 	}
 
 	protected function tearDown(): void {

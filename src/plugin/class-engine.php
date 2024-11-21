@@ -18,7 +18,7 @@ class Engine {
 		require 'class-subject.php';
 
 		( function () {
-			$transformer = new Transformer( self::STORAGE_POST_TYPE );
+			$transformer = new Transformer();
 
 			new Post_Type_UI( self::STORAGE_POST_TYPE, $transformer );
 

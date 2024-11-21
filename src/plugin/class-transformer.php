@@ -7,15 +7,15 @@ use WP_Post;
 class Transformer {
 	private string $meta_key_for_transformed_post = '_dl_transformed';
 
-	public function __construct( $post_type ) {
-		add_action(
-			'save_post_' . $post_type,
-			function ( $post_id, $post ) {
-				$this->transform( $post );
-			},
-			10,
-			2
-		);
+	public function __construct() {
+		foreach ( SubjectType::cases() as $case ) {
+			add_action(
+				'data_liberated_' . $case->value,
+				function ( $subject ) {
+					$this->transform( $subject->id() );
+				}
+			);
+		}
 	}
 
 	private function get_post_type_for_transformed_post( int|WP_Post $liberated_post ): string {
