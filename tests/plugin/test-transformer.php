@@ -34,11 +34,9 @@ class Transformer_Test extends TestCase {
 	protected function tearDown(): void {
 		parent::tearDown();
 
-		$transformed_post_id = $this->transformer->get_transformed_post_id( $this->post_id_in_db );
+		$transformed_post_id = get_post_meta( $this->post_id_in_db, Transformer::META_KEY_LIBERATED_OUTPUT, true );
 		wp_delete_post( $transformed_post_id, true );
 		wp_delete_post( $this->post_id_in_db, true );
-
-		delete_post_meta( 99, Transformer::META_KEY_LIBERATED_OUTPUT );
 	}
 
 	public function testGetPostTypeForTransformedPost() {
@@ -54,17 +52,10 @@ class Transformer_Test extends TestCase {
 		$this->assertEquals( 'product', $result );
 	}
 
-	public function testGetTransformedPost() {
-		add_post_meta( 99, Transformer::META_KEY_LIBERATED_OUTPUT, 999 );
-
-		$this->assertEquals( 999, $this->transformer->get_transformed_post_id( 99 ) );
-		$this->assertEquals( null, $this->transformer->get_transformed_post_id( 88 ) );
-	}
-
 	public function testTransform(): void {
 		$result = $this->transformer->transform( get_post( $this->post_id_in_db ) );
 
-		$transformed_post_id = absint( get_post_meta( $this->post_id_in_db, Transformer::META_KEY_LIBERATED_OUTPUT, true ) );
+		$transformed_post_id = get_post_meta( $this->post_id_in_db, Transformer::META_KEY_LIBERATED_OUTPUT, true );
 
 		$this->assertEquals( $this->post_id_in_db + 1, $transformed_post_id );
 		$this->assertTrue( $result );

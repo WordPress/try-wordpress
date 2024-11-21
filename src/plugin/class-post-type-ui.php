@@ -100,7 +100,7 @@ class Post_Type_UI {
 						global $post;
 
 						$post_id             = $post->ID;
-						$transformed_post_id = $this->transformer->get_transformed_post_id( $post_id );
+						$transformed_post_id = get_post_meta( $post_id, Transformer::META_KEY_LIBERATED_OUTPUT, true );
 
 						if ( $transformed_post_id ) {
 							echo '<pre>PostID: ' . esc_html( $transformed_post_id ) . '</pre>';

@@ -33,15 +33,6 @@ class Transformer {
 		return $post_type;
 	}
 
-	public function get_transformed_post_id( $liberated_post_id ): int|null {
-		$value = get_post_meta( $liberated_post_id, self::META_KEY_LIBERATED_OUTPUT, true );
-		if ( '' === $value ) {
-			return null;
-		}
-
-		return absint( $value );
-	}
-
 	public function transform( int|WP_Post $liberated_post ): bool {
 		if ( is_int( $liberated_post ) ) {
 			$liberated_post = get_post( $liberated_post );
