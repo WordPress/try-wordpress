@@ -19,13 +19,9 @@ class Transformer {
 		}
 	}
 
-	private function get_post_type_for_transformed_post( int|WP_Post $liberated_post ): string {
-		if ( is_int( $liberated_post ) ) {
-			$liberated_post = get_post( $liberated_post );
-		}
-
+	private function get_post_type_for_transformed_post( int $liberated_post_id ): string {
 		$subject_type = SubjectType::tryFrom(
-			get_post_meta( $liberated_post->ID, 'subject_type', true )
+			get_post_meta( $liberated_post_id, 'subject_type', true )
 		);
 
 		$post_type = match ( $subject_type ) {
