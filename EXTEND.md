@@ -3,8 +3,8 @@
 ## Definitions
 
 Each identified piece of content is referred to as
-a [subject](https://github.com/WordPress/try-wordpress/blob/docs/extend/src/plugin/class-subject.php), and hence has
-a [subject type](https://github.com/WordPress/try-wordpress/blob/docs/extend/src/plugin/subject-type.php).
+a [subject](src/plugin/class-subject.php), and hence has
+a [subject type](src/plugin/subject-type.php).
 
 The act of extracting data is referred to as `liberation` and the act of using the extracted raw data to convert into a
 usable form is referred to as "transformation" throughout the documentation and code.
@@ -45,7 +45,7 @@ not attempt to process data at activation as some sites can be quite large.
 Use the `data_liberated_{$subject_type}` action hook to implement your transformation logic. This hook fires after
 content is liberated from the source website, giving you access to the raw data through the Subject class.
 
-The [Subject class](https://github.com/WordPress/try-wordpress/blob/docs/extend/src/plugin/class-subject.php) provides a
+The [Subject class](src/plugin/class-subject.php) provides a
 clean API to access raw data and existing transformed output:
 
 `// @TODO provide api to access transformed output`
