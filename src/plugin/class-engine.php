@@ -16,6 +16,7 @@ class Engine {
 		require 'class-page-controller.php';
 		require 'class-storage.php';
 		require 'class-subject.php';
+		require 'class-subject-repo.php';
 
 		( function () {
 			$transformer = new Transformer();
@@ -27,6 +28,8 @@ class Engine {
 			new Page_Controller( self::STORAGE_POST_TYPE );
 
 			new Storage( self::STORAGE_POST_TYPE );
+
+			Subject_Repo::init( self::STORAGE_POST_TYPE );
 		} )();
 	}
 }
