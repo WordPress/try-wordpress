@@ -4,7 +4,7 @@
 
 Each identified piece of content is referred to as
 a [subject](src/plugin/class-subject.php), and hence has
-a [subject type](src/plugin/subject-type.php).
+a [subject type](src/plugin/enum-subject-type.php).
 
 The act of extracting data is referred to as `liberation` and the act of using the extracted raw data to convert into a
 usable form is referred to as "transformation" throughout the documentation and code.
