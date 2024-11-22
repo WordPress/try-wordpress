@@ -73,7 +73,7 @@ add_action( 'data_liberated_product', function( $subject ) {
     
     // Store reference to your transformation in the source
     $unique_plugin_slug = 'mycompany_myplugin_my_product_type'; // make sure this is unique for your plugin
-    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug;
+    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug; // definitely use this prefix
     update_post_meta( $subject->id(), $meta_key, $my_product_id );
 } );
 ```
@@ -97,7 +97,7 @@ add_filter( 'data_liberation_preview_transformed_post_id', function( $default_po
     
     // Find your transformed product
     $unique_plugin_slug = 'mycompany_myplugin_my_product_type'; // make sure this is unique for your plugin
-    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug;
+    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug; // definitely use this prefix
     $product_id = get_post_meta( $subject->id(), $meta_key, true );
     return $product_id ? $product_id : $default_post_id;
 }, 10, 2 );
@@ -128,7 +128,7 @@ foreach( \DotOrg\TryWordPress\Subject_Repo::loop( 'product' ) as $subject ) {
     
     // Store reference to your transformation in the source
     $unique_plugin_slug = 'mycompany_myplugin_my_product_type'; // make sure this is unique for your plugin
-    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug;
+    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug; // definitely use this prefix
     update_post_meta( $subject->id(), $meta_key, $my_product_id );
 }
 ```
