@@ -27,11 +27,11 @@ We maintain references between the source data and transformed output using two 
 This two-way reference allows both Try WordPress and your plugin to track relationships between original content and
 transformed posts.
 
-But using our hooks and filters is a better way to integrate, and that's what we recommend. See below.
+However, we recommend integrating using our hooks and filters. See below:
 
 ## Integration Points
 
-One option is to have your plugin be available during data liberation and handle transformations while showing realtime
+One option is to have your plugin be available during data liberation and handle transformations while showing real-time
 previews to the user. This is referred to as "Integration During Liberation" below.
 
 Another option is to have your plugin be aware of liberated data and process liberated data once your plugin is
@@ -42,8 +42,8 @@ not attempt to process data at activation as some sites can be quite large.
 
 #### 1. Transform Data Your Way
 
-Use the `data_liberated_{$subject_type}` action hook to implement your own transformation logic. This hook fires after
-content is liberated from source website, giving you access to the raw data through the Subject class.
+Use the `data_liberated_{$subject_type}` action hook to implement your transformation logic. This hook fires after
+content is liberated from the source website, giving you access to the raw data through the Subject class.
 
 The [Subject class](https://github.com/WordPress/try-wordpress/blob/docs/extend/src/plugin/class-subject.php) provides a
 clean API to access raw data and existing transformed output:
@@ -68,10 +68,10 @@ add_action( 'data_liberated_product', function( $subject ) {
         'post_status' => 'publish',
     ) );
     
-    // Store reference to the source
+    // Store a reference to the source
     update_post_meta( $my_product_id, \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_SOURCE, $subject->id() );
     
-    // Store reference to your transformation in the source
+    // Store a reference to your transformation in the source
     $unique_plugin_slug = 'mycompany_myplugin_my_product_type'; // make sure this is unique for your plugin
     $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug; // definitely use this prefix
     update_post_meta( $subject->id(), $meta_key, $my_product_id );
@@ -123,10 +123,10 @@ foreach( \DotOrg\TryWordPress\Subject_Repo::loop( 'product' ) as $subject ) {
         'post_status' => 'publish',
     ) );
     
-    // Store reference to the source
+    // Store a reference to the source
     update_post_meta( $my_product_id, \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_SOURCE, $subject->id() );
     
-    // Store reference to your transformation in the source
+    // Store a reference to your transformation in the source
     $unique_plugin_slug = 'mycompany_myplugin_my_product_type'; // make sure this is unique for your plugin
     $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug; // definitely use this prefix
     update_post_meta( $subject->id(), $meta_key, $my_product_id );
