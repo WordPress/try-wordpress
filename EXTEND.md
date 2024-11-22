@@ -80,7 +80,8 @@ add_action( 'data_liberated_product', function( $subject ) {
 
 #### 2. Control the Preview
 
-Use the `transformed_post_id` filter to tell us which post to show in the preview. This filter receives:
+Use the `data_liberation_preview_transformed_post_id` filter to tell us which post to show in the preview. This filter
+receives:
 
 - The default transformed post ID
 - The Subject instance
@@ -88,7 +89,7 @@ Use the `transformed_post_id` filter to tell us which post to show in the previe
 Here's how to show your transformed product:
 
 ```php
-add_filter( 'transformed_post_id', function( $default_post_id, $subject ) {
+add_filter( 'data_liberation_preview_transformed_post_id', function( $default_post_id, $subject ) {
     // Only handle product transformations
     if ( $subject->type !== 'product' ) {
         return $default_post_id;
