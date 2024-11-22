@@ -55,17 +55,17 @@ For example, to transform product data into your custom product post type:
 ```php
 add_action( 'data_liberated_product', function( $subject ) {
     // process raw data
-    $title = $subject->title;
-    $date = $subject->date;
+    $title   = $subject->title;
+    $date    = $subject->date;
     $content = $subject->content;
     
     // Create a product in your custom post type
     $my_product_id = wp_insert_post( array(
-        'post_type' => 'my_product_type',
-        'post_title' => $title,
-        'post_date' => $date,
+        'post_type'    => 'my_product_type',
+        'post_title'   => $title,
+        'post_date'    => $date,
         'post_content' => $content,
-        'post_status' => 'publish',
+        'post_status'  => 'publish',
     ) );
     
     // Store a reference to the source
@@ -110,17 +110,17 @@ add_filter( 'data_liberation_preview_transformed_post_id', function( $default_po
 ```php
 foreach( \DotOrg\TryWordPress\Subject_Repo::loop( 'product' ) as $subject ) {
     // process raw data
-    $title = $subject->title;
-    $date = $subject->date;
+    $title   = $subject->title;
+    $date    = $subject->date;
     $content = $subject->content;
     
     // Create a product in your custom post type
     $my_product_id = wp_insert_post( array(
-        'post_type' => 'my_product_type',
-        'post_title' => $title,
-        'post_date' => $date,
+        'post_type'    => 'my_product_type',
+        'post_title'   => $title,
+        'post_date'    => $date,
         'post_content' => $content,
-        'post_status' => 'publish',
+        'post_status'  => 'publish',
     ) );
     
     // Store a reference to the source
