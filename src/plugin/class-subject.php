@@ -13,6 +13,7 @@ use WP_Post;
 class Subject {
 
 	private int $id;
+	private int $transformed_post_id;
 
 	public string $source_html;
 	public string $type;
@@ -49,9 +50,15 @@ class Subject {
 		$this->title   = get_post_meta( $post->ID, 'raw_title', true );
 		$this->date    = get_post_meta( $post->ID, 'raw_date', true );
 		$this->content = get_post_meta( $post->ID, 'raw_content', true );
+
+		$this->transformed_post_id = absint( get_post_meta( $post->ID, Transformer::META_KEY_LIBERATED_OUTPUT, true ) );
 	}
 
 	public function id(): int {
 		return $this->id;
+	}
+
+	public function transformed_post(): WP_Post {
+		return WP_Post::get_instance( $this->transformed_post_id );
 	}
 }

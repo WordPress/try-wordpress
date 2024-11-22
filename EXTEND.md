@@ -48,8 +48,6 @@ content is liberated from the source website, giving you access to the raw data 
 The [Subject class](src/plugin/class-subject.php) provides a
 clean API to access raw data and existing transformed output:
 
-`// @TODO provide api to access transformed output`
-
 For example, to transform product data into your custom product post type:
 
 ```php
@@ -58,6 +56,12 @@ add_action( 'data_liberated_product', function( $subject ) {
     $title   = $subject->title;
     $date    = $subject->date;
     $content = $subject->content;
+    
+    // access entire html source of page
+    // $subject->source_html
+    
+    // access transformation output
+    // $subject->transformed_post();
     
     // Create a product in your custom post type
     $my_product_id = wp_insert_post( array(
@@ -113,6 +117,12 @@ foreach( \DotOrg\TryWordPress\Subject_Repo::loop( 'product' ) as $subject ) {
     $title   = $subject->title;
     $date    = $subject->date;
     $content = $subject->content;
+    
+    // access entire html source of page
+    // $subject->source_html
+    
+    // access transformation output
+    // $subject->transformed_post();
     
     // Create a product in your custom post type
     $my_product_id = wp_insert_post( array(
