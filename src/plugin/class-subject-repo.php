@@ -7,6 +7,18 @@ class Subject_Repo {
 
 	public static function init( string $post_type ): void {
 		static::$post_type = $post_type;
+
+		add_action( 'do_data_liberation', array( __CLASS__, 'simulate_data_liberation' ) );
+	}
+
+	public static function simulate_data_liberation( $subject_type ): void {
+		foreach ( self::loop( $subject_type ) as $subject ) {
+			do_action(
+				'data_liberated_' . $subject_type,
+				$subject,
+				'simulate'
+			);
+		}
 	}
 
 	/**
