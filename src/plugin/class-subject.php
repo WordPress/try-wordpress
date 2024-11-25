@@ -72,5 +72,13 @@ class Subject {
 		// Store a reference to your transformation in the source
 		$meta_key = Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug;
 		update_post_meta( $this->id, $meta_key, $transformed_post_id );
+
+		// Control preview
+		add_filter(
+			'data_liberation_preview_transformed_post_id',
+			function () use ( $transformed_post_id ) {
+				return $transformed_post_id;
+			}
+		);
 	}
 }
