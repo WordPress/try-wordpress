@@ -22,5 +22,15 @@
         "no-console": [
             "off"
         ]
-    }
+    },
+    "overrides": [
+        {
+            "files": [
+                "src/crawler/**/*.ts"
+            ],
+            "rules": {
+                "react/no-is-mounted": "off"
+            }
+        }
+    ]
 }
