@@ -15,7 +15,7 @@ the future or any third-party plugin to transform the data upon installation of 
 ## Storage Architecture
 
 Try WordPress stores all liberated data in a custom post type called `liberated_data`, exposed via a constant:
-`\DotOrg\TryWordPress\Engine::STORAGE_POST_TYPE`.
+`\DotOrg\TryWordPress\Engine::LIBERATED_DATA_POST_TYPE`.
 
 We maintain references between the source data and transformed output using two post meta keys:
 

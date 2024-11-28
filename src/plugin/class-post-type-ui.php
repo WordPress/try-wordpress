@@ -3,20 +3,30 @@
 namespace DotOrg\TryWordPress;
 
 class Post_Type_UI {
-	private string $post_type;
+	private string $liberated_data_post_type;
+	private string $crawler_data_post_type;
+
 	private Transformer $transformer;
 
-	public function __construct( $custom_post_type, Transformer $transformer ) {
-		$this->post_type   = $custom_post_type;
-		$this->transformer = $transformer;
+	public function __construct( string $liberated_data_post_type, string $crawler_data_post_type, Transformer $transformer ) {
+		$this->liberated_data_post_type = $liberated_data_post_type;
+		$this->crawler_data_post_type   = $crawler_data_post_type;
+		$this->transformer              = $transformer;
 
-		$this->remove_add_new_option( $this->post_type );
+		$this->remove_add_new_option( $this->liberated_data_post_type );
+		$this->remove_add_new_option( $this->crawler_data_post_type );
 
 		// Strip editor to be barebones.
 		add_filter(
 			'wp_editor_settings',
 			function ( $settings, $editor_id ) {
-				if ( 'content' === $editor_id && get_current_screen()->post_type === $this->post_type ) {
+				if (
+					'content' === $editor_id &&
+					(
+						get_current_screen()->post_type === $this->liberated_data_post_type ||
+						get_current_screen()->post_type === $this->crawler_data_post_type
+					)
+				) {
 					$settings['tinymce']       = false;
 					$settings['quicktags']     = false;
 					$settings['media_buttons'] = false;
@@ -37,15 +47,23 @@ class Post_Type_UI {
 				$cpt_screen = false;
 				if ( 'post-new.php' === $pagenow ) { // New post screen
 					// @phpcs:ignore WordPress.Security.NonceVerification.Recommended
-					if ( isset( $_GET['post_type'] ) && $_GET['post_type'] === $this->post_type ) {
+					// @phpcs:disable
+					if (
+						isset( $_GET['post_type'] ) &&
+						(
+							$_GET['post_type'] === $this->liberated_data_post_type ||
+							$_GET['post_type'] === $this->crawler_data_post_type
+						)
+					) {
 						$cpt_screen = true;
 					}
+					// @phpcs:enable
 				}
 
 				if ( 'post.php' === $pagenow ) { // Edit post screen
 					// @phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 					$post_type = get_post_type( absint( $_GET['post'] ) );
-					if ( $post_type === $this->post_type ) {
+					if ( $post_type === $this->liberated_data_post_type || $post_type === $this->crawler_data_post_type ) {
 						$cpt_screen = true;
 					}
 				}
@@ -61,7 +79,7 @@ class Post_Type_UI {
 		add_filter(
 			'use_block_editor_for_post_type',
 			function ( $use_block_editor, $post_type ) {
-				if ( $post_type === $this->post_type ) {
+				if ( $post_type === $this->liberated_data_post_type || $post_type === $this->crawler_data_post_type ) {
 					return false;
 				}
 
@@ -76,8 +94,11 @@ class Post_Type_UI {
 			'add_meta_boxes',
 			function () {
 				// Remove default meta boxes
-				remove_meta_box( 'submitdiv', $this->post_type, 'side' );
-				remove_meta_box( 'slugdiv', $this->post_type, 'normal' );
+				remove_meta_box( 'submitdiv', $this->liberated_data_post_type, 'side' );
+				remove_meta_box( 'slugdiv', $this->liberated_data_post_type, 'normal' );
+
+				remove_meta_box( 'submitdiv', $this->crawler_data_post_type, 'side' );
+
 				/**
 				 * We would need to remove more metaboxes as their support is added to CPTs.
 				 * Leaving code here for reference.
@@ -116,8 +137,30 @@ class Post_Type_UI {
 							echo "<p>This post hasn't been transformed yet.</p>";
 						}
 					},
-					$this->post_type,
+					$this->liberated_data_post_type,
 					'side',
+					'default'
+				);
+
+				add_meta_box(
+					'discovered_crawler_url',
+					'Discovered URL',
+					function () {
+						global $post;
+						?>
+						<p>
+							<label>
+								<input type="text" class="large-text" readonly value="<?php esc_attr( $post->guid ); ?>" />
+							</label>
+						</p>
+						<p>
+							<strong>Status:</strong>
+							<pre><?php echo esc_html( strtoupper( $post->post_status ) ); ?></pre>
+						</p>
+						<?php
+					},
+					$this->crawler_data_post_type,
+					'advanced',
 					'default'
 				);
 			},

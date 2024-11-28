@@ -23,7 +23,7 @@ class Transformer_Test extends TestCase {
 				'post_status'           => 'draft',
 				'post_content_filtered' => '<div><p>Content 1</p><p>Content 2</p></div>',
 				'guid'                  => 'https://example.com/x',
-				'post_type'             => Engine::STORAGE_POST_TYPE,
+				'post_type'             => 'lib_x',
 			)
 		);
 		update_post_meta( $this->post_id_in_db, 'subject_type', SubjectType::BLOGPOST->value );

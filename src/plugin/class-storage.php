@@ -3,44 +3,88 @@
 namespace DotOrg\TryWordPress;
 
 class Storage {
-	private string $post_type;
-	private string $post_type_name;
+	private string $liberated_data_post_type;
+	private string $liberated_data_post_type_name;
+	private string $crawler_data_post_type;
+	private string $crawler_data_post_type_name        = 'Crawler URL';
+	private string $crawler_data_post_type_name_plural = 'Crawler URLs';
 
 	private array $custom_post_types_supports = array( 'title', 'editor', 'custom-fields' );
 
-	public function __construct( string $post_type ) {
-		$this->post_type      = $post_type;
-		$this->post_type_name = ucwords( str_replace( '_', ' ', $post_type ) );
+	public function __construct( string $liberated_data_post_type, string $crawler_data_post_type ) {
+		$this->liberated_data_post_type      = $liberated_data_post_type;
+		$this->liberated_data_post_type_name = ucwords( str_replace( '_', ' ', $liberated_data_post_type ) );
+		$this->crawler_data_post_type        = $crawler_data_post_type;
 
 		add_action( 'init', array( $this, 'register_post_types' ) );
 	}
 
-	private function get_singular_name(): string {
-		return $this->post_type_name;
-	}
-
-	private function get_plural_name(): string {
-		return $this->post_type_name;
-	}
-
 	public function register_post_types(): void {
-		$name        = $this->get_singular_name();
-		$name_plural = $this->get_plural_name();
-
-		$args = array(
-			'public'              => false,
-			'exclude_from_search' => true,
-			'publicly_queryable'  => false,
-			'show_in_rest'        => true,
-			'show_ui'             => true,
-			'show_in_menu'        => WP_DEBUG,
-			'menu_icon'           => 'dashicons-database',
-			'supports'            => $this->custom_post_types_supports,
-			'labels'              => $this->get_post_type_registration_labels( $name, $name_plural ),
-			'rest_base'           => $this->post_type,
+		register_post_type(
+			$this->liberated_data_post_type,
+			array(
+				'public'              => false,
+				'exclude_from_search' => true,
+				'publicly_queryable'  => false,
+				'show_in_rest'        => true,
+				'show_ui'             => true,
+				'show_in_menu'        => WP_DEBUG,
+				'menu_icon'           => 'dashicons-database',
+				'supports'            => $this->custom_post_types_supports,
+				'labels'              => $this->get_post_type_registration_labels(
+					$this->liberated_data_post_type_name,
+					$this->liberated_data_post_type_name
+				),
+				'rest_base'           => $this->liberated_data_post_type,
+			)
 		);
 
-		register_post_type( $this->post_type, $args );
+		register_post_type(
+			$this->crawler_data_post_type,
+			array(
+				'public'              => false,
+				'exclude_from_search' => true,
+				'publicly_queryable'  => false,
+				'show_in_rest'        => false,
+				'show_ui'             => true,
+				'show_in_menu'        => WP_DEBUG,
+				'menu_icon'           => 'dashicons-editor-ul',
+				'supports'            => array( '' ), // has to be empty string array, otherwise title and content support comes in by default
+				'labels'              => $this->get_post_type_registration_labels(
+					$this->crawler_data_post_type_name,
+					$this->crawler_data_post_type_name_plural
+				),
+				'rest_base'           => $this->crawler_data_post_type,
+			)
+		);
+
+		register_post_status(
+			'discovered',
+			array(
+				'label'                     => _x( 'Discovered', 'post status', 'try_wordpress' ),
+				'public'                    => false,
+				'exclude_from_search'       => true,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'internal'                  => true,
+				// translators: %s: Number of discovered posts
+				'label_count'               => _n_noop( 'Discovered <span class="count">(%s)</span>', 'Discovered <span class="count">(%s)</span>', 'try_wordpress' ),
+			)
+		);
+
+		register_post_status(
+			'crawled',
+			array(
+				'label'                     => _x( 'Crawled', 'post status', 'try_wordpress' ),
+				'public'                    => false,
+				'exclude_from_search'       => true,
+				'show_in_admin_all_list'    => true,
+				'show_in_admin_status_list' => true,
+				'internal'                  => true,
+				// translators: %s: Number of crawled posts
+				'label_count'               => _n_noop( 'Crawled <span class="count">(%s)</span>', 'Crawled <span class="count">(%s)</span>', 'try_wordpress' ),
+			)
+		);
 	}
 
 	public function get_post_type_registration_labels( string $name, string $name_plural ): array {

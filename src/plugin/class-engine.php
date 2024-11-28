@@ -4,7 +4,8 @@ namespace DotOrg\TryWordPress;
 
 class Engine {
 
-	public const string STORAGE_POST_TYPE = 'liberated_data';
+	public const string LIBERATED_DATA_POST_TYPE = 'liberated_data';
+	public const string CRAWLER_DATA_POST_TYPE   = 'dl_crawler_url';
 
 	public function __construct() {
 		require 'enum-subject-type.php';
@@ -21,15 +22,15 @@ class Engine {
 		( function () {
 			$transformer = new Transformer();
 
-			new Post_Type_UI( self::STORAGE_POST_TYPE, $transformer );
+			new Post_Type_UI( self::LIBERATED_DATA_POST_TYPE, self::CRAWLER_DATA_POST_TYPE, $transformer );
 
 			// REST API
-			new Blogpost_Controller( self::STORAGE_POST_TYPE );
-			new Page_Controller( self::STORAGE_POST_TYPE );
+			new Blogpost_Controller( self::LIBERATED_DATA_POST_TYPE );
+			new Page_Controller( self::LIBERATED_DATA_POST_TYPE );
 
-			new Storage( self::STORAGE_POST_TYPE );
+			new Storage( self::LIBERATED_DATA_POST_TYPE, self::CRAWLER_DATA_POST_TYPE );
 
-			Subject_Repo::init( self::STORAGE_POST_TYPE );
+			Subject_Repo::init( self::LIBERATED_DATA_POST_TYPE );
 		} )();
 	}
 }
