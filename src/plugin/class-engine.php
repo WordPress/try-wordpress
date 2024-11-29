@@ -15,6 +15,7 @@ class Engine {
 		require 'class-liberate-controller.php';
 		require 'class-blogpost-controller.php';
 		require 'class-page-controller.php';
+		require 'class-controller-registry.php';
 		require 'class-storage.php';
 		require 'class-subject.php';
 		require 'class-subject-repo.php';
@@ -24,9 +25,7 @@ class Engine {
 
 			new Post_Type_UI( self::LIBERATED_DATA_POST_TYPE, self::CRAWLER_DATA_POST_TYPE, $transformer );
 
-			// REST API
-			new Blogpost_Controller( self::LIBERATED_DATA_POST_TYPE );
-			new Page_Controller( self::LIBERATED_DATA_POST_TYPE );
+			new Controller_Registry( self::LIBERATED_DATA_POST_TYPE, self::CRAWLER_DATA_POST_TYPE );
 
 			new Storage( self::LIBERATED_DATA_POST_TYPE, self::CRAWLER_DATA_POST_TYPE );
 
