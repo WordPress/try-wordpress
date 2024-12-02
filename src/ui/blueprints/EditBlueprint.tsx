@@ -91,26 +91,20 @@ export function EditBlueprint() {
 	let editor: ReactElement | undefined;
 
 	if ( blueprint && subject ) {
+		editor = (
+			<BlueprintEditor
+				blueprint={ blueprint }
+				subject={ subject }
+				onFieldChanged={ onFieldChanged }
+			/>
+		);
+
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
 				isValid = validateBlogPost( subject as BlogPost );
-				editor = (
-					<BlueprintEditor
-						blueprint={ blueprint }
-						subject={ subject }
-						onFieldChanged={ onFieldChanged }
-					/>
-				);
 				break;
 			case SubjectType.Page:
 				isValid = validatePage( subject as Page );
-				editor = (
-					<BlueprintEditor
-						blueprint={ blueprint }
-						subject={ subject }
-						onFieldChanged={ onFieldChanged }
-					/>
-				);
 				break;
 			default:
 				throw Error( `unknown subject type ${ subject.type }` );
