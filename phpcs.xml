@@ -6,6 +6,7 @@
     <arg name="extensions" value="php,css"/>
 
     <file>./src/plugin/</file>
+    <file>./src/schemas/schemas.php</file>
     <file>./tests/plugin/</file>
 
     <exclude-pattern>*/vendor/*</exclude-pattern>
