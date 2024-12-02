@@ -22,7 +22,7 @@ export function NewBlueprint() {
 	const { session, apiClient } = useSessionContext();
 
 	// Check if there is already a blueprint for the subjectType and if so,
-	// redirect to that blueprint's edit screen is the blueprint is not valid yet,
+	// redirect to that blueprint's edit screen if the blueprint is not valid yet,
 	// or redirect to the import screen if the blueprint is already valid.
 	useEffect( () => {
 		if ( ! apiClient ) {
