@@ -94,7 +94,6 @@ export function EditBlueprint() {
 			updatedSubject
 		);
 		setSubject( p );
-		void playgroundClient!.goTo( '/?p=' + subject.transformedId );
 	}
 
 	let isValid = false;
