@@ -1,16 +1,16 @@
 import { Field } from '@/model/field/Field';
-import { BlogPost } from '@/model/subject/BlogPost';
-import { BlogPostBlueprint } from '@/model/blueprint/BlogPost';
 import { FieldsEditor } from '@/ui/components/FieldsEditor/FieldsEditor';
 import { getSchemaFields } from '@/schemas/fields';
+import { Subject } from '@/model/subject/Subject';
+import { Blueprint } from '@/model/blueprint/Blueprint';
 
 interface Props {
-	blueprint: BlogPostBlueprint;
-	subject: BlogPost;
+	blueprint: Blueprint;
+	subject: Subject;
 	onFieldChanged: ( name: string, field: Field, selector: string ) => void;
 }
 
-export function BlogPostBlueprintEditor( props: Props ) {
+export function BlueprintEditor( props: Props ) {
 	const { blueprint, subject, onFieldChanged } = props;
 	const schemaFields = getSchemaFields( subject.type );
 

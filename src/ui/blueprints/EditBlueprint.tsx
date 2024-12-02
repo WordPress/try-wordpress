@@ -1,8 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { BlogPostBlueprintEditor } from '@/ui/blueprints/blog-post/BlogPostBlueprintEditor';
-import { PageBlueprintEditor } from '@/ui/blueprints/blog-post/PageBlueprintEditor';
+import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
 import { Toolbar } from '@/ui/components/Toolbar';
 import { parseBlogPostField } from '@/parser/blog-post';
 import { parsePageField } from '@/parser/page';
@@ -96,9 +95,9 @@ export function EditBlueprint() {
 			case SubjectType.BlogPost:
 				isValid = validateBlogPost( subject as BlogPost );
 				editor = (
-					<BlogPostBlueprintEditor
-						blueprint={ blueprint as BlogPostBlueprint }
-						subject={ subject as BlogPost }
+					<BlueprintEditor
+						blueprint={ blueprint }
+						subject={ subject }
 						onFieldChanged={ onFieldChanged }
 					/>
 				);
@@ -106,9 +105,9 @@ export function EditBlueprint() {
 			case SubjectType.Page:
 				isValid = validatePage( subject as Page );
 				editor = (
-					<PageBlueprintEditor
-						blueprint={ blueprint as PageBlueprint }
-						subject={ subject as Page }
+					<BlueprintEditor
+						blueprint={ blueprint }
+						subject={ subject }
 						onFieldChanged={ onFieldChanged }
 					/>
 				);
