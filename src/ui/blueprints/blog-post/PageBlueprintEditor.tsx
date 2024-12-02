@@ -13,8 +13,8 @@ export function PageBlueprintEditor( props: Props ) {
 	const { blueprint, subject, onFieldChanged } = props;
 
 	const subjectFields: { name: string; field: Field }[] = [
-		{ name: 'title', field: subject.title },
-		{ name: 'content', field: subject.content },
+		{ name: 'title', field: subject.fields.title },
+		{ name: 'content', field: subject.fields.content },
 	];
 
 	const selectors: {

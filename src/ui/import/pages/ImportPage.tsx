@@ -61,8 +61,8 @@ export function ImportPage() {
 	}
 
 	const fields: { name: string; field: Field }[] = [
-		{ name: 'title', field: page.title },
-		{ name: 'content', field: page.content },
+		{ name: 'title', field: page.fields.title },
+		{ name: 'content', field: page.fields.content },
 	];
 
 	const selectors: {

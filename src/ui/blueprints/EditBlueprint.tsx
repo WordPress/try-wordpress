@@ -61,22 +61,18 @@ export function EditBlueprint() {
 
 		blueprint.fields[ name ].selector = selector;
 
-		const subjectFieldsToUpdate: Record< string, Field > = {};
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
 				blueprint.valid = validateBlogpostBlueprint(
 					blueprint as BlogPostBlueprint
 				);
-				subjectFieldsToUpdate[ name ] = parseBlogPostField(
-					name,
-					field
-				);
+				subject.fields[ name ] = parseBlogPostField( name, field );
 				break;
 			case SubjectType.Page:
 				blueprint.valid = validatePageBlueprint(
 					blueprint as PageBlueprint
 				);
-				subjectFieldsToUpdate[ name ] = parsePageField( name, field );
+				subject.fields[ name ] = parsePageField( name, field );
 				break;
 			default:
 				throw Error( `unknown subject type ${ subject.type }` );
@@ -85,13 +81,9 @@ export function EditBlueprint() {
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );
 
-		const updatedSubject = {
-			...subject,
-			...subjectFieldsToUpdate,
-		} as BlogPost;
 		const p = await apiClient!.blogPosts.update(
 			subject.id,
-			updatedSubject
+			subject as BlogPost
 		);
 		setSubject( p );
 	}

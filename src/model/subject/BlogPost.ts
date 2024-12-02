@@ -1,13 +1,10 @@
 import { Subject, SubjectType } from '@/model/subject/Subject';
-import { newTextField, TextField } from '@/model/field/TextField';
-import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
-import { DateField, newDateField } from '@/model/field/DateField';
+import { newTextField } from '@/model/field/TextField';
+import { newHtmlField } from '@/model/field/HtmlField';
+import { newDateField } from '@/model/field/DateField';
 
 export interface BlogPost extends Subject {
 	type: SubjectType.BlogPost;
-	date: DateField;
-	title: TextField;
-	content: HtmlField;
 }
 
 export function newBlogPost( sourceUrl: string ): BlogPost {
@@ -17,14 +14,20 @@ export function newBlogPost( sourceUrl: string ): BlogPost {
 		transformedId: 0,
 		previewUrl: '',
 		sourceUrl,
-		date: newDateField(),
-		title: newTextField(),
-		content: newHtmlField(),
+		fields: {
+			date: newDateField(),
+			title: newTextField(),
+			content: newHtmlField(),
+		},
 	};
 }
 
 export function validateBlogPost( blogPost: BlogPost ): boolean {
-	const fields = [ blogPost.title, blogPost.date, blogPost.content ];
+	const fields = [
+		blogPost.fields.title,
+		blogPost.fields.date,
+		blogPost.fields.content,
+	];
 	let isValid = true;
 	for ( const f of fields ) {
 		if ( f.rawValue === '' || f.parsedValue === '' ) {

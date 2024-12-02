@@ -52,9 +52,11 @@ function fromApiResponse( response: ApiPage ): Page {
 		sourceUrl: response.sourceUrl,
 		transformedId: response.transformedId,
 		previewUrl: response.previewUrl,
-		title,
-		date,
-		content,
+		fields: {
+			title,
+			date,
+			content,
+		},
 	};
 }
 
@@ -67,11 +69,11 @@ function toApiRequest( page: Page ): ApiPage {
 		sourceUrl: page.sourceUrl,
 		// read-only from api perspective, so including it has no effect
 		previewUrl: page.previewUrl,
-		rawDate: page.date.rawValue,
-		parsedDate: page.date.parsedValue.toISOString(),
-		rawTitle: page.title.rawValue,
-		parsedTitle: page.title.parsedValue,
-		rawContent: page.content.rawValue,
-		parsedContent: page.content.parsedValue,
+		rawDate: page.fields.date.rawValue,
+		parsedDate: page.fields.date.parsedValue.toISOString(),
+		rawTitle: page.fields.title.rawValue,
+		parsedTitle: page.fields.title.parsedValue,
+		rawContent: page.fields.content.rawValue,
+		parsedContent: page.fields.content.parsedValue,
 	};
 }

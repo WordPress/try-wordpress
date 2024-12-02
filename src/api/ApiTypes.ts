@@ -6,12 +6,12 @@ export type ApiPost = {
 	transformedId: number;
 	previewUrl: string;
 	sourceUrl: string;
-	rawDate: string;
-	parsedDate: string;
-	rawTitle: string;
-	parsedTitle: string;
-	rawContent: string;
-	parsedContent: string;
+	rawDate?: string;
+	parsedDate?: string;
+	rawTitle?: string;
+	parsedTitle?: string;
+	rawContent?: string;
+	parsedContent?: string;
 };
 
 export type ApiPage = ApiPost;

@@ -54,14 +54,16 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 		sourceUrl: response.sourceUrl,
 		transformedId: response.transformedId,
 		previewUrl: response.previewUrl,
-		title,
-		date,
-		content,
+		fields: {
+			title,
+			date,
+			content,
+		},
 	};
 }
 
 function toApiRequest( post: BlogPost ): ApiPost {
-	return {
+	let request: ApiPost = {
 		id: post.id,
 		// read-only from api perspective, so including it has no effect
 		transformedId: post.transformedId,
@@ -69,11 +71,31 @@ function toApiRequest( post: BlogPost ): ApiPost {
 		sourceUrl: post.sourceUrl,
 		// read-only from api perspective, so including it has no effect
 		previewUrl: post.previewUrl,
-		rawDate: post.date.rawValue,
-		parsedDate: post.date.parsedValue.toISOString(),
-		rawTitle: post.title.rawValue,
-		parsedTitle: post.title.parsedValue,
-		rawContent: post.content.rawValue,
-		parsedContent: post.content.parsedValue,
 	};
+
+	if ( post.fields.date ) {
+		request = {
+			...request,
+			rawDate: post.fields.date.rawValue,
+			parsedDate: post.fields.date.parsedValue.toISOString(),
+		};
+	}
+
+	if ( post.fields.title ) {
+		request = {
+			...request,
+			rawTitle: post.fields.title.rawValue,
+			parsedTitle: post.fields.title.parsedValue,
+		};
+	}
+
+	if ( post.fields.content ) {
+		request = {
+			...request,
+			rawContent: post.fields.content.rawValue,
+			parsedContent: post.fields.content.parsedValue,
+		};
+	}
+
+	return request;
 }

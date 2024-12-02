@@ -1,3 +1,5 @@
+import { Field } from '@/model/field/Field';
+
 export enum SubjectType {
 	BlogPost = 'blog-post',
 	Page = 'page',
@@ -14,4 +16,5 @@ export interface Subject {
 	transformedId: number;
 	sourceUrl: string;
 	previewUrl: string;
+	fields: Record< string, Field >;
 }
