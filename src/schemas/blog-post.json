@@ -1,0 +1,14 @@
+{
+    "title": "Blog post",
+    "fields": {
+        "title": {
+            "type": "text"
+        },
+        "date": {
+            "type": "date"
+        },
+        "content": {
+            "type": "html"
+        }
+    }
+}
