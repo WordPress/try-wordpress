@@ -1,36 +1,36 @@
-import { pasteHandler, serialize } from '@wordpress/blocks';
-import { findDeepestChild } from '@/parser/util';
+import { Field, FieldType } from '@/model/field/Field';
 import { DateField, newDateField } from '@/model/field/DateField';
 import { newTextField, TextField } from '@/model/field/TextField';
+import { findDeepestChild } from '@/parser/util';
 import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
-import { Field } from '@/model/field/Field';
+import { pasteHandler, serialize } from '@wordpress/blocks';
 
-export function parseBlogPostField( name: string, field: Field ): Field {
-	switch ( name ) {
-		case 'date':
-			return parseBlogPostDate( field.rawValue );
-		case 'title':
-			return parseBlogPostTitle( field.rawValue );
-		case 'content':
-			return parseBlogPostContent( field.rawValue );
+export function parseField( field: Field ): Field {
+	switch ( field.type ) {
+		case FieldType.Date:
+			return parseDate( field.rawValue );
+		case FieldType.Text:
+			return parseText( field.rawValue );
+		case FieldType.Html:
+			return parseHtml( field.rawValue );
 		default:
 			throw Error( `unknown field type ${ field.type }` );
 	}
 }
 
-export function parseBlogPostDate( html: string ): DateField {
+function parseDate( html: string ): DateField {
 	const container = document.createElement( 'div' );
 	container.innerHTML = html.trim();
 	const element = container.querySelector( 'time' );
 	return newDateField( html, element ? element.dateTime : '' );
 }
 
-export function parseBlogPostTitle( html: string ): TextField {
+function parseText( html: string ): TextField {
 	const deepestChild = findDeepestChild( html );
 	return newTextField( html, deepestChild?.innerHTML ?? '' );
 }
 
-export function parseBlogPostContent( html: string ): HtmlField {
+function parseHtml( html: string ): HtmlField {
 	return newHtmlField( html, serializeBlocks( html ) );
 }
 

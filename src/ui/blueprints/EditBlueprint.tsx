@@ -3,8 +3,6 @@ import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
 import { Toolbar } from '@/ui/components/Toolbar';
-import { parseBlogPostField } from '@/parser/blog-post';
-import { parsePageField } from '@/parser/page';
 import { SubjectType } from '@/model/subject/Subject';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/hooks/useBlueprint';
@@ -15,6 +13,7 @@ import { Page, validatePage } from '@/model/subject/Page';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 import { Button } from '@wordpress/components';
 import { validateBlueprint } from '@/model/blueprint/Blueprint';
+import { parseField } from '@/parser/field';
 
 export function EditBlueprint() {
 	const params = useParams();
@@ -59,11 +58,11 @@ export function EditBlueprint() {
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
 				blueprint.valid = validateBlueprint( blueprint );
-				subject.fields[ name ] = parseBlogPostField( name, field );
+				subject.fields[ name ] = parseField( field );
 				break;
 			case SubjectType.Page:
 				blueprint.valid = validateBlueprint( blueprint );
-				subject.fields[ name ] = parsePageField( name, field );
+				subject.fields[ name ] = parseField( field );
 				break;
 			default:
 				throw Error( `unknown subject type ${ subject.type }` );

@@ -8,9 +8,9 @@ import { Field } from '@/model/field/Field';
 import { Page } from '@/model/subject/Page';
 import { FieldsEditor } from '@/ui/components/FieldsEditor/FieldsEditor';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
-import { parsePageField } from '@/parser/page';
 import { Toolbar } from '@/ui/import/pages/Toolbar';
 import { Screens } from '@/ui/App';
+import { parseField } from '@/parser/field';
 
 // Import a specific page.
 // The urls of pages to import come from local storage.
@@ -103,7 +103,7 @@ export function ImportPage() {
 				selectors={ selectors }
 				onFieldChanged={ async ( name: string, field: Field ) => {
 					// @ts-ignore
-					page[ name ] = parsePageField( name, field );
+					page[ name ] = parseField( field );
 					const p = await apiClient!.pages.update( page!.id, page );
 					setPage( p );
 				} }
