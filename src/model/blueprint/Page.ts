@@ -33,14 +33,3 @@ export function newPageBlueprint( sourceUrl: string ): PageBlueprint {
 		},
 	};
 }
-
-export function validatePageBlueprint( blueprint: PageBlueprint ): boolean {
-	let isValid = true;
-	for ( const f of Object.values( blueprint.fields ) ) {
-		if ( f.selector === '' ) {
-			isValid = false;
-			break;
-		}
-	}
-	return isValid;
-}

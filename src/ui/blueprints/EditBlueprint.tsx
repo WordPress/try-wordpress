@@ -11,14 +11,10 @@ import { useBlueprint } from '@/ui/hooks/useBlueprint';
 import { useSubject } from '@/ui/hooks/useSubject';
 import { Field } from '@/model/field/Field';
 import { BlogPost, validateBlogPost } from '@/model/subject/BlogPost';
-import {
-	BlogPostBlueprint,
-	validateBlogpostBlueprint,
-} from '@/model/blueprint/BlogPost';
 import { Page, validatePage } from '@/model/subject/Page';
-import { PageBlueprint, validatePageBlueprint } from '@/model/blueprint/Page';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 import { Button } from '@wordpress/components';
+import { validateBlueprint } from '@/model/blueprint/Blueprint';
 
 export function EditBlueprint() {
 	const params = useParams();
@@ -62,15 +58,11 @@ export function EditBlueprint() {
 
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:
-				blueprint.valid = validateBlogpostBlueprint(
-					blueprint as BlogPostBlueprint
-				);
+				blueprint.valid = validateBlueprint( blueprint );
 				subject.fields[ name ] = parseBlogPostField( name, field );
 				break;
 			case SubjectType.Page:
-				blueprint.valid = validatePageBlueprint(
-					blueprint as PageBlueprint
-				);
+				blueprint.valid = validateBlueprint( blueprint );
 				subject.fields[ name ] = parsePageField( name, field );
 				break;
 			default:
