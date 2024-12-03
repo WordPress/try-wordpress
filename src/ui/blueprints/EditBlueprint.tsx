@@ -53,7 +53,7 @@ export function EditBlueprint() {
 			return;
 		}
 
-		blueprint.fields[ name ].selector = selector;
+		blueprint.selectors[ name ] = selector;
 
 		switch ( subject.type ) {
 			case SubjectType.BlogPost:

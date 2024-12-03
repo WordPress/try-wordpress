@@ -23,10 +23,12 @@ export function ImportWithBlueprint() {
 
 	const fields: ReactElement[] = [];
 	if ( blueprint ) {
-		for ( const [ name, field ] of Object.entries( blueprint.fields ) ) {
+		for ( const [ name, selector ] of Object.entries(
+			blueprint.selectors
+		) ) {
 			fields.push(
 				<li key={ name }>
-					{ name }: { field.selector }
+					{ name }: { selector }
 				</li>
 			);
 		}

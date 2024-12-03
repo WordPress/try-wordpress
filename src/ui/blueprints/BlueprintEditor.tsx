@@ -27,8 +27,7 @@ export function BlueprintEditor( props: Props ) {
 		} );
 		selectors.push( {
 			name,
-			// @ts-ignore
-			selector: blueprint.fields[ name ].selector,
+			selector: blueprint.selectors[ name ],
 		} );
 	} );
 
