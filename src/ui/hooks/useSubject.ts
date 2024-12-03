@@ -17,40 +17,12 @@ export function useSubject(
 			if ( ! type || ! sourceUrl || ! apiClient ) {
 				return;
 			}
-			let subj: Subject | null;
-			switch ( type ) {
-				case SubjectType.BlogPost:
-					subj = await apiClient!.subjects.findBySourceUrl(
-						SubjectType.BlogPost,
-						sourceUrl
-					);
-					break;
-				case SubjectType.Page:
-					subj = await apiClient!.subjects.findBySourceUrl(
-						SubjectType.Page,
-						sourceUrl
-					);
-					break;
-				default:
-					throw Error( `unknown blueprint type ${ type }` );
-			}
+			let subj = await apiClient!.subjects.findBySourceUrl(
+				type,
+				sourceUrl
+			);
 			if ( ! subj ) {
-				switch ( type ) {
-					case SubjectType.BlogPost:
-						subj = await apiClient!.subjects.create(
-							type,
-							sourceUrl
-						);
-						break;
-					case SubjectType.Page:
-						subj = await apiClient!.subjects.create(
-							type,
-							sourceUrl
-						);
-						break;
-					default:
-						throw Error( `unknown blueprint type ${ type }` );
-				}
+				subj = await apiClient!.subjects.create( type, sourceUrl );
 			}
 			setSubject( subj );
 		}
