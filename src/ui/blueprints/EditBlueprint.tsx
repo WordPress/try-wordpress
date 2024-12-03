@@ -3,13 +3,12 @@ import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
 import { Toolbar } from '@/ui/components/Toolbar';
-import { SubjectType } from '@/model/subject/Subject';
+import { validateFields } from '@/model/subject/Subject';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/hooks/useBlueprint';
 import { useSubject } from '@/ui/hooks/useSubject';
 import { Field } from '@/model/field/Field';
-import { BlogPost, validateBlogPost } from '@/model/subject/BlogPost';
-import { Page, validatePage } from '@/model/subject/Page';
+import { BlogPost } from '@/model/subject/BlogPost';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 import { Button } from '@wordpress/components';
 import { validateBlueprint } from '@/model/Blueprint';
@@ -78,17 +77,7 @@ export function EditBlueprint() {
 				onFieldChanged={ onFieldChanged }
 			/>
 		);
-
-		switch ( subject.type ) {
-			case SubjectType.BlogPost:
-				isValid = validateBlogPost( subject as BlogPost );
-				break;
-			case SubjectType.Page:
-				isValid = validatePage( subject as Page );
-				break;
-			default:
-				throw Error( `unknown subject type ${ subject.type }` );
-		}
+		isValid = validateFields( subject );
 	}
 
 	if ( isValid ) {

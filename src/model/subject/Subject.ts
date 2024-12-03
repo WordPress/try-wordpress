@@ -18,3 +18,14 @@ export interface Subject {
 	previewUrl: string;
 	fields: Record< string, Field >;
 }
+
+export function validateFields( subject: Subject ): boolean {
+	let isValid = true;
+	Object.keys( subject.fields ).forEach( ( key ) => {
+		const f = subject.fields[ key ];
+		if ( f.rawValue === '' || f.parsedValue === '' ) {
+			isValid = false;
+		}
+	} );
+	return isValid;
+}

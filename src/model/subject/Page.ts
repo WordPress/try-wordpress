@@ -21,15 +21,3 @@ export function newPage( sourceUrl: string ): Page {
 		},
 	};
 }
-
-export function validatePage( page: Page ): boolean {
-	const fields = [ page.fields.title, page.fields.date, page.fields.content ];
-	let isValid = true;
-	for ( const f of fields ) {
-		if ( f.rawValue === '' || f.parsedValue === '' ) {
-			isValid = false;
-			break;
-		}
-	}
-	return isValid;
-}

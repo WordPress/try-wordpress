@@ -21,19 +21,3 @@ export function newBlogPost( sourceUrl: string ): BlogPost {
 		},
 	};
 }
-
-export function validateBlogPost( blogPost: BlogPost ): boolean {
-	const fields = [
-		blogPost.fields.title,
-		blogPost.fields.date,
-		blogPost.fields.content,
-	];
-	let isValid = true;
-	for ( const f of fields ) {
-		if ( f.rawValue === '' || f.parsedValue === '' ) {
-			isValid = false;
-			break;
-		}
-	}
-	return isValid;
-}
