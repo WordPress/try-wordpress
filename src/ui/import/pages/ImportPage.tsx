@@ -98,11 +98,8 @@ export function ImportPage() {
 				selectors={ selectors }
 				onFieldChanged={ async ( name: string, field: Field ) => {
 					subject.fields[ name ] = parseField( field );
-					const p = await apiClient!.pages.update(
-						subject!.id,
-						subject
-					);
-					setPage( p );
+					const s = await apiClient!.subjects.update( subject );
+					setPage( s );
 				} }
 			/>
 		</>

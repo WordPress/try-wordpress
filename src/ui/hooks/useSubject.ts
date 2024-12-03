@@ -1,4 +1,4 @@
-import { newSubject, Subject, SubjectType } from '@/model/Subject';
+import { Subject, SubjectType } from '@/model/Subject';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 
@@ -26,7 +26,10 @@ export function useSubject(
 					);
 					break;
 				case SubjectType.Page:
-					subj = await apiClient!.pages.findBySourceUrl( sourceUrl );
+					subj = await apiClient!.subjects.findBySourceUrl(
+						SubjectType.Page,
+						sourceUrl
+					);
 					break;
 				default:
 					throw Error( `unknown blueprint type ${ type }` );
@@ -40,8 +43,9 @@ export function useSubject(
 						);
 						break;
 					case SubjectType.Page:
-						subj = await apiClient!.pages.create(
-							newSubject( type, sourceUrl )
+						subj = await apiClient!.subjects.create(
+							type,
+							sourceUrl
 						);
 						break;
 					default:
