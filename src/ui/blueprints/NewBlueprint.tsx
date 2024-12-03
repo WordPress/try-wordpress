@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/components/Toolbar';
 import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
-import { Blueprint, newBlueprint } from '@/model/Blueprint';
+import { newBlueprint } from '@/model/Blueprint';
 import {
 	CommandTypes,
 	CurrentPageInfo,
@@ -64,29 +64,9 @@ export function NewBlueprint() {
 							type: CommandTypes.GetCurrentPageInfo,
 							payload: {},
 						} ) ) as CurrentPageInfo;
-						let blueprint: Blueprint | null;
-						switch ( subjectType ) {
-							case SubjectType.BlogPost:
-								blueprint = await apiClient!.blueprints.create(
-									newBlueprint(
-										SubjectType.BlogPost,
-										currentPage.url
-									)
-								);
-								break;
-							case SubjectType.Page:
-								blueprint = await apiClient!.blueprints.create(
-									newBlueprint(
-										SubjectType.Page,
-										currentPage.url
-									)
-								);
-								break;
-							default:
-								throw Error(
-									`unknown post type ${ subjectType }`
-								);
-						}
+						const blueprint = await apiClient!.blueprints.create(
+							newBlueprint( subjectType, currentPage.url )
+						);
 						navigate(
 							Screens.blueprints.edit( session.id, blueprint.id )
 						);

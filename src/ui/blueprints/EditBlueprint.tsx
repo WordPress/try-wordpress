@@ -54,19 +54,8 @@ export function EditBlueprint() {
 		}
 
 		blueprint.selectors[ name ] = selector;
-
-		switch ( subject.type ) {
-			case SubjectType.BlogPost:
-				blueprint.valid = validateBlueprint( blueprint );
-				subject.fields[ name ] = parseField( field );
-				break;
-			case SubjectType.Page:
-				blueprint.valid = validateBlueprint( blueprint );
-				subject.fields[ name ] = parseField( field );
-				break;
-			default:
-				throw Error( `unknown subject type ${ subject.type }` );
-		}
+		blueprint.valid = validateBlueprint( blueprint );
+		subject.fields[ name ] = parseField( field );
 
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );
