@@ -1,9 +1,8 @@
 import { Field, FieldType } from '@/model/field/Field';
 import { DateField, newDateField } from '@/model/field/DateField';
 import { newTextField, TextField } from '@/model/field/TextField';
-import { findDeepestChild } from '@/parser/util';
+import { findDeepestChild, htmlToBlocks } from '@/parser/util';
 import { HtmlField, newHtmlField } from '@/model/field/HtmlField';
-import { pasteHandler, serialize } from '@wordpress/blocks';
 
 export function parseField( field: Field ): Field {
 	switch ( field.type ) {
@@ -31,13 +30,5 @@ function parseText( html: string ): TextField {
 }
 
 function parseHtml( html: string ): HtmlField {
-	return newHtmlField( html, serializeBlocks( html ) );
-}
-
-function serializeBlocks( html: string ): string {
-	const blocks = pasteHandler( {
-		mode: 'BLOCKS',
-		HTML: html,
-	} );
-	return serialize( blocks );
+	return newHtmlField( html, htmlToBlocks( html ) );
 }
