@@ -4,10 +4,12 @@ import { PagesApi } from '@/api/Pages';
 import { SettingsApi } from '@/api/Settings';
 import { UsersApi } from '@/api/Users';
 import { BlueprintsApi } from '@/api/Blueprints';
+import { SubjectsApi } from '@/api/SubjectsApi';
 
 export class ApiClient {
 	private readonly playgroundClient: PlaygroundClient;
 	private readonly _siteUrl: string;
+	private readonly _subjects: SubjectsApi;
 	private readonly _blogPosts: BlogPostsApi;
 	private readonly _pages: PagesApi;
 	private readonly _settings: SettingsApi;
@@ -18,6 +20,7 @@ export class ApiClient {
 		this.playgroundClient = playgroundClient;
 		this._siteUrl = siteUrl;
 		this._blueprints = new BlueprintsApi( this );
+		this._subjects = new SubjectsApi( this );
 		this._blogPosts = new BlogPostsApi( this );
 		this._pages = new PagesApi( this );
 		this._settings = new SettingsApi( this );
@@ -30,6 +33,10 @@ export class ApiClient {
 
 	get blueprints(): BlueprintsApi {
 		return this._blueprints;
+	}
+
+	get subjects(): SubjectsApi {
+		return this._subjects;
 	}
 
 	get blogPosts(): BlogPostsApi {

@@ -19,6 +19,7 @@
         // Turn on errors for missing imports.
         "import/no-unresolved": "error",
         "import/named": "off",
+        "no-useless-constructor": "off",
         "no-console": [
             "off"
         ]
