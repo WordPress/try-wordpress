@@ -1,8 +1,8 @@
-import { Subject, SubjectType } from '@/model/subject/Subject';
+import { newSubject, Subject, SubjectType } from '@/model/subject/Subject';
 import { useEffect, useState } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
-import { newBlogPost } from '@/model/subject/BlogPost';
-import { newPage } from '@/model/subject/Page';
+import { BlogPost } from '@/model/subject/BlogPost';
+import { Page } from '@/model/subject/Page';
 
 // Create or load a Subject by its source URL.
 // If a Subject already exists for the source URL, we use that Subject,
@@ -35,12 +35,12 @@ export function useSubject(
 				switch ( type ) {
 					case SubjectType.BlogPost:
 						subj = await apiClient!.blogPosts.create(
-							newBlogPost( sourceUrl )
+							newSubject( type, sourceUrl ) as BlogPost
 						);
 						break;
 					case SubjectType.Page:
 						subj = await apiClient!.pages.create(
-							newPage( sourceUrl )
+							newSubject( type, sourceUrl ) as Page
 						);
 						break;
 					default:

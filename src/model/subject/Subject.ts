@@ -19,6 +19,17 @@ export interface Subject {
 	fields: Record< string, Field >;
 }
 
+export function newSubject( type: SubjectType, sourceUrl: string ): Subject {
+	return {
+		id: 0,
+		type,
+		transformedId: 0,
+		previewUrl: '',
+		sourceUrl,
+		fields: {},
+	};
+}
+
 export function validateFields( subject: Subject ): boolean {
 	let isValid = true;
 	Object.keys( subject.fields ).forEach( ( key ) => {
