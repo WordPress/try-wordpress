@@ -12,9 +12,9 @@ import {
 	useRouteLoaderData,
 } from 'react-router-dom';
 import { StrictMode, useEffect, useState } from 'react';
-import { NewSession } from '@/ui/start/NewSession';
+import { NewSession } from '@/ui/session/NewSession';
 import { ViewSession } from '@/ui/session/ViewSession';
-import { Home } from '@/ui/start/Home';
+import { Home } from '@/ui/Home';
 import { getConfig, setConfig } from '@/storage/config';
 import { getSession, listSessions, Session } from '@/storage/session';
 import { PlaceholderPreview } from '@/ui/preview/PlaceholderPreview';
