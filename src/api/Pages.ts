@@ -1,6 +1,5 @@
-import { Page } from '@/model/subject/Page';
 import { ApiClient } from '@/api/ApiClient';
-import { SubjectType } from '@/model/subject/Subject';
+import { Subject, SubjectType } from '@/model/Subject';
 import { newTextField } from '@/model/field/TextField';
 import { newHtmlField } from '@/model/field/HtmlField';
 import { ApiPage } from '@/api/ApiTypes';
@@ -10,14 +9,14 @@ export class PagesApi {
 	// eslint-disable-next-line no-useless-constructor
 	constructor( private readonly client: ApiClient ) {}
 
-	async create( page: Page ): Promise< Page > {
+	async create( page: Subject ): Promise< Subject > {
 		const response = ( await this.client.post( '/pages', {
 			sourceUrl: page.sourceUrl,
 		} ) ) as ApiPage;
 		return fromApiResponse( response );
 	}
 
-	async update( id: number, page: Page ): Promise< Page > {
+	async update( id: number, page: Subject ): Promise< Subject > {
 		const response = ( await this.client.post(
 			`/pages/${ id }`,
 			toApiRequest( page )
@@ -25,12 +24,12 @@ export class PagesApi {
 		return fromApiResponse( response );
 	}
 
-	async findById( id: string ): Promise< Page | null > {
+	async findById( id: string ): Promise< Subject | null > {
 		const page = ( await this.client.get( '/pages/' + id ) ) as ApiPage;
 		return page ? fromApiResponse( page ) : null;
 	}
 
-	async findBySourceUrl( sourceUrl: string ): Promise< Page | null > {
+	async findBySourceUrl( sourceUrl: string ): Promise< Subject | null > {
 		const page = ( await this.client.get(
 			'/pages?sourceurl=' + sourceUrl
 		) ) as ApiPage;
@@ -38,7 +37,7 @@ export class PagesApi {
 	}
 }
 
-function fromApiResponse( response: ApiPage ): Page {
+function fromApiResponse( response: ApiPage ): Subject {
 	const date = newDateField( response.rawDate, response.parsedDate );
 	const title = newTextField( response.rawTitle, response.parsedTitle ?? '' );
 	const content = newHtmlField(
@@ -60,7 +59,7 @@ function fromApiResponse( response: ApiPage ): Page {
 	};
 }
 
-function toApiRequest( page: Page ): ApiPage {
+function toApiRequest( page: Subject ): ApiPage {
 	return {
 		id: page.id,
 		// read-only from api perspective, so including it has no effect

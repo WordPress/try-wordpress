@@ -1,4 +1,4 @@
-import { SubjectType } from '@/model/subject/Subject';
+import { SubjectType } from '@/model/Subject';
 import { FieldType } from '@/model/field/Field';
 import { getSchema } from '@/schemas/schemas';
 

@@ -1,6 +1,6 @@
 import { ApiClient } from '@/api/ApiClient';
 import { Blueprint } from '@/model/Blueprint';
-import { SubjectType } from '@/model/subject/Subject';
+import { SubjectType } from '@/model/Subject';
 
 export class BlueprintsApi {
 	// eslint-disable-next-line no-useless-constructor

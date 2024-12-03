@@ -1,7 +1,7 @@
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate } from 'react-router-dom';
 import { Screens } from '@/ui/App';
-import { SubjectType } from '@/model/subject/Subject';
+import { SubjectType } from '@/model/Subject';
 import { Button } from '@wordpress/components';
 
 export function ViewSession() {

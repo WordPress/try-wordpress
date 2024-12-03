@@ -1,6 +1,5 @@
-import { BlogPost } from '@/model/subject/BlogPost';
 import { ApiClient } from '@/api/ApiClient';
-import { SubjectType } from '@/model/subject/Subject';
+import { Subject, SubjectType } from '@/model/Subject';
 import { newDateField } from '@/model/field/DateField';
 import { newTextField } from '@/model/field/TextField';
 import { newHtmlField } from '@/model/field/HtmlField';
@@ -10,14 +9,14 @@ export class BlogPostsApi {
 	// eslint-disable-next-line no-useless-constructor
 	constructor( private readonly client: ApiClient ) {}
 
-	async create( blogPost: BlogPost ): Promise< BlogPost > {
+	async create( blogPost: Subject ): Promise< Subject > {
 		const response = ( await this.client.post( '/blog-posts', {
 			sourceUrl: blogPost.sourceUrl,
 		} ) ) as ApiPost;
 		return fromApiResponse( response );
 	}
 
-	async update( id: number, post: BlogPost ): Promise< BlogPost > {
+	async update( id: number, post: Subject ): Promise< Subject > {
 		const response = ( await this.client.post(
 			`/blog-posts/${ id }`,
 			toApiRequest( post )
@@ -25,14 +24,14 @@ export class BlogPostsApi {
 		return fromApiResponse( response );
 	}
 
-	async findById( id: string ): Promise< BlogPost | null > {
+	async findById( id: string ): Promise< Subject | null > {
 		const post = ( await this.client.get(
 			'/blog-posts/' + id
 		) ) as ApiPost;
 		return post ? fromApiResponse( post ) : null;
 	}
 
-	async findBySourceUrl( sourceUrl: string ): Promise< BlogPost | null > {
+	async findBySourceUrl( sourceUrl: string ): Promise< Subject | null > {
 		const post = ( await this.client.get(
 			'/blog-posts?sourceurl=' + sourceUrl
 		) ) as ApiPost;
@@ -40,7 +39,7 @@ export class BlogPostsApi {
 	}
 }
 
-function fromApiResponse( response: ApiPost ): BlogPost {
+function fromApiResponse( response: ApiPost ): Subject {
 	const date = newDateField( response.rawDate, response.parsedDate );
 	const title = newTextField( response.rawTitle, response.parsedTitle ?? '' );
 	const content = newHtmlField(
@@ -62,7 +61,7 @@ function fromApiResponse( response: ApiPost ): BlogPost {
 	};
 }
 
-function toApiRequest( post: BlogPost ): ApiPost {
+function toApiRequest( post: Subject ): ApiPost {
 	let request: ApiPost = {
 		id: post.id,
 		// read-only from api perspective, so including it has no effect

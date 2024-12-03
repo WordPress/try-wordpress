@@ -3,7 +3,7 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/components/Toolbar';
-import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
+import { humanReadableSubjectType, SubjectType } from '@/model/Subject';
 import { newBlueprint } from '@/model/Blueprint';
 import {
 	CommandTypes,

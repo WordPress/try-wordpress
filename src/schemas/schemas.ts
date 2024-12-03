@@ -1,6 +1,6 @@
 import BlogPostSchema from './blog-post.json';
 import PageSchema from './page.json';
-import { SubjectType } from '@/model/subject/Subject';
+import { SubjectType } from '@/model/Subject';
 
 export function getSchema( subjectType: SubjectType ) {
 	switch ( subjectType ) {

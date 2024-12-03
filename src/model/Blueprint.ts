@@ -1,4 +1,4 @@
-import { SubjectType } from '@/model/subject/Subject';
+import { SubjectType } from '@/model/Subject';
 
 export interface Blueprint {
 	type: SubjectType;

@@ -24,7 +24,7 @@ import { PlaygroundClient } from '@wp-playground/client';
 import { Breadcrumbs } from '@/ui/components/Breadcrumbs';
 import { NewBlueprint } from '@/ui/blueprints/NewBlueprint';
 import { EditBlueprint } from '@/ui/blueprints/EditBlueprint';
-import { SubjectType } from '@/model/subject/Subject';
+import { SubjectType } from '@/model/Subject';
 import { ImportWithBlueprint } from '@/ui/import/ImportWithBlueprint';
 import { StartPageImport } from '@/ui/import/pages/StartPageImport';
 import { SelectNavigation } from '@/ui/import/pages/SelectNavigation';

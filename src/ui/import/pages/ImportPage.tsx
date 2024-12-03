@@ -3,9 +3,8 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelectedPages } from '@/ui/import/pages/useSelectedPages';
 import { useSubject } from '@/ui/hooks/useSubject';
-import { SubjectType } from '@/model/subject/Subject';
+import { SubjectType } from '@/model/Subject';
 import { Field } from '@/model/field/Field';
-import { Page } from '@/model/subject/Page';
 import { FieldsEditor } from '@/ui/components/FieldsEditor/FieldsEditor';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 import { Toolbar } from '@/ui/import/pages/Toolbar';
@@ -23,7 +22,6 @@ export function ImportPage() {
 	const [ selectedPages ] = useSelectedPages();
 	const [ sourceUrl, setSourceUrl ] = useState< string >();
 	const [ subject, setPage ] = useSubject( SubjectType.Page, sourceUrl );
-	const page: Page | undefined = subject ? ( subject as Page ) : undefined;
 
 	// Find the url of the page to import.
 	useEffect( () => {
@@ -52,12 +50,12 @@ export function ImportPage() {
 
 	// Make playground navigate to the transformed post of the page.
 	useEffect( () => {
-		if ( page && !! playgroundClient ) {
-			void playgroundClient.goTo( page.previewUrl );
+		if ( subject && !! playgroundClient ) {
+			void playgroundClient.goTo( subject.previewUrl );
 		}
-	}, [ page, playgroundClient ] );
+	}, [ subject, playgroundClient ] );
 
-	if ( ! page ) {
+	if ( ! subject ) {
 		return 'Loading...';
 	}
 
@@ -71,7 +69,7 @@ export function ImportPage() {
 	Object.keys( schemaFields ).forEach( ( name ) => {
 		fields.push( {
 			name,
-			field: page.fields[ name ],
+			field: subject.fields[ name ],
 		} );
 		selectors.push( { name, selector: '' } );
 	} );
@@ -99,8 +97,11 @@ export function ImportPage() {
 				fields={ fields }
 				selectors={ selectors }
 				onFieldChanged={ async ( name: string, field: Field ) => {
-					page.fields[ name ] = parseField( field );
-					const p = await apiClient!.pages.update( page!.id, page );
+					subject.fields[ name ] = parseField( field );
+					const p = await apiClient!.pages.update(
+						subject!.id,
+						subject
+					);
 					setPage( p );
 				} }
 			/>

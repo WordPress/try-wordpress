@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBlueprint } from '@/ui/hooks/useBlueprint';
-import { humanReadableSubjectType } from '@/model/subject/Subject';
+import { humanReadableSubjectType } from '@/model/Subject';
 import { Toolbar } from '@/ui/components/Toolbar';
 import { ReactElement, useEffect } from 'react';
 import { Screens } from '@/ui/App';

@@ -3,12 +3,11 @@ import { ReactElement, useEffect } from 'react';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { BlueprintEditor } from '@/ui/blueprints/BlueprintEditor';
 import { Toolbar } from '@/ui/components/Toolbar';
-import { validateFields } from '@/model/subject/Subject';
+import { validateFields } from '@/model/Subject';
 import { Screens } from '@/ui/App';
 import { useBlueprint } from '@/ui/hooks/useBlueprint';
 import { useSubject } from '@/ui/hooks/useSubject';
 import { Field } from '@/model/field/Field';
-import { BlogPost } from '@/model/subject/BlogPost';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 import { Button } from '@wordpress/components';
 import { validateBlueprint } from '@/model/Blueprint';
@@ -59,10 +58,7 @@ export function EditBlueprint() {
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );
 
-		const p = await apiClient!.blogPosts.update(
-			subject.id,
-			subject as BlogPost
-		);
+		const p = await apiClient!.blogPosts.update( subject.id, subject );
 		setSubject( p );
 	}
 
