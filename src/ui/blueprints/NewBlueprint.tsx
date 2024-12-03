@@ -3,7 +3,7 @@ import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/components/Toolbar';
-import { humanReadableSubjectType, SubjectType } from '@/model/Subject';
+import { SubjectType } from '@/model/Subject';
 import { newBlueprint } from '@/model/Blueprint';
 import {
 	CommandTypes,
@@ -11,6 +11,7 @@ import {
 	sendCommandToContent,
 } from '@/bus/Command';
 import { Button } from '@wordpress/components';
+import { getSchema } from '@/schemas/schemas';
 
 export function NewBlueprint() {
 	const params = useParams();
@@ -46,12 +47,8 @@ export function NewBlueprint() {
 		maybeRedirect().catch( console.error );
 	}, [ session.id, apiClient, subjectType, navigate ] );
 
-	const navigateMessage = (
-		<>
-			Navigate to the page of a{ ' ' }
-			{ humanReadableSubjectType.get( subjectType ) }.
-		</>
-	);
+	const schema = getSchema( subjectType );
+	const navigateMessage = <>Navigate to the page of a { schema.title }.</>;
 
 	const element = (
 		<>

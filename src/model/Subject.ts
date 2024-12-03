@@ -5,11 +5,6 @@ export enum SubjectType {
 	Page = 'page',
 }
 
-export const humanReadableSubjectType: Map< SubjectType, string > = new Map( [
-	[ SubjectType.BlogPost, 'Blog Post' ],
-	[ SubjectType.Page, 'Page' ],
-] );
-
 export interface Subject {
 	type: SubjectType;
 	id: number;

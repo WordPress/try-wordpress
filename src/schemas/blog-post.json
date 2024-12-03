@@ -1,5 +1,5 @@
 {
-    "title": "Blog post",
+    "title": "Blog Post",
     "fields": {
         "title": {
             "type": "text"

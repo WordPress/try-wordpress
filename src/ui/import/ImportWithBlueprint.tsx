@@ -1,11 +1,12 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBlueprint } from '@/ui/hooks/useBlueprint';
-import { humanReadableSubjectType } from '@/model/Subject';
+import { SubjectType } from '@/model/Subject';
 import { Toolbar } from '@/ui/components/Toolbar';
 import { ReactElement, useEffect } from 'react';
 import { Screens } from '@/ui/App';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { Button } from '@wordpress/components';
+import { getSchema } from '@/schemas/schemas';
 
 export function ImportWithBlueprint() {
 	const params = useParams();
@@ -34,6 +35,7 @@ export function ImportWithBlueprint() {
 		}
 	}
 
+	const schema = getSchema( SubjectType.Page );
 	return (
 		<>
 			{ ! blueprint ? (
@@ -65,9 +67,8 @@ export function ImportWithBlueprint() {
 							Continue
 						</Button>
 					</Toolbar>
-					We&apos;ll now import{ ' ' }
-					{ humanReadableSubjectType.get( blueprint.type ) }s using
-					the following selectors:
+					We&apos;ll now import { schema.title }s using the following
+					selectors:
 					<br />
 					<br />
 					<ul>{ fields }</ul>
