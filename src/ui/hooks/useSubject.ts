@@ -20,8 +20,10 @@ export function useSubject(
 			let subj: Subject | null;
 			switch ( type ) {
 				case SubjectType.BlogPost:
-					subj =
-						await apiClient!.blogPosts.findBySourceUrl( sourceUrl );
+					subj = await apiClient!.subjects.findBySourceUrl(
+						SubjectType.BlogPost,
+						sourceUrl
+					);
 					break;
 				case SubjectType.Page:
 					subj = await apiClient!.pages.findBySourceUrl( sourceUrl );
@@ -32,8 +34,9 @@ export function useSubject(
 			if ( ! subj ) {
 				switch ( type ) {
 					case SubjectType.BlogPost:
-						subj = await apiClient!.blogPosts.create(
-							newSubject( type, sourceUrl )
+						subj = await apiClient!.subjects.create(
+							type,
+							sourceUrl
 						);
 						break;
 					case SubjectType.Page:

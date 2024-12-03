@@ -58,7 +58,7 @@ export function EditBlueprint() {
 		const bp = await apiClient!.blueprints.update( blueprint );
 		setBlueprint( bp );
 
-		const p = await apiClient!.blogPosts.update( subject.id, subject );
+		const p = await apiClient!.subjects.update( subject );
 		setSubject( p );
 	}
 
