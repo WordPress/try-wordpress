@@ -1,0 +1,11 @@
+{
+    "title": "Page",
+    "fields": {
+        "title": {
+            "type": "text"
+        },
+        "content": {
+            "type": "html"
+        }
+    }
+}
