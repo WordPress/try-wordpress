@@ -3,11 +3,11 @@ import { useSelectedPages } from '@/ui/import/pages/useSelectedPages';
 import { EventTypes } from '@/bus/Event';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 import { Screens } from '@/ui/App';
-import { ContentEventHandler } from '@/ui/blueprints/ContentEventHandler';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Toolbar } from '@/ui/import/pages/Toolbar';
+import { ContentEventHandler } from '@/ui/components/ContentEventHandler';
 
 // Ask the user where the navigation is and store its html in local storage.
 // Once we have the navigation html, proceed to next step.

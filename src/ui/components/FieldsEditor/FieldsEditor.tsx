@@ -2,8 +2,8 @@ import { Field } from '@/model/field/Field';
 import { ReactElement, useEffect, useMemo, useState } from 'react';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 import { SingleFieldEditor } from '@/ui/components/FieldsEditor/SingleFieldEditor';
-import { ContentEventHandler } from '@/ui/blueprints/ContentEventHandler';
 import { EventTypes } from '@/bus/Event';
+import { ContentEventHandler } from '@/ui/components/ContentEventHandler';
 
 // Displays a list of fields that can be "edited" by selecting the content of each field,
 // which is done by clicking on elements in the source site.
