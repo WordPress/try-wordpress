@@ -1,5 +1,5 @@
 import { ApiClient } from '@/api/ApiClient';
-import { Blueprint } from '@/model/blueprint/Blueprint';
+import { Blueprint } from '@/model/Blueprint';
 import { SubjectType } from '@/model/subject/Subject';
 
 export class BlueprintsApi {

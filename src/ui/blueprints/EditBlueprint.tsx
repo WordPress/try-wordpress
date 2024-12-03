@@ -12,7 +12,7 @@ import { BlogPost, validateBlogPost } from '@/model/subject/BlogPost';
 import { Page, validatePage } from '@/model/subject/Page';
 import { CommandTypes, sendCommandToContent } from '@/bus/Command';
 import { Button } from '@wordpress/components';
-import { validateBlueprint } from '@/model/blueprint/Blueprint';
+import { validateBlueprint } from '@/model/Blueprint';
 import { parseField } from '@/parser/field';
 
 export function EditBlueprint() {

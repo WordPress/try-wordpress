@@ -2,7 +2,7 @@ import { Field } from '@/model/field/Field';
 import { FieldsEditor } from '@/ui/components/FieldsEditor/FieldsEditor';
 import { getSchemaFields } from '@/schemas/fields';
 import { Subject } from '@/model/subject/Subject';
-import { Blueprint } from '@/model/blueprint/Blueprint';
+import { Blueprint } from '@/model/Blueprint';
 
 interface Props {
 	blueprint: Blueprint;

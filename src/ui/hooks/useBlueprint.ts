@@ -1,4 +1,4 @@
-import { Blueprint } from '@/model/blueprint/Blueprint';
+import { Blueprint } from '@/model/Blueprint';
 import { useSessionContext } from '@/ui/session/SessionProvider';
 import { useEffect, useState } from 'react';
 

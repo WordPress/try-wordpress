@@ -4,9 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Screens } from '@/ui/App';
 import { Toolbar } from '@/ui/components/Toolbar';
 import { humanReadableSubjectType, SubjectType } from '@/model/subject/Subject';
-import { newBlogPostBlueprint } from '@/model/blueprint/BlogPost';
-import { newPageBlueprint } from '@/model/blueprint/Page';
-import { Blueprint } from '@/model/blueprint/Blueprint';
+import { Blueprint, newBlueprint } from '@/model/Blueprint';
 import {
 	CommandTypes,
 	CurrentPageInfo,
@@ -70,12 +68,18 @@ export function NewBlueprint() {
 						switch ( subjectType ) {
 							case SubjectType.BlogPost:
 								blueprint = await apiClient!.blueprints.create(
-									newBlogPostBlueprint( currentPage.url )
+									newBlueprint(
+										SubjectType.BlogPost,
+										currentPage.url
+									)
 								);
 								break;
 							case SubjectType.Page:
 								blueprint = await apiClient!.blueprints.create(
-									newPageBlueprint( currentPage.url )
+									newBlueprint(
+										SubjectType.Page,
+										currentPage.url
+									)
 								);
 								break;
 							default:

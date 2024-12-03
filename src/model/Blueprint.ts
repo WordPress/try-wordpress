@@ -8,6 +8,19 @@ export interface Blueprint {
 	selectors: Record< string, string >;
 }
 
+export function newBlueprint(
+	type: SubjectType,
+	sourceUrl: string
+): Blueprint {
+	return {
+		id: '',
+		type,
+		sourceUrl,
+		valid: false,
+		selectors: {},
+	};
+}
+
 export function validateBlueprint( blueprint: Blueprint ): boolean {
 	let isValid = true;
 	for ( const selector of Object.values( blueprint.selectors ) ) {
