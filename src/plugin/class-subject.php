@@ -13,7 +13,6 @@ use WP_Post;
 class Subject {
 
 	private int $id;
-	private int $transformed_post_id;
 
 	public string $source_html;
 	public string $type;
@@ -50,15 +49,28 @@ class Subject {
 		$this->title   = get_post_meta( $post->ID, 'raw_title', true );
 		$this->date    = get_post_meta( $post->ID, 'raw_date', true );
 		$this->content = get_post_meta( $post->ID, 'raw_content', true );
-
-		$this->transformed_post_id = absint( get_post_meta( $post->ID, Transformer::META_KEY_LIBERATED_OUTPUT, true ) );
 	}
 
 	public function id(): int {
 		return $this->id;
 	}
 
-	public function transformed_post(): WP_Post {
-		return WP_Post::get_instance( $this->transformed_post_id );
+	public function get_transformed_post( string $unique_plugin_slug ): WP_Post {
+		$meta_key = Transformer::META_KEY_LIBERATED_OUTPUT;
+		if ( ! empty( $unique_plugin_slug ) ) {
+			$meta_key .= '_' . $unique_plugin_slug;
+		}
+		$transformed_post_id = absint( get_post_meta( $this->id, $meta_key, true ) );
+
+		return WP_Post::get_instance( $transformed_post_id );
+	}
+
+	public function store_reference( int $transformed_post_id, string $unique_plugin_slug ): void {
+		// Store a reference to the source
+		update_post_meta( $transformed_post_id, Transformer::META_KEY_LIBERATED_SOURCE, $this->id );
+
+		// Store a reference to your transformation in the source
+		$meta_key = Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug;
+		update_post_meta( $this->id, $meta_key, $transformed_post_id );
 	}
 }

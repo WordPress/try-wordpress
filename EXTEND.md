@@ -57,11 +57,11 @@ add_action( 'data_liberated_product', function( $subject ) {
     $date    = $subject->date;
     $content = $subject->content;
     
-    // access entire html source of page
+    // access the entire HTML source of page
     // $subject->source_html
     
-    // access transformation output
-    // $subject->transformed_post();
+    // access native transformation output
+    // $subject->get_transformed_post();
     
     // Create a product in your custom post type
     $my_product_id = wp_insert_post( array(
@@ -72,13 +72,11 @@ add_action( 'data_liberated_product', function( $subject ) {
         'post_status'  => 'publish',
     ) );
     
-    // Store a reference to the source
-    update_post_meta( $my_product_id, \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_SOURCE, $subject->id() );
+    // Store reference, with a unique slug representing your plugin
+    $subject->store_reference( $my_product_id, 'mycompany_myplugin_unique_slug' );
     
-    // Store a reference to your transformation in the source
-    $unique_plugin_slug = 'mycompany_myplugin_my_product_type'; // make sure this is unique for your plugin
-    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug; // definitely use this prefix
-    update_post_meta( $subject->id(), $meta_key, $my_product_id );
+    // access your plugin's transformation output
+    // $subject->get_transformed_post( 'mycompany_myplugin_unique_slug' );
 } );
 ```
 
@@ -100,10 +98,9 @@ add_filter( 'data_liberation_preview_transformed_post_id', function( $default_po
     }
     
     // Find your transformed product
-    $unique_plugin_slug = 'mycompany_myplugin_my_product_type'; // make sure this is unique for your plugin
-    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug; // definitely use this prefix
-    $product_id = get_post_meta( $subject->id(), $meta_key, true );
-    return $product_id ? $product_id : $default_post_id;
+    $post = $subject->get_transformed_post( 'mycompany_myplugin_unique_slug' );
+    
+    return $post ? $post->ID : $default_post_id;
 }, 10, 2 );
 ```
 
@@ -118,11 +115,11 @@ foreach( \DotOrg\TryWordPress\Subject_Repo::loop( 'product' ) as $subject ) {
     $date    = $subject->date;
     $content = $subject->content;
     
-    // access entire html source of page
+    // access the entire HTML source of page
     // $subject->source_html
     
-    // access transformation output
-    // $subject->transformed_post();
+    // access native transformation output
+    // $subject->get_transformed_post();
     
     // Create a product in your custom post type
     $my_product_id = wp_insert_post( array(
@@ -133,13 +130,11 @@ foreach( \DotOrg\TryWordPress\Subject_Repo::loop( 'product' ) as $subject ) {
         'post_status'  => 'publish',
     ) );
     
-    // Store a reference to the source
-    update_post_meta( $my_product_id, \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_SOURCE, $subject->id() );
+    // Store reference, with a unique slug representing your plugin
+    $subject->store_reference( $my_product_id, 'mycompany_myplugin_unique_slug' );
     
-    // Store a reference to your transformation in the source
-    $unique_plugin_slug = 'mycompany_myplugin_my_product_type'; // make sure this is unique for your plugin
-    $meta_key = \DotOrg\TryWordPress\Transformer::META_KEY_LIBERATED_OUTPUT . '_' . $unique_plugin_slug; // definitely use this prefix
-    update_post_meta( $subject->id(), $meta_key, $my_product_id );
+    // access your plugin's transformation output
+    // $subject->get_transformed_post( 'mycompany_myplugin_unique_slug' );
 }
 ```
 
