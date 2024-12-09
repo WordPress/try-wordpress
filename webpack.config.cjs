@@ -134,6 +134,7 @@ function extensionModules( mode, target ) {
 				filename: path.join( 'app.js' ),
 			},
 			plugins: [
+				new EmitSubjectsSchemaPlugin(),
 				new CopyPlugin( {
 					patterns: [
 						{
@@ -154,11 +155,20 @@ function extensionModules( mode, target ) {
 						},
 					],
 				} ),
-				new EmitSubjectsSchemaPlugin(),
 				// Create plugin.zip.
 				new FileManagerPlugin( {
 					events: {
 						onEnd: {
+							copy: [
+								{
+									source: WP_PLUGIN_SCHEMA_PATH,
+									destination: path.join(
+										targetPath,
+										'plugin',
+										SCHEMA_OUTPUT_NAME
+									),
+								},
+							],
 							archive: [
 								{
 									source: path.join( targetPath, 'plugin' ),
