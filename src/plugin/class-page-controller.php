@@ -6,7 +6,7 @@ use WP_Error;
 use WP_REST_Response;
 use WP_REST_Server;
 
-class Page_Controller extends Liberate_Controller {
+class Page_Controller extends Subjects_Controller {
 
 	public function __construct( $storage_post_type ) {
 		parent::__construct( $storage_post_type );

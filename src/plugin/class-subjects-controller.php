@@ -8,7 +8,7 @@ use WP_Error;
 use WP_REST_Controller;
 use WP_REST_Response;
 
-class Liberate_Controller extends WP_REST_Controller {
+class Subjects_Controller extends WP_REST_Controller {
 
 	protected string $storage_post_type;
 

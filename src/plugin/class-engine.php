@@ -9,7 +9,7 @@ class Engine {
 	public function __construct() {
 		require 'class-post-type-ui.php';
 		require 'class-transformer.php';
-		require 'class-liberate-controller.php';
+		require 'class-subjects-controller.php';
 		require 'class-blogpost-controller.php';
 		require 'class-page-controller.php';
 		require 'class-storage.php';
