@@ -1,13 +1,13 @@
 <?php
 
-use DotOrg\TryWordPress\Page_Controller;
+use DotOrg\TryWordPress\Subjects_Controller;
 use PHPUnit\Framework\TestCase;
 
 class Page_Controller_Test extends TestCase {
-	private Page_Controller $page_controller;
+	private Subjects_Controller $page_controller;
 
-	private string $namespace           = 'try-wp/v1';
-	private string $subject_type_plural = 'pages';
+	private string $namespace    = 'try-wp/v1';
+	private string $subject_type = 'page';
 	private string $endpoint;
 	private string $storage_post_type = 'lib_3';
 	private string $source_html;
@@ -23,10 +23,10 @@ class Page_Controller_Test extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->endpoint    = '/' . $this->namespace . '/' . $this->subject_type_plural;
+		$this->endpoint    = '/' . $this->namespace . '/subjects/' . $this->subject_type;
 		$this->source_html = '<html><head><title></title></head><body>' . $this->raw_content . '</body></html>';
 
-		$this->page_controller = new Page_Controller( $this->storage_post_type );
+		$this->page_controller = new Subjects_Controller( $this->storage_post_type );
 	}
 
 	public function testRegisterRoutes(): void {
@@ -44,7 +44,7 @@ class Page_Controller_Test extends TestCase {
 		$request  = new WP_REST_Request( 'GET', $api_endpoint );
 		$response = rest_do_request( $request );
 
-		$schema = $this->page_controller->get_item_schema();
+		$schema = $this->page_controller->get_public_subject_schema( 'page' );
 		$this->assertEquals(
 			$this->remove_arg_options_from_schema( $schema ),
 			$response->get_data()

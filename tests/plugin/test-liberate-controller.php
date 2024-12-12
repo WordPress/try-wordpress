@@ -8,7 +8,7 @@ class Liberate_Controller_Test extends TestCase {
 	private Subjects_Controller $liberate_controller;
 
 	private string $storage_post_type = 'lib_2';
-	private string $endpoint          = '/try-wp/v1/blog-posts';
+	private string $endpoint          = '/try-wp/v1/subjects/blog-post';
 	private string $source_html;
 
 	private string $raw_title       = '<h1>This is the test title</h1>';

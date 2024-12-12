@@ -1,13 +1,13 @@
 <?php
 
-use DotOrg\TryWordPress\Blogpost_Controller;
+use DotOrg\TryWordPress\Subjects_Controller;
 use PHPUnit\Framework\TestCase;
 
 class Blogpost_Controller_Test extends TestCase {
-	private Blogpost_Controller $blogpost_controller;
+	private Subjects_Controller $blogpost_controller;
 
-	private string $namespace           = 'try-wp/v1';
-	private string $subject_type_plural = 'blog-posts';
+	private string $namespace    = 'try-wp/v1';
+	private string $subject_type = 'blog-post';
 	private string $endpoint;
 	private string $storage_post_type = 'lib_1';
 	private string $source_html;
@@ -23,10 +23,10 @@ class Blogpost_Controller_Test extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->endpoint    = '/' . $this->namespace . '/' . $this->subject_type_plural;
+		$this->endpoint    = '/' . $this->namespace . '/subjects/' . $this->subject_type;
 		$this->source_html = '<html><head><title></title></head><body>' . $this->raw_content . '</body></html>';
 
-		$this->blogpost_controller = new Blogpost_Controller( $this->storage_post_type );
+		$this->blogpost_controller = new Subjects_Controller( $this->storage_post_type );
 	}
 
 	public function testRegisterRoutes(): void {
@@ -44,7 +44,7 @@ class Blogpost_Controller_Test extends TestCase {
 		$request  = new WP_REST_Request( 'GET', $api_endpoint );
 		$response = rest_do_request( $request );
 
-		$schema = $this->blogpost_controller->get_item_schema();
+		$schema = $this->blogpost_controller->get_public_subject_schema( 'blog-post' );
 		$this->assertEquals(
 			$this->remove_arg_options_from_schema( $schema ),
 			$response->get_data()
