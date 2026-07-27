@@ -111,7 +111,7 @@ Use Node 24 because the current locked dependencies already install, lint, type-
 
 Baseline capture date: 2026-07-27.
 
-The integration branch `agent/maintenance-security-and-hygiene` is represented by commit `500526abbb0d429787402ae6611058f31a9cc7f6` and draft pull request [#199](https://github.com/WordPress/try-wordpress/pull/199), which is open against `trunk`. This execution-baseline child remains documentation-only.
+The integration branch `agent/maintenance-security-and-hygiene` is represented by commit `500526abbb0d429787402ae6611058f31a9cc7f6` and draft pull request [#199](https://github.com/WordPress/try-wordpress/pull/199), which is open against `trunk`. Documentation-only execution-baseline child pull request [#200](https://github.com/WordPress/try-wordpress/pull/200) targets the integration branch.
 
 ### Baseline Dependabot Summary
 
