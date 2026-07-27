@@ -68,7 +68,9 @@ class Liberate_Controller_Test extends TestCase {
 
 	protected function tearDown(): void {
 		wp_delete_post( $this->inserted_post_id, true );
-		wp_delete_post( $this->transformed_post_id, true );
+		if ( 0 < $this->transformed_post_id ) {
+			wp_delete_post( $this->transformed_post_id, true );
+		}
 	}
 
 	public function testGetStoragePostType() {
