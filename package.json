@@ -49,9 +49,9 @@
 		"ts-loader": "^9.5.1",
 		"tsconfig-paths-webpack-plugin": "^4.1.0",
 		"typescript": "^5.6.3",
-		"web-ext": "^8.3.0",
-		"wp-types": "^4.67.0",
-		"webpack": "^5.96.1"
+		"web-ext": "^10.4.0",
+		"webpack": "^5.96.1",
+		"wp-types": "^4.67.0"
 	},
 	"dependencies": {
 		"@wordpress/block-library": "^9.12.0",
