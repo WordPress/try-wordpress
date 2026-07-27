@@ -5,7 +5,7 @@ export function htmlToBlocks( html: string ): string {
 		mode: 'BLOCKS',
 		HTML: html,
 	} );
-	return serialize( blocks );
+	return typeof blocks === 'string' ? blocks : serialize( blocks );
 }
 
 export function findDeepestChild( html: string ): Element | undefined {

@@ -52,6 +52,11 @@ function extensionModules( mode, target ) {
 
 	const devtool = mode === 'production' ? false : 'cheap-module-source-map';
 	const resolve = {
+		alias: {
+			'fast-deep-equal/es6$': require.resolve(
+				'fast-deep-equal/es6'
+			),
+		},
 		extensions: [ '.ts', '.tsx', '.js' ],
 		plugins: [ new TsconfigPathsPlugin() ],
 	};
@@ -148,6 +153,18 @@ function extensionModules( mode, target ) {
 			output: {
 				path: targetPath,
 				filename: path.join( 'app.js' ),
+			},
+			optimization: {
+				splitChunks: {
+					cacheGroups: {
+						vips: {
+							test: /[\\/]node_modules[\\/]@wordpress[\\/]vips[\\/]/,
+							chunks: 'all',
+							name: 'main',
+							enforce: true,
+						},
+					},
+				},
 			},
 			plugins: [
 				new EmitSubjectsSchemaPlugin(),
