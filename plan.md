@@ -104,3 +104,207 @@ Use Node 24 because the current locked dependencies already install, lint, type-
 - License files and license metadata are explicitly out of scope.
 - The maintenance PR remains draft and unmerged until the user completes manual testing.
 - All Markdown prose and list items remain unwrapped as required by the repository instructions.
+
+## Execution Appendix
+
+### Integration Status
+
+Baseline capture date: 2026-07-27.
+
+The integration branch `agent/maintenance-security-and-hygiene` is represented by commit `500526abbb0d429787402ae6611058f31a9cc7f6` and draft pull request [#199](https://github.com/WordPress/try-wordpress/pull/199), which is open against `trunk`. Documentation-only execution-baseline child pull request [#200](https://github.com/WordPress/try-wordpress/pull/200) targets the integration branch.
+
+### Baseline Dependabot Summary
+
+The read-only GitHub Dependabot API returned exactly 124 open alerts. The severity and ecosystem totals below independently sum to 124.
+
+| Dimension | Count |
+| --- | ---: |
+| Critical | 5 |
+| High | 57 |
+| Medium | 48 |
+| Low | 14 |
+| npm | 123 |
+| Composer | 1 |
+| **Severity total** | **124** |
+| **Ecosystem total** | **124** |
+
+Causal-family labels represent the locked direct dependencies that can introduce the vulnerable package in the alert scope. A family label may cover multiple direct parents when the same locked vulnerable instance is shared; the representative path shows one actual shortest path, while the locked vulnerable version column records every affected installed version for that alert range.
+
+| Label | Locked causal direct parent or tightly coupled family |
+| --- | --- |
+| AJV | `ajv@8.17.1` |
+| BABEL | `@babel/preset-env@7.26.0` |
+| BLK | Coupled WordPress Blocks roots `@wordpress/block-library@9.12.0` and `@wordpress/blocks@13.10.0` |
+| CONCURRENTLY | `concurrently@9.1.0` |
+| ESLINT-RESOLVER | `eslint-import-resolver-typescript@3.6.3` |
+| PGL | `@wp-playground/client@1.0.13` |
+| PHPUNIT | `phpunit/phpunit@9.6.21` from Composer `require-dev` |
+| ROUTER | `react-router-dom@6.28.0` |
+| WEBEXT | `web-ext@8.3.0` |
+| WEBPACK | The locked webpack family roots `webpack@5.96.1`, `copy-webpack-plugin@12.0.2`, `css-loader@7.1.2`, `filemanager-webpack-plugin@8.0.0`, `mini-css-extract-plugin@2.9.2`, `style-loader@4.0.0`, and `ts-loader@9.5.1` |
+| WPS | `@wordpress/scripts@30.4.0` |
+
+### Baseline Dependabot Alerts
+
+Rows are ordered by remediation priority: severity first, runtime before development within a severity, then alert number. Duplicate advisory/package rows are retained because GitHub assigned distinct alert numbers.
+
+| Alert | GHSA | Severity | Ecosystem | Affected package | Relationship / scope | Locked vulnerable version(s) | First patched | Causal family set | Representative locked path | Child PR | Status |
+| ---: | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 44 | GHSA-95m3-7q98-8xr5 | critical | npm | `sha.js` | transitive / runtime | `2.4.11` | `2.4.12` | PGL | `sha.js@2.4.11 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 42 | GHSA-fjxv-7rqg-78g4 | critical | npm | `form-data` | transitive / development | `4.0.0` | `4.0.4` | WPS | `form-data@4.0.0 ← @wordpress/e2e-test-utils-playwright@1.7.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 77 | GHSA-5rq4-664w-9x2c | critical | npm | `basic-ftp` | transitive / development | `5.0.5` | `5.2.0` | WPS | `basic-ftp@5.0.5 ← get-uri@6.0.3 ← pac-proxy-agent@7.0.2 ← proxy-agent@6.4.0 ← @puppeteer/browsers@2.4.0 ← puppeteer-core@23.3.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 146 | GHSA-w7jw-789q-3m8p | critical | npm | `shell-quote` | transitive / development | `1.7.3, 1.8.1` | `1.8.4` | CONCURRENTLY + WEBEXT + WPS | `shell-quote@1.8.1 ← concurrently@9.1.0` | unassigned | baseline open |
+| 164 | GHSA-xv26-6w52-cph6 | critical | npm | `websocket-driver` | transitive / development | `0.7.4` | `0.7.5` | WPS | `websocket-driver@0.7.4 ← sockjs@0.3.24 ← webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 3 | GHSA-pwfr-8pq7-x9qv | high | npm | `octokit` | transitive / runtime | `3.1.1` | `3.1.2` | PGL | `octokit@3.1.1 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 11 | GHSA-9wv6-86v2-598j | high | npm | `path-to-regexp` | transitive / runtime | `0.1.7` | `0.1.10` | PGL | `path-to-regexp@0.1.7 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 13 | GHSA-qwcr-r2fm-qrc7 | high | npm | `body-parser` | transitive / runtime | `1.20.2` | `1.20.3` | PGL | `body-parser@1.20.2 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 23 | GHSA-rhx6-c78j-4q9w | high | npm | `path-to-regexp` | transitive / runtime | `0.1.7` | `0.1.12` | PGL | `path-to-regexp@0.1.7 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 56 | GHSA-869p-cjfg-cm3x | high | npm | `jws` | transitive / runtime | `3.2.2` | `3.2.3` | PGL | `jws@3.2.2 ← jsonwebtoken@9.0.2 ← universal-github-app-jwt@1.2.0 ← @octokit/auth-app@6.1.3 ← @octokit/app@14.1.0 ← octokit@3.1.1 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 58 | GHSA-2w69-qvjg-hvjx | high | npm | `@remix-run/router` | transitive / runtime | `1.21.0` | `1.23.2` | ROUTER | `@remix-run/router@1.21.0 ← react-router-dom@6.28.0` | unassigned | baseline open |
+| 99 | GHSA-37ch-88jc-xwx2 | high | npm | `path-to-regexp` | transitive / runtime | `0.1.7` | `0.1.13` | PGL | `path-to-regexp@0.1.7 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 153 | GHSA-96hv-2xvq-fx4p | high | npm | `ws` | transitive / runtime | `8.18.0` | `8.21.0` | BLK + PGL | `ws@8.18.0 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 192 | GHSA-6g55-p6wh-862q | high | npm | `postcss` | transitive / runtime | `8.4.49` | `8.5.12` | BLK | `postcss@8.4.49 ← @wordpress/block-editor@14.2.0 ← @wordpress/block-library@9.12.0` | unassigned | baseline open |
+| 195 | GHSA-r28c-9q8g-f849 | high | npm | `postcss` | transitive / runtime | `8.4.49` | `8.5.18` | BLK | `postcss@8.4.49 ← @wordpress/block-editor@14.2.0 ← @wordpress/block-library@9.12.0` | unassigned | baseline open |
+| 6 | GHSA-3h5v-q93c-6h6q | high | npm | `ws` | transitive / development | `8.13.0` | `8.17.1` | WPS | `ws@8.13.0 ← puppeteer-core@20.9.0 ← lighthouse@10.4.0 ← @wordpress/e2e-test-utils-playwright@1.7.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 33 | GHSA-pq67-2wwv-3xjx | high | npm | `tar-fs` | transitive / development | `3.0.4, 3.0.6` | `3.0.7` | WPS | `tar-fs@3.0.6 ← @puppeteer/browsers@2.4.0 ← puppeteer-core@23.3.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 37 | GHSA-8cj5-5rvv-wf4v | high | npm | `tar-fs` | transitive / development | `3.0.4, 3.0.6` | `3.0.9` | WPS | `tar-fs@3.0.6 ← @puppeteer/browsers@2.4.0 ← puppeteer-core@23.3.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 46 | GHSA-vj76-c3g6-qr5v | high | npm | `tar-fs` | transitive / development | `3.0.4, 3.0.6` | `3.1.1` | WPS | `tar-fs@3.0.6 ← @puppeteer/browsers@2.4.0 ← puppeteer-core@23.3.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 49 | GHSA-7mvr-c777-76hp | high | npm | `playwright` | transitive / development | `1.48.2` | `1.55.1` | WPS | `playwright@1.48.2 ← @playwright/test@1.48.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 54 | GHSA-5gfm-wpxj-wjgq | high | npm | `node-forge` | transitive / development | `1.3.1` | `1.3.2` | WEBEXT + WPS | `node-forge@1.3.1 ← @devicefarmer/adbkit@3.2.6 ← web-ext@8.3.0` | unassigned | baseline open |
+| 63 | GHSA-vvj3-c3rp-c85p | high | composer | `phpunit/phpunit` | unknown / development | `9.6.21` | `9.6.33` | PHPUNIT | `phpunit/phpunit@9.6.21 (direct require-dev in composer.json)` | unassigned | baseline open |
+| 70 | GHSA-43fc-jf86-j433 | high | npm | `axios` | transitive / development | `1.7.7` | `1.13.5` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 79 | GHSA-7r86-cg39-jmmj | high | npm | `minimatch` | transitive / development | `9.0.3` | `9.0.7` | WPS | `minimatch@9.0.3 ← @typescript-eslint/typescript-estree@6.21.0 ← @typescript-eslint/parser@6.21.0 ← @wordpress/eslint-plugin@21.0.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 80 | GHSA-7r86-cg39-jmmj | high | npm | `minimatch` | transitive / development | `5.1.6` | `5.1.8` | WEBPACK | `minimatch@5.1.6 ← readdir-glob@1.1.3 ← archiver@5.3.2 ← filemanager-webpack-plugin@8.0.0` | unassigned | baseline open |
+| 83 | GHSA-7r86-cg39-jmmj | high | npm | `minimatch` | transitive / development | `3.0.8, 3.1.2` | `3.1.3` | ESLINT-RESOLVER + WEBEXT + WEBPACK + WPS | `minimatch@3.1.2 ← multimatch@6.0.0 ← web-ext@8.3.0` | unassigned | baseline open |
+| 84 | GHSA-5c6j-r48x-rmvq | high | npm | `serialize-javascript` | transitive / development | `6.0.2` | `7.0.3` | WEBPACK + WPS | `serialize-javascript@6.0.2 ← copy-webpack-plugin@12.0.2` | unassigned | baseline open |
+| 85 | GHSA-xpqw-6gx7-v673 | high | npm | `svgo` | transitive / development | `3.3.2` | `3.3.3` | WPS | `svgo@3.3.2 ← @svgr/plugin-svgo@8.1.0 ← @svgr/webpack@8.1.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 88 | GHSA-wf6x-7x77-mvgw | high | npm | `immutable` | transitive / development | `4.3.7` | `4.3.8` | WPS | `immutable@4.3.7 ← sass@1.78.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 91 | GHSA-rf6f-7fwh-wjgh | high | npm | `flatted` | transitive / development | `3.3.1` | `3.4.2` | ESLINT-RESOLVER + WEBEXT + WPS | `flatted@3.3.1 ← flat-cache@3.2.0 ← file-entry-cache@6.0.1 ← eslint@8.57.1 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 93 | GHSA-ppp5-5v6c-4jwp | high | npm | `node-forge` | transitive / development | `1.3.1` | `1.4.0` | WEBEXT + WPS | `node-forge@1.3.1 ← @devicefarmer/adbkit@3.2.6 ← web-ext@8.3.0` | unassigned | baseline open |
+| 94 | GHSA-q67f-28xg-22rw | high | npm | `node-forge` | transitive / development | `1.3.1` | `1.4.0` | WEBEXT + WPS | `node-forge@1.3.1 ← @devicefarmer/adbkit@3.2.6 ← web-ext@8.3.0` | unassigned | baseline open |
+| 96 | GHSA-2328-f5f3-gj25 | high | npm | `node-forge` | transitive / development | `1.3.1` | `1.4.0` | WEBEXT + WPS | `node-forge@1.3.1 ← @devicefarmer/adbkit@3.2.6 ← web-ext@8.3.0` | unassigned | baseline open |
+| 103 | GHSA-r5fr-rjxr-66jc | high | npm | `lodash` | transitive / development | `4.17.21` | `4.18.0` | CONCURRENTLY + WPS | `lodash@4.17.21 ← concurrently@9.1.0` | unassigned | baseline open |
+| 104 | GHSA-6v7q-wjvx-w8wg | high | npm | `basic-ftp` | transitive / development | `5.0.5` | `5.2.2` | WPS | `basic-ftp@5.0.5 ← get-uri@6.0.3 ← pac-proxy-agent@7.0.2 ← proxy-agent@6.4.0 ← @puppeteer/browsers@2.4.0 ← puppeteer-core@23.3.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 117 | GHSA-6chq-wfr3-2hj9 | high | npm | `axios` | transitive / development | `1.7.7` | `1.15.1` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 120 | GHSA-pf86-5x62-jrwf | high | npm | `axios` | transitive / development | `1.7.7` | `1.15.1` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 125 | GHSA-q3j6-qgpj-74h6 | high | npm | `fast-uri` | transitive / development | `3.0.3` | `3.1.1` | AJV + WEBEXT + WEBPACK + WPS | `fast-uri@3.0.3 ← ajv@8.17.1` | unassigned | baseline open |
+| 126 | GHSA-v39h-62p7-jpjc | high | npm | `fast-uri` | transitive / development | `3.0.3` | `3.1.2` | AJV + WEBEXT + WEBPACK + WPS | `fast-uri@3.0.3 ← ajv@8.17.1` | unassigned | baseline open |
+| 127 | GHSA-fv7c-fp4j-7gwp | high | npm | `@babel/plugin-transform-modules-systemjs` | transitive / development | `7.25.9` | `7.29.4` | BABEL + WPS | `@babel/plugin-transform-modules-systemjs@7.25.9 ← @babel/preset-env@7.26.0` | unassigned | baseline open |
+| 130 | GHSA-q8qp-cvcw-x6jj | high | npm | `axios` | transitive / development | `1.7.7` | `1.15.2` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 136 | GHSA-ph9p-34f9-6g65 | high | npm | `tmp` | transitive / development | `0.2.3` | `0.2.6` | WEBEXT | `tmp@0.2.3 ← web-ext@8.3.0` | unassigned | baseline open |
+| 137 | GHSA-pmwg-cvhr-8vh7 | high | npm | `axios` | transitive / development | `1.7.7` | `1.15.1` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 141 | GHSA-j5f8-grm9-p9fc | high | npm | `axios` | transitive / development | `1.7.7` | `1.16.0` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 143 | GHSA-p92q-9vqr-4j8v | high | npm | `axios` | transitive / development | `1.7.7` | `1.16.0` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 144 | GHSA-3g43-6gmg-66jw | high | npm | `axios` | transitive / development | `1.7.7` | `1.15.2` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 148 | GHSA-35jp-ww65-95wh | high | npm | `axios` | transitive / development | `1.7.7` | `1.16.0` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 155 | GHSA-hmw2-7cc7-3qxx | high | npm | `form-data` | transitive / development | `4.0.0` | `4.0.6` | WPS | `form-data@4.0.0 ← @wordpress/e2e-test-utils-playwright@1.7.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 158 | GHSA-96hv-2xvq-fx4p | high | npm | `ws` | transitive / development | `7.5.10` | `7.5.11` | WPS | `ws@7.5.10 ← webpack-bundle-analyzer@4.10.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 166 | GHSA-xcpc-8h2w-3j85 | high | npm | `adm-zip` | transitive / development | `0.5.16` | `0.6.0` | WEBEXT + WPS | `adm-zip@0.5.16 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 167 | GHSA-395f-4hp3-45gv | high | npm | `shell-quote` | transitive / development | `1.7.3, 1.8.1` | `1.9.0` | CONCURRENTLY + WEBEXT + WPS | `shell-quote@1.8.1 ← concurrently@9.1.0` | unassigned | baseline open |
+| 172 | GHSA-v245-v573-v5vm | high | npm | `linkify-it` | transitive / development | `3.0.3` | `5.0.2` | WPS | `linkify-it@3.0.3 ← markdown-it@12.3.2 ← markdownlint@0.25.1 ← markdownlint-cli@0.31.1 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 173 | GHSA-2p49-hgcm-8545 | high | npm | `svgo` | transitive / development | `3.3.2` | `3.3.4` | WPS | `svgo@3.3.2 ← @svgr/plugin-svgo@8.1.0 ← @svgr/webpack@8.1.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 174 | GHSA-4c8g-83qw-93j6 | high | npm | `fast-uri` | transitive / development | `3.0.3` | `3.1.3` | AJV + WEBEXT + WEBPACK + WPS | `fast-uri@3.0.3 ← ajv@8.17.1` | unassigned | baseline open |
+| 177 | GHSA-52cp-r559-cp3m | high | npm | `js-yaml` | transitive / development | `3.14.1` | `3.15.0` | WPS | `js-yaml@3.14.1 ← @istanbuljs/load-nyc-config@1.1.0 ← babel-plugin-istanbul@6.1.1 ← babel-jest@29.7.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 178 | GHSA-v2hh-gcrm-f6hx | high | npm | `fast-uri` | transitive / development | `3.0.3` | `3.1.4` | AJV + WEBEXT + WEBPACK + WPS | `fast-uri@3.0.3 ← ajv@8.17.1` | unassigned | baseline open |
+| 181 | GHSA-52cp-r559-cp3m | high | npm | `js-yaml` | transitive / development | `4.1.0` | `4.3.0` | ESLINT-RESOLVER + WEBEXT + WPS | `js-yaml@4.1.0 ← eslint@8.57.1 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 182 | GHSA-v56q-mh7h-f735 | high | npm | `immutable` | transitive / development | `4.3.7` | `4.3.9` | WPS | `immutable@4.3.7 ← sass@1.78.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 183 | GHSA-xvcm-6775-5m9r | high | npm | `immutable` | transitive / development | `4.3.7` | `4.3.9` | WPS | `immutable@4.3.7 ← sass@1.78.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 184 | GHSA-3jxr-9vmj-r5cp | high | npm | `brace-expansion` | transitive / development | `1.1.11` | `1.1.16` | ESLINT-RESOLVER + WEBEXT + WPS | `brace-expansion@1.1.11 ← minimatch@3.1.2 ← multimatch@6.0.0 ← web-ext@8.3.0` | unassigned | baseline open |
+| 187 | GHSA-jr5f-v2jv-69x6 | high | npm | `axios` | transitive / development | `1.7.7` | `1.8.2` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 191 | GHSA-3jxr-9vmj-r5cp | high | npm | `brace-expansion` | transitive / development | `2.0.1` | `2.1.2` | WEBPACK + WPS | `brace-expansion@2.0.1 ← minimatch@5.1.6 ← readdir-glob@1.1.3 ← archiver@5.3.2 ← filemanager-webpack-plugin@8.0.0` | unassigned | baseline open |
+| 24 | GHSA-mwcw-c2x4-8c55 | medium | npm | `nanoid` | transitive / runtime | `3.3.7` | `3.3.8` | BLK | `nanoid@3.3.7 ← postcss@8.4.49 ← @wordpress/block-editor@14.2.0 ← @wordpress/block-library@9.12.0` | unassigned | baseline open |
+| 29 | GHSA-x4c5-c7rf-jjgv | medium | npm | `@octokit/endpoint` | transitive / runtime | `9.0.5` | `9.0.6` | PGL | `@octokit/endpoint@9.0.5 ← @octokit/request@8.4.0 ← @octokit/core@5.2.0 ← octokit@3.1.1 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 30 | GHSA-xx4v-prfh-6cgc | medium | npm | `@octokit/request-error` | transitive / runtime | `5.1.0` | `5.1.1` | PGL | `@octokit/request-error@5.1.0 ← octokit@3.1.1 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 31 | GHSA-h5c3-5r3r-rr8q | medium | npm | `@octokit/plugin-paginate-rest` | transitive / runtime | `9.2.1` | `9.2.2` | PGL | `@octokit/plugin-paginate-rest@9.2.1 ← octokit@3.1.1 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 32 | GHSA-rmvr-2pp2-xj38 | medium | npm | `@octokit/request` | transitive / runtime | `8.4.0` | `8.4.1` | PGL | `@octokit/request@8.4.0 ← @octokit/core@5.2.0 ← octokit@3.1.1 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 57 | GHSA-6rw7-vpxm-498p | medium | npm | `qs` | transitive / runtime | `6.11.0` | `6.14.1` | PGL | `qs@6.11.0 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 59 | GHSA-9jcx-v3wj-wh4m | medium | npm | `react-router` | transitive / runtime | `6.28.0` | `6.30.2` | ROUTER | `react-router@6.28.0 ← react-router-dom@6.28.0` | unassigned | baseline open |
+| 72 | GHSA-2g4f-4pwh-qvx6 | medium | npm | `ajv` | transitive / runtime | `8.12.0` | `8.18.0` | PGL | `ajv@8.12.0 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 92 | GHSA-48c2-rrv3-qjmp | medium | npm | `yaml` | transitive / runtime | `1.10.2` | `1.10.3` | BLK | `yaml@1.10.2 ← cosmiconfig@7.1.0 ← babel-plugin-macros@3.1.0 ← @emotion/babel-plugin@11.12.0 ← @emotion/react@11.13.3 ← @wordpress/block-editor@14.2.0 ← @wordpress/block-library@9.12.0` | unassigned | baseline open |
+| 113 | GHSA-rmmh-p597-ppvv | medium | npm | `showdown` | transitive / runtime | `1.9.1` | `none` | BLK | `showdown@1.9.1 ← @wordpress/blocks@13.10.0` | unassigned | baseline open |
+| 132 | GHSA-58qx-3vcg-4xpx | medium | npm | `ws` | transitive / runtime | `8.18.0` | `8.20.1` | BLK + PGL | `ws@8.18.0 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 135 | GHSA-w5hq-g745-h8pq | medium | npm | `uuid` | transitive / runtime | `9.0.1` | `11.1.1` | BLK | `uuid@9.0.1 ← @wordpress/blocks@13.10.0` | unassigned | baseline open |
+| 139 | GHSA-2j2x-hqr9-3h42 | medium | npm | `react-router` | transitive / runtime | `6.28.0` | `6.30.4` | ROUTER | `react-router@6.28.0 ← react-router-dom@6.28.0` | unassigned | baseline open |
+| 186 | GHSA-968p-4wvh-cqc8 | medium | npm | `@babel/runtime` | transitive / runtime | `7.25.6, 7.25.7` | `7.26.10` | BLK | `@babel/runtime@7.25.7 ← @wordpress/blocks@13.10.0` | unassigned | baseline open |
+| 190 | GHSA-qx2v-qp2m-jg93 | medium | npm | `postcss` | transitive / runtime | `8.4.49` | `8.5.10` | BLK | `postcss@8.4.49 ← @wordpress/block-editor@14.2.0 ← @wordpress/block-library@9.12.0` | unassigned | baseline open |
+| 193 | GHSA-337j-9hxr-rhxg | medium | npm | `react-router` | transitive / runtime | `6.28.0` | `7.18.0` | ROUTER | `react-router@6.28.0 ← react-router-dom@6.28.0` | unassigned | baseline open |
+| 194 | GHSA-wrjc-x8rr-h8h6 | medium | npm | `react-router` | transitive / runtime | `6.28.0` | `7.18.0` | ROUTER | `react-router@6.28.0 ← react-router-dom@6.28.0` | unassigned | baseline open |
+| 36 | GHSA-4www-5p9h-95mh | medium | npm | `http-proxy-middleware` | transitive / development | `2.0.6` | `2.0.8` | WPS | `http-proxy-middleware@2.0.6 ← webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 38 | GHSA-4v9v-hfq4-rm2v | medium | npm | `webpack-dev-server` | transitive / development | `4.15.2` | `5.2.1` | WPS | `webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 39 | GHSA-9jgg-88mc-972h | medium | npm | `webpack-dev-server` | transitive / development | `4.15.2` | `5.2.1` | WPS | `webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 51 | GHSA-mh29-5h37-fv8m | medium | npm | `js-yaml` | transitive / development | `3.14.1` | `3.14.2` | WPS | `js-yaml@3.14.1 ← @istanbuljs/load-nyc-config@1.1.0 ← babel-plugin-istanbul@6.1.1 ← babel-jest@29.7.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 52 | GHSA-mh29-5h37-fv8m | medium | npm | `js-yaml` | transitive / development | `4.1.0` | `4.1.1` | ESLINT-RESOLVER + WEBEXT + WPS | `js-yaml@4.1.0 ← eslint@8.57.1 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 53 | GHSA-65ch-62r8-g69g | medium | npm | `node-forge` | transitive / development | `1.3.1` | `1.3.2` | WEBEXT + WPS | `node-forge@1.3.1 ← @devicefarmer/adbkit@3.2.6 ← web-ext@8.3.0` | unassigned | baseline open |
+| 62 | GHSA-xxjr-mmjv-4gpg | medium | npm | `lodash` | transitive / development | `4.17.21` | `4.17.23` | CONCURRENTLY + WPS | `lodash@4.17.21 ← concurrently@9.1.0` | unassigned | baseline open |
+| 101 | GHSA-3v7f-55p6-f55p | medium | npm | `picomatch` | transitive / development | `2.3.1` | `2.3.2` | ESLINT-RESOLVER + WEBPACK + WPS | `picomatch@2.3.1 ← micromatch@4.0.8 ← ts-loader@9.5.1` | unassigned | baseline open |
+| 102 | GHSA-f23m-r3pf-42rh | medium | npm | `lodash` | transitive / development | `4.17.21` | `4.18.0` | CONCURRENTLY + WPS | `lodash@4.17.21 ← concurrently@9.1.0` | unassigned | baseline open |
+| 108 | GHSA-r4q5-vmmm-2653 | medium | npm | `follow-redirects` | transitive / development | `1.15.9` | `1.16.0` | WPS | `follow-redirects@1.15.9 ← axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 109 | GHSA-fvcv-3m26-pcqx | medium | npm | `axios` | transitive / development | `1.7.7` | `1.15.0` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 110 | GHSA-3p68-rc4w-qgx5 | medium | npm | `axios` | transitive / development | `1.7.7` | `1.15.0` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 115 | GHSA-v2v4-37r5-5v8g | medium | npm | `ip-address` | transitive / development | `9.0.5` | `10.1.1` | WPS | `ip-address@9.0.5 ← socks@2.8.3 ← socks-proxy-agent@8.0.4 ← proxy-agent@6.4.0 ← @puppeteer/browsers@2.4.0 ← puppeteer-core@23.3.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 119 | GHSA-3w6x-2g7m-8v23 | medium | npm | `axios` | transitive / development | `1.7.7` | `1.15.2` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 121 | GHSA-m7pr-hjqh-92cm | medium | npm | `axios` | transitive / development | `1.7.7` | `1.15.1` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 122 | GHSA-445q-vr5w-6q77 | medium | npm | `axios` | transitive / development | `1.7.7` | `1.15.1` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 129 | GHSA-xx6v-rp6x-q39c | medium | npm | `axios` | transitive / development | `1.7.7` | `1.15.1` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 131 | GHSA-79cf-xcqc-c78w | medium | npm | `webpack-dev-server` | transitive / development | `4.15.2` | `5.2.4` | WPS | `webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 134 | GHSA-qj8w-gfj5-8c6v | medium | npm | `serialize-javascript` | transitive / development | `6.0.2` | `7.0.5` | WEBPACK + WPS | `serialize-javascript@6.0.2 ← copy-webpack-plugin@12.0.2` | unassigned | baseline open |
+| 138 | GHSA-w9j2-pvgh-6h63 | medium | npm | `axios` | transitive / development | `1.7.7` | `1.15.1` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 147 | GHSA-898c-q2cr-xwhg | medium | npm | `axios` | transitive / development | `1.7.7` | `1.16.0` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 151 | GHSA-6v5v-wf23-fmfq | medium | npm | `markdown-it` | transitive / development | `12.3.2` | `14.2.0` | WPS | `markdown-it@12.3.2 ← markdownlint@0.25.1 ← markdownlint-cli@0.31.1 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 152 | GHSA-v6wh-96g9-6wx3 | medium | npm | `launch-editor` | transitive / development | `2.9.1` | `2.14.1` | WPS | `launch-editor@2.9.1 ← webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 154 | GHSA-mx8g-39q3-5c79 | medium | npm | `webpack-dev-server` | transitive / development | `4.15.2` | `5.2.5` | WPS | `webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 160 | GHSA-64mm-vxmg-q3vj | medium | npm | `http-proxy-middleware` | transitive / development | `2.0.6` | `2.0.10` | WPS | `http-proxy-middleware@2.0.6 ← webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 162 | GHSA-h67p-54hq-rp68 | medium | npm | `js-yaml` | transitive / development | `3.14.1` | `3.15.0` | WPS | `js-yaml@3.14.1 ← @istanbuljs/load-nyc-config@1.1.0 ← babel-plugin-istanbul@6.1.1 ← babel-jest@29.7.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 163 | GHSA-h67p-54hq-rp68 | medium | npm | `js-yaml` | transitive / development | `4.1.0` | `4.2.0` | ESLINT-RESOLVER + WEBEXT + WPS | `js-yaml@4.1.0 ← eslint@8.57.1 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 169 | GHSA-f5vj-f2hx-8m93 | medium | npm | `webpack-dev-server` | transitive / development | `4.15.2` | `5.2.6` | WPS | `webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 170 | GHSA-m28w-2pqf-7qgj | medium | npm | `webpack-dev-server` | transitive / development | `4.15.2` | `5.2.6` | WPS | `webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 179 | GHSA-mmx7-hfxf-jppx | medium | npm | `axios` | transitive / development | `1.7.7` | `1.18.0` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 180 | GHSA-7q8q-rj6j-mhjq | medium | npm | `axios` | transitive / development | `1.7.7` | `1.18.0` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 15 | GHSA-qw6h-vgh9-j6wx | low | npm | `express` | transitive / runtime | `4.19.2` | `4.20.0` | PGL | `express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 16 | GHSA-cm22-4g7w-348p | low | npm | `serve-static` | transitive / runtime | `1.15.0` | `1.16.0` | PGL | `serve-static@1.15.0 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 17 | GHSA-m6fv-jmcg-4jfg | low | npm | `send` | transitive / runtime | `0.18.0` | `0.19.0` | PGL | `send@0.18.0 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 18 | GHSA-pxg6-pf52-xh8x | low | npm | `cookie` | transitive / runtime | `0.6.0` | `0.7.0` | PGL | `cookie@0.6.0 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 64 | GHSA-73rr-hh4g-fpgx | low | npm | `diff` | transitive / runtime | `4.0.2` | `4.0.4` | BLK | `diff@4.0.2 ← @wordpress/block-editor@14.2.0 ← @wordpress/block-library@9.12.0` | unassigned | baseline open |
+| 68 | GHSA-w7fw-mjwx-w883 | low | npm | `qs` | transitive / runtime | `6.11.0` | `6.14.2` | PGL | `qs@6.11.0 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 171 | GHSA-v422-hmwv-36x6 | low | npm | `body-parser` | transitive / runtime | `1.20.2` | `1.20.6` | PGL | `body-parser@1.20.2 ← express@4.19.2 ← @php-wasm/web@1.0.13 ← @wp-playground/client@1.0.13` | unassigned | baseline open |
+| 41 | GHSA-76c9-3jph-rj3q | low | npm | `on-headers` | transitive / development | `1.0.2` | `1.1.0` | WPS | `on-headers@1.0.2 ← compression@1.7.4 ← webpack-dev-server@4.15.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 43 | GHSA-52f5-9888-hmc6 | low | npm | `tmp` | transitive / development | `0.2.3` | `0.2.4` | WEBEXT | `tmp@0.2.3 ← web-ext@8.3.0` | unassigned | baseline open |
+| 65 | GHSA-38r7-794h-5758 | low | npm | `webpack` | direct / development | `5.96.1` | `5.104.0` | WEBPACK | `webpack@5.96.1` | unassigned | baseline open |
+| 66 | GHSA-8fgc-7cc6-rx7x | low | npm | `webpack` | direct / development | `5.96.1` | `5.104.1` | WEBPACK | `webpack@5.96.1` | unassigned | baseline open |
+| 118 | GHSA-xhjh-pmcv-23jw | low | npm | `axios` | transitive / development | `1.7.7` | `1.15.1` | WPS | `axios@1.7.7 ← wait-on@7.2.0 ← jest-dev-server@9.0.2 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 133 | GHSA-vpq2-c234-7xj6 | low | npm | `@tootallnate/once` | transitive / development | `2.0.0` | `2.0.1` | WPS | `@tootallnate/once@2.0.0 ← http-proxy-agent@5.0.0 ← jsdom@20.0.3 ← jest-environment-jsdom@29.7.0 ← @wordpress/scripts@30.4.0` | unassigned | baseline open |
+| 159 | GHSA-4x5r-pxfx-6jf8 | low | npm | `@babel/core` | transitive / development | `7.25.7` | `7.29.6` | BABEL + WPS | `@babel/core@7.25.7 ← @babel/preset-env@7.26.0` | unassigned | baseline open |
+
+### Stale Branch Baseline Inventory
+
+Reachability was evaluated against local `origin/trunk` at `98f7c74d195d0b1ee95e4f9c16c7a9b527149980`. Thirteen named stale branches were present in the live branches API; `crawler` was already absent remotely when captured, so its cached `origin/crawler` ref is retained only as a recovery reference and this maintenance run does not claim to have deleted it.
+
+| Branch | Baseline tip SHA | Last commit date | Reachable from `origin/trunk` | Associated PR / state | Initial disposition and recovery reference |
+| --- | --- | --- | --- | --- | --- |
+| `add-navigation` | `55fbcd77ed9f6bcd3bf9528c9898816b02be29ba` | `2024-11-07T17:04:03+01:00` | No | [#98](https://github.com/WordPress/try-wordpress/pull/98), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #98. |
+| `api-docs` | `d6af87dd5891f64539d5dfde819fa2d563095caf` | `2024-10-25T15:34:17+01:00` | No | [#86](https://github.com/WordPress/try-wordpress/pull/86), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #86. |
+| `attempt-twitter` | `09ea6328c0a7553328b1dddf78a2b35958e2fa15` | `2024-08-01T13:25:16+02:00` | No | None found | Preserve: unmerged and no associated PR; recover from the live branch and tip SHA. |
+| `crawler` | `ba0be4d3c71b5dfeeff71b9e5d81789cdc0ab27a` | `2024-12-02T12:50:08+04:00` | No (cached tip) | [#131](https://github.com/WordPress/try-wordpress/pull/131), closed (unmerged) | No action: already absent remotely at baseline capture; recover from cached `origin/crawler`, the tip SHA, or PR #131. |
+| `devex` | `1f10e37b8b698965abdb3a2c2d7db9d40defa003` | `2024-11-19T16:21:02+04:00` | No | [#123](https://github.com/WordPress/try-wordpress/pull/123), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #123. |
+| `docs/extend` | `361343c169e69bca2357bb4a25d9225f9a774109` | `2024-12-04T18:28:39+04:00` | No | [#125](https://github.com/WordPress/try-wordpress/pull/125), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #125. |
+| `docs-definitions` | `343cbb6e8ab61ed5b6a910ca87b50a1af89e41ed` | `2024-11-22T15:24:36+01:00` | No | [#124](https://github.com/WordPress/try-wordpress/pull/124), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #124. |
+| `feedback_auto_preview_filter` | `0d3ca5c76aec03956f561161376631f334ddbedc` | `2024-11-26T01:10:02+04:00` | No | [#128](https://github.com/WordPress/try-wordpress/pull/128), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #128. |
+| `feedback_simulate_liberation` | `1899e033db7ecf42aeb005aec3dd0c00ca89e55d` | `2024-11-25T19:37:15+04:00` | No | [#126](https://github.com/WordPress/try-wordpress/pull/126), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #126. |
+| `fix-test-wix` | `960f2d793bdf975e39c31304a296c168c0301aff` | `2024-11-12T15:09:21+01:00` | No | None found | Preserve: unmerged and no associated PR; recover from the live branch and tip SHA. |
+| `local-playground-client` | `2a34ea44ea3ae8d8abb0c9365a866cbdc65338b5` | `2024-07-24T10:41:15+02:00` | Yes | None found | Eligible for deletion only after this child PR merges because the tip is already reachable; recover from `origin/trunk` or the tip SHA. |
+| `npm_package_updates` | `c9070d9d1bdd66ccf7a374d463b45c99e14e7683` | `2024-09-11T21:19:31+04:00` | No | None found | Preserve: unmerged and no associated PR; recover from the live branch and tip SHA. |
+| `pages` | `b1ed8fa5872402690a3a7286742337526d42dd10` | `2024-11-07T15:54:07+01:00` | No | [#96](https://github.com/WordPress/try-wordpress/pull/96), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #96. |
+| `schemas` | `85e269198e8f0d2c9d6039af89e1cd5d0188003d` | `2024-12-03T15:19:15+00:00` | No | [#132](https://github.com/WordPress/try-wordpress/pull/132), closed (unmerged) | Eligible for deletion only after this child PR merges; recover from the tip SHA or PR #132. |
+
+No remote branch was deleted during baseline capture. Any later eligible deletion must be appended here with its deletion result and recovery reference; `attempt-twitter`, `fix-test-wix`, and `npm_package_updates` remain preservation-required unless new factual recoverability evidence satisfies the approved rule.
+
+### Baseline Validation Record
+
+- `gh api --paginate 'repos/WordPress/try-wordpress/dependabot/alerts?state=open&per_page=100'` returned 124 rows with 124 unique alert numbers; the captured alert-number set exactly matched the live open set at validation time.
+- `gh api --paginate 'repos/WordPress/try-wordpress/branches?per_page=100'` returned thirteen of the fourteen named stale branches and confirmed `crawler` was already absent remotely; `origin/crawler` retained the cached recovery SHA documented above.
+- `gh api --paginate 'repos/WordPress/try-wordpress/pulls?state=all&per_page=100&sort=created&direction=asc'` supplied the direct head-branch PR associations and states recorded above.
+- `git for-each-ref --format='%(refname:short)%09%(objectname)%09%(committerdate:iso-strict)' refs/remotes/origin` supplied cached/live tip SHAs and commit dates; `git merge-base --is-ancestor <tip> origin/trunk` found only `local-playground-client` reachable from the captured `origin/trunk`.
+- `source /home/ashfame/.nvm/nvm.sh && nvm use 24 && npm ci` completed under Node `v24.18.0` with npm `11.16.0`; range- and scope-aware comparison against every matching `package-lock.json` package entry, followed by version-qualified `npm explain <package>@<locked-version> --json` checks for documented representative paths, resolved every npm alert to its locked scope-relevant causal family and representative path.
+- Composer lockfile inspection established `phpunit/phpunit@9.6.21` as the direct `require-dev` cause for alert 63; GitHub reports its relationship as `unknown`, so the alert table preserves that API value rather than rewriting it to `direct`.
+- `npm audit --json` exited 1 with 125 vulnerable/effect package keys and 143 unique npm GHSA references, while GitHub exposed 123 npm alert rows covering 116 unique npm GHSAs plus one Composer alert. These counts are not expected to match because npm audit reports the npm registry snapshot and propagates advisories through affected package/effect nodes, whereas the approved baseline is the GitHub repository alert-row set; no GitHub alert row was inferred from npm-only data.
+- The only baseline advisory with no first patched version is alert 113, `GHSA-rmmh-p597-ppvv` in `showdown`; its causal family remains BLK and remediation must remove the vulnerable dependency through that parent family.
