@@ -56,7 +56,7 @@
 	"dependencies": {
 		"@wordpress/block-library": "^9.12.0",
 		"@wordpress/blocks": "^13.10.0",
-		"@wp-playground/client": "^1.0.13",
+		"@wp-playground/client": "^3.1.38",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"react-router-dom": "^6.28.0",
