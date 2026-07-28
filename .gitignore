@@ -6,3 +6,5 @@ schema/schema.json
 
 .phpunit.result.cache
 src/plugin/schema.json
+/backup.sql
+/backup-*.sql

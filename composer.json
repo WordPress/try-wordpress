@@ -1,6 +1,6 @@
 {
 	"name": "wordpress/try-wordpress",
-	"description": "",
+	"description": "Import an existing website into WordPress with the Try WordPress browser extension.",
 	"license": "",
 	"require-dev": {
 		"phpunit/phpunit": "^9.6.33",
