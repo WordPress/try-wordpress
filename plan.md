@@ -495,10 +495,20 @@ Status: validated and merged into the integration branch by child pull request [
 
 ### Child Execution Record: [#214](https://github.com/WordPress/try-wordpress/pull/214)
 
-Status: validated locally in child pull request [#214](https://github.com/WordPress/try-wordpress/pull/214), which targets the integration branch.
+Status: validated and merged into the integration branch by child pull request [#214](https://github.com/WordPress/try-wordpress/pull/214) at merge commit `ac107e42eea15aa3082827696882367b40db606b`.
 
 - Local environment alignment: `.wp-env.json` removes the WordPress `6.6.2` pin and obsolete tests-only PHP override, uses schema-valid `core: null` for the latest production WordPress release, and sets root PHP `8.4` while preserving the plugin and every mapping unchanged.
 - CI matrix alignment: the complete PHPUnit workflow now runs PHP `8.3` and `8.4` against `mysql:8.0`, retains clean locked Composer and Node installs plus schema generation, audits the Composer lock in each job, and runs the unfiltered suite. The PHPCS workflow runs its unchanged complete reporting command on PHP `8.3` and `8.4`; workflow triggers, Node 24 setup/cache, permissions, concurrency, Composer configuration, PHPUnit configuration, dependencies, and locks remain unchanged.
 - Deterministic WordPress setup: each PHPUnit matrix job resolves the latest stable version exactly once from the WordPress version API, validates its stable numeric form, passes that exact value to the installer, and asserts the installed core version. The installer now treats exact `x.y.z` versions as exact archive and test-library tags while preserving WordPress's `x.y.0` convention of the `x.y` archive and tag, so core and PHPUnit fixtures cannot diverge through separate moving `latest` requests.
 - Documentation and validation: CONTRIBUTING records local latest-stable WordPress with PHP `8.4`, CI PHP `8.3`/`8.4` with MySQL `8.0`, and explicitly avoids claiming that wp-env's managed local database matches the CI service version. Node `v24.18.0` with npm `11.16.0` completed clean `npm ci` and schema generation. The official wp-env schema, JSON, workflow YAML, `actionlint`, Bash syntax, exact target assertions, Markdown wrapping, approved-plan prefix, 124-row count, `git diff --check`, and scope checks pass.
 - PHP validation and alert result: isolated official PHP `8.3` and `8.4` runtimes each completed a clean locked Composer install, `composer audit --locked` with no advisory, complete PHPCS, and PHPUnit `9.6.33` with 46 tests and 121 assertions against independently resolved exact WordPress `7.0.2`, byte-matched `tags/7.0.2` test fixtures, and stock MySQL `8.0.46`. A focused `7.0.0` installation confirmed exact `wordpress-7.0` core and `tags/7.0` fixtures. This child changes no dependency, lockfile, baseline-alert status, application source, manifest, package metadata, PHPUnit configuration, or license metadata.
+
+### Child Execution Record: [#215](https://github.com/WordPress/try-wordpress/pull/215)
+
+Status: implemented and validated locally in child pull request [#215](https://github.com/WordPress/try-wordpress/pull/215), which targets the integration branch.
+
+- Automated version upkeep: root `.github/dependabot.yml` enables npm and Composer version updates on GitHub's monthly schedule, with each ecosystem rooted at `/`.
+- Grouping and security reviewability: each ecosystem has separate production and development groups explicitly limited to `applies-to: version-updates`. Security updates remain outside these grouped version-update rules so causal remediation stays independently reviewable.
+- Pull-request bound: each ecosystem sets `open-pull-requests-limit: 4`, bounding concurrent version-update pull requests while leaving GitHub's separately handled security updates unaffected.
+- Scope: no dependency declaration, lockfile, application source, CI workflow, repository license, or license metadata changes are present.
+- Validation: GitHub's current Dependabot options reference confirms every configured key and value; Python YAML parsing, the current SchemaStore Dependabot 2.0 JSON schema, exact structural and root-manifest assertions, the approved-plan-prefix SHA-256 `6c29481eab5ef6c57aec974295193492861bc7efeba1bd612e45c94d10b1bfaa`, the 124-row baseline-alert count, and `git diff --check` all pass.

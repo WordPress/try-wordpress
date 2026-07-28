@@ -1,0 +1,28 @@
+version: 2
+
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 4
+    groups:
+      npm-production:
+        applies-to: version-updates
+        dependency-type: production
+      npm-development:
+        applies-to: version-updates
+        dependency-type: development
+
+  - package-ecosystem: composer
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 4
+    groups:
+      composer-production:
+        applies-to: version-updates
+        dependency-type: production
+      composer-development:
+        applies-to: version-updates
+        dependency-type: development
