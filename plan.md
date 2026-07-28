@@ -505,10 +505,20 @@ Status: validated and merged into the integration branch by child pull request [
 
 ### Child Execution Record: [#215](https://github.com/WordPress/try-wordpress/pull/215)
 
-Status: implemented and validated locally in child pull request [#215](https://github.com/WordPress/try-wordpress/pull/215), which targets the integration branch.
+Status: validated and merged into the integration branch by child pull request [#215](https://github.com/WordPress/try-wordpress/pull/215) at merge commit `862ac5d00d93d7632c2a91056330b81b49bda36c`.
 
 - Automated version upkeep: root `.github/dependabot.yml` enables npm and Composer version updates on GitHub's monthly schedule, with each ecosystem rooted at `/`.
 - Grouping and security reviewability: each ecosystem has separate production and development groups explicitly limited to `applies-to: version-updates`. Security updates remain outside these grouped version-update rules so causal remediation stays independently reviewable.
 - Pull-request bound: each ecosystem sets `open-pull-requests-limit: 4`, bounding concurrent version-update pull requests while leaving GitHub's separately handled security updates unaffected.
 - Scope: no dependency declaration, lockfile, application source, CI workflow, repository license, or license metadata changes are present.
 - Validation: GitHub's current Dependabot options reference confirms every configured key and value; Python YAML parsing, the current SchemaStore Dependabot 2.0 JSON schema, exact structural and root-manifest assertions, the approved-plan-prefix SHA-256 `6c29481eab5ef6c57aec974295193492861bc7efeba1bd612e45c94d10b1bfaa`, the 124-row baseline-alert count, and `git diff --check` all pass.
+
+### Child Execution Record: [#216](https://github.com/WordPress/try-wordpress/pull/216)
+
+Status: implemented and validated locally in child pull request [#216](https://github.com/WordPress/try-wordpress/pull/216), which targets the integration branch.
+
+- Composer metadata: the root description now accurately identifies Try WordPress as a browser extension for importing an existing website into WordPress. The existing empty Composer license value is byte-semantically unchanged, and no other Composer declaration or lock entry changes.
+- npm metadata: the private root package now declares repository-grounded name `try-wordpress`, plugin-header version `0.0.1`, and `private: true`; the existing Node engine range `>=24 <25`, scripts, and dependency declarations remain unchanged. npm 11 synchronizes the same name and version into the package-lock top level and root package, while exact semantic comparison after excluding only those identity fields proves every inherited lock entry unchanged.
+- Backup ignores: `.gitignore` adds exactly `/backup.sql` and `/backup-*.sql`, matching the two root files emitted by `composer run dev:db` and `composer run dev:db:backup`; nested backup SQL files and unrelated SQL files remain trackable.
+- Scope: `LICENSE`, plugin and extension metadata, license metadata, dependencies, resolved versions, integrity values, scripts, application source, and CI workflows are unchanged.
+- Validation: Node `v24.18.0` with npm `11.16.0` parses both npm JSON files and reproduces the inherited audit result of 111 effects (9 low, 15 moderate, 87 high, and zero critical) across 60 unique GHSAs. Exact lock, metadata, engine, script, dependency, license, and ignore-behavior assertions pass. The official Composer 2 container validates `composer.json` and reports only the inherited warnings for the intentionally unchanged empty license field; `composer audit --locked --no-interaction` reports no advisory. The approved-plan-prefix SHA-256 remains `6c29481eab5ef6c57aec974295193492861bc7efeba1bd612e45c94d10b1bfaa`, the baseline table remains exactly 124 rows, and `git diff --check` passes.
