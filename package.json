@@ -36,7 +36,6 @@
 		"@types/react": "^18.3.12",
 		"@types/react-dom": "^18.3.1",
 		"@types/wordpress__block-library": "^2.6.3",
-		"@types/wordpress__blocks": "^12.5.14",
 		"@wordpress/scripts": "^30.7.0",
 		"ajv": "^8.17.1",
 		"concurrently": "^9.1.0",
@@ -56,6 +55,7 @@
 	"dependencies": {
 		"@wordpress/block-library": "^9.27.0",
 		"@wordpress/blocks": "^15.22.0",
+		"@wordpress/components": "^33.1.0",
 		"@wp-playground/client": "^3.1.38",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
