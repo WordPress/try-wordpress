@@ -24,6 +24,8 @@
 		"lint": "npm run lint:js && npm run lint:style",
 		"lint:js": "wp-scripts lint-js",
 		"lint:style": "wp-scripts lint-style",
+		"validate:extension-builds": "node scripts/validate-extension-builds.mjs references",
+		"lint:extension:firefox": "node scripts/validate-extension-builds.mjs firefox-lint",
 		"format": "wp-scripts format",
 		"web-ext": "web-ext",
 		"wp-scripts": "wp-scripts",
