@@ -513,9 +513,9 @@ Status: validated and merged into the integration branch by child pull request [
 - Scope: no dependency declaration, lockfile, application source, CI workflow, repository license, or license metadata changes are present.
 - Validation: GitHub's current Dependabot options reference confirms every configured key and value; Python YAML parsing, the current SchemaStore Dependabot 2.0 JSON schema, exact structural and root-manifest assertions, the approved-plan-prefix SHA-256 `6c29481eab5ef6c57aec974295193492861bc7efeba1bd612e45c94d10b1bfaa`, the 124-row baseline-alert count, and `git diff --check` all pass.
 
-### Child Execution Record: `agent/maintenance-017-metadata-and-ignores`
+### Child Execution Record: [#216](https://github.com/WordPress/try-wordpress/pull/216)
 
-Status: implemented and validated locally; pull request URL: `TBD`.
+Status: implemented and validated locally in child pull request [#216](https://github.com/WordPress/try-wordpress/pull/216), which targets the integration branch.
 
 - Composer metadata: the root description now accurately identifies Try WordPress as a browser extension for importing an existing website into WordPress. The existing empty Composer license value is byte-semantically unchanged, and no other Composer declaration or lock entry changes.
 - npm metadata: the private root package now declares repository-grounded name `try-wordpress`, plugin-header version `0.0.1`, and `private: true`; the existing Node engine range `>=24 <25`, scripts, and dependency declarations remain unchanged. npm 11 synchronizes the same name and version into the package-lock top level and root package, while exact semantic comparison after excluding only those identity fields proves every inherited lock entry unchanged.
