@@ -63,6 +63,8 @@ The package validator confirms that both production manifests parse and every re
 
 ## Development environment - WordPress plugin
 
+The local wp-env configuration uses the latest stable WordPress release with PHP 8.4. CI verifies the complete plugin suite against the latest stable WordPress release on PHP 8.3 and PHP 8.4 with MySQL 8.0. The local database service is managed by wp-env and is not asserted to use the same MySQL version as CI.
+
 Install the locked PHP dependencies:
 
 ```shell
@@ -131,4 +133,4 @@ With Docker Engine running and the WordPress environment started through `compos
 composer run dev:test
 ```
 
-This command runs the complete plugin suite in the WordPress test container using PHPUnit.
+This command runs the complete plugin suite in the WordPress test container using PHPUnit on the local wp-env defaults of latest stable WordPress and PHP 8.4.

@@ -1,11 +1,6 @@
 {
-  "core": "WordPress/WordPress#6.6.2",
-  "phpVersion": "8.3",
-  "env": {
-    "tests": {
-      "phpVersion": "8.3"
-    }
-  },
+  "core": null,
+  "phpVersion": "8.4",
   "plugins": [ "./src/plugin" ],
   "mappings": {
     "wp-content/phpunit.xml.dist": "./phpunit.xml.dist",
