@@ -1,5 +1,8 @@
 {
 	"type": "module",
+	"engines": {
+		"node": ">=24 <25"
+	},
 	"scripts": {
 		"build": "echo 'Please choose a target: build:firefox or build:chrome, or build:production:firefox or build:production:chrome'",
 		"build:production": "echo 'Please choose a target: build:production:firefox or build:production:chrome'",
@@ -24,6 +27,7 @@
 		"lint": "npm run lint:js && npm run lint:style",
 		"lint:js": "wp-scripts lint-js",
 		"lint:style": "wp-scripts lint-style",
+		"type-check": "npm run build:schema && tsc --noEmit",
 		"validate:extension-builds": "node scripts/validate-extension-builds.mjs references",
 		"lint:extension:firefox": "node scripts/validate-extension-builds.mjs firefox-lint",
 		"format": "wp-scripts format",

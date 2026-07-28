@@ -4,6 +4,13 @@ on:
     pull_request:
         types: [ opened, synchronize ]
 
+permissions:
+    contents: read
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
 jobs:
     phpunit:
         name: PHPUnit ${{ matrix.php }}
@@ -32,8 +39,11 @@ jobs:
             -   name: Check out Git repository
                 uses: actions/checkout@v4
 
-            -   name: Setup npm
+            -   name: Setup Node.js
                 uses: actions/setup-node@v4
+                with:
+                    node-version-file: .nvmrc
+                    cache: npm
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -47,8 +57,11 @@ jobs:
                 with:
                     composer-options: "--no-progress --no-ansi --no-interaction"
 
+            -   name: Install Node dependencies
+                run: npm ci
+
             -   name: Build schema.json
-                run: npm install && npm run build:schema
+                run: npm run build:schema
 
             -   name: Install Subversion
                 run: sudo apt-get update && sudo apt-get install --no-install-recommends --yes subversion
