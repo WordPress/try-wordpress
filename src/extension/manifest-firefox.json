@@ -3,6 +3,18 @@
 	"name": "Try WordPress",
 	"description": "An extension that liberates your data into WordPress",
 	"version": "0.0.1",
+	"browser_specific_settings": {
+		"gecko": {
+			"id": "try-your-website-in-wordpress@wordpress.org",
+			"data_collection_permissions": {
+				"required": [
+					"browsingActivity",
+					"websiteContent"
+				]
+			},
+			"strict_min_version": "142.0"
+		}
+	},
 	"permissions": [
 		"storage",
 		"tabs"
@@ -32,7 +44,7 @@
 		"default_title": "Try WordPress",
 		"default_icon": {
 			"32": "icons/icon-32.png",
-			"128": "icons/icon-128"
+			"128": "icons/icon-128.png"
 		},
 		"default_panel": "app.html",
 		"open_at_install": true
