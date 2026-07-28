@@ -523,9 +523,9 @@ Status: validated and merged into the integration branch by child pull request [
 - Scope: `LICENSE`, plugin and extension metadata, license metadata, dependencies, resolved versions, integrity values, scripts, application source, and CI workflows are unchanged.
 - Validation: Node `v24.18.0` with npm `11.16.0` parses both npm JSON files and reproduces the inherited audit result of 111 effects (9 low, 15 moderate, 87 high, and zero critical) across 60 unique GHSAs. Exact lock, metadata, engine, script, dependency, license, and ignore-behavior assertions pass. The official Composer 2 container validates `composer.json` and reports only the inherited warnings for the intentionally unchanged empty license field; `composer audit --locked --no-interaction` reports no advisory. The approved-plan-prefix SHA-256 remains `6c29481eab5ef6c57aec974295193492861bc7efeba1bd612e45c94d10b1bfaa`, the baseline table remains exactly 124 rows, and `git diff --check` passes.
 
-### Child Execution Record: `agent/maintenance-018-stale-branch-triage` (PR pending)
+### Child Execution Record: [#217](https://github.com/WordPress/try-wordpress/pull/217)
 
-Status: read-only pre-action evidence captured locally on 2026-07-28; child pull request placeholder is pending. External branch deletion is pending and has not been performed.
+Status: read-only pre-action evidence captured in child pull request [#217](https://github.com/WordPress/try-wordpress/pull/217), which targets the integration branch. External branch deletion is pending and has not been performed.
 
 - Approved criterion: a live remote branch is eligible for deletion only when it has an associated pull request in any state or its exact tip is reachable from `origin/trunk`; an unmerged branch without an associated pull request must be preserved.
 - Reachability anchor: local `origin/trunk` is exactly `98f7c74d195d0b1ee95e4f9c16c7a9b527149980`, matching the approved pre-action anchor.
