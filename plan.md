@@ -503,9 +503,9 @@ Status: validated and merged into the integration branch by child pull request [
 - Documentation and validation: CONTRIBUTING records local latest-stable WordPress with PHP `8.4`, CI PHP `8.3`/`8.4` with MySQL `8.0`, and explicitly avoids claiming that wp-env's managed local database matches the CI service version. Node `v24.18.0` with npm `11.16.0` completed clean `npm ci` and schema generation. The official wp-env schema, JSON, workflow YAML, `actionlint`, Bash syntax, exact target assertions, Markdown wrapping, approved-plan prefix, 124-row count, `git diff --check`, and scope checks pass.
 - PHP validation and alert result: isolated official PHP `8.3` and `8.4` runtimes each completed a clean locked Composer install, `composer audit --locked` with no advisory, complete PHPCS, and PHPUnit `9.6.33` with 46 tests and 121 assertions against independently resolved exact WordPress `7.0.2`, byte-matched `tags/7.0.2` test fixtures, and stock MySQL `8.0.46`. A focused `7.0.0` installation confirmed exact `wordpress-7.0` core and `tags/7.0` fixtures. This child changes no dependency, lockfile, baseline-alert status, application source, manifest, package metadata, PHPUnit configuration, or license metadata.
 
-### Child Execution Record: `agent/maintenance-016-dependabot`
+### Child Execution Record: [#215](https://github.com/WordPress/try-wordpress/pull/215)
 
-Status: implemented and validated locally; pull request URL: `TBD`.
+Status: implemented and validated locally in child pull request [#215](https://github.com/WordPress/try-wordpress/pull/215), which targets the integration branch.
 
 - Automated version upkeep: root `.github/dependabot.yml` enables npm and Composer version updates on GitHub's monthly schedule, with each ecosystem rooted at `/`.
 - Grouping and security reviewability: each ecosystem has separate production and development groups explicitly limited to `applies-to: version-updates`. Security updates remain outside these grouped version-update rules so causal remediation stays independently reviewable.
