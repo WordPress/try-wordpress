@@ -4,8 +4,8 @@
 		"node": ">=24 <25"
 	},
 	"scripts": {
-		"build": "echo 'Please choose a target: build:firefox or build:chrome, or build:production:firefox or build:production:chrome'",
-		"build:production": "echo 'Please choose a target: build:production:firefox or build:production:chrome'",
+		"build": "npm run build:firefox && npm run build:chrome",
+		"build:production": "npm run build:production:firefox && npm run build:production:chrome",
 		"build:production:firefox": "rm -rf build/production/firefox && webpack --env mode=production --env target=firefox",
 		"build:production:chrome": "rm -rf build/production/chrome && webpack --env mode=production --env target=chrome",
 		"build:firefox": "rm -rf build/firefox && webpack --env target=firefox",
