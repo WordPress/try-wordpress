@@ -473,9 +473,9 @@ Status: validated and merged into the integration branch by child pull request [
 - Build and audit result: Node `v24.18.0` with npm `11.16.0` completed clean `npm ci`, schema generation, JavaScript/style linting, TypeScript checking, and sequential Firefox and Chrome production builds. Both builds retain only the known Playground dynamic-request and asset-size warnings, satisfy all nine manifest reference entries, preserve the approximately 21.2 MiB `app.js` and three established asynchronous chunks, and produce plugin archives that pass complete ZIP integrity tests. No dependency or lockfile changes are present; npm audit remains at the inherited 111 effect packages (9 low, 15 moderate, 87 high, and zero critical) and 60 unique advisories, with no audit drift attributable to this child.
 - Scope and manual risk: no application behavior, webpack configuration, dependency, CI workflow, Composer file, or license metadata changes are present. Manual pre-publication review must settle the provisional Firefox identity and verify that the declared remote data flow still matches the shipping extension; the normal unpacked-build checks remain required.
 
-### Child Execution Record: `agent/maintenance-013-node-ci`
+### Child Execution Record: [#212](https://github.com/WordPress/try-wordpress/pull/212)
 
-Status: implemented and validated locally on child branch `agent/maintenance-013-node-ci`, which targets the integration branch; permanent child pull request link pending.
+Status: validated locally in child pull request [#212](https://github.com/WordPress/try-wordpress/pull/212), which targets the integration branch.
 
 - Runtime contract: root `.nvmrc` selects Node major `24`, while `package.json` and the root package-lock metadata declare exact supported engine range `>=24 <25`. Removing only that new engine metadata from the lock produces a semantic package-lock graph identical to the pre-child lock, with no dependency-version, integrity, resolved-URL, package-path, or license-metadata drift.
 - Schema-aware type gate: stable command `npm run type-check` runs `npm run build:schema && tsc --noEmit`, so the generated schema is refreshed immediately before every TypeScript check. The browser workflow uses this command directly after JavaScript/style linting.
