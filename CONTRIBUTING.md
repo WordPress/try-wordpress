@@ -44,7 +44,7 @@ The Firefox Manifest V3 Gecko ID `try-your-website-in-wordpress@wordpress.org` i
 
 Firefox 142.0 is the minimum supported version. Firefox's built-in data-collection consent experience begins at desktop version 140 and Android version 142; selecting the common version 142 floor prevents any direct Android install from inheriting a version that predates its built-in consent while omitting `gecko_android` keeps the AMO package desktop-only. The extension does not implement a separate legacy consent flow, so older versions are excluded through `browser_specific_settings.gecko.strict_min_version`.
 
-The extension transmits selected source-page HTML, text, and links, plus selected source URLs and domains, to the WordPress Playground running in the remote-origin `https://pg.ashfame.com/remote.html` iframe. The Firefox manifest therefore declares the required `websiteContent` and `browsingActivity` data categories; element-selection clicks and pointer movement stay local and are not declared as `websiteActivity`.
+The extension transmits selected source-page HTML, text, and links, plus selected source URLs and domains, to the WordPress Playground running in the remote-origin `https://playground.wordpress.net/remote.html` iframe. The Firefox manifest therefore declares the required `websiteContent` and `browsingActivity` data categories; element-selection clicks and pointer movement stay local and are not declared as `websiteActivity`.
 
 Build both production targets sequentially:
 
