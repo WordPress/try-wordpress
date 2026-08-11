@@ -2,7 +2,16 @@ name: Linting (Browser extension)
 
 on:
   pull_request:
-    types: [ opened, synchronize ]
+  push:
+    branches:
+      - trunk
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
@@ -10,13 +19,30 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Lint js
-        run: npm run lint:js
+      - name: Lint JavaScript and styles
+        run: npm run lint
 
-      - name: Lint styles
-        run: npm run lint:style
+      - name: Generate schema and type-check
+        run: npm run type-check
+
+      - name: Build Firefox production extension
+        run: npm run build:production:firefox
+
+      - name: Build Chrome production extension
+        run: npm run build:production:chrome
+
+      - name: Validate packaged manifest references
+        run: npm run validate:extension-builds
+
+      - name: Lint Firefox extension
+        run: npm run lint:extension:firefox

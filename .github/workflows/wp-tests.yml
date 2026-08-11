@@ -4,6 +4,13 @@ on:
     pull_request:
         types: [ opened, synchronize ]
 
+permissions:
+    contents: read
+
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
+
 jobs:
     phpunit:
         name: PHPUnit ${{ matrix.php }}
@@ -11,7 +18,7 @@ jobs:
 
         services:
             mysql:
-                image: mysql:5.7
+                image: mysql:8.0
                 ports:
                     - 3306/tcp
                 env:
@@ -26,14 +33,17 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [ '8.3' ]
+                php: [ '8.3', '8.4' ]
 
         steps:
             -   name: Check out Git repository
                 uses: actions/checkout@v4
 
-            -   name: Setup npm
+            -   name: Setup Node.js
                 uses: actions/setup-node@v4
+                with:
+                    node-version-file: .nvmrc
+                    cache: npm
 
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
@@ -42,19 +52,43 @@ jobs:
                     coverage: 'none'
                     tools: composer
 
-            -   name: Install dependencies
+            -   name: Install locked Composer dependencies
                 uses: ramsey/composer-install@v2
                 with:
                     composer-options: "--no-progress --no-ansi --no-interaction"
 
+            -   name: Audit locked Composer dependencies
+                run: composer audit --locked --no-interaction
+
+            -   name: Install Node dependencies
+                run: npm ci
+
             -   name: Build schema.json
-                run: npm install && npm run build:schema
+                run: npm run build:schema
 
             -   name: Install Subversion
                 run: sudo apt-get update && sudo apt-get install --no-install-recommends --yes subversion
 
+            -   name: Resolve latest stable WordPress version
+                id: wordpress
+                run: |
+                    wordpress_version="$(curl --fail --silent --show-error https://api.wordpress.org/core/version-check/1.7/ | jq -er '.offers[0].version')"
+                    if [[ ! "$wordpress_version" =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+                        echo "Unexpected WordPress version: $wordpress_version" >&2
+                        exit 1
+                    fi
+                    echo "version=$wordpress_version" >> "$GITHUB_OUTPUT"
+
             -   name: Install WordPress test setup
-                run: bash tests/bin/install-wp-tests.sh wordpress_test root password 127.0.0.1:${{ job.services.mysql.ports[3306] }} latest
+                env:
+                    WORDPRESS_VERSION: ${{ steps.wordpress.outputs.version }}
+                run: bash tests/bin/install-wp-tests.sh wordpress_test root password 127.0.0.1:${{ job.services.mysql.ports['3306'] }} "$WORDPRESS_VERSION"
+
+            -   name: Verify installed WordPress version
+                env:
+                    WORDPRESS_VERSION: ${{ steps.wordpress.outputs.version }}
+                run: >-
+                    php -r "require '/tmp/wordpress/wp-includes/version.php'; exit( \$wp_version === getenv( 'WORDPRESS_VERSION' ) ? 0 : 1 );"
 
             -   name: Setup problem matchers for PHPUnit
                 run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"

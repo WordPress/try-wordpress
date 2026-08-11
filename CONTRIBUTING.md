@@ -7,13 +7,20 @@ This repo provides a development environment that facilitates:
 
 ## Development environment - Browser extension
 
-First install required dependencies:
+Use Node 24 as selected by `.nvmrc`, then install the exact locked dependencies:
 
 ```shell
-npm install
+nvm use
+npm ci
 ```
 
-Then build the extension:
+Build both development targets sequentially:
+
+```shell
+npm run build
+```
+
+The Firefox development build is written to `build/firefox`, and the Chrome development build is written to `build/chrome`. To build only one target:
 
 ```shell
 npm run build:firefox
@@ -21,7 +28,7 @@ npm run build:firefox
 npm run build:chrome
 ```
 
-You can then use the `start` script to start a browser instance separate from your main instance that has the extension automatically installed:
+Use a target-specific start command to build the target, open a separate browser instance with the extension installed, watch source files, and automatically reload the extension:
 
 ```shell
 npm run start:firefox
@@ -29,76 +36,101 @@ npm run start:firefox
 npm run start:chrome
 ```
 
-The extension will also automatically reload whenever you modify source files.
+> Please note that at the moment not all `web-ext` features work on Chrome, so Firefox is the recommended browser for developing this project because it provides the best developer experience. For example, Chrome does not support automatically opening the developer tools and extension console when the extension loads.
 
-> Please note that at the moment not all `web-ext` features work on chrome, so firefox is the recommended browser for developing this project, since it provides the best developer experience. One example of a `web-ext` feature that doesn't currently work on chrome is to have the developer tools and extension console automatically open when the extension loads.
+### Firefox publication identity and data disclosure
+
+The Firefox Manifest V3 Gecko ID `try-your-website-in-wordpress@wordpress.org` is provisional and may be changed until the extension is first published. After publication, treat the published ID as stable because changing it creates a distinct Firefox extension identity.
+
+Firefox 142.0 is the minimum supported version. Firefox's built-in data-collection consent experience begins at desktop version 140 and Android version 142; selecting the common version 142 floor prevents any direct Android install from inheriting a version that predates its built-in consent while omitting `gecko_android` keeps the AMO package desktop-only. The extension does not implement a separate legacy consent flow, so older versions are excluded through `browser_specific_settings.gecko.strict_min_version`.
+
+The extension transmits selected source-page HTML, text, and links, plus selected source URLs and domains, to the WordPress Playground running in the remote-origin `https://playground.wordpress.net/remote.html` iframe. The Firefox manifest therefore declares the required `websiteContent` and `browsingActivity` data categories; element-selection clicks and pointer movement stay local and are not declared as `websiteActivity`.
+
+Build both production targets sequentially:
+
+```shell
+npm run build:production
+```
+
+The Firefox production build is written to `build/production/firefox`, and the Chrome production build is written to `build/production/chrome`. After building both production targets, validate the packaged references and lint the Firefox package:
+
+```shell
+npm run validate:extension-builds
+npm run lint:extension:firefox
+```
+
+The package validator confirms that both production manifests parse and every referenced content/background script, sidebar/side-panel page, and icon exists. The Firefox lint gate ignores only generated `app.js` and requires zero errors and exactly the known unsupported-Chrome-API warning.
 
 ## Development environment - WordPress plugin
 
-First install required dependencies:
+The local wp-env configuration uses the latest stable WordPress release with PHP 8.4. CI verifies the complete plugin suite against the latest stable WordPress release on PHP 8.3 and PHP 8.4 with MySQL 8.0. The local database service is managed by wp-env and is not asserted to use the same MySQL version as CI.
+
+Install the locked PHP dependencies:
 
 ```shell
 composer install
 ```
 
-The development environment requires [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/), you can install it with:
+The development environment requires [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/). Install its executable globally if it is not already available:
 
 ```shell
 npm install -g @wordpress/env
 ```
 
 Start the development environment:
+
 ```shell
 composer run dev:start
 ```
 
-You will need docker engine running for this command to work, since `wp-env` uses container that runs on docker engine.
-This command starts the WordPress environment and sets up the permalink structure.
+Docker Engine must be running because `wp-env` uses containers. This command starts the WordPress environment and sets up the permalink structure.
 
-To stop the development environment:
+Stop the development environment:
+
 ```shell
 composer run dev:stop
 ```
 
-Additionally, there is also support for `xdebug`, `phpcs` and `phpcbf`:
+Start the environment with Xdebug:
 
-For debugging with Xdebug:
 ```shell
 composer run dev:debug
 ```
 
-To run linting on the codebase:
+Lint the plugin with PHPCS:
+
 ```shell
 composer run lint
 ```
 
-To automatically fix linting issues:
+Automatically fix eligible PHPCS issues:
+
 ```shell
 composer run lint:fix
 ```
 
-## Building for production
-You can build both the firefox and chrome versions of the extension with the following command. The resulting files will be under the `build/firefox` and `build/chrome` directories, respectively.
+## Verification
+
+There is currently no frontend test suite. Validate the browser extension with the actual static-analysis, build, package-reference, and Firefox manifest gates:
 
 ```shell
-npm run build
+npm run lint
+npm run type-check
+npm run build:production
+npm run validate:extension-builds
+npm run lint:extension:firefox
 ```
 
-> We would soon have the build & release pipeline for publishing the plugin to WP.org repo.
-
-## Running tests
-
-You can run tests with:
-
-**For browser extension:**
+Lint the WordPress plugin:
 
 ```shell
-npm run test
+composer run lint
 ```
 
-**For WordPress plugin:**
+With Docker Engine running and the WordPress environment started through `composer run dev:start`, run the complete PHPUnit suite:
 
 ```shell
 composer run dev:test
 ```
-This command runs the tests in the WordPress environment using PHPUnit.
+
+This command runs the complete plugin suite in the WordPress test container using PHPUnit on the local wp-env defaults of latest stable WordPress and PHP 8.4.

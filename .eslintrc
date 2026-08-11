@@ -2,12 +2,6 @@
     "extends": [
         "plugin:@wordpress/eslint-plugin/recommended"
     ],
-    "plugins": [
-        "jest"
-    ],
-    "env": {
-        "jest/globals": true
-    },
     "settings": {
         "import/resolver": {
             "typescript": {
